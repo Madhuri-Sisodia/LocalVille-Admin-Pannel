@@ -5,6 +5,7 @@ import Typography from "views/Typography.js";
 import Icons from "views/Icons.js";
 import Maps from "views/Maps.js";
 import Notifications from "views/Notifications.js";
+import Login from "views/Auth/Login";
 
 const dashboardRoutes = [
   {
@@ -55,7 +56,8 @@ const dashboardRoutes = [
     icon: "nc-icon nc-bell-55",
     component: Notifications,
     layout: "/admin"
-  }
+  },
+  
 ];
 
 export default dashboardRoutes;

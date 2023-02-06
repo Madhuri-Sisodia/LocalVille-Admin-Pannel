@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { useLocation, Route, Switch } from "react-router-dom";
+import React, { Component, useEffect } from "react";
+import { useLocation, Route, Switch,useHistory } from "react-router-dom";
 
 import AdminNavbar from "components/Navbars/AdminNavbar";
 import Footer from "components/Footer/Footer";
@@ -11,6 +11,8 @@ import routes from "routes.js";
 import sidebarImage from "assets/img/sidebar-3.jpg";
 
 function Admin() {
+
+  const history= useHistory();
   const [image, setImage] = React.useState(sidebarImage);
   const [color, setColor] = React.useState("black");
   const [hasImage, setHasImage] = React.useState(true);
@@ -44,9 +46,17 @@ function Admin() {
       element.parentNode.removeChild(element);
     }
   }, [location]);
+
+  useEffect(()=>{
+    if(!localStorage.getItem("userData"))
+    {
+       history.push("/login");
+    }
+  },[])
   return (
     <>
       <div className="wrapper">
+
         <Sidebar color={color} image={hasImage ? image : ""} routes={routes} />
         <div className="main-panel" ref={mainPanel}>
           <AdminNavbar />
