@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import { useLocation,useHistory } from "react-router-dom";
 import { Navbar, Container, Nav, Dropdown, Button } from "react-bootstrap";
 
@@ -27,6 +27,18 @@ function Header() {
     }
     return "Brand";
   };
+
+useEffect(()=>{
+     if(sessionStorage.getItem("userData")){
+       history.replace("/login");
+     }
+},[])
+
+  const handleLogout = () => {
+     sessionStorage.removeItem("userData");
+    history.push("/login");
+  };
+
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
@@ -179,7 +191,7 @@ function Header() {
             <Nav.Item>
               <Nav.Link
                 className="m-0"
-                 onClick={(e) => history.push("/login")}
+                 onClick={handleLogout}
               >
                 <span className="no-icon">Log out</span>
               </Nav.Link>

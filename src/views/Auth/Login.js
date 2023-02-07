@@ -1,51 +1,25 @@
 import React, { useState} from "react";
  import { useHistory } from "react-router-dom";
 import { Form, Button } from "rsuite";
-// import { Http } from "../../config/Service";
-// import { apis } from "../../config/WebConstant";
 import '../../assets/css/login.css';
-import logoWhite from '../../images/logoWhite.png'
+import logoWhite from "assets/img/logoWhite.png";
 import LoginNavbar from "components/Navbars/LoginNavbar";
 
 const Login = () => {
   const history = useHistory();
-
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState([]);
-
+  
   const handleSubmit = (e) => {
     // e.preventDefault();
     console.log("Email", email);
     console.log("Password", password);
-    const data1 = { email, password };
-    localStorage.setItem("userData", JSON.stringify(data1));
-     history.push("/admin");
-
-    // var data = new FormData();
-    // data.append("mail", data1.email);
-    // data.append("password", data1.password);
-
-    // console.log("usersss", data);
-    // Http.PostAPI(apis.getUser, data, null)
-    // .then((res) => {
-    //     console.log("user", res);
-    //     if (res?.data?.status) {
-    //       setUser(res?.data?.data);
-    //       localStorage.setItem("userData", JSON.stringify(res.data.data));
-    //       navigate("/registration");
-    //     } else {
-    //       alert("Fields not matched");
-    //     }
-    //   })
-    //   .catch((e) => {
-    //     alert("Something went wrong.");
-    //     console.log("Error:", e);
-    //   });
+      const data = { email, password };
+      sessionStorage.setItem("userData", JSON.stringify(data));
+      history.push("/admin");
       setEmail("");
       setPassword("");
-  };
+    };
 
   return (
     <>
