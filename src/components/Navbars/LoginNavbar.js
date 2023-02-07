@@ -4,7 +4,7 @@ import React, { useState } from "react";
 const CustomNavbar = ({ onSelect, activeKey, ...props }) => {
   return (
     <Navbar {...props}>
-      <Navbar.Brand style={{ color: "white" }}>LOCALVILLE</Navbar.Brand>
+      <Navbar.Brand style={{ color: "white",position:"fixed" }}>LOCALVILLE</Navbar.Brand>
       <Nav onSelect={onSelect} activeKey={activeKey}></Nav>
     </Navbar>
   );
