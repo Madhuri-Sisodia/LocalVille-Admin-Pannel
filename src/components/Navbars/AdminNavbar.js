@@ -28,11 +28,11 @@ function Header() {
     return "Brand";
   };
 
-useEffect(()=>{
-     if(sessionStorage.getItem("userData")){
-       history.replace("/login");
-     }
-},[])
+// useEffect(()=>{
+//      if(!sessionStorage.getItem("userData")){
+//        history.replace("/login");
+//      }
+// },[])
 
   const handleLogout = () => {
      sessionStorage.removeItem("userData");
