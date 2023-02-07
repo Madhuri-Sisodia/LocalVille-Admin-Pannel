@@ -3,7 +3,7 @@ import React, { useState} from "react";
 import { Form, Button } from "rsuite";
 // import { Http } from "../../config/Service";
 // import { apis } from "../../config/WebConstant";
-import './Login.css';
+import '../../assets/css/login.css';
 import logoWhite from '../../images/logoWhite.png'
 import LoginNavbar from "components/Navbars/LoginNavbar";
 

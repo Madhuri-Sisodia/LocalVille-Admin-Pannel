@@ -8,7 +8,7 @@
 
 }
 .adminLogo{
-    width: 10rem;
+    width: 9rem;
     margin-top: 1rem;
 }
 .textArea{
@@ -16,6 +16,9 @@
     color: aliceblue;
     font-size: 2.1rem;
     margin-top: 1rem;
+}
+.FirstSection{
+    text-align: center;
 }
 
 .SecondSection{
@@ -28,7 +31,7 @@
 }
 @media only screen and (min-width:320px) and (max-width:768px){
     .LoginContainer{
-        display: grid;
+       flex-flow: column;
         align-items: center;
         justify-content: center;
         padding: 0;
