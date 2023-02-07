@@ -6,6 +6,7 @@ import Icons from "views/Icons.js";
 import Maps from "views/Maps.js";
 import Notifications from "views/Notifications.js";
 import Login from "views/Auth/Login";
+import Admin from "views/Admin.js";
 
 const dashboardRoutes = [
   {
@@ -15,6 +16,14 @@ const dashboardRoutes = [
     component: Dashboard,
     layout: "/admin"
   },
+  {
+    path: "/admin",
+    name: "Add Admin",
+    icon: "nc-icon nc-circle-09",
+    component: Admin,
+    layout: "/admin"
+  },
+
   {
     path: "/user",
     name: "User Profile",
