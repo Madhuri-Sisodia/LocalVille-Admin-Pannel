@@ -35,8 +35,8 @@ const Login = () => {
   const handleSubmit = (e) => {
     // e.preventDefault();
     if (validate()) {
-    console.log("Email", email);
-    console.log("Password", password);
+    // console.log("Email", email);
+    // console.log("Password", password);
     const data = { email, password };
     sessionStorage.setItem("loggedIn", JSON.stringify(data));
     history.push("/admin");

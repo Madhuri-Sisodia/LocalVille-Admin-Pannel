@@ -37,10 +37,10 @@ const AdminManager = () => {
     // e.preventDefault();
     
     if (validate()) {
-      console.log("name", name);
-      console.log("email", email);
-      console.log("password", password);
-      console.log("repassword", rePassword);
+      // console.log("name", name);
+      // console.log("email", email);
+      // console.log("password", password);
+      // console.log("repassword", rePassword);
       setName("");
       setEmail("");
       setPassword("");
