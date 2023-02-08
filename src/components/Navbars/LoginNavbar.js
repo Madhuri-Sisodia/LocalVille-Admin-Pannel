@@ -16,7 +16,7 @@ const LoginNavbar = () => {
   return (
     <>
       <CustomNavbar
-        style={{ backgroundColor: "blueviolet" }}
+        style={{ backgroundColor: "blueviolet", position:"fixed" }}
         activeKey={activeKey}
         onSelect={setActiveKey}
       />
