@@ -2,7 +2,7 @@ import React from "react";
 import { Form, Button, ButtonToolbar } from "rsuite";
 import '../assets/css/admin.css';
 
-function Admin() {
+function AdminManager() {
   return (
     <>
       <div className="AddAdminMainContainer">
@@ -45,4 +45,4 @@ function Admin() {
   )
 }
 
-export default Admin;
+export default AdminManager;
