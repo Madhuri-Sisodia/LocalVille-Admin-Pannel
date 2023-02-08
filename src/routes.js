@@ -7,6 +7,8 @@ import Maps from "views/Maps.js";
 import Notifications from "views/Notifications.js";
 import Login from "views/Auth/Login";
 import Admin from "views/AdminManager.js";
+import AdminManager from "views/AdminManager";
+import Category from "views/Category";
 
 
 const dashboardRoutes = [
@@ -19,9 +21,16 @@ const dashboardRoutes = [
   },
   {
     path: "/admin",
-    name: "Add Admin",
+    name: "Admin Manager",
     icon: "nc-icon nc-circle-09",
-    component: Admin,
+    component: AdminManager,
+    layout: "/admin"
+  },
+  {
+    path: "/category",
+    name: "Categories",
+    icon: "nc-icon nc-circle-09",
+    component: Category,
     layout: "/admin"
   },
 
