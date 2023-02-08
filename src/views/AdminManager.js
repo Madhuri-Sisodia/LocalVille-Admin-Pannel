@@ -85,7 +85,6 @@ const AdminManager = () => {
                   placeholder="Admin Email"
                   name="email"
                   type="email"
-                  required="email"
                   value={email}
                   onChange={(value) => setEmail(value)}
                 />
@@ -100,7 +99,6 @@ const AdminManager = () => {
                   name="password"
                   type="password"
                   placeholder="Enter Password"
-                  required="password"
                   autoComplete="off"
                   value={password}
                   onChange={(value) => setPassword(value)}

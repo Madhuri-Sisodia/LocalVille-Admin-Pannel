@@ -9,10 +9,32 @@ const Login = () => {
   const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const[errors,setErrors] = useState({});
+
+
+  const validate = () => {
+    let tempErrors = {};
+    
+    if (!email) {
+      tempErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      tempErrors.email = "Email is invalid";
+    }
+
+    if (!password) {
+      tempErrors.password = "Password is required";
+    } else if (password.length < 8) {
+      tempErrors.password = "Password must be at least 8 characters long";
+    }
+
+    setErrors(tempErrors);
+    return Object.keys(tempErrors).length === 0;
+  };
   
 
   const handleSubmit = (e) => {
     // e.preventDefault();
+    if (validate()) {
     console.log("Email", email);
     console.log("Password", password);
     const data = { email, password };
@@ -21,6 +43,7 @@ const Login = () => {
 
     setEmail("");
     setPassword("");
+    }
     };
     
   
@@ -55,6 +78,9 @@ const Login = () => {
                 required="email"
                 onChange={(value) => setEmail(value)}
               />
+              {errors.email && (
+                  <p className="error">{errors.email}</p>
+                )}
             </Form.Group>
 
             <Form.Group controlId="password">
@@ -71,6 +97,9 @@ const Login = () => {
                 required="password"
                 onChange={(value) => setPassword(value)}
               />
+              {errors.password && (
+                  <p className="error">{errors.password}</p>
+                )}
             </Form.Group>
 
             <Button
