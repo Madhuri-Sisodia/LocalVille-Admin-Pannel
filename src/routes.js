@@ -6,7 +6,8 @@ import Icons from "views/Icons.js";
 import Maps from "views/Maps.js";
 import Notifications from "views/Notifications.js";
 import Login from "views/Auth/Login";
-import Admin from "views/Admin.js";
+import Admin from "views/AdminManager.js";
+
 
 const dashboardRoutes = [
   {
