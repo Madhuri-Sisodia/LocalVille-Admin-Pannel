@@ -7,13 +7,20 @@
 .AdminContainer{
     border: 1px solid #e5e5ea;
     border-radius: 2px;
-    padding: 1.5rem;
+    padding: 3rem;
     background-color: white;
     color: #808080;
 }
 .InnnerContainerAdmin{
     border: 1px solid #e5e5ea;
     border-radius: 10px;
-    padding: 1rem;
+    padding: 1.5rem;
     background-color: white;
+}
+
+
+/* category section css */
+.InnnerContainer{
+    border: 1px solid #e5e5ea;
+    border-radius: 10px
 }
