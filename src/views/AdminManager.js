@@ -52,7 +52,6 @@ const AdminManager = () => {
     notificationAlertRef.current.notificationAlert(options);
   };
 
-
   const validate = () => {
     let tempErrors = {};
     if (!name) {
@@ -79,7 +78,7 @@ const AdminManager = () => {
 
   const handleSubmit = (e) => {
     // e.preventDefault();
-    
+
     if (validate()) {
       // console.log("name", name);
       // console.log("email", email);
@@ -92,12 +91,11 @@ const AdminManager = () => {
       setErrors({});
       notify("tr");
     }
-  
   };
 
   return (
     <>
-     <div className="rna-container">
+      <div className="rna-container">
         <NotificationAlert ref={notificationAlertRef} />
       </div>
       <div className="AddAdminMainContainer">
@@ -122,23 +120,18 @@ const AdminManager = () => {
                   required="name"
                   onChange={(value) => setName(value)}
                 />
-                 {errors.name && (
-                  <p className="error">{errors.name}</p>
-                )}
+                {errors.name && <p className="error">{errors.name}</p>}
               </Form.Group>
               <Form.Group>
                 <Form.ControlLabel>ADMIN EMAIL</Form.ControlLabel>
                 <Form.Control
-                  
                   placeholder="Admin Email"
                   name="email"
                   type="email"
                   value={email}
                   onChange={(value) => setEmail(value)}
                 />
-                {errors.email && (
-                  <p className="error">{errors.email}</p>
-                )}
+                {errors.email && <p className="error">{errors.email}</p>}
               </Form.Group>
 
               <Form.Group>
@@ -151,9 +144,7 @@ const AdminManager = () => {
                   value={password}
                   onChange={(value) => setPassword(value)}
                 />
-                 {errors.password && (
-                  <p className="error">{errors.password}</p>
-                )}
+                {errors.password && <p className="error">{errors.password}</p>}
               </Form.Group>
 
               <Form.Group>
@@ -167,7 +158,7 @@ const AdminManager = () => {
                   value={rePassword}
                   onChange={(value) => setRePassword(value)}
                 />
-                 {errors.rePassword && (
+                {errors.rePassword && (
                   <p className="error">{errors.rePassword}</p>
                 )}
               </Form.Group>
@@ -189,6 +180,6 @@ const AdminManager = () => {
       </div>
     </>
   );
-}
+};
 
 export default AdminManager;
