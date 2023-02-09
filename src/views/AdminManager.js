@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button, ButtonToolbar } from "rsuite";
+import NotificationAlert from "react-notification-alert";
 import "../assets/css/admin.css";
 
 const AdminManager = () => {
@@ -8,6 +9,49 @@ const AdminManager = () => {
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
   const [errors, setErrors] = useState({});
+
+  const notificationAlertRef = React.useRef(null);
+
+  const notify = (place) => {
+    var color = Math.floor(Math.random() * 5 + 1);
+    var type;
+    switch (color) {
+      case 1:
+        type = "primary";
+        break;
+      case 2:
+        type = "success";
+        break;
+      case 3:
+        type = "danger";
+        break;
+      case 4:
+        type = "warning";
+        break;
+      case 5:
+        type = "info";
+        break;
+      default:
+        break;
+    }
+    var options = {};
+    options = {
+      place: place,
+      message: (
+        <div>
+          <div>
+            <b>Admin Details Successfully Added..!!</b>
+          </div>
+        </div>
+      ),
+      type: type,
+      icon: "nc-icon nc-bell-55",
+      autoDismiss: 7,
+    };
+
+    notificationAlertRef.current.notificationAlert(options);
+  };
+
 
   const validate = () => {
     let tempErrors = {};
@@ -46,12 +90,16 @@ const AdminManager = () => {
       setPassword("");
       setRePassword("");
       setErrors({});
+      notify("tr");
     }
   
   };
 
   return (
     <>
+     <div className="rna-container">
+        <NotificationAlert ref={notificationAlertRef} />
+      </div>
       <div className="AddAdminMainContainer">
         <div className="AdminContainer">
           <p>ADD ADMIN</p>
