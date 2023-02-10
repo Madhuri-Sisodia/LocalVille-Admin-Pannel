@@ -5,10 +5,10 @@ import Typography from "views/Typography.js";
 import Icons from "views/Icons.js";
 import Maps from "views/Maps.js";
 import Notifications from "views/Notifications.js";
-import Login from "views/Auth/Login";
-import Admin from "views/AdminManager.js";
+import Login from "views/Auth/Login.js";
 import AdminManager from "views/AdminManager";
-import Category from "views/Category";
+import Category from "views/Category.js";
+import SubCategory from "views/SubCategory.js";
 
 
 const dashboardRoutes = [
@@ -34,6 +34,13 @@ const dashboardRoutes = [
     layout: "/admin"
   },
 
+  {
+    path: "/subcategory",
+    name: "Sub-Categories",
+    icon: "nc-icon nc-circle-09",
+    component: SubCategory,
+    layout: "/admin"
+  },
   {
     path: "/user",
     name: "User Profile",

@@ -1,13 +1,13 @@
-.AddAdminMainContainer{
-    /* background-color: #f2f2f5; */
+/* ----------------------------------admin Manager section css */
+.MainContainer{
     font-size: 0.8rem;
-    height: 100vh;
+    height: 112vh;
     padding: 1rem;
 }
-.AdminContainer{
+.Container{
     border: 1px solid #e5e5ea;
     border-radius: 2px;
-    padding: 3rem;
+    padding: 2rem;
     background-color: white;
     color: #808080;
 }
@@ -19,8 +19,37 @@
 }
 
 
-/* category section css */
+/* ------------------------------------category section css */
 .InnnerContainer{
     border: 1px solid #e5e5ea;
-    border-radius: 10px
+    border-radius: 10px;
 }
+
+/*------------------------------------Sub- category section css */
+.InnnerContainerCategory{
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-start;
+}
+.closeButton{
+    color: #f06767; 
+    font-size:1.1rem;
+    text-align: center;
+    margin-left: 1rem;
+}
+.InnnerContainerRadio{
+    display: flex;
+    align-items: center;
+}
+.InnerContainer2{
+    padding: 1rem;
+}
+
+/* -----------------------------------responsive */
+
+@media screen and (min-width:320px) and (max-width:768px){
+.Container{
+    padding: 0;
+}
+}
+
