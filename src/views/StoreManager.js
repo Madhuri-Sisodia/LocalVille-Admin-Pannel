@@ -17,53 +17,80 @@ import {
 
 const data = [
   {
-    id: 1,
-    vendorImage: "https://i.pravatar.cc/50",
-    vendorName: "Vendor 1",
-    email: "vendor1@email.com",
-    phone: "555-555-5555",
+    vendor_id: 1,
+    store_image: "https://dummyimage.com/300x200/000/fff",
+    store_name: "Store 1",
+    store_description: "This is the description for Store 1",
+    store_address: "123 Main Street",
+    pincode: "123456",
+    city: "New York",
+    state: "NY",
+    country: "USA",
+    opening_days: "Monday-Friday",
+    opening_time: "9:00 AM",
+    closing_time: "5:00 PM",
+    total_clicks: "100",
+    store_created: "2022-01-01",
+    store_updated: "2022-02-01",
     status: "active",
-    loginCount: 0,
   },
   {
-    id: 2,
-    vendorImage: "https://i.pravatar.cc/50",
-    vendorName: "Vendor 2",
-    email: "vendor2@email.com",
-    phone: "555-555-5556",
+    vendor_id: 2,
+    store_image: "https://dummyimage.com/300x200/000/fff",
+    store_name: "Store 2",
+    store_description: "This is the description for Store 2",
+    store_address: "123 Main Street",
+    pincode: "123456",
+    city: "New York",
+    state: "NY",
+    country: "USA",
+    opening_days: "Monday-Saturday",
+    opening_time: "9:00 AM",
+    closing_time: "5:00 PM",
+    total_clicks: "100",
+    store_created: "2022-01-01",
+    store_updated: "2022-02-01",
     status: "block",
-    loginCount: 5,
   },
   {
-    id: 3,
-    vendorImage: "https://i.pravatar.cc/50",
-    vendorName: "Vendor 3",
-    email: "vendor3@email.com",
-    phone: "555-555-5557",
-    status: "active",
-    loginCount: 2,
-  },
-  {
-    id: 4,
-    vendorImage: "https://i.pravatar.cc/50",
-    vendorName: "Vendor 3",
-    email: "vendor3@email.com",
-    phone: "555-555-5557",
-    status: "active",
-    loginCount: 2,
-  },
-  {
-    id: 5,
-    vendorImage: "https://i.pravatar.cc/50",
-    vendorName: "Vendor 3",
-    email: "vendor3@email.com",
-    phone: "555-555-5557",
+    vendor_id: 3,
+    store_image: "https://dummyimage.com/300x200/000/fff",
+    store_name: "Store 3",
+    store_description: "This is the description for Store 3",
+    store_address: "123 Main Street",
+    pincode: "123456",
+    city: "New York",
+    state: "NY",
+    country: "USA",
+    opening_days: "Monday-Saturday",
+    opening_time: "9:00 AM",
+    closing_time: "5:00 PM",
+    total_clicks: "100",
+    store_created: "2022-01-01",
+    store_updated: "2022-02-01",
     status: "block",
-    loginCount: 2,
+  },
+  {
+    vendor_id: 4,
+    store_image: "https://dummyimage.com/300x200/000/fff",
+    store_name: "Store 4",
+    store_description: "This is the description for Store 4",
+    store_address: "123 Main Street",
+    pincode: "123456",
+    city: "New York",
+    state: "NY",
+    country: "USA",
+    opening_days: "Monday-Saturday",
+    opening_time: "9:00 AM",
+    closing_time: "5:00 PM",
+    total_clicks: "100",
+    store_created: "2022-01-01",
+    store_updated: "2022-02-01",
+    status: "block",
   },
 ];
 
-const VendorsManager = () => {
+const StoreManager = () => {
   const [showModal, setShowModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
 
@@ -79,8 +106,8 @@ const VendorsManager = () => {
           <Col md="12">
             <Card className="strpied-tabled-with-hover">
               <Card.Header>
-                <Card.Title as="h4">Vendors Manager</Card.Title>
-                <p className="card-category">Vendors details and action</p>
+                <Card.Title as="h4">Store Manager</Card.Title>
+                <p className="card-category">Store details and action</p>
                 <br></br>
                 <InputGroup style={{ width: "250px" }}>
                   <Input placeholder="Search" />
@@ -91,34 +118,62 @@ const VendorsManager = () => {
                 <br></br>
               </Card.Header>
               <Card.Body className="table-full-width table-responsive px-0">
-                <Table className="table-hover table-striped">
+                <Table
+                  responsive="xl"
+                  style={{
+                    width: "100%",
+                    overflowX: "scroll",
+                    display: "block",
+                  }}
+                  className="table-hover table-striped"
+                >
                   <thead>
                     <tr>
-                      <th className="border-0">ID</th>
-                      <th className="border-0">Vendor Image</th>
-                      <th className="border-0">Vendor Name</th>
-                      <th className="border-0">Email</th>
-                      <th className="border-0">Phone</th>
+                      <th className="border-0">Vendor ID</th>
+                      <th className="border-0">Store Image</th>
+                      <th className="border-0">Store Name</th>
+                      <th className="border-0">Store Address</th>
+                      <th className="border-0">Store Description</th>
+                      <th className="border-0">Pincode</th>
+                      <th className="border-0">City</th>
+                      <th className="border-0">State</th>
+                      <th className="border-0">Country</th>
+                      <th className="border-0">Opening Days</th>
+                      <th className="border-0">Opening Time</th>
+                      <th className="border-0">Closing Time</th>
+                      <th className="border-0">Total Clicks</th>
+                      <th className="border-0">Store Created</th>
+                      <th className="border-0">Store Updated</th>
                       <th className="border-0">Status</th>
-                      <th className="border-0">Login Count</th>
                       <th className="border-0">Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     {data.map((item) => (
                       <tr key={item.id}>
-                        <td>{item.id}</td>
+                        <td>{item.vendor_id}</td>
                         <td>
                           <img
-                            src={item.vendorImage}
-                            alt={item.vendorName}
+                            src={item.store_image}
+                            alt={item.store_name}
                             height="50"
                             width="50"
                           />
                         </td>
-                        <td>{item.vendorName}</td>
-                        <td>{item.email}</td>
-                        <td>{item.phone}</td>
+                        <td>{item.store_name}</td>
+                        <td>{item.store_description}</td>
+                        <td>{item.store_address}</td>
+                        <td>{item.pincode}</td>
+                        <td>{item.city}</td>
+                        <td>{item.state}</td>
+                        <td>{item.country}</td>
+                        <td>{item.opening_days}</td>
+                        <td>{item.opening_time}</td>
+                        <td>{item.closing_time}</td>
+                        <td>{item.total_clicks}</td>
+                        <td>{item.store_created}</td>
+                        <td>{item.store_updated}</td>
+
                         <td>
                           <button
                             style={{
@@ -134,7 +189,6 @@ const VendorsManager = () => {
                             {item.status}
                           </button>
                         </td>
-                        <td>{item.loginCount}</td>
                         <td>
                           <RxCross1
                             style={{
@@ -198,4 +252,4 @@ const VendorsManager = () => {
   );
 };
 
-export default VendorsManager;
+export default StoreManager;

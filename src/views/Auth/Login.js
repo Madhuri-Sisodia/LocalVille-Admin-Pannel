@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import ErrorMessage from "customComponents/ErrorMessage";
 import { useHistory } from "react-router-dom";
 import { Form, Button } from "rsuite";
 import logoWhite from "assets/img/logoWhite.png";
@@ -9,12 +10,11 @@ const Login = () => {
   const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const[errors,setErrors] = useState({});
-
+  const [errors, setErrors] = useState({});
 
   const validate = () => {
     let tempErrors = {};
-    
+
     if (!email) {
       tempErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(email)) {
@@ -30,23 +30,20 @@ const Login = () => {
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
   };
-  
 
   const handleSubmit = (e) => {
     // e.preventDefault();
     if (validate()) {
-    // console.log("Email", email);
-    // console.log("Password", password);
-    const data = { email, password };
-    sessionStorage.setItem("loggedIn", JSON.stringify(data));
-    history.push("/admin");
+      // console.log("Email", email);
+      // console.log("Password", password);
+      const data = { email, password };
+      sessionStorage.setItem("loggedIn", JSON.stringify(data));
+      history.push("/admin");
 
-    setEmail("");
-    setPassword("");
+      setEmail("");
+      setPassword("");
     }
-    };
-    
-  
+  };
 
   useEffect(() => {
     if (sessionStorage.getItem("loggedIn")) {
@@ -78,9 +75,7 @@ const Login = () => {
                 required="email"
                 onChange={(value) => setEmail(value)}
               />
-              {errors.email && (
-                  <p className="error">{errors.email}</p>
-                )}
+              {errors.email && <ErrorMessage message={errors.email} />}
             </Form.Group>
 
             <Form.Group controlId="password">
@@ -97,9 +92,7 @@ const Login = () => {
                 required="password"
                 onChange={(value) => setPassword(value)}
               />
-              {errors.password && (
-                  <p className="error">{errors.password}</p>
-                )}
+              {errors.password && <ErrorMessage message={errors.password} />}
             </Form.Group>
 
             <Button

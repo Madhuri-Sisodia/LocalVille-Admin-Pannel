@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button, ButtonToolbar } from "rsuite";
+import ErrorMessage from "customComponents/ErrorMessage";
 import NotificationAlert from "react-notification-alert";
 import "../assets/css/admin.css";
 
@@ -70,7 +71,7 @@ const AdminManager = () => {
     if (!rePassword) {
       tempErrors.rePassword = "Re-entered password is required";
     } else if (password !== rePassword) {
-      tempErrors.rePassword = "Passwords do not match";
+      tempErrors.rePassword = "Password do not match";
     }
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
@@ -117,10 +118,9 @@ const AdminManager = () => {
                   placeholder="Admin Name"
                   name="adminName"
                   value={name}
-                  required="name"
                   onChange={(value) => setName(value)}
                 />
-                {errors.name && <p className="error">{errors.name}</p>}
+                {errors.name && <ErrorMessage message={errors.name} />}
               </Form.Group>
               <Form.Group>
                 <Form.ControlLabel>ADMIN EMAIL</Form.ControlLabel>
@@ -131,7 +131,7 @@ const AdminManager = () => {
                   value={email}
                   onChange={(value) => setEmail(value)}
                 />
-                {errors.email && <p className="error">{errors.email}</p>}
+                {errors.email && <ErrorMessage message={errors.email} />}
               </Form.Group>
 
               <Form.Group>
@@ -144,7 +144,7 @@ const AdminManager = () => {
                   value={password}
                   onChange={(value) => setPassword(value)}
                 />
-                {errors.password && <p className="error">{errors.password}</p>}
+                {errors.password && <ErrorMessage message={errors.password} />}
               </Form.Group>
 
               <Form.Group>
@@ -153,13 +153,12 @@ const AdminManager = () => {
                   name="rePassword"
                   type="password"
                   placeholder="Re-enter Password"
-                  required="rePassword"
                   autoComplete="off"
                   value={rePassword}
                   onChange={(value) => setRePassword(value)}
                 />
                 {errors.rePassword && (
-                  <p className="error">{errors.rePassword}</p>
+                  <ErrorMessage message={errors.rePassword} />
                 )}
               </Form.Group>
             </div>
