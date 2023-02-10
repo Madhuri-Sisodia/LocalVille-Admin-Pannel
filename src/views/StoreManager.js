@@ -150,7 +150,7 @@ const StoreManager = () => {
                   </thead>
                   <tbody>
                     {data.map((item) => (
-                      <tr key={item.id}>
+                      <tr style={{fontSize: "0.90rem"}} key={item.id}>
                         <td>{item.vendor_id}</td>
                         <td>
                           <img
