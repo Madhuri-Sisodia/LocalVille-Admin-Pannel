@@ -5,10 +5,11 @@ import Typography from "views/Typography.js";
 import Icons from "views/Icons.js";
 import Maps from "views/Maps.js";
 import Notifications from "views/Notifications.js";
-import Login from "views/Auth/Login.js";
 import AdminManager from "views/AdminManager";
-import Category from "views/Category.js";
-import SubCategory from "views/SubCategory.js";
+import SubCategory from "views/SubCategory";
+import Category from "views/Category";
+import StoreManager from "views/StoreManager";
+import VendorsManager from "views/VendorsManager";
 
 
 const dashboardRoutes = [
@@ -31,6 +32,22 @@ const dashboardRoutes = [
     name: "Categories",
     icon: "nc-icon nc-circle-09",
     component: Category,
+    layout: "/admin"
+  },
+  
+  {
+    path: "/vendors",
+    name: "Vendors Manager",
+    icon: "nc-icon nc-circle-09",
+    component: VendorsManager,
+    layout: "/admin"
+  },
+
+  {
+    path: "/store",
+    name: "Store Manager",
+    icon: "nc-icon nc-circle-09",
+    component: StoreManager,
     layout: "/admin"
   },
 

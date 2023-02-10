@@ -1,105 +1,111 @@
-import React, { useState} from "react";
- import { useHistory } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import ErrorMessage from "customComponents/ErrorMessage";
+import { useHistory } from "react-router-dom";
 import { Form, Button } from "rsuite";
-// import { Http } from "../../config/Service";
-// import { apis } from "../../config/WebConstant";
-import '../../assets/css/login.css';
-import logoWhite from '../../images/logoWhite.png'
+import logoWhite from "assets/img/logoWhite.png";
+import "../../assets/css/login.css";
 import LoginNavbar from "components/Navbars/LoginNavbar";
 
 const Login = () => {
   const history = useHistory();
-
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState([]);
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    let tempErrors = {};
+
+    if (!email) {
+      tempErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      tempErrors.email = "Email is invalid";
+    }
+
+    if (!password) {
+      tempErrors.password = "Password is required";
+    } else if (password.length < 8) {
+      tempErrors.password = "Password must be at least 8 characters long";
+    }
+
+    setErrors(tempErrors);
+    return Object.keys(tempErrors).length === 0;
+  };
 
   const handleSubmit = (e) => {
     // e.preventDefault();
-    console.log("Email", email);
-    console.log("Password", password);
-    const data1 = { email, password };
-    localStorage.setItem("userData", JSON.stringify(data1));
-     history.push("/admin");
+    if (validate()) {
+      // console.log("Email", email);
+      // console.log("Password", password);
+      const data = { email, password };
+      sessionStorage.setItem("loggedIn", JSON.stringify(data));
+      history.push("/admin");
 
-    // var data = new FormData();
-    // data.append("mail", data1.email);
-    // data.append("password", data1.password);
-
-    // console.log("usersss", data);
-    // Http.PostAPI(apis.getUser, data, null)
-    // .then((res) => {
-    //     console.log("user", res);
-    //     if (res?.data?.status) {
-    //       setUser(res?.data?.data);
-    //       localStorage.setItem("userData", JSON.stringify(res.data.data));
-    //       navigate("/registration");
-    //     } else {
-    //       alert("Fields not matched");
-    //     }
-    //   })
-    //   .catch((e) => {
-    //     alert("Something went wrong.");
-    //     console.log("Error:", e);
-    //   });
       setEmail("");
       setPassword("");
+    }
   };
+
+  useEffect(() => {
+    if (sessionStorage.getItem("loggedIn")) {
+      history.push("/admin");
+    } else if (!sessionStorage.getItem("loggedIn")) {
+      history.push("/login");
+    }
+  }, [history]);
 
   return (
     <>
-    <LoginNavbar/>
-    <div className="LoginContainer">
-    <div className="FirstSection">
-    <img src={logoWhite} className="adminLogo"/>
-    <p className="textArea">LOCALVILLE VENDOR</p>
-    </div>
-    <div className="SecondSection">
+      <LoginNavbar />
+      <div className="LoginContainer">
+        <div className="FirstSection">
+          <img src={logoWhite} className="adminLogo" />
+          <p className="textArea">LOCALVILLE VENDOR</p>
+        </div>
+        <div className="SecondSection">
+          <Form style={{ textAlign: "left" }} onSubmit={handleSubmit}>
+            <Form.Group controlId="email">
+              <Form.ControlLabel style={{ color: "white" }}>
+                Email
+              </Form.ControlLabel>
+              <Form.Control
+                name="email"
+                placeholder="Email"
+                style={{ width: 300 }}
+                value={email}
+                required="email"
+                onChange={(value) => setEmail(value)}
+              />
+              {errors.email && <ErrorMessage message={errors.email} />}
+            </Form.Group>
 
-    <Form
-      style={{ textAlign: "left" }}
-      onSubmit={handleSubmit}
-    >
-      <Form.Group controlId="email">
-        <Form.ControlLabel style={{ color: "white" }}>Email</Form.ControlLabel>
-        <Form.Control
-          name="email"
-          placeholder="Email"
-          style={{ width: 300 }}
-          value={email}
-          required="email"
-          onChange={(value) => setEmail(value)}
-        />
-      </Form.Group>
+            <Form.Group controlId="password">
+              <Form.ControlLabel style={{ color: "white" }}>
+                Password
+              </Form.ControlLabel>
+              <Form.Control
+                name="password"
+                type="password"
+                placeholder="Password"
+                autoComplete="off"
+                style={{ width: 300 }}
+                value={password}
+                required="password"
+                onChange={(value) => setPassword(value)}
+              />
+              {errors.password && <ErrorMessage message={errors.password} />}
+            </Form.Group>
 
-      <Form.Group controlId="password">
-        <Form.ControlLabel style={{ color: "white" }}>
-          Password
-        </Form.ControlLabel>
-        <Form.Control
-          name="password"
-          type="password"
-          placeholder="Password"
-          autoComplete="off"
-          style={{ width: 300 }}
-          value={password}
-          required="password"
-          onChange={(value) => setPassword(value)}
-        />
-      </Form.Group>
-
-      <Button
-        style={{ padding: "9px 132px" }}
-        appearance="primary"
-        type="submit"
-        className="loginButton"
-      >
-        Login
-      </Button>
-    </Form>
-    </div>
-    </div>
+            <Button
+              style={{ padding: "9px 132px" }}
+              appearance="primary"
+              type="submit"
+              className="loginButton"
+            >
+              Login
+            </Button>
+          </Form>
+        </div>
+      </div>
     </>
   );
 };

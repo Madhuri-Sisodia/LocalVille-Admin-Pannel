@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { useLocation,useHistory } from "react-router-dom";
+import React, { Component, useEffect } from "react";
+import { useLocation, useHistory } from "react-router-dom";
 import { Navbar, Container, Nav, Dropdown, Button } from "react-bootstrap";
 
 import routes from "routes.js";
@@ -27,6 +27,17 @@ function Header() {
     }
     return "Brand";
   };
+  useEffect(() => {
+    if (!sessionStorage.getItem("loggedIn")) {
+      history.push("/login");
+    }
+  }, [history]);
+
+  const handlerLogout = () => {
+    sessionStorage.removeItem("loggedIn");
+    history.push("/login");
+  };
+
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
@@ -177,10 +188,7 @@ function Header() {
               </Dropdown.Menu>
             </Dropdown>
             <Nav.Item>
-              <Nav.Link
-                className="m-0"
-                 onClick={(e) => history.push("/login")}
-              >
+              <Nav.Link className="m-0" onClick={handlerLogout}>
                 <span className="no-icon">Log out</span>
               </Nav.Link>
             </Nav.Item>
