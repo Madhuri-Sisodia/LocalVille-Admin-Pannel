@@ -106,7 +106,7 @@ const VendorsManager = () => {
                   </thead>
                   <tbody>
                     {data.map((item) => (
-                      <tr key={item.id}>
+                      <tr style={{fontSize: "0.95rem"}} key={item.id}>
                         <td>{item.id}</td>
                         <td>
                           <img
@@ -157,11 +157,7 @@ const VendorsManager = () => {
         </Row>
 
         <Modal
-          style={{
-            display: "flex",
-            alignItems: "right",
-            justifyContent: "right",
-          }}
+          
           className="modal-mini modal-primary"
           show={showModal}
           onHide={() => setShowModal(false)}
