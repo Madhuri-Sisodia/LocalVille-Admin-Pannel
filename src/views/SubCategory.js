@@ -31,7 +31,7 @@ function SubCategory() {
                     </Form.ControlLabel>
                     <Form.Control placeholder="Category Name" name="name" />
                     </div>
-                    <br />
+                    <br/>
                     <div className="InnnerContainerRadio">
                     <Col lg="4" sm="6">
                         <div className="InnnerContainer1">
@@ -63,10 +63,7 @@ function SubCategory() {
                         </div>
                         </Col>
                     </div>
-                </div>
-
-
-                <div className="Container">
+                <br/>
 
                     <Col md="12">
                         <Card className="strpied-tabled-with-hover">

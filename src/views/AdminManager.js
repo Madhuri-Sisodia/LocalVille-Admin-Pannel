@@ -99,9 +99,9 @@ const AdminManager = () => {
       <div className="rna-container">
         <NotificationAlert ref={notificationAlertRef} />
       </div>
-      <div className="AddAdminMainContainer">
-        <div className="AdminContainer">
-          <p>ADD ADMIN</p>
+      <div className="MainContainer">
+        <div className="Container">
+          <h5>ADD ADMIN</h5>
 
           <Form
             fluid

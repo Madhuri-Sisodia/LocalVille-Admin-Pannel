@@ -1,13 +1,13 @@
 /* ----------------------------------admin Manager section css */
 .MainContainer{
     font-size: 0.8rem;
-    height: 112vh;
+    height: 120vh;
     padding: 1rem;
 }
 .Container{
     border: 1px solid #e5e5ea;
     border-radius: 2px;
-    padding: 2rem;
+    padding: 1rem;
     background-color: white;
     color: #808080;
 }
@@ -47,9 +47,9 @@
 
 /* -----------------------------------responsive */
 
-@media screen and (min-width:320px) and (max-width:768px){
+/* @media screen and (min-width:320px) and (max-width:768px){
 .Container{
-    padding: 0;
+    padding: 1rem;
 }
-}
+} */
 

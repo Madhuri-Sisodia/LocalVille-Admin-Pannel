@@ -73,8 +73,8 @@ const Category = () => {
       <div className="rna-container">
         <NotificationAlert ref={notificationAlertRef} />
       </div>
-      <div className="AddAdminMainContainer">
-        <div className="AdminContainer">
+      <div className="MainContainer">
+        <div className="Container">
           <Form fluid onSubmit={handleSubmit}>
             <Form.Group controlId="name-1">
               <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
