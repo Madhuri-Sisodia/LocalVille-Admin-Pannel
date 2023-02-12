@@ -36,6 +36,14 @@ const dashboardRoutes = [
   },
   
   {
+    path: "/subcategory",
+    name: "Sub-Categories",
+    icon: "nc-icon nc-circle-09",
+    component: SubCategory,
+    layout: "/admin"
+  },
+  
+  {
     path: "/vendors",
     name: "Vendors Manager",
     icon: "nc-icon nc-circle-09",
@@ -51,13 +59,6 @@ const dashboardRoutes = [
     layout: "/admin"
   },
 
-  {
-    path: "/subcategory",
-    name: "Sub-Categories",
-    icon: "nc-icon nc-circle-09",
-    component: SubCategory,
-    layout: "/admin"
-  },
   {
     path: "/user",
     name: "User Profile",

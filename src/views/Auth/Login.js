@@ -5,11 +5,14 @@ import { Form, Button } from "rsuite";
 import logoWhite from "assets/img/logoWhite.png";
 import "../../assets/css/login.css";
 import LoginNavbar from "components/Navbars/LoginNavbar";
+import { Http } from "../../config/Service";
+import { apis } from "../../config/WebConstant";
 
 const Login = () => {
   const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [user, setUser] = useState([]);
   const [errors, setErrors] = useState({});
 
   const validate = () => {
@@ -23,8 +26,8 @@ const Login = () => {
 
     if (!password) {
       tempErrors.password = "Password is required";
-    } else if (password.length < 8) {
-      tempErrors.password = "Password must be at least 8 characters long";
+    } else if (password.length < 7) {
+      tempErrors.password = "Password must be at least 7 characters long";
     }
 
     setErrors(tempErrors);
@@ -34,12 +37,29 @@ const Login = () => {
   const handleSubmit = (e) => {
     // e.preventDefault();
     if (validate()) {
-      // console.log("Email", email);
-      // console.log("Password", password);
-      const data = { email, password };
-      sessionStorage.setItem("loggedIn", JSON.stringify(data));
-      history.push("/admin/dashboard");
+      console.log("Email", email);
+      console.log("Password", password);
+      const loginData = { email, password };
+      var data = new FormData();
+      data.append("email", data.email);
+      data.append("password", data.password);
 
+      console.log("usersss", data);
+      Http.PostAPI(apis.loginAdminData, data, null)
+        .then((res) => {
+          console.log("user", res);
+          if (res?.data?.status) {
+            setUser(res?.data?.data);
+            sessionStorage.setItem("loggedIn", JSON.stringify(loginData));
+            history.push("/admin/dashboard");
+          } else {
+            alert("Fields not matched");
+          }
+        })
+        .catch((e) => {
+          alert("Something went wrong.");
+          console.log("Error:", e);
+        });
       setEmail("");
       setPassword("");
     }
