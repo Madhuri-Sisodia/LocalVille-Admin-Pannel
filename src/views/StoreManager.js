@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Input, Whisper, Tooltip, InputGroup } from "rsuite";
 import { RxCross1 } from "react-icons/rx";
+import { RiQuestionMark } from "react-icons/ri";
 import SearchIcon from "@rsuite/icons/Search";
 import {
   Modal,
@@ -150,7 +151,7 @@ const StoreManager = () => {
                   </thead>
                   <tbody>
                     {data.map((item) => (
-                      <tr style={{fontSize: "0.90rem"}} key={item.id}>
+                      <tr style={{ fontSize: "0.90rem" }} key={item.id}>
                         <td>{item.vendor_id}</td>
                         <td>
                           <img
@@ -222,11 +223,15 @@ const StoreManager = () => {
         >
           <Modal.Header className="justify-content-center">
             <div className="modal-profile">
-              <i className="nc-icon nc-bulb-63"></i>
+              <RiQuestionMark
+                style={{
+                  fontSize: "30px",
+                }}
+              />
             </div>
           </Modal.Header>
           <Modal.Body className="text-center">
-            <p>Are you sure you want to delete this item?</p>
+            <p>Are you sure you want to delete this store?</p>
           </Modal.Body>
           <div className="modal-footer">
             <Button

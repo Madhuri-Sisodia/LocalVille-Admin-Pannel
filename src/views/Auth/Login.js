@@ -38,7 +38,7 @@ const Login = () => {
       // console.log("Password", password);
       const data = { email, password };
       sessionStorage.setItem("loggedIn", JSON.stringify(data));
-      history.push("/admin");
+      history.push("/admin/dashboard");
 
       setEmail("");
       setPassword("");
@@ -47,7 +47,7 @@ const Login = () => {
 
   useEffect(() => {
     if (sessionStorage.getItem("loggedIn")) {
-      history.push("/admin");
+      history.push("/admin/dashboard");
     } else if (!sessionStorage.getItem("loggedIn")) {
       history.push("/login");
     }
