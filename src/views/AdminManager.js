@@ -3,12 +3,15 @@ import { Form, Button, ButtonToolbar } from "rsuite";
 import ErrorMessage from "customComponents/ErrorMessage";
 import NotificationAlert from "react-notification-alert";
 import "../assets/css/admin.css";
+import { Http } from "../config/Service";
+import { apis } from "../config/WebConstant";
 
 const AdminManager = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
+  const [user,setUser]=useState([]);
   const [errors, setErrors] = useState({});
 
   const notificationAlertRef = React.useRef(null);
@@ -65,8 +68,8 @@ const AdminManager = () => {
     }
     if (!password) {
       tempErrors.password = "Password is required";
-    } else if (password.length < 8) {
-      tempErrors.password = "Password must be at least 8 characters long";
+    } else if (password.length < 5) {
+      tempErrors.password = "Password must be at least 5 characters long";
     }
     if (!rePassword) {
       tempErrors.rePassword = "Re-entered password is required";
@@ -77,22 +80,50 @@ const AdminManager = () => {
     return Object.keys(tempErrors).length === 0;
   };
 
+ 
+
   const handleSubmit = (e) => {
     // e.preventDefault();
-
-    if (validate()) {
-      // console.log("name", name);
+    // console.log("name", name);
       // console.log("email", email);
       // console.log("password", password);
       // console.log("repassword", rePassword);
-      setName("");
-      setEmail("");
-      setPassword("");
-      setRePassword("");
-      setErrors({});
-      notify("tr");
+      
+
+    if (validate()) {
+
+      var data = new FormData();
+      data.append("name", name);
+      data.append("email", email);
+      data.append("password", password);
+
+      console.log("usersss", data);
+      Http.PostAPI(apis.addAdminData, data, null)
+        .then((res) => {
+          console.log("user", res);
+          if (res?.data?.status) {
+            setUser(res?.data?.data);
+      
+          } else {
+            alert("Fields not matched");
+          }
+        })
+        .catch((e) => {
+          alert("Something went wrong.");
+          console.log("Error:", e);
+        });
+        setName("");
+        setEmail("");
+        setPassword("");
+        setRePassword("");
+        setErrors({});
+        notify("tr");
     }
   };
+
+      
+      
+    
 
   return (
     <>

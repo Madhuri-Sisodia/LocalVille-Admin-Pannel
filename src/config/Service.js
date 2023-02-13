@@ -23,10 +23,10 @@ export var Http = {
     var headers = {
       "Content-Type": "multipart/form-data",
       "Accept":'application/json',
-      // ""Authorization":token,"
+      "Authorization":token
   };
 
-  console.log('store body', body)
+  console.log('login body', body)
     return axios({
       method: 'POST',
       url: base_url + url,

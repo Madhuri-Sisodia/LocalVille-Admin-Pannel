@@ -41,8 +41,8 @@ const Login = () => {
       console.log("Password", password);
       const loginData = { email, password };
       var data = new FormData();
-      data.append("email", data.email);
-      data.append("password", data.password);
+      data.append("email", email);
+      data.append("password", password);
 
       console.log("usersss", data);
       Http.PostAPI(apis.loginAdminData, data, null)
