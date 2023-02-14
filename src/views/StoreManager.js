@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input, Whisper, Tooltip, InputGroup } from "rsuite";
 import { RxCross1 } from "react-icons/rx";
 import { RiQuestionMark } from "react-icons/ri";
 import SearchIcon from "@rsuite/icons/Search";
+import { Http } from "../config/Service";
+import { apis } from "../config/WebConstant";
+
 import {
   Modal,
   Badge,
@@ -16,90 +19,120 @@ import {
   Col,
 } from "react-bootstrap";
 
-const data = [
-  {
-    vendor_id: 1,
-    store_image: "https://dummyimage.com/300x200/000/fff",
-    store_name: "Store 1",
-    store_description: "This is the description for Store 1",
-    store_address: "123 Main Street",
-    pincode: "123456",
-    city: "New York",
-    state: "NY",
-    country: "USA",
-    opening_days: "Monday-Friday",
-    opening_time: "9:00 AM",
-    closing_time: "5:00 PM",
-    total_clicks: "100",
-    store_created: "2022-01-01",
-    store_updated: "2022-02-01",
-    status: "active",
-  },
-  {
-    vendor_id: 2,
-    store_image: "https://dummyimage.com/300x200/000/fff",
-    store_name: "Store 2",
-    store_description: "This is the description for Store 2",
-    store_address: "123 Main Street",
-    pincode: "123456",
-    city: "New York",
-    state: "NY",
-    country: "USA",
-    opening_days: "Monday-Saturday",
-    opening_time: "9:00 AM",
-    closing_time: "5:00 PM",
-    total_clicks: "100",
-    store_created: "2022-01-01",
-    store_updated: "2022-02-01",
-    status: "block",
-  },
-  {
-    vendor_id: 3,
-    store_image: "https://dummyimage.com/300x200/000/fff",
-    store_name: "Store 3",
-    store_description: "This is the description for Store 3",
-    store_address: "123 Main Street",
-    pincode: "123456",
-    city: "New York",
-    state: "NY",
-    country: "USA",
-    opening_days: "Monday-Saturday",
-    opening_time: "9:00 AM",
-    closing_time: "5:00 PM",
-    total_clicks: "100",
-    store_created: "2022-01-01",
-    store_updated: "2022-02-01",
-    status: "block",
-  },
-  {
-    vendor_id: 4,
-    store_image: "https://dummyimage.com/300x200/000/fff",
-    store_name: "Store 4",
-    store_description: "This is the description for Store 4",
-    store_address: "123 Main Street",
-    pincode: "123456",
-    city: "New York",
-    state: "NY",
-    country: "USA",
-    opening_days: "Monday-Saturday",
-    opening_time: "9:00 AM",
-    closing_time: "5:00 PM",
-    total_clicks: "100",
-    store_created: "2022-01-01",
-    store_updated: "2022-02-01",
-    status: "block",
-  },
-];
+// const data = [
+//   {
+//     vendor_id: 1,
+//     store_image: "https://dummyimage.com/300x200/000/fff",
+//     store_name: "Store 1",
+//     store_description: "This is the description for Store 1",
+//     store_address: "123 Main Street",
+//     pincode: "123456",
+//     city: "New York",
+//     state: "NY",
+//     country: "USA",
+//     opening_days: "Monday-Friday",
+//     opening_time: "9:00 AM",
+//     closing_time: "5:00 PM",
+//     total_clicks: "100",
+//     store_created: "2022-01-01",
+//     store_updated: "2022-02-01",
+//     status: "active",
+//   },
+//   {
+//     vendor_id: 2,
+//     store_image: "https://dummyimage.com/300x200/000/fff",
+//     store_name: "Store 2",
+//     store_description: "This is the description for Store 2",
+//     store_address: "123 Main Street",
+//     pincode: "123456",
+//     city: "New York",
+//     state: "NY",
+//     country: "USA",
+//     opening_days: "Monday-Saturday",
+//     opening_time: "9:00 AM",
+//     closing_time: "5:00 PM",
+//     total_clicks: "100",
+//     store_created: "2022-01-01",
+//     store_updated: "2022-02-01",
+//     status: "block",
+//   },
+//   {
+//     vendor_id: 3,
+//     store_image: "https://dummyimage.com/300x200/000/fff",
+//     store_name: "Store 3",
+//     store_description: "This is the description for Store 3",
+//     store_address: "123 Main Street",
+//     pincode: "123456",
+//     city: "New York",
+//     state: "NY",
+//     country: "USA",
+//     opening_days: "Monday-Saturday",
+//     opening_time: "9:00 AM",
+//     closing_time: "5:00 PM",
+//     total_clicks: "100",
+//     store_created: "2022-01-01",
+//     store_updated: "2022-02-01",
+//     status: "block",
+//   },
+//   {
+//     vendor_id: 4,
+//     store_image: "https://dummyimage.com/300x200/000/fff",
+//     store_name: "Store 4",
+//     store_description: "This is the description for Store 4",
+//     store_address: "123 Main Street",
+//     pincode: "123456",
+//     city: "New York",
+//     state: "NY",
+//     country: "USA",
+//     opening_days: "Monday-Saturday",
+//     opening_time: "9:00 AM",
+//     closing_time: "5:00 PM",
+//     total_clicks: "100",
+//     store_created: "2022-01-01",
+//     store_updated: "2022-02-01",
+//     status: "block",
+//   },
+// ];
 
 const StoreManager = () => {
   const [showModal, setShowModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [rowData, setRowData] = useState([]);
 
   const handleDelete = (id) => {
     setShowModal(false);
     setDeleteId(id);
     // data = data.filter(item => item.id !== id);
   };
+  const handleRowClick = (item) => {
+    setShowModal(true);
+    setRowData(item);
+  };
+
+  useEffect(() => {
+    // const token = JSON.parse(sessionStorage.getItem("userData"));
+    // console.log(token)
+    // if (!token) {
+    //   navigate("/login");
+    // }
+
+    Http.GetAPI(apis.getStoreData + "?" + Math.random(), data, null)
+      .then((res) => {
+        setIsLoading(false);
+        if (res?.data?.status) {
+          setData(res?.data?.data);
+        } else {
+          alert("Fields not matched");
+        }
+      })
+      .catch((e) => {
+        setIsLoading(false);
+        alert("Something went wrong.");
+        console.log("Error:", e);
+      });
+  }, []);
   return (
     <>
       <Container fluid>
@@ -151,18 +184,27 @@ const StoreManager = () => {
                   </thead>
                   <tbody>
                     {data.map((item) => (
-                      <tr style={{ fontSize: "0.90rem" }} key={item.id}>
+                      <tr
+                        onClick={() =>
+                          handleRowClick(item) && handleDelete(item.id)
+                        }
+                        style={{ fontSize: "0.90rem" }}
+                        key={item.id}
+                      >
                         <td>{item.vendor_id}</td>
                         <td>
                           <img
                             src={item.store_image}
                             alt={item.store_name}
-                            height="50"
-                            width="50"
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              borderRadius: "50%",
+                            }}
                           />
                         </td>
                         <td>{item.store_name}</td>
-                        <td>{item.store_description}</td>
+                        <td>{item.store_desc}</td>
                         <td>{item.store_address}</td>
                         <td>{item.pincode}</td>
                         <td>{item.city}</td>
@@ -172,23 +214,24 @@ const StoreManager = () => {
                         <td>{item.opening_time}</td>
                         <td>{item.closing_time}</td>
                         <td>{item.total_clicks}</td>
-                        <td>{item.store_created}</td>
-                        <td>{item.store_updated}</td>
+                        <td>{item.created_at}</td>
+                        <td>{item.updated_at}</td>
 
                         <td>
-                          <button
+                          <div
                             style={{
                               backgroundColor:
-                                item.status === "active" ? "green" : "red",
+                                item.active == "1" ? "green" : "red",
                               border: "none",
                               fontSize: "0.75rem",
                               color: "white",
                               padding: "3px 9px",
                               borderRadius: "17px",
+                              display: "inline-block",
                             }}
                           >
-                            {item.status}
-                          </button>
+                            {item.active == "1" ? "active" : "block"}
+                          </div>
                         </td>
                         <td>
                           <RxCross1
@@ -197,9 +240,7 @@ const StoreManager = () => {
                               cursor: "pointer",
                               color: "#dc3545",
                             }}
-                            onClick={() =>
-                              setDeleteId(item.id) & setShowModal(true)
-                            }
+                            onClick={() => setShowModal(true)}
                           />
                         </td>
                       </tr>
@@ -212,36 +253,125 @@ const StoreManager = () => {
         </Row>
 
         <Modal
-          style={{
-            display: "flex",
-            alignItems: "right",
-            justifyContent: "right",
-          }}
-          className="modal-mini modal-primary"
+          size="lg"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
           show={showModal}
           onHide={() => setShowModal(false)}
         >
           <Modal.Header className="justify-content-center">
-            <div className="modal-profile">
+            <Modal.Title>Store Details</Modal.Title>
+            {/* <div className="modal-profile">
               <RiQuestionMark
                 style={{
                   fontSize: "30px",
                 }}
               />
-            </div>
+            </div> */}
           </Modal.Header>
-          <Modal.Body className="text-center">
-            <p>Are you sure you want to delete this store?</p>
+          <Modal.Body className="text-left">
+            <div>
+              <tr>
+                <td>Vendor ID:</td>
+                <td>{rowData.vendor_id}</td>
+              </tr>
+              <tr>
+                <td>Store Image:</td>
+                <td>
+                  <img
+                    src={rowData.store_image}
+                    alt={rowData.store_name}
+                    style={{
+                      width: "50px",
+                      height: "50px",
+                      borderRadius: "50%",
+                    }}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>Store Name:</td>
+                <td>{rowData.store_name}</td>
+              </tr>
+              <tr>
+                <td style={{ whiteSpace: "nowrap" }}>Store Description:</td>
+                <td>{rowData.store_desc}</td>
+              </tr>
+              <tr>
+                <td style={{ whiteSpace: "nowrap" }}>Store Address:</td>
+                <td>{rowData.store_address}</td>
+              </tr>
+              <tr>
+                <td>Pincode:</td>
+                <td>{rowData.pincode}</td>
+              </tr>
+              <tr>
+                <td>City:</td>
+                <td>{rowData.city}</td>
+              </tr>
+              <tr>
+                <td>State:</td>
+                <td>{rowData.state}</td>
+              </tr>
+              <tr>
+                <td>Country:</td>
+                <td>{rowData.country}</td>
+              </tr>
+              <tr>
+                <td>Opening Days:</td>
+                <td>{rowData.opening_days}</td>
+              </tr>
+              <tr>
+                <td>Opening Time:</td>
+                <td>{rowData.opening_time}</td>
+              </tr>
+
+              <tr>
+                <td>Closing Time:</td>
+                <td>{rowData.closing_time}</td>
+              </tr>
+
+              <tr>
+                <td>Total Clicks:</td>
+                <td>{rowData.total_clicks}</td>
+              </tr>
+              <tr>
+                <td>Store Created:</td>
+                <td>{rowData.created_at}</td>
+              </tr>
+              <tr>
+                <td>Store Updated:</td>
+                <td>{rowData.updated_at}</td>
+              </tr>
+              <tr>
+                <td>Status:</td>
+
+                <td
+                  style={{
+                    backgroundColor: rowData.active == "1" ? "green" : "red",
+                    border: "none",
+                    fontSize: "0.75rem",
+                    color: "white",
+                    padding: "3px 9px",
+                    borderRadius: "17px",
+                    display: "inline-block",
+                  }}
+                >
+                  {rowData.active == "1" ? "active" : "block"}
+                </td>
+              </tr>
+            </div>
+            {/* <p>Are you sure you want to delete this store?</p> */}
           </Modal.Body>
           <div className="modal-footer">
-            <Button
+            {/* <Button
               className="btn-simple"
               type="button"
               variant="danger"
               onClick={() => handleDelete(deleteId)}
             >
               Delete
-            </Button>
+            </Button> */}
             <Button
               className="btn-simple"
               type="button"

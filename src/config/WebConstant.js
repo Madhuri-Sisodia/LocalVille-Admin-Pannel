@@ -3,5 +3,7 @@ export const prod_url = "";
 
 export const apis = {
     loginAdminData: "login_admin.php",
-    addAdminData:"add_admin.php"
+    addAdminData:"add_admin.php",
+    getVendorsData:"get_vendors.php",
+    getStoreData:"get_store.php"
 }

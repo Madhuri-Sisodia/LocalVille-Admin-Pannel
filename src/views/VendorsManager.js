@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input, Whisper, Tooltip, InputGroup } from "rsuite";
 import { RxCross1 } from "react-icons/rx";
 import { RiQuestionMark } from "react-icons/ri";
 import SearchIcon from "@rsuite/icons/Search";
+import { Http } from "../config/Service";
+import { apis } from "../config/WebConstant";
+
 import {
   Modal,
   Badge,
@@ -16,63 +19,88 @@ import {
   Col,
 } from "react-bootstrap";
 
-const data = [
-  {
-    id: 1,
-    vendorImage: "https://i.pravatar.cc/50",
-    vendorName: "Vendor 1",
-    email: "vendor1@email.com",
-    phone: "555-555-5555",
-    status: "active",
-    loginCount: 0,
-  },
-  {
-    id: 2,
-    vendorImage: "https://i.pravatar.cc/50",
-    vendorName: "Vendor 2",
-    email: "vendor2@email.com",
-    phone: "555-555-5556",
-    status: "block",
-    loginCount: 5,
-  },
-  {
-    id: 3,
-    vendorImage: "https://i.pravatar.cc/50",
-    vendorName: "Vendor 3",
-    email: "vendor3@email.com",
-    phone: "555-555-5557",
-    status: "active",
-    loginCount: 2,
-  },
-  {
-    id: 4,
-    vendorImage: "https://i.pravatar.cc/50",
-    vendorName: "Vendor 3",
-    email: "vendor3@email.com",
-    phone: "555-555-5557",
-    status: "active",
-    loginCount: 2,
-  },
-  {
-    id: 5,
-    vendorImage: "https://i.pravatar.cc/50",
-    vendorName: "Vendor 3",
-    email: "vendor3@email.com",
-    phone: "555-555-5557",
-    status: "block",
-    loginCount: 2,
-  },
-];
+// const data = [
+//   {
+//     id: 1,
+//     vendorImage: "https://i.pravatar.cc/50",
+//     vendorName: "Vendor 1",
+//     email: "vendor1@email.com",
+//     phone: "555-555-5555",
+//     status: "active",
+//     loginCount: 0,
+//   },
+//   {
+//     id: 2,
+//     vendorImage: "https://i.pravatar.cc/50",
+//     vendorName: "Vendor 2",
+//     email: "vendor2@email.com",
+//     phone: "555-555-5556",
+//     status: "block",
+//     loginCount: 5,
+//   },
+//   {
+//     id: 3,
+//     vendorImage: "https://i.pravatar.cc/50",
+//     vendorName: "Vendor 3",
+//     email: "vendor3@email.com",
+//     phone: "555-555-5557",
+//     status: "active",
+//     loginCount: 2,
+//   },
+//   {
+//     id: 4,
+//     vendorImage: "https://i.pravatar.cc/50",
+//     vendorName: "Vendor 3",
+//     email: "vendor3@email.com",
+//     phone: "555-555-5557",
+//     status: "active",
+//     loginCount: 2,
+//   },
+//   {
+//     id: 5,
+//     vendorImage: "https://i.pravatar.cc/50",
+//     vendorName: "Vendor 3",
+//     email: "vendor3@email.com",
+//     phone: "555-555-5557",
+//     status: "block",
+//     loginCount: 2,
+//   },
+// ];
 
 const VendorsManager = () => {
   const [showModal, setShowModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleDelete = (id) => {
     setShowModal(false);
     setDeleteId(id);
     // data = data.filter(item => item.id !== id);
   };
+  useEffect(() => {
+    // const token = JSON.parse(sessionStorage.getItem("userData"));
+    // console.log(token)
+    // if (!token) {
+    //   navigate("/login");
+    // }
+
+    Http.GetAPI(apis.getVendorsData + "?" + Math.random(), data, null)
+      .then((res) => {
+        setIsLoading(false);
+        if (res?.data?.status) {
+          setData(res?.data?.data);
+        } else {
+          alert("Fields not matched");
+        }
+      })
+      .catch((e) => {
+        setIsLoading(false);
+        alert("Something went wrong.");
+        console.log("Error:", e);
+      });
+  }, []);
+
   return (
     <>
       <Container fluid>
@@ -111,31 +139,36 @@ const VendorsManager = () => {
                         <td>{item.id}</td>
                         <td>
                           <img
-                            src={item.vendorImage}
-                            alt={item.vendorName}
-                            height="50"
-                            width="50"
+                            src={item.user_image}
+                            alt="image"
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              borderRadius: "50%",
+                            }}
                           />
+                          {console.log("image", item.user_image)}
                         </td>
-                        <td>{item.vendorName}</td>
+                        <td>{item.name}</td>
                         <td>{item.email}</td>
                         <td>{item.phone}</td>
                         <td>
-                          <button
+                          <div
                             style={{
                               backgroundColor:
-                                item.status === "active" ? "green" : "red",
+                                item.active == "1" ? "green" : "red",
                               border: "none",
                               fontSize: "0.75rem",
                               color: "white",
-                              padding: "3px 9px",
+                              padding: "3px 10px",
                               borderRadius: "17px",
+                              display: "inline-block",
                             }}
                           >
-                            {item.status}
-                          </button>
+                            {item.active == "1" ? "active" : "block"}
+                          </div>
                         </td>
-                        <td>{item.loginCount}</td>
+                        <td>{item.login_count}</td>
                         <td>
                           <RxCross1
                             style={{

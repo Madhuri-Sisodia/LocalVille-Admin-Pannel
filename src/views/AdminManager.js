@@ -11,7 +11,7 @@ const AdminManager = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
-  const [user,setUser]=useState([]);
+  const [user, setUser] = useState([]);
   const [errors, setErrors] = useState({});
 
   const notificationAlertRef = React.useRef(null);
@@ -80,18 +80,14 @@ const AdminManager = () => {
     return Object.keys(tempErrors).length === 0;
   };
 
- 
-
   const handleSubmit = (e) => {
     // e.preventDefault();
     // console.log("name", name);
-      // console.log("email", email);
-      // console.log("password", password);
-      // console.log("repassword", rePassword);
-      
+    // console.log("email", email);
+    // console.log("password", password);
+    // console.log("repassword", rePassword);
 
     if (validate()) {
-
       var data = new FormData();
       data.append("name", name);
       data.append("email", email);
@@ -103,7 +99,6 @@ const AdminManager = () => {
           console.log("user", res);
           if (res?.data?.status) {
             setUser(res?.data?.data);
-      
           } else {
             alert("Fields not matched");
           }
@@ -112,18 +107,14 @@ const AdminManager = () => {
           alert("Something went wrong.");
           console.log("Error:", e);
         });
-        setName("");
-        setEmail("");
-        setPassword("");
-        setRePassword("");
-        setErrors({});
-        notify("tr");
+      setName("");
+      setEmail("");
+      setPassword("");
+      setRePassword("");
+      setErrors({});
+      notify("tr");
     }
   };
-
-      
-      
-    
 
   return (
     <>
