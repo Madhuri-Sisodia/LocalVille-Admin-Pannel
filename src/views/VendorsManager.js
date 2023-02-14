@@ -71,6 +71,7 @@ const VendorsManager = () => {
   const [showModal, setShowModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [data, setData] = useState([]);
+  const [blockUser, setBlockUser] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const handleDelete = (id) => {
@@ -78,13 +79,8 @@ const VendorsManager = () => {
     setDeleteId(id);
     // data = data.filter(item => item.id !== id);
   };
-  useEffect(() => {
-    // const token = JSON.parse(sessionStorage.getItem("userData"));
-    // console.log(token)
-    // if (!token) {
-    //   navigate("/login");
-    // }
 
+  const getVendors = () => {
     Http.GetAPI(apis.getVendorsData + "?" + Math.random(), data, null)
       .then((res) => {
         setIsLoading(false);
@@ -99,7 +95,31 @@ const VendorsManager = () => {
         alert("Something went wrong.");
         console.log("Error:", e);
       });
+  };
+
+  useEffect(() => {
+    getVendors();
   }, []);
+
+  const handleBlockUser = (id) => {
+    var data = new FormData();
+    data.append("id", id);
+    console.log("usersss", data);
+    Http.PostAPI(apis.blockUser, data, null)
+      .then((res) => {
+        console.log("user", res);
+        if (res?.data?.status) {
+          setBlockUser(res?.data?.data);
+          getVendors();
+        } else {
+          alert("Fields not matched");
+        }
+      })
+      .catch((e) => {
+        alert("Something went wrong.");
+        console.log("Error:", e);
+      });
+  };
 
   return (
     <>
@@ -176,9 +196,7 @@ const VendorsManager = () => {
                               cursor: "pointer",
                               color: "#dc3545",
                             }}
-                            onClick={() =>
-                              setDeleteId(item.id) & setShowModal(true)
-                            }
+                            onClick={() => handleBlockUser(item.id)}
                           />
                         </td>
                       </tr>
