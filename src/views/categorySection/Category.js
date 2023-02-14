@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import NotificationAlert from "react-notification-alert";
-import "../assets/css/admin.css";
+import "../../assets/css/admin.css";
 import { Form, Radio, RadioGroup, Button, ButtonToolbar } from "rsuite";
 
 const Category = () => {

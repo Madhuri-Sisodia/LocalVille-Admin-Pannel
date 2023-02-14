@@ -6,8 +6,8 @@ import Icons from "views/Icons.js";
 import Maps from "views/Maps.js";
 import Notifications from "views/Notifications.js";
 import AdminManager from "views/AdminManager";
-import SubCategory from "views/SubCategory";
-import Category from "views/Category";
+// import SubCategory from "views/categorySection/SubCategory.js";
+import Category from "views/categorySection/index.js";
 import StoreManager from "views/StoreManager";
 import VendorsManager from "views/VendorsManager";
 
@@ -35,13 +35,13 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   
-  {
-    path: "/subcategory",
-    name: "Sub-Categories",
-    icon: "nc-icon nc-circle-09",
-    component: SubCategory,
-    layout: "/admin"
-  },
+  // {
+  //   path: "/subcategory",
+  //   name: "Sub-Categories",
+  //   icon: "nc-icon nc-circle-09",
+  //   component: SubCategory,
+  //   layout: "/admin"
+  // },
   
   {
     path: "/vendors",

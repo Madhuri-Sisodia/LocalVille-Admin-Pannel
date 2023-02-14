@@ -45,11 +45,23 @@
     padding: 1rem;
 }
 
+
+
+/* -----------------------------------Category Cards */
+
+.rs-col .Categorycards{
+    margin-right: 5rem;
+}
+.Categorycards{
+    border: 1px solid blue;
+}
 /* -----------------------------------responsive */
 
-/* @media screen and (min-width:320px) and (max-width:768px){
-.Container{
-    padding: 1rem;
+
+
+@media screen and (min-width:320px) and (max-width:768px){
+    .rs-col .Categorycards{
+        margin-right: 0;
+    }
 }
-} */
 
