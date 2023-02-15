@@ -2,23 +2,26 @@ import React, { useState } from 'react';
 import { Panel, Placeholder, Row, Col } from 'rsuite';
 import Category from './Category';
 import "../../assets/css/admin.css";
-
-
-const Card = (props, {onClick}) => (
-  <Panel {...props} 
-  onClick={onClick}
-   >
-    <Placeholder.Paragraph />
-    <Placeholder.Paragraph />
-  </Panel>
-);
+import SubCategory from './SubCategory';
 
 function index() {
   const [state, setstate] = useState("");
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const handleClick = () => {
 
   }
+
+
+  const Card = (props) => {
+    return(
+      <Panel {...props}>
+      <Placeholder.Paragraph />
+      <Placeholder.Paragraph />
+    </Panel>
+    )
+  };
+  
 
   return (
     <div className='MainContainer'>
@@ -26,14 +29,14 @@ function index() {
         <Row>
           <Col md={6} sm={12}>
             <Card bordered header="Categories" className="Categorycards"
-             onClick={()=>alert("1") }
             cardid="1"
-
+            onClick={()=>setSelectedItem(1)}
             />
           </Col>
           
           <Col md={6} sm={12}>
             <Card bordered header="Sub Categories" className="Categorycards"
+              onClick={()=>setSelectedItem(2)}
               />
           </Col>
 
@@ -58,6 +61,10 @@ function index() {
           />
           </Col>
         </Row>
+
+
+        {selectedItem==1 && <Category/>}
+        {selectedItem==2 && <SubCategory/>}
       
     </div>
   )
