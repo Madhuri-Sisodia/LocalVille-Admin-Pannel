@@ -153,8 +153,10 @@ const StoreManager = () => {
               </Card.Header>
               <Card.Body className="table-full-width table-responsive px-0">
                 <Table
+                
                   responsive="xl"
                   style={{
+                    tableLayout:"fixed",
                     width: "100%",
                     overflowX: "scroll",
                     display: "block",
@@ -188,10 +190,11 @@ const StoreManager = () => {
                         onClick={() =>
                           handleRowClick(item) && handleDelete(item.id)
                         }
-                        style={{ fontSize: "0.90rem" }}
+                        style={{ fontSize: "0.90rem", maxHeight: "1em",
+                        overflow: "hidden" }}
                         key={item.id}
                       >
-                        <td>{item.vendor_id}</td>
+                        <td className="truncate">{item.vendor_id}</td>
                         <td>
                           <img
                             src={item.store_image}
@@ -204,8 +207,8 @@ const StoreManager = () => {
                           />
                         </td>
                         <td>{item.store_name}</td>
-                        <td>{item.store_desc}</td>
-                        <td>{item.store_address}</td>
+                        <td className="truncate">{item.store_desc}</td>
+                        <td className="truncate">{item.store_address}</td>
                         <td>{item.pincode}</td>
                         <td>{item.city}</td>
                         <td>{item.state}</td>
