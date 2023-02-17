@@ -3,10 +3,12 @@ import { Input, Whisper, Tooltip, InputGroup } from "rsuite";
 import { RxCross1 } from "react-icons/rx";
 import { MdLocationPin } from "react-icons/md";
 import { MdRemoveRedEye } from "react-icons/md";
+import {MdClose} from "react-icons/md";
 import { BiBlock } from "react-icons/bi";
 import SearchIcon from "@rsuite/icons/Search";
 import { Http } from "../config/Service";
 import { apis } from "../config/WebConstant";
+import "../assets/css/modal.css";
 
 import {
   Modal,
@@ -344,66 +346,68 @@ const StoreManager = () => {
         </div>
       </Modal>
 
-      <div className="modal show">
+    
         <Modal
           show={showDetailsModal}
           onHide={() => setShowDetailsModal(false)}
         >
-          <Modal.Header closeButton>
-            <Modal.Title>Store Details</Modal.Title>
+          <Modal.Header className="modal-header" >
+            <Modal.Title className="modal-title">View Store Details</Modal.Title>
+            <MdClose className="close-icon" onClick={() => setShowDetailsModal(false)}/>
+                          
           </Modal.Header>
-
-          <Modal.Body style={{ height: "200px", overflowY: "scroll" }}>
-            <Table striped bordered>
+        
+          <Modal.Body className="modal-body">
+            <Table striped bordered className="table" >
               <tbody>
                 <tr>
-                  <td>Vendor ID:</td>
+                  <td className="bold-col">Vendor ID:</td>
                   <td>{rowData.vendor_id}</td>
                 </tr>
                 <tr>
-                  <td>Store Image:</td>
+                  <td className="bold-col">Store Image:</td>
                   <td>
                     <img
                       src={rowData.store_image}
                       alt={rowData.store_name}
                       style={{
-                        width: "50px",
-                        height: "50px",
+                        width: "40px",
+                        height: "40px",
                         borderRadius: "50%",
                       }}
                     />
                   </td>
                 </tr>
                 <tr>
-                  <td>Store Name:</td>
+                  <td className="bold-col">Store Name:</td>
                   <td>{rowData.store_name}</td>
                 </tr>
                 <tr>
-                  <td style={{ whiteSpace: "nowrap" }}>Store Description:</td>
+                  <td className="bold-col" style={{ whiteSpace: "nowrap" }}>Store Description:</td>
                   <td>{rowData.store_desc}</td>
                 </tr>
                 <tr>
-                  <td style={{ whiteSpace: "nowrap" }}>Store Address:</td>
+                  <td className="bold-col" style={{ whiteSpace: "nowrap" }}>Store Address:</td>
                   <td>{rowData.store_address}</td>
                 </tr>
                 <tr>
-                  <td>Pincode:</td>
+                  <td className="bold-col">Pincode:</td>
                   <td>{rowData.pincode}</td>
                 </tr>
                 <tr>
-                  <td>City:</td>
+                  <td className="bold-col">City:</td>
                   <td>{rowData.city}</td>
                 </tr>
                 <tr>
-                  <td>State:</td>
+                  <td className="bold-col">State:</td>
                   <td>{rowData.state}</td>
                 </tr>
                 <tr>
-                  <td>Country:</td>
+                  <td className="bold-col">Country:</td>
                   <td>{rowData.country}</td>
                 </tr>
                 <tr>
-                  <td>Opening Days:</td>
+                  <td className="bold-col">Opening Days:</td>
                   <td
                     style={{
                       backgroundColor:
@@ -426,29 +430,29 @@ const StoreManager = () => {
                   </td>
                 </tr>
                 <tr>
-                  <td>Opening Time:</td>
+                  <td className="bold-col">Opening Time:</td>
                   <td>{rowData.opening_time}</td>
                 </tr>
 
                 <tr>
-                  <td>Closing Time:</td>
+                  <td className="bold-col">Closing Time:</td>
                   <td>{rowData.closing_time}</td>
                 </tr>
 
                 <tr>
-                  <td>Total Clicks:</td>
+                  <td className="bold-col">Total Clicks:</td>
                   <td>{rowData.total_clicks}</td>
                 </tr>
                 <tr>
-                  <td>Store Created:</td>
+                  <td className="bold-col">Store Created:</td>
                   <td>{rowData.created_at}</td>
                 </tr>
                 <tr>
-                  <td>Store Updated:</td>
+                  <td className="bold-col">Store Updated:</td>
                   <td>{rowData.updated_at}</td>
                 </tr>
                 <tr>
-                  <td>Status:</td>
+                  <td className="bold-col">Status:</td>
 
                   <td
                     style={{
@@ -456,7 +460,7 @@ const StoreManager = () => {
                       border: "none",
                       fontSize: "0.75rem",
                       color: "white",
-                      padding: "3px 9px",
+                      padding: "0px 7px",
                       borderRadius: "17px",
                       display: "inline-block",
                     }}
@@ -467,9 +471,9 @@ const StoreManager = () => {
               </tbody>
             </Table>
           </Modal.Body>
-          <Modal.Footer></Modal.Footer>
+          <Modal.Footer ></Modal.Footer>
         </Modal>
-      </div>
+     
     </>
   );
 };
