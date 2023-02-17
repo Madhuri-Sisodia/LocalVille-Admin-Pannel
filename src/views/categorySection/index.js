@@ -17,7 +17,6 @@ function index() {
     return(
       <Panel {...props}>
       <Placeholder.Paragraph />
-      <Placeholder.Paragraph />
     </Panel>
     )
   };
@@ -50,18 +49,17 @@ function index() {
         {/* <Gap/> */}
         <Row>
           <Col md={6} sm={12}>
-            <Card bordered header="Card title" className="Categorycards"
+            <Card bordered header="Section" className="Categorycards"
                />
               
           </Col>
 
           <Col md={6} sm={12} >
-            <Card bordered header="Card title" className="Categorycards"
-
+            <Card bordered header="Attributes" className="Categorycards"
           />
           </Col>
         </Row>
-
+<br/>
 
         {selectedItem==1 && <Category/>}
         {selectedItem==2 && <SubCategory/>}

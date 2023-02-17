@@ -1,7 +1,7 @@
 /* ----------------------------------admin Manager section css */
 .MainContainer{
     font-size: 0.8rem;
-    height: 120vh;
+    height: 130vh;
     padding: 1rem;
 }
 .Container{
@@ -54,6 +54,7 @@
 }
 .Categorycards{
     border: 1px solid blue;
+    background: linear-gradient(to right, #8929f6, #e5e5ea);
 }
 /* -----------------------------------responsive */
 
