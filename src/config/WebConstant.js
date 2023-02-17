@@ -6,5 +6,6 @@ export const apis = {
     addAdminData:"add_admin.php",
     getVendorsData:"get_vendors.php",
     getStoreData:"get_store.php",
-    blockUser:"block_user.php"
+    blockUser:"block_user.php",
+    blockStore:"block_store.php"
 }
