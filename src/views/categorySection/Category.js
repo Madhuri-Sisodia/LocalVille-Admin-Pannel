@@ -9,6 +9,8 @@ import { apis } from "../../config/WebConstant";
 
 const Category = () => {
   const [name, setName] = useState("");
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [category, setCategory] = useState("");
   const [containSizes, setContainSizes] = useState("");
   const [containColors, setContainColors] = useState("");
@@ -57,6 +59,20 @@ const Category = () => {
   };
 
   const handleSubmit = () => {
+    Http.GetAPI(apis.categorySection + "?" + Math.random(), data, null)
+    .then((res) => {
+      setIsLoading(false);
+      if (res?.data?.status) {
+        setData(res?.data?.data);
+      } else {
+        alert("Fields not matched");
+      }
+    })
+    .catch((e) => {
+      setIsLoading(false);
+      alert("Something went wrong.");
+      console.log("Error:", e);
+    });
     // console.log("name", name);
     // console.log("c", category);
     // console.log("co", containSizes);
@@ -109,20 +125,7 @@ const Category = () => {
                       </div>
   
   
-    Http.GetAPI(apis.categorySection + "?" + Math.random(), data, null)
-      .then((res) => {
-        setIsLoading(false);
-        if (res?.data?.status) {
-          setData(res?.data?.data);
-        } else {
-          alert("Fields not matched");
-        }
-      })
-      .catch((e) => {
-        setIsLoading(false);
-        alert("Something went wrong.");
-        console.log("Error:", e);
-      });
+   
         
 
             {/*

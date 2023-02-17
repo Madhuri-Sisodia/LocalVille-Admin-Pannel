@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Input, Whisper, Tooltip, InputGroup } from "rsuite";
 import { RxCross1 } from "react-icons/rx";
 import { RiQuestionMark } from "react-icons/ri";
+import { BiBlock } from "react-icons/bi";
 import SearchIcon from "@rsuite/icons/Search";
 import { Http } from "../config/Service";
 import { apis } from "../config/WebConstant";
@@ -72,6 +73,7 @@ const VendorsManager = () => {
   const [deleteId, setDeleteId] = useState(null);
   const [data, setData] = useState([]);
   const [blockUser, setBlockUser] = useState([]);
+  const [blockData, setBlockData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const handleDelete = (id) => {
@@ -196,7 +198,10 @@ const VendorsManager = () => {
                               cursor: "pointer",
                               color: "#dc3545",
                             }}
-                            onClick={() => handleBlockUser(item.id)}
+                            onClick={() => {
+                              setShowModal(true);
+                              setBlockData(item.id);
+                            }}
                           />
                         </td>
                       </tr>
@@ -215,24 +220,27 @@ const VendorsManager = () => {
         >
           <Modal.Header className="justify-content-center">
             <div className="modal-profile">
-              <RiQuestionMark
+              <BiBlock
                 style={{
                   fontSize: "30px",
+                  color: "gray",
                 }}
               />
             </div>
           </Modal.Header>
           <Modal.Body className="text-center">
-            <p>Are you sure you want to delete this vendor?</p>
+            <p>Are you sure you want to block this store?</p>
           </Modal.Body>
           <div className="modal-footer">
             <Button
               className="btn-simple"
-              type="button"
               variant="danger"
-              onClick={() => handleDelete(deleteId)}
+              onClick={() => {
+                handleBlockUser(blockData);
+                setShowModal(false);
+              }}
             >
-              Delete
+              Block
             </Button>
             <Button
               className="btn-simple"

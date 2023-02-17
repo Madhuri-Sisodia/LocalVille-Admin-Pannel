@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Input, Whisper, Tooltip, InputGroup } from "rsuite";
 import { RxCross1 } from "react-icons/rx";
-import { RiQuestionMark } from "react-icons/ri";
+import { MdLocationPin } from "react-icons/md";
+import { MdRemoveRedEye } from "react-icons/md";
+import {MdClose} from "react-icons/md";
+import { BiBlock } from "react-icons/bi";
 import SearchIcon from "@rsuite/icons/Search";
 import { Http } from "../config/Service";
 import { apis } from "../config/WebConstant";
+import "../assets/css/modal.css";
 
 import {
   Modal,
+  CloseButton,
   Badge,
   Button,
   Card,
@@ -96,28 +101,19 @@ import {
 
 const StoreManager = () => {
   const [showModal, setShowModal] = useState(false);
-  const [deleteId, setDeleteId] = useState(null);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [rowData, setRowData] = useState([]);
+  const [blockData, setBlockData] = useState([]);
+  const [blockStore, setBlockStore] = useState([]);
 
-  const handleDelete = (id) => {
-    setShowModal(false);
-    setDeleteId(id);
-    // data = data.filter(item => item.id !== id);
-  };
-  const handleRowClick = (item) => {
-    setShowModal(true);
-    setRowData(item);
+  const getLocation = (latitude, longitude) => {
+    const url = `https://www.google.com/maps?q=${latitude}+${longitude}`;
+    window.open(url);
   };
 
-  useEffect(() => {
-    // const token = JSON.parse(sessionStorage.getItem("userData"));
-    // console.log(token)
-    // if (!token) {
-    //   navigate("/login");
-    // }
-
+  const getStore = () => {
     Http.GetAPI(apis.getStoreData + "?" + Math.random(), data, null)
       .then((res) => {
         setIsLoading(false);
@@ -132,7 +128,32 @@ const StoreManager = () => {
         alert("Something went wrong.");
         console.log("Error:", e);
       });
+  };
+
+  useEffect(() => {
+    getStore();
   }, []);
+
+  const handleBlockStore = (id) => {
+    var data = new FormData();
+    data.append("id", id);
+    console.log("usersss", data);
+    Http.PostAPI(apis.blockStore, data, null)
+      .then((res) => {
+        console.log("user", res);
+        if (res?.data?.status) {
+          setBlockStore(res?.data?.data);
+          getStore();
+        } else {
+          alert("Fields not matched");
+        }
+      })
+      .catch((e) => {
+        alert("Something went wrong.");
+        console.log("Error:", e);
+      });
+  };
+
   return (
     <>
       <Container fluid>
@@ -153,10 +174,9 @@ const StoreManager = () => {
               </Card.Header>
               <Card.Body className="table-full-width table-responsive px-0">
                 <Table
-                
                   responsive="xl"
                   style={{
-                    tableLayout:"fixed",
+                    tableLayout: "fixed",
                     width: "100%",
                     overflowX: "scroll",
                     display: "block",
@@ -165,6 +185,7 @@ const StoreManager = () => {
                 >
                   <thead>
                     <tr>
+                      <th className="border-0">Store ID</th>
                       <th className="border-0">Vendor ID</th>
                       <th className="border-0">Store Image</th>
                       <th className="border-0">Store Name</th>
@@ -181,22 +202,24 @@ const StoreManager = () => {
                       <th className="border-0">Store Created</th>
                       <th className="border-0">Store Updated</th>
                       <th className="border-0">Status</th>
+                      <th className="border-0">Get Location</th>
                       <th className="border-0">Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     {data.map((item) => (
-                      <tr
-                        onClick={() =>
-                          handleRowClick(item) && handleDelete(item.id)
-                        }
-                        style={{ fontSize: "0.90rem", maxHeight: "1em",
-                        overflow: "hidden" }}
+                      <tr 
+                        style={{
+                          fontSize: "0.90rem",
+                          maxHeight: "1em",
+                          overflow: "hidden",
+                        }}
                         key={item.id}
                       >
-                        <td className="truncate">{item.vendor_id}</td>
+                        <td title={item.id}>{item.id}</td>
+                        <td title={item.vendor_id}>{item.vendor_id}</td>
                         <td>
-                          <img
+                          <img title={item.store_image}
                             src={item.store_image}
                             alt={item.store_name}
                             style={{
@@ -206,19 +229,19 @@ const StoreManager = () => {
                             }}
                           />
                         </td>
-                        <td>{item.store_name}</td>
-                        <td className="truncate">{item.store_desc}</td>
-                        <td className="truncate">{item.store_address}</td>
-                        <td>{item.pincode}</td>
-                        <td>{item.city}</td>
-                        <td>{item.state}</td>
-                        <td>{item.country}</td>
-                        <td>{item.opening_days}</td>
-                        <td>{item.opening_time}</td>
-                        <td>{item.closing_time}</td>
-                        <td>{item.total_clicks}</td>
-                        <td>{item.created_at}</td>
-                        <td>{item.updated_at}</td>
+                        <td title={item.store_name}>{item.store_name.slice(0, 5)}</td>
+                        <td title={item.store_desc}>{item.store_desc.slice(0, 8)}</td>
+                        <td title={item.store_address}>{item.store_address.slice(0, 10)}</td>
+                        <td title={item.pincode}>{item.pincode}</td>
+                        <td title={item.city}>{item.city}</td>
+                        <td title={item.state}>{item.state}</td>
+                        <td title={item.country}>{item.country}</td>
+                        <td title={item.opening_days}>{item.opening_days}</td>
+                        <td title={item.opening_time}>{item.opening_time}</td>
+                        <td title={item.closing_time}>{item.closing_time}</td>
+                        <td title={item.total_clicks}>{item.total_clicks}</td>
+                        <td title={item.created_at}>{item.created_at}</td>
+                        <td title={item.updated_at}>{item.updated_at}</td>
 
                         <td>
                           <div
@@ -237,13 +260,40 @@ const StoreManager = () => {
                           </div>
                         </td>
                         <td>
+                          <MdLocationPin
+                            style={{
+                              fontSize: "25px",
+                              cursor: "pointer",
+                              color: "grey",
+                            }}
+                            onClick={() =>
+                              getLocation(item.latitude, item.longitude)
+                            }
+                          />
+                        </td>
+                        <td>
+                          <MdRemoveRedEye
+                            style={{
+                              fontSize: "23px",
+                              cursor: "pointer",
+                              color: "gray",
+                            }}
+                            onClick={() => {
+                              setShowDetailsModal(true);
+                              setRowData(item);
+                            }}
+                          />
                           <RxCross1
                             style={{
                               fontSize: "20px",
                               cursor: "pointer",
                               color: "#dc3545",
                             }}
-                            onClick={() => setShowModal(true)}
+                            onClick={() => {
+                              setShowModal(true);
+                              setShowDetailsModal(false);
+                              setBlockData(item.id);
+                            }}
                           />
                         </td>
                       </tr>
@@ -254,138 +304,176 @@ const StoreManager = () => {
             </Card>
           </Col>
         </Row>
-
-        <Modal
-          size="lg"
-          aria-labelledby="contained-modal-title-vcenter"
-          centered
-          show={showModal}
-          onHide={() => setShowModal(false)}
-        >
-          <Modal.Header className="justify-content-center">
-            <Modal.Title>Store Details</Modal.Title>
-            {/* <div className="modal-profile">
-              <RiQuestionMark
-                style={{
-                  fontSize: "30px",
-                }}
-              />
-            </div> */}
-          </Modal.Header>
-          <Modal.Body className="text-left">
-            <div>
-              <tr>
-                <td>Vendor ID:</td>
-                <td>{rowData.vendor_id}</td>
-              </tr>
-              <tr>
-                <td>Store Image:</td>
-                <td>
-                  <img
-                    src={rowData.store_image}
-                    alt={rowData.store_name}
-                    style={{
-                      width: "50px",
-                      height: "50px",
-                      borderRadius: "50%",
-                    }}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>Store Name:</td>
-                <td>{rowData.store_name}</td>
-              </tr>
-              <tr>
-                <td style={{ whiteSpace: "nowrap" }}>Store Description:</td>
-                <td>{rowData.store_desc}</td>
-              </tr>
-              <tr>
-                <td style={{ whiteSpace: "nowrap" }}>Store Address:</td>
-                <td>{rowData.store_address}</td>
-              </tr>
-              <tr>
-                <td>Pincode:</td>
-                <td>{rowData.pincode}</td>
-              </tr>
-              <tr>
-                <td>City:</td>
-                <td>{rowData.city}</td>
-              </tr>
-              <tr>
-                <td>State:</td>
-                <td>{rowData.state}</td>
-              </tr>
-              <tr>
-                <td>Country:</td>
-                <td>{rowData.country}</td>
-              </tr>
-              <tr>
-                <td>Opening Days:</td>
-                <td>{rowData.opening_days}</td>
-              </tr>
-              <tr>
-                <td>Opening Time:</td>
-                <td>{rowData.opening_time}</td>
-              </tr>
-
-              <tr>
-                <td>Closing Time:</td>
-                <td>{rowData.closing_time}</td>
-              </tr>
-
-              <tr>
-                <td>Total Clicks:</td>
-                <td>{rowData.total_clicks}</td>
-              </tr>
-              <tr>
-                <td>Store Created:</td>
-                <td>{rowData.created_at}</td>
-              </tr>
-              <tr>
-                <td>Store Updated:</td>
-                <td>{rowData.updated_at}</td>
-              </tr>
-              <tr>
-                <td>Status:</td>
-
-                <td
-                  style={{
-                    backgroundColor: rowData.active == "1" ? "green" : "red",
-                    border: "none",
-                    fontSize: "0.75rem",
-                    color: "white",
-                    padding: "3px 9px",
-                    borderRadius: "17px",
-                    display: "inline-block",
-                  }}
-                >
-                  {rowData.active == "1" ? "active" : "block"}
-                </td>
-              </tr>
-            </div>
-            {/* <p>Are you sure you want to delete this store?</p> */}
-          </Modal.Body>
-          <div className="modal-footer">
-            {/* <Button
-              className="btn-simple"
-              type="button"
-              variant="danger"
-              onClick={() => handleDelete(deleteId)}
-            >
-              Delete
-            </Button> */}
-            <Button
-              className="btn-simple"
-              type="button"
-              variant="secondary"
-              onClick={() => setShowModal(false)}
-            >
-              Close
-            </Button>
-          </div>
-        </Modal>
       </Container>
+
+      <Modal
+        className="modal-mini modal-primary"
+        show={showModal}
+        onHide={() => setShowModal(false)}
+      >
+        <Modal.Header className="justify-content-center">
+          <div className="modal-profile">
+            <BiBlock
+              style={{
+                fontSize: "30px",
+                color: "gray",
+              }}
+            />
+          </div>
+        </Modal.Header>
+        <Modal.Body className="text-center">
+          <p>Are you sure you want to block this store?</p>
+        </Modal.Body>
+        <div className="modal-footer">
+          <Button
+            className="btn-simple"
+            variant="danger"
+            onClick={() => {
+              handleBlockStore(blockData);
+              setShowModal(false);
+            }}
+          >
+            Block
+          </Button>
+          <Button
+            className="btn-simple"
+            type="button"
+            variant="secondary"
+            onClick={() => setShowModal(false)}
+          >
+            Close
+          </Button>
+        </div>
+      </Modal>
+
+    
+        <Modal
+          show={showDetailsModal}
+          onHide={() => setShowDetailsModal(false)}
+        >
+          <Modal.Header  style={{borderBottom: "1px solid gray"}} >
+            <Modal.Title className="modal-title">View Store Details</Modal.Title>
+            <MdClose className="close-icon" onClick={() => setShowDetailsModal(false)}/>
+                          
+          </Modal.Header>
+        
+          <Modal.Body className="modal-body">
+            <Table striped bordered className="table" >
+              <tbody>
+                <tr>
+                  <td className="bold-col">Vendor ID:</td>
+                  <td>{rowData.vendor_id}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Store Image:</td>
+                  <td>
+                    <img
+                      src={rowData.store_image}
+                      alt={rowData.store_name}
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "50%",
+                      }}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Store Name:</td>
+                  <td>{rowData.store_name}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col" style={{ whiteSpace: "nowrap" }}>Store Description:</td>
+                  <td>{rowData.store_desc}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col" style={{ whiteSpace: "nowrap" }}>Store Address:</td>
+                  <td>{rowData.store_address}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Pincode:</td>
+                  <td>{rowData.pincode}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">City:</td>
+                  <td>{rowData.city}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">State:</td>
+                  <td>{rowData.state}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Country:</td>
+                  <td>{rowData.country}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Opening Days:</td>
+                  <td
+                    style={{
+                      backgroundColor:
+                        rowData.opening_days == "[1,2,3,4,5,6]"
+                          ? "red"
+                          : "white",
+                      border: "none",
+                      height: "20px",
+                      width: "20px",
+                      fontSize: "0.75rem",
+                      color: "white",
+                      padding: " 10px",
+                      borderRadius: "50%",
+                      display: "inline-block",
+                    }}
+                  >
+                    {rowData.opening_days == "[1,2,3,4,5,6]"
+                      ? "M,T,W,TH,F,S"
+                      : "S"}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Opening Time:</td>
+                  <td>{rowData.opening_time}</td>
+                </tr>
+
+                <tr>
+                  <td className="bold-col">Closing Time:</td>
+                  <td>{rowData.closing_time}</td>
+                </tr>
+
+                <tr>
+                  <td className="bold-col">Total Clicks:</td>
+                  <td>{rowData.total_clicks}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Store Created:</td>
+                  <td>{rowData.created_at}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Store Updated:</td>
+                  <td>{rowData.updated_at}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Status:</td>
+
+                  <td
+                    style={{
+                      backgroundColor: rowData.active == "1" ? "green" : "red",
+                      border: "none",
+                      fontSize: "0.75rem",
+                      color: "white",
+                      padding: "0px 7px",
+                      borderRadius: "17px",
+                      display: "inline-block",
+                    }}
+                  >
+                    {rowData.active == "1" ? "active" : "block"}
+                  </td>
+                </tr>
+              </tbody>
+            </Table>
+          </Modal.Body>
+          <Modal.Footer ></Modal.Footer>
+        </Modal>
+     
     </>
   );
 };
