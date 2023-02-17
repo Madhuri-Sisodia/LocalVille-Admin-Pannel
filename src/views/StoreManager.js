@@ -351,7 +351,7 @@ const StoreManager = () => {
           show={showDetailsModal}
           onHide={() => setShowDetailsModal(false)}
         >
-          <Modal.Header className="modal-header" >
+          <Modal.Header  style={{borderBottom: "1px solid gray"}} >
             <Modal.Title className="modal-title">View Store Details</Modal.Title>
             <MdClose className="close-icon" onClick={() => setShowDetailsModal(false)}/>
                           
