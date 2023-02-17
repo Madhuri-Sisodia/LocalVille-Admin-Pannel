@@ -1,10 +1,16 @@
 import React, { useState } from "react";
 import NotificationAlert from "react-notification-alert";
-import "../assets/css/admin.css";
-import { Form, Radio, RadioGroup, Button, ButtonToolbar } from "rsuite";
+import "../../assets/css/admin.css";
+import { Form, Button, ButtonToolbar, Dropdown } from "rsuite";
+import { Http } from "../../config/Service";
+import { apis } from "../../config/WebConstant";
+
+
 
 const Category = () => {
   const [name, setName] = useState("");
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [category, setCategory] = useState("");
   const [containSizes, setContainSizes] = useState("");
   const [containColors, setContainColors] = useState("");
@@ -53,6 +59,20 @@ const Category = () => {
   };
 
   const handleSubmit = () => {
+    Http.GetAPI(apis.categorySection + "?" + Math.random(), data, null)
+    .then((res) => {
+      setIsLoading(false);
+      if (res?.data?.status) {
+        setData(res?.data?.data);
+      } else {
+        alert("Fields not matched");
+      }
+    })
+    .catch((e) => {
+      setIsLoading(false);
+      alert("Something went wrong.");
+      console.log("Error:", e);
+    });
     // console.log("name", name);
     // console.log("c", category);
     // console.log("co", containSizes);
@@ -88,20 +108,35 @@ const Category = () => {
                 onChange={(value) => setName(value)}
               />
             </Form.Group>
-            <Form.Group controlId="name-1">
+            {/* <Form.Group controlId="name-1"> */}
+            <div className="InnnerContainerCategory">
               <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
                 Category
               </Form.ControlLabel>
-              <Form.Control
+              <Dropdown title="Select">
+                            <Dropdown.Item>New File</Dropdown.Item>
+                            <Dropdown.Item>New File with Current Profile</Dropdown.Item>
+                            <Dropdown.Item>Download As...</Dropdown.Item>
+                            <Dropdown.Item>Export PDF</Dropdown.Item>
+                            <Dropdown.Item>Export HTML</Dropdown.Item>
+                            <Dropdown.Item>Settings</Dropdown.Item>
+                            <Dropdown.Item>About</Dropdown.Item>
+                        </Dropdown>
+                      </div>
+  
+  
+   
+        
+
+            {/*
+               <Form.Control
                 placeholder="Category"
                 name="category"
                 value={category}
                 required="category"
                 onChange={(value) => setCategory(value)}
               />
-            </Form.Group>
-
-            <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
+            </Form.Group> <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
               Contain Sizes
             </Form.ControlLabel>
 
@@ -149,7 +184,7 @@ const Category = () => {
                   <Radio value="0">No</Radio>
                 </RadioGroup>
               </Form.Group>
-            </div>
+            </div> */}
             <Form.Group>
               <ButtonToolbar>
                 <Button

@@ -1,7 +1,7 @@
 /* ----------------------------------admin Manager section css */
 .MainContainer{
     font-size: 0.8rem;
-    height: 120vh;
+    height: 130vh;
     padding: 1rem;
 }
 .Container{
@@ -45,11 +45,24 @@
     padding: 1rem;
 }
 
+
+
+/* -----------------------------------Category Cards */
+
+.rs-col .Categorycards{
+    margin-right: 5rem;
+}
+.Categorycards{
+    border: 1px solid blue;
+    background: linear-gradient(to right, #8929f6, #e5e5ea);
+}
 /* -----------------------------------responsive */
 
-/* @media screen and (min-width:320px) and (max-width:768px){
-.Container{
-    padding: 1rem;
+
+
+@media screen and (min-width:320px) and (max-width:768px){
+    .rs-col .Categorycards{
+        margin-right: 0;
+    }
 }
-} */
 

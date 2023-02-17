@@ -3,7 +3,7 @@ import { Table, Card, Col } from "react-bootstrap";
 import ReloadIcon from '@rsuite/icons/Reload';
 import CloseIcon from '@rsuite/icons/Close';
 import { Form, Radio, RadioGroup, Button, ButtonToolbar, Dropdown } from "rsuite";
-import '../assets/css/admin.css';
+import '../../assets/css/admin.css';
 
 
 function SubCategory() {
