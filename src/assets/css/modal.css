@@ -5,11 +5,11 @@
 .bold-col {
     font-weight: bold;
 }
-.modal-header {
+.header {
     border-bottom: 1px solid gray;
     
 }
-.modal-title {
+.title {
     margin-top: 0px;
     font-weight: bold;
    
@@ -21,7 +21,7 @@
     font-weight: bold;
     
 }
-.modal-body {
+.body {
     height: 200px;
     overflow-y: scroll;
     scrollbar-color: #e30728 #e0e0e0 !important;
@@ -40,7 +40,7 @@
   }
 @media (max-width: 768px) {
     .table tbody tr td {
-      padding: 5px;
+      padding: 1px 5px;
       font-size: 0.7rem;
     }
   

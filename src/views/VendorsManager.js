@@ -3,12 +3,15 @@ import { Input, Whisper, Tooltip, InputGroup } from "rsuite";
 import { RxCross1 } from "react-icons/rx";
 import { RiQuestionMark } from "react-icons/ri";
 import { BiBlock } from "react-icons/bi";
+import { RxUpdate } from "react-icons/rx";
 import SearchIcon from "@rsuite/icons/Search";
 import { Http } from "../config/Service";
 import { apis } from "../config/WebConstant";
+import UpdateVendor from "./UpdateVendor";
 
 import {
   Modal,
+  Form,
   Badge,
   Button,
   Card,
@@ -74,12 +77,17 @@ const VendorsManager = () => {
   const [data, setData] = useState([]);
   const [blockUser, setBlockUser] = useState([]);
   const [blockData, setBlockData] = useState([]);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+
   const [isLoading, setIsLoading] = useState(true);
 
   const handleDelete = (id) => {
     setShowModal(false);
     setDeleteId(id);
     // data = data.filter(item => item.id !== id);
+  };
+  const handleUpdateClick = () => {
+    setShowUpdateModal(true);
   };
 
   const getVendors = () => {
@@ -192,6 +200,19 @@ const VendorsManager = () => {
                         </td>
                         <td>{item.login_count}</td>
                         <td>
+                          <RxUpdate
+                            style={{
+                              fontSize: "20px",
+                              cursor: "pointer",
+                              color: "grey",
+                            }}
+                            onClick={handleUpdateClick}
+                          />{" "}
+                          <UpdateVendor
+                            showUpdateModal={showUpdateModal}
+                            setShowUpdateModal={setShowUpdateModal}
+                            item={item}
+                          />
                           <RxCross1
                             style={{
                               fontSize: "20px",

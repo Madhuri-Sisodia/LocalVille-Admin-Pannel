@@ -3,7 +3,7 @@ import { Input, Whisper, Tooltip, InputGroup } from "rsuite";
 import { RxCross1 } from "react-icons/rx";
 import { MdLocationPin } from "react-icons/md";
 import { MdRemoveRedEye } from "react-icons/md";
-import {MdClose} from "react-icons/md";
+import { MdClose } from "react-icons/md";
 import { BiBlock } from "react-icons/bi";
 import SearchIcon from "@rsuite/icons/Search";
 import { Http } from "../config/Service";
@@ -208,7 +208,7 @@ const StoreManager = () => {
                   </thead>
                   <tbody>
                     {data.map((item) => (
-                      <tr 
+                      <tr
                         style={{
                           fontSize: "0.90rem",
                           maxHeight: "1em",
@@ -216,10 +216,10 @@ const StoreManager = () => {
                         }}
                         key={item.id}
                       >
-                        <td title={item.id}>{item.id}</td>
-                        <td title={item.vendor_id}>{item.vendor_id}</td>
+                        <td>{item.id}</td>
+                        <td>{item.vendor_id}</td>
                         <td>
-                          <img title={item.store_image}
+                          <img
                             src={item.store_image}
                             alt={item.store_name}
                             style={{
@@ -229,19 +229,25 @@ const StoreManager = () => {
                             }}
                           />
                         </td>
-                        <td title={item.store_name}>{item.store_name.slice(0, 5)}</td>
-                        <td title={item.store_desc}>{item.store_desc.slice(0, 8)}</td>
-                        <td title={item.store_address}>{item.store_address.slice(0, 10)}</td>
-                        <td title={item.pincode}>{item.pincode}</td>
-                        <td title={item.city}>{item.city}</td>
-                        <td title={item.state}>{item.state}</td>
-                        <td title={item.country}>{item.country}</td>
-                        <td title={item.opening_days}>{item.opening_days}</td>
-                        <td title={item.opening_time}>{item.opening_time}</td>
-                        <td title={item.closing_time}>{item.closing_time}</td>
-                        <td title={item.total_clicks}>{item.total_clicks}</td>
-                        <td title={item.created_at}>{item.created_at}</td>
-                        <td title={item.updated_at}>{item.updated_at}</td>
+                        <td title={item.store_name}>
+                          {item.store_name.slice(0, 5)}
+                        </td>
+                        <td title={item.store_desc}>
+                          {item.store_desc.slice(0, 8)}
+                        </td>
+                        <td title={item.store_address}>
+                          {item.store_address.slice(0, 10)}
+                        </td>
+                        <td>{item.pincode}</td>
+                        <td>{item.city}</td>
+                        <td>{item.state}</td>
+                        <td>{item.country}</td>
+                        <td>{item.opening_days}</td>
+                        <td>{item.opening_time}</td>
+                        <td>{item.closing_time}</td>
+                        <td>{item.total_clicks}</td>
+                        <td>{item.created_at}</td>
+                        <td>{item.updated_at}</td>
 
                         <td>
                           <div
@@ -346,134 +352,133 @@ const StoreManager = () => {
         </div>
       </Modal>
 
-    
-        <Modal
-          show={showDetailsModal}
-          onHide={() => setShowDetailsModal(false)}
-        >
-          <Modal.Header  style={{borderBottom: "1px solid gray"}} >
-            <Modal.Title className="modal-title">View Store Details</Modal.Title>
-            <MdClose className="close-icon" onClick={() => setShowDetailsModal(false)}/>
-                          
-          </Modal.Header>
-        
-          <Modal.Body className="modal-body">
-            <Table striped bordered className="table" >
-              <tbody>
-                <tr>
-                  <td className="bold-col">Vendor ID:</td>
-                  <td>{rowData.vendor_id}</td>
-                </tr>
-                <tr>
-                  <td className="bold-col">Store Image:</td>
-                  <td>
-                    <img
-                      src={rowData.store_image}
-                      alt={rowData.store_name}
-                      style={{
-                        width: "40px",
-                        height: "40px",
-                        borderRadius: "50%",
-                      }}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td className="bold-col">Store Name:</td>
-                  <td>{rowData.store_name}</td>
-                </tr>
-                <tr>
-                  <td className="bold-col" style={{ whiteSpace: "nowrap" }}>Store Description:</td>
-                  <td>{rowData.store_desc}</td>
-                </tr>
-                <tr>
-                  <td className="bold-col" style={{ whiteSpace: "nowrap" }}>Store Address:</td>
-                  <td>{rowData.store_address}</td>
-                </tr>
-                <tr>
-                  <td className="bold-col">Pincode:</td>
-                  <td>{rowData.pincode}</td>
-                </tr>
-                <tr>
-                  <td className="bold-col">City:</td>
-                  <td>{rowData.city}</td>
-                </tr>
-                <tr>
-                  <td className="bold-col">State:</td>
-                  <td>{rowData.state}</td>
-                </tr>
-                <tr>
-                  <td className="bold-col">Country:</td>
-                  <td>{rowData.country}</td>
-                </tr>
-                <tr>
-                  <td className="bold-col">Opening Days:</td>
-                  <td
+      <Modal show={showDetailsModal} onHide={() => setShowDetailsModal(false)}>
+        <Modal.Header style={{ borderBottom: "1px solid gray" }}>
+          <Modal.Title className="title">View Store Details</Modal.Title>
+          <MdClose
+            className="close-icon"
+            onClick={() => setShowDetailsModal(false)}
+          />
+        </Modal.Header>
+
+        <Modal.Body className="body">
+          <Table striped bordered className="table">
+            <tbody>
+              <tr>
+                <td className="bold-col">Vendor ID:</td>
+                <td>{rowData.vendor_id}</td>
+              </tr>
+              <tr>
+                <td className="bold-col">Store Image:</td>
+                <td>
+                  <img
+                    src={rowData.store_image}
+                    alt={rowData.store_name}
                     style={{
-                      backgroundColor:
-                        rowData.opening_days == "[1,2,3,4,5,6]"
-                          ? "red"
-                          : "white",
-                      border: "none",
-                      height: "20px",
-                      width: "20px",
-                      fontSize: "0.75rem",
-                      color: "white",
-                      padding: " 10px",
+                      width: "40px",
+                      height: "40px",
                       borderRadius: "50%",
-                      display: "inline-block",
                     }}
-                  >
-                    {rowData.opening_days == "[1,2,3,4,5,6]"
-                      ? "M,T,W,TH,F,S"
-                      : "S"}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="bold-col">Opening Time:</td>
-                  <td>{rowData.opening_time}</td>
-                </tr>
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td className="bold-col">Store Name:</td>
+                <td>{rowData.store_name}</td>
+              </tr>
+              <tr>
+                <td className="bold-col" style={{ whiteSpace: "nowrap" }}>
+                  Store Description:
+                </td>
+                <td>{rowData.store_desc}</td>
+              </tr>
+              <tr>
+                <td className="bold-col" style={{ whiteSpace: "nowrap" }}>
+                  Store Address:
+                </td>
+                <td>{rowData.store_address}</td>
+              </tr>
+              <tr>
+                <td className="bold-col">Pincode:</td>
+                <td>{rowData.pincode}</td>
+              </tr>
+              <tr>
+                <td className="bold-col">City:</td>
+                <td>{rowData.city}</td>
+              </tr>
+              <tr>
+                <td className="bold-col">State:</td>
+                <td>{rowData.state}</td>
+              </tr>
+              <tr>
+                <td className="bold-col">Country:</td>
+                <td>{rowData.country}</td>
+              </tr>
+              <tr>
+                <td className="bold-col">Opening Days:</td>
+                <td
+                  style={{
+                    backgroundColor:
+                      rowData.opening_days == "[1,2,3,4,5,6]" ? "red" : "white",
+                    border: "none",
+                    height: "20px",
+                    width: "20px",
+                    fontSize: "0.75rem",
+                    color: "white",
+                    padding: " 10px",
+                    borderRadius: "50%",
+                    display: "inline-block",
+                  }}
+                >
+                  {rowData.opening_days == "[1,2,3,4,5,6]"
+                    ? "M,T,W,TH,F,S"
+                    : "S"}
+                </td>
+              </tr>
+              <tr>
+                <td className="bold-col">Opening Time:</td>
+                <td>{rowData.opening_time}</td>
+              </tr>
 
-                <tr>
-                  <td className="bold-col">Closing Time:</td>
-                  <td>{rowData.closing_time}</td>
-                </tr>
+              <tr>
+                <td className="bold-col">Closing Time:</td>
+                <td>{rowData.closing_time}</td>
+              </tr>
 
-                <tr>
-                  <td className="bold-col">Total Clicks:</td>
-                  <td>{rowData.total_clicks}</td>
-                </tr>
-                <tr>
-                  <td className="bold-col">Store Created:</td>
-                  <td>{rowData.created_at}</td>
-                </tr>
-                <tr>
-                  <td className="bold-col">Store Updated:</td>
-                  <td>{rowData.updated_at}</td>
-                </tr>
-                <tr>
-                  <td className="bold-col">Status:</td>
+              <tr>
+                <td className="bold-col">Total Clicks:</td>
+                <td>{rowData.total_clicks}</td>
+              </tr>
+              <tr>
+                <td className="bold-col">Store Created:</td>
+                <td>{rowData.created_at}</td>
+              </tr>
+              <tr>
+                <td className="bold-col">Store Updated:</td>
+                <td>{rowData.updated_at}</td>
+              </tr>
+              <tr>
+                <td className="bold-col">Status:</td>
 
-                  <td
-                    style={{
-                      backgroundColor: rowData.active == "1" ? "green" : "red",
-                      border: "none",
-                      fontSize: "0.75rem",
-                      color: "white",
-                      padding: "0px 7px",
-                      borderRadius: "17px",
-                      display: "inline-block",
-                    }}
-                  >
-                    {rowData.active == "1" ? "active" : "block"}
-                  </td>
-                </tr>
-              </tbody>
-            </Table>
-          </Modal.Body>
-          <Modal.Footer ></Modal.Footer>
-        </Modal>
-     
+                <td
+                  style={{
+                    backgroundColor: rowData.active == "1" ? "green" : "red",
+                    border: "none",
+                    fontSize: "0.75rem",
+                    color: "white",
+                    padding: "0px 7px",
+                    borderRadius: "17px",
+                    display: "inline-block",
+                  }}
+                >
+                  {rowData.active == "1" ? "active" : "block"}
+                </td>
+              </tr>
+            </tbody>
+          </Table>
+        </Modal.Body>
+        <Modal.Footer></Modal.Footer>
+      </Modal>
     </>
   );
 };

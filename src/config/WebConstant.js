@@ -7,6 +7,9 @@ export const apis = {
     getVendorsData:"get_vendors.php",
     getStoreData:"get_store.php",
     blockUser:"block_user.php",
-    // categorySection: "add_cat_section.php",
-    blockStore:"block_store.php"
+    blockStore:"block_store.php",
+    addCategory:"add_cat_section.php",
+    getCategory:"get_cat_section.php",
+    updateVendors:"update_vendors.php"
+    
 }
