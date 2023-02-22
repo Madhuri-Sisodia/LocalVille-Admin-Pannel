@@ -5,7 +5,7 @@ import "../../assets/css/admin.css";
 import SubCategory from './SubCategory';
 
 function index() {
-  const [state, setstate] = useState("");
+  
   const [selectedItem, setSelectedItem] = useState(null);
 
   const handleClick = () => {
