@@ -5,13 +5,14 @@ import { Form, Button, ButtonToolbar} from "rsuite";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import { useEffect } from "react";
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
+// import Dropdown from 'react-bootstrap/Dropdown';
+// import DropdownButton from 'react-bootstrap/DropdownButton';
 
 const Category = () => {
   const [categoryName, setCategoryName] = useState("");
   const [selectCategory, setSelectCategory] = useState("");
   const [data, setData] = useState([]);
+  const [category, setCategory] = useState([]);
   // const [getCategoryData, setGetCategoryData] = useState([]);
 
   const notificationAlertRef = React.useRef(null);
@@ -56,7 +57,29 @@ const Category = () => {
     notificationAlertRef.current.notificationAlert(options);
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    console.log("categoryName", categoryName);
+
+    var data = new FormData();
+    data.append("section_name", categoryName);
+
+    console.log("category", data);
+    Http.PostAPI(apis.addCategory, data, null)
+      .then((res) => {
+        console.log("Data", res);
+        if (res?.data?.status) {
+          setCategory(res?.data?.data);
+        } else {
+          alert("Fields not matched");
+        }
+      })
+      .catch((e) => {
+        alert("Something went wrong.");
+        console.log("Error:", e);
+      });
+    setCategoryName("");
+    setSelectCategory("");
+  };
 
   useEffect(() => {
     Http.GetAPI(apis.getCategory + "?" + Math.random(), data, null)
@@ -98,18 +121,18 @@ const Category = () => {
               <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
                 Category
               </Form.ControlLabel>
-              <DropdownButton
-                title="Dropdown Button"
+              <select
                 name="selectCategory"
                 value={selectCategory}
-                onChange={(value) => setSelectCategory(value)}
+                onChange={(event) => setSelectCategory(event.target.value)}
               >
+                <option value="">Select</option>
                 {data.map((category) => (
-                  <Dropdown.Item key={category.id}>
+                  <option key={category.id} value={category.section_name}>
                     {category.section_name}
-                  </Dropdown.Item>
+                  </option>
                 ))}
-              </DropdownButton>
+              </select>
             </div>
 
             <Form.Group>
