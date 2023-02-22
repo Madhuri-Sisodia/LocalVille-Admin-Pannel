@@ -78,6 +78,8 @@ const VendorsManager = () => {
   const [blockUser, setBlockUser] = useState([]);
   const [blockData, setBlockData] = useState([]);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [currentModalIdx, setCurrentModalIdx] = useState(null);
+  const [selectedVendor, setSelectedVendor] = useState(null);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -164,12 +166,12 @@ const VendorsManager = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {data.map((item) => (
+                    {data.map((item, index) => (
                       <tr style={{ fontSize: "0.95rem" }} key={item.id}>
                         <td>{item.id}</td>
                         <td>
                           <img
-                            src={item.user_image}
+                            src={item.user_image && item.user_image + '?t=2244'}
                             alt="image"
                             style={{
                               width: "50px",
@@ -206,13 +208,11 @@ const VendorsManager = () => {
                               cursor: "pointer",
                               color: "grey",
                             }}
-                            onClick={handleUpdateClick}
+                            onClick={() => {
+                              setSelectedVendor(item);
+                              setShowUpdateModal(true);
+                            }}
                           />{" "}
-                          <UpdateVendor
-                            showUpdateModal={showUpdateModal}
-                            setShowUpdateModal={setShowUpdateModal}
-                            item={item}
-                          />
                           <RxCross1
                             style={{
                               fontSize: "20px",
@@ -233,6 +233,12 @@ const VendorsManager = () => {
             </Card>
           </Col>
         </Row>
+
+        <UpdateVendor
+          showUpdateModal={showUpdateModal}
+          setShowUpdateModal={setShowUpdateModal}
+          item={selectedVendor}
+        />
 
         <Modal
           className="modal-mini modal-primary"
