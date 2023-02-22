@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import NotificationAlert from "react-notification-alert";
 import "../../assets/css/admin.css";
-import { Form, Button, ButtonToolbar, Dropdown } from "rsuite";
+import { Form, Button, ButtonToolbar} from "rsuite";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import { useEffect } from "react";
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 
 const Category = () => {
   const [categoryName, setCategoryName] = useState("");
@@ -96,8 +98,8 @@ const Category = () => {
               <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
                 Category
               </Form.ControlLabel>
-              <Dropdown
-                title="Select"
+              <DropdownButton
+                title="Dropdown Button"
                 name="selectCategory"
                 value={selectCategory}
                 onChange={(value) => setSelectCategory(value)}
@@ -107,7 +109,7 @@ const Category = () => {
                     {category.section_name}
                   </Dropdown.Item>
                 ))}
-              </Dropdown>
+              </DropdownButton>
             </div>
 
             <Form.Group>

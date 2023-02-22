@@ -53,10 +53,13 @@
     margin-right: 5rem;
 }
 .Categorycards{
-    border: 1px solid blue;
-    background: linear-gradient(to right, #8929f6, #e5e5ea);
+    background: linear-gradient(to right, #8f69d6, #e5e5ea);
+    font-color:#e5e5ea;
 }
-/* -----------------------------------responsive */
+.rs-panel-header {
+    color: darkblue;
+}
+/* --------------------------------responsive------------------------------- */
 
 
 
