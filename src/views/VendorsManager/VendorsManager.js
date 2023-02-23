@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Input, Whisper, Tooltip, InputGroup } from "rsuite";
 import { RxCross1 } from "react-icons/rx";
 import { RiQuestionMark } from "react-icons/ri";
+import {MdPersonAddAlt1} from "react-icons/md";
 import { BiBlock } from "react-icons/bi";
 import { RxUpdate } from "react-icons/rx";
 import SearchIcon from "@rsuite/icons/Search";
-import { Http } from "../config/Service";
-import { apis } from "../config/WebConstant";
+import { Http } from "../../config/Service";
+import { apis } from "../../config/WebConstant";
 import UpdateVendor from "./UpdateVendor";
 
 import {
@@ -191,9 +192,10 @@ const VendorsManager = () => {
                         </td>
                         <td>{item.login_count}</td>
                         <td>
+                         
                           <RxUpdate
                             style={{
-                              fontSize: "20px",
+                              fontSize: "18px",
                               cursor: "pointer",
                               color: "grey",
                             }}
@@ -202,9 +204,15 @@ const VendorsManager = () => {
                               setShowUpdateModal(true);
                             }}
                           />{" "}
+                           <MdPersonAddAlt1 
+                          style={{
+                              fontSize: "24px",
+                              cursor: "pointer",
+                              color: "grey",
+                            }}/>
                           <RxCross1
                             style={{
-                              fontSize: "20px",
+                              fontSize: "18px",
                               cursor: "pointer",
                               color: "#dc3545",
                             }}

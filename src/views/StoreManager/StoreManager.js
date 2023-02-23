@@ -5,10 +5,12 @@ import { MdLocationPin } from "react-icons/md";
 import { MdRemoveRedEye } from "react-icons/md";
 import { MdClose } from "react-icons/md";
 import { BiBlock } from "react-icons/bi";
+import { RxUpdate } from "react-icons/rx";
 import SearchIcon from "@rsuite/icons/Search";
-import { Http } from "../config/Service";
-import { apis } from "../config/WebConstant";
-import "../assets/css/modal.css";
+import { Http } from "../../config/Service";
+import { apis } from "../../config/WebConstant";
+import "../../assets/css/modal.css";
+import UpdateStore from "./UpdateStore";
 
 import {
   Modal,
@@ -23,6 +25,7 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
+
 
 // const data = [
 //   {
@@ -103,10 +106,12 @@ const StoreManager = () => {
   const [showModal, setShowModal] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+
   const [rowData, setRowData] = useState([]);
   const [blockData, setBlockData] = useState([]);
   const [blockStore, setBlockStore] = useState([]);
+  const [showUpdateStore, setShowUpdateStore] = useState(false);
+  const [selectedStore, setSelectedStore] = useState(null);
 
   const getLocation = (latitude, longitude) => {
     const url = `https://www.google.com/maps?q=${latitude}+${longitude}`;
@@ -116,7 +121,6 @@ const StoreManager = () => {
   const getStore = () => {
     Http.GetAPI(apis.getStoreData + "?" + Math.random(), data, null)
       .then((res) => {
-        setIsLoading(false);
         if (res?.data?.status) {
           setData(res?.data?.data);
         } else {
@@ -124,7 +128,6 @@ const StoreManager = () => {
         }
       })
       .catch((e) => {
-        setIsLoading(false);
         alert("Something went wrong.");
         console.log("Error:", e);
       });
@@ -277,31 +280,48 @@ const StoreManager = () => {
                             }
                           />
                         </td>
-                        <td>
-                          <MdRemoveRedEye
-                            style={{
-                              fontSize: "23px",
-                              cursor: "pointer",
-                              color: "gray",
-                            }}
-                            onClick={() => {
-                              setShowDetailsModal(true);
-                              setRowData(item);
-                            }}
-                          />
-                          <RxCross1
-                            style={{
-                              fontSize: "20px",
-                              cursor: "pointer",
-                              color: "#dc3545",
-                            }}
-                            onClick={() => {
-                              setShowModal(true);
-                              setShowDetailsModal(false);
-                              setBlockData(item.id);
-                            }}
-                          />
-                        </td>
+                        <div style={{ marginTop: "1rem" }}>
+                          <span style={{ display: "inline-block" }}>
+                            <MdRemoveRedEye
+                              style={{
+                                fontSize: "22px",
+                                cursor: "pointer",
+                                color: "gray",
+                              }}
+                              onClick={() => {
+                                setShowDetailsModal(true);
+                                setRowData(item);
+                              }}
+                            />
+                          </span>
+                          <span style={{ display: "inline-block" }}>
+                            <RxUpdate
+                              style={{
+                                fontSize: "18px",
+                                cursor: "pointer",
+                                color: "grey",
+                              }}
+                              onClick={() => {
+                                setSelectedStore(item);
+                                setShowUpdateStore(true);
+                              }}
+                            />
+                          </span>
+                          <span style={{ display: "inline-block" }}>
+                            <RxCross1
+                              style={{
+                                fontSize: "18px",
+                                cursor: "pointer",
+                                color: "#dc3545",
+                              }}
+                              onClick={() => {
+                                setShowModal(true);
+                                setShowDetailsModal(false);
+                                setBlockData(item.id);
+                              }}
+                            />
+                          </span>
+                        </div>
                       </tr>
                     ))}
                   </tbody>
@@ -311,6 +331,13 @@ const StoreManager = () => {
           </Col>
         </Row>
       </Container>
+
+      <UpdateStore
+        showUpdateStore={showUpdateStore}
+        setShowUpdateStore={setShowUpdateStore}
+        item={selectedStore}
+        getStore={getStore}
+      />
 
       <Modal
         className="modal-mini modal-primary"

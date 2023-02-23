@@ -10,6 +10,7 @@ export const apis = {
     blockStore:"block_store.php",
     addCategory:"add_cat_section.php",
     getCategory:"get_cat_section.php",
-    updateVendors:"update_vendors.php"
+    updateVendors:"update_vendors.php",
+    updateStore:"update_store.php"
     
 }

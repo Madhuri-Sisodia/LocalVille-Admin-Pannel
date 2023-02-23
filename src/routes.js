@@ -8,8 +8,8 @@ import Notifications from "views/Notifications.js";
 import AdminManager from "views/AdminManager";
 // import SubCategory from "views/categorySection/SubCategory.js";
 import Category from "views/categorySection/index.js";
-import StoreManager from "views/StoreManager";
-import VendorsManager from "views/VendorsManager";
+import StoreManager from "views/StoreManager/StoreManager";
+import VendorsManager from "views/VendorsManager/VendorsManager";
 
 
 const dashboardRoutes = [

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { MdClose } from "react-icons/md";
 import { Modal, Form, Button } from "react-bootstrap";
-import { Http } from "../config/Service";
-import { apis } from "../config/WebConstant";
-import "../assets/css/updateModel.css";
+import { Http } from "../../config/Service";
+import { apis } from "../../config/WebConstant";
+import "../../assets/css/updateModel.css";
 
-const UpdateVendor = ({ showUpdateModal, setShowUpdateModal, item,getVendors }) => {
+const AddVendor = ({ showUpdateModal, setShowUpdateModal, item,getVendors }) => {
   // console.log("item", item)
   const [vendors, setVendors] = useState([]);
   const [data, setData] = useState([]);
@@ -112,4 +112,4 @@ const UpdateVendor = ({ showUpdateModal, setShowUpdateModal, item,getVendors }) 
     </>
   );
 };
-export default UpdateVendor;
+export default AddVendor;
