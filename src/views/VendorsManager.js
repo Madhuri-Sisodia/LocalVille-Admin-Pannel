@@ -73,7 +73,6 @@ import {
 
 const VendorsManager = () => {
   const [showModal, setShowModal] = useState(false);
-  const [deleteId, setDeleteId] = useState(null);
   const [data, setData] = useState([]);
   const [blockUser, setBlockUser] = useState([]);
   const [blockData, setBlockData] = useState([]);
@@ -82,15 +81,6 @@ const VendorsManager = () => {
   const [selectedVendor, setSelectedVendor] = useState(null);
 
   const [isLoading, setIsLoading] = useState(true);
-
-  const handleDelete = (id) => {
-    setShowModal(false);
-    setDeleteId(id);
-    // data = data.filter(item => item.id !== id);
-  };
-  const handleUpdateClick = () => {
-    setShowUpdateModal(true);
-  };
 
   const getVendors = () => {
     Http.GetAPI(apis.getVendorsData + "?" + Math.random(), data, null)
@@ -171,7 +161,7 @@ const VendorsManager = () => {
                         <td>{item.id}</td>
                         <td>
                           <img
-                            src={item.user_image && item.user_image + '?t=2244'}
+                            src={item.user_image}
                             alt="image"
                             style={{
                               width: "50px",
@@ -179,7 +169,6 @@ const VendorsManager = () => {
                               borderRadius: "50%",
                             }}
                           />
-                          {console.log("image", item.user_image)}
                         </td>
                         <td>{item.name}</td>
                         <td>{item.email}</td>
@@ -238,6 +227,7 @@ const VendorsManager = () => {
           showUpdateModal={showUpdateModal}
           setShowUpdateModal={setShowUpdateModal}
           item={selectedVendor}
+          getVendors={getVendors}
         />
 
         <Modal
