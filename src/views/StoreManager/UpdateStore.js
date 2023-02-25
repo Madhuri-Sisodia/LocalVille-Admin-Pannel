@@ -4,7 +4,7 @@ import { Modal, Form, Button } from "react-bootstrap";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 
-import "../../assets/css/updateModel.css";
+import "../../assets/css/modal.css";
 
 const UpdateStore = ({
   showUpdateStore,
@@ -102,21 +102,21 @@ const UpdateStore = ({
       {item != null && (
         <Modal show={showUpdateStore} onHide={() => setShowUpdateStore(false)}>
           <Modal.Header>
-            <Modal.Title className="title">Update Stores</Modal.Title>
+            <Modal.Title className="update-title">Update Stores</Modal.Title>
             <MdClose
-              className="close-icon"
+              className="update-close-icon"
               onClick={() => {
                 setShowUpdateStore(false);
               }}
             />
           </Modal.Header>
-          <Modal.Body className="body">
+          <Modal.Body className="update-body">
             <Form>
               {!hideData && (
                 <Form.Group style={{ marginTop: "0rem", marginBottom: "1rem" }}>
-                  <label className="label">Store ID</label>
+                  <label className="update-label">Store ID</label>
                   <Form.Control
-                    className="form"
+                    className="update-form"
                     defaultValue={item?.id}
                     name="storeId"
                     onChange={(e) => {
@@ -129,9 +129,9 @@ const UpdateStore = ({
 
               {!hideData && (
                 <Form.Group style={{ marginTop: "0rem", marginBottom: "1rem" }}>
-                  <label className="label">Longitude</label>
+                  <label className="update-label">Longitude</label>
                   <Form.Control
-                    className="form"
+                    className="update-form"
                     defaultValue={item?.longitude}
                     name="storeId"
                     onChange={(e) => {
@@ -144,9 +144,9 @@ const UpdateStore = ({
 
               {!hideData && (
                 <Form.Group style={{ marginTop: "0rem", marginBottom: "1rem" }}>
-                  <label className="label">Latitude</label>
+                  <label className="update-label">Latitude</label>
                   <Form.Control
-                    className="form"
+                    className="update-form"
                     defaultValue={item?.latitude}
                     name="storeId"
                     onChange={(e) => {
@@ -158,9 +158,9 @@ const UpdateStore = ({
               )}
 
               <Form.Group style={{ marginBottom: "1rem" }}>
-                <label className="label">Store Name</label>
+                <label className="update-label">Store Name</label>
                 <Form.Control
-                  className="form"
+                  className="update-form"
                   defaultValue={item?.store_name}
                   name="storeName"
                   onChange={(e) => {
@@ -171,9 +171,9 @@ const UpdateStore = ({
               </Form.Group>
 
               <Form.Group>
-                <label className="label">Store Description</label>
+                <label className="update-label">Store Description</label>
                 <Form.Control
-                  className="form"
+                  className="update-form"
                   defaultValue={item?.store_desc}
                   type="text"
                   name="storeDesc"
@@ -184,9 +184,9 @@ const UpdateStore = ({
               </Form.Group>
 
               <Form.Group>
-                <label className="label">Address</label>
+                <label className="update-label">Address</label>
                 <Form.Control
-                  className="form"
+                  className="update-form"
                   defaultValue={item?.store_address}
                   type="text"
                   name="address"
@@ -197,9 +197,9 @@ const UpdateStore = ({
               </Form.Group>
 
               <Form.Group>
-                <label className="label">Pincode</label>
+                <label className="update-label">Pincode</label>
                 <Form.Control
-                  className="form"
+                  className="update-form"
                   defaultValue={item?.pincode}
                   type="number"
                   name="pincode"
@@ -210,9 +210,9 @@ const UpdateStore = ({
               </Form.Group>
 
               <Form.Group>
-                <label className="label">City</label>
+                <label className="update-label">City</label>
                 <Form.Control
-                  className="form"
+                  className="update-form"
                   defaultValue={item?.city}
                   type="text"
                   name="city"
@@ -223,9 +223,9 @@ const UpdateStore = ({
               </Form.Group>
 
               <Form.Group>
-                <label className="label">State</label>
+                <label className="update-label">State</label>
                 <Form.Control
-                  className="form"
+                  className="update-form"
                   defaultValue={item?.state}
                   type="text"
                   name="state"
@@ -236,9 +236,9 @@ const UpdateStore = ({
               </Form.Group>
 
               <Form.Group>
-                <label className="label">Country</label>
+                <label className="update-label">Country</label>
                 <Form.Control
-                  className="form"
+                  className="update-form"
                   defaultValue={item?.country}
                   type="text"
                   name="country"
@@ -249,9 +249,9 @@ const UpdateStore = ({
               </Form.Group>
 
               <Form.Group>
-                <label className="label">Opening Days</label>
+                <label className="update-label">Opening Days</label>
                 <Form.Control
-                  className="form"
+                  className="update-form"
                   defaultValue={item?.opening_days}
                   type="text"
                   name="openingDays"
@@ -262,9 +262,9 @@ const UpdateStore = ({
               </Form.Group>
 
               <Form.Group>
-                <label className="label">Opening Time</label>
+                <label className="update-label">Opening Time</label>
                 <Form.Control
-                  className="form"
+                  className="update-form"
                   defaultValue={item?.opening_time}
                   type="text"
                   name="openingTime"
@@ -275,9 +275,9 @@ const UpdateStore = ({
               </Form.Group>
 
               <Form.Group>
-                <label className="label">Closing Time</label>
+                <label className="update-label">Closing Time</label>
                 <Form.Control
-                  className="form"
+                  className="update-form"
                   defaultValue={item?.closing_time}
                   type="text"
                   name="closingTime"

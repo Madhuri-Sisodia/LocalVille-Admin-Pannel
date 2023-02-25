@@ -1,3 +1,5 @@
+/* .......Model Css..... */
+
 .table tbody tr td {
   padding: 1px 8px;
   font-size: 0.8rem;
@@ -30,7 +32,49 @@
     font-size: 0.7rem;
   }
 
-  .modal-body {
+  .body {
     height: 150px;
   }
+}
+
+/* .......Update Model Css..... */
+
+.update-title {
+  margin-top: 0px;
+  font-weight: bold;
+ 
+}
+.update-close-icon {
+  font-size: 20px;
+  cursor: pointer;
+  color: black;
+  font-weight: bold;
+  
+}
+.update-body {
+  height: 300px;
+  overflow-y: scroll;
+ 
+}
+.update-label{
+  font-size:1rem;
+ margin-bottom: 0rem ;
+}
+
+.update-form{
+  font-size: 0.9rem; 
+}
+
+/* .......Add Model Css..... */
+
+.add-label{
+  font-size:1rem;
+ margin-bottom: 0rem ;
+ margin-top: 1rem ;
+}
+
+.add-body {
+  height: 400px;
+  overflow-y: scroll;
+ 
 }

@@ -3,7 +3,7 @@ import { MdClose } from "react-icons/md";
 import { Modal, Form, Button } from "react-bootstrap";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
-import "../../assets/css/updateModel.css";
+import "../../assets/css/modal.css";
 
 const UpdateVendor = ({ showUpdateModal, setShowUpdateModal, item,getVendors }) => {
   // console.log("item", item)
@@ -48,20 +48,20 @@ const UpdateVendor = ({ showUpdateModal, setShowUpdateModal, item,getVendors }) 
       {item != null && (
         <Modal show={showUpdateModal} onHide={() => setShowUpdateModal(false)}>
           <Modal.Header>
-            <Modal.Title className="title">Update Vendors</Modal.Title>
+            <Modal.Title className="update-title">Update Vendors</Modal.Title>
             <MdClose
-              className="close-icon"
+              className="update-close-icon"
               onClick={() => {
                 setShowUpdateModal(false);
               }}
             />
           </Modal.Header>
-          <Modal.Body className="body">
+          <Modal.Body className="update-body">
             <Form>
               {!hideId &&<Form.Group style={{ marginTop: "0rem", marginBottom: "1rem" }}>
-                <label className="label">Vendor ID</label>
+                <label className="update-label">Vendor ID</label>
                 <Form.Control
-                  className="form"
+                  className="update-form"
                   defaultValue={item?.id}
                   name="vendorId"
                   onChange={(value) => setVendorId(value.target.value)}
@@ -70,10 +70,10 @@ const UpdateVendor = ({ showUpdateModal, setShowUpdateModal, item,getVendors }) 
               </Form.Group>}
 
               <Form.Group style={{ marginBottom: "1rem" }}>
-                <label className="label">Vendor Name</label>
+                <label className="update-label">Vendor Name</label>
 
                 <Form.Control
-                  className="form"
+                  className="update-form"
                   defaultValue={item?.name}
                   name="vendorName"
                   onChange={(value) => setVendorName(value.target.value)}
@@ -82,9 +82,9 @@ const UpdateVendor = ({ showUpdateModal, setShowUpdateModal, item,getVendors }) 
               </Form.Group>
 
               <Form.Group>
-                <label className="label">Phone</label>
+                <label className="update-label">Phone</label>
                 <Form.Control
-                  className="form"
+                  className="update-form"
                   defaultValue={item?.phone}
                   type="number"
                   name="vendorPhone"

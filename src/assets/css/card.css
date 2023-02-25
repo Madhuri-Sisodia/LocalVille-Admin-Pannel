@@ -1,0 +1,40 @@
+.icons {
+    display: flex;
+    align-items: center;
+    float: right;
+   
+    
+  }
+  
+  .minus {
+    display: flex;
+    background-color: blueviolet;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid blueviolet;
+    margin-right: 8px;
+    font-size: 20px;
+    font-weight: bold;
+    color:white;
+    
+  }
+  .plus {
+    display: flex;
+    justify-content: center;
+    background-color: blueviolet;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid blueviolet;
+    margin-right: 8px;
+    font-size: 20px;
+    font-weight: bold;
+    color:white;
+  }
+  
+  
+  

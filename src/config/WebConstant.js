@@ -11,6 +11,8 @@ export const apis = {
     addCategory:"add_cat_section.php",
     getCategory:"get_cat_section.php",
     updateVendors:"update_vendors.php",
-    updateStore:"update_store.php"
+    updateStore:"update_store.php",
+    addVendors:"add_vendors.php",
+    getDashboard:"dashboard.php",
     
 }

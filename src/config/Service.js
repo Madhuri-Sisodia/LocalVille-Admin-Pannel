@@ -19,14 +19,14 @@ export var Http = {
     })
 },
   PostAPI: (url, body, token = null) => {
-    console.log("ssss",base_url + url);
+    console.log("Api",base_url + url);
     var headers = {
       "Content-Type": "multipart/form-data",
       "Accept":'application/json',
       "Authorization":token
   };
 
-  console.log('login body', body)
+  console.log('body', body)
     return axios({
       method: 'POST',
       url: base_url + url,

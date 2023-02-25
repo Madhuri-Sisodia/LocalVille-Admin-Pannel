@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Input, Whisper, Tooltip, InputGroup } from "rsuite";
 import { RxCross1 } from "react-icons/rx";
 import { RiQuestionMark } from "react-icons/ri";
-import {MdPersonAddAlt1} from "react-icons/md";
+import { MdPersonAddAlt1 } from "react-icons/md";
 import { BiBlock } from "react-icons/bi";
 import { RxUpdate } from "react-icons/rx";
 import SearchIcon from "@rsuite/icons/Search";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import UpdateVendor from "./UpdateVendor";
-
+import AddVendor from "./AddVendor";
 import {
   Modal,
   Form,
@@ -78,6 +78,7 @@ const VendorsManager = () => {
   const [blockUser, setBlockUser] = useState([]);
   const [blockData, setBlockData] = useState([]);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [showAddVendor, setShowAddVendor] = useState(false);
   const [currentModalIdx, setCurrentModalIdx] = useState(null);
   const [selectedVendor, setSelectedVendor] = useState(null);
 
@@ -131,7 +132,22 @@ const VendorsManager = () => {
           <Col md="12">
             <Card className="strpied-tabled-with-hover">
               <Card.Header>
+                <Button
+                  className="btn-fill float-right"
+                  style={{
+                    backgroundColor: "blueviolet",
+                    borderColor: "blueviolet",
+                  }}
+                  type="submit"
+                  onClick={() => {
+                    setShowAddVendor(true);
+                  }}
+                >
+                  Add Vendors
+                </Button>
+
                 <Card.Title as="h4">Vendors Manager</Card.Title>
+
                 <p className="card-category">Vendors details and action</p>
                 <br></br>
                 <InputGroup style={{ width: "250px" }}>
@@ -192,7 +208,6 @@ const VendorsManager = () => {
                         </td>
                         <td>{item.login_count}</td>
                         <td>
-                         
                           <RxUpdate
                             style={{
                               fontSize: "18px",
@@ -204,12 +219,16 @@ const VendorsManager = () => {
                               setShowUpdateModal(true);
                             }}
                           />{" "}
-                           <MdPersonAddAlt1 
-                          style={{
+                          {/* <MdPersonAddAlt1
+                            style={{
                               fontSize: "24px",
                               cursor: "pointer",
                               color: "grey",
-                            }}/>
+                            }}
+                            onClick={() => {
+                              setShowAddVendor(true);
+                            }}
+                          /> */}
                           <RxCross1
                             style={{
                               fontSize: "18px",
@@ -235,6 +254,11 @@ const VendorsManager = () => {
           showUpdateModal={showUpdateModal}
           setShowUpdateModal={setShowUpdateModal}
           item={selectedVendor}
+          getVendors={getVendors}
+        />
+        <AddVendor
+          showAddVendor={showAddVendor}
+          setShowAddVendor={setShowAddVendor}
           getVendors={getVendors}
         />
 
