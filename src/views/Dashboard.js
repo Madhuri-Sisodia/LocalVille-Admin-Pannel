@@ -4,20 +4,7 @@ import StoreCard from "./Cards/StoreCard";
 import { Http } from "../config/Service";
 import { apis } from "../config/WebConstant";
 // react-bootstrap components
-import {
-  Badge,
-  Button,
-  Card,
-  Navbar,
-  Nav,
-  Table,
-  Container,
-  Row,
-  Col,
-  Form,
-  OverlayTrigger,
-  Tooltip,
-} from "react-bootstrap";
+import { Card, Container, Row, Col } from "react-bootstrap";
 import ProductCard from "./Cards/ProductCard";
 
 const Dashboard = () => {
@@ -26,18 +13,28 @@ const Dashboard = () => {
   const [totalStores, setTotalStores] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
   const [totalActiveUsers, setTotalActiveUsers] = useState(0);
-  const[latestStore,setLatestStore]= useState(null);
+  const [latestStore, setLatestStore] = useState(null);
+  const [latestProduct, setLatestProduct] = useState(null);
 
   useEffect(() => {
     Http.GetAPI(apis.getDashboard + "?" + Math.random(), data, null)
       .then((res) => {
+        console.log(
+          "res",
+          res.data.details.stores_products_data.recent_added_stores
+        );
         if (res?.data?.status) {
           setData(res?.data?.details);
           setTotalUsers(res?.data?.details?.total_users || 0);
           setTotalStores(res?.data?.details?.no_of_Stores || 0);
           setTotalProducts(res?.data?.details?.no_of_products || 0);
           setTotalActiveUsers(res?.data?.details?.active_users || 0);
-          // setLatestStore(res?.data?.details?.stores_products_data || 0)
+          setLatestStore(
+            res?.data?.details?.stores_products_data?.recent_added_stores || 0
+          );
+          setLatestProduct(
+            res?.data?.details?.stores_products_data?.recent_added_products || 0
+          );
         } else {
           alert("Fields not matched");
         }
@@ -46,7 +43,15 @@ const Dashboard = () => {
         alert("Something went wrong.");
         console.log("Error:", e);
       });
-  }, []);
+  }, [
+    data,
+    totalUsers,
+    totalStores,
+    totalProducts,
+    totalActiveUsers,
+    latestProduct,
+    latestStore,
+  ]);
 
   return (
     <>
@@ -58,7 +63,7 @@ const Dashboard = () => {
                 <Row>
                   <Col xs="5">
                     <div className="icon-big text-center icon-warning">
-                      <i className="nc-icon nc-chart text-warning"></i>
+                      <i className="nc-icon nc-single-02 text-warning"></i>
                     </div>
                   </Col>
                   <Col xs="7">
@@ -72,7 +77,7 @@ const Dashboard = () => {
               <Card.Footer>
                 <hr></hr>
                 <div className="stats">
-                  <i className="fas fa-redo mr-1"></i>
+                  <i className="fas fa-user text-orange fa-sm"></i>
                   Total Users
                 </div>
               </Card.Footer>
@@ -84,7 +89,10 @@ const Dashboard = () => {
                 <Row>
                   <Col xs="5">
                     <div className="icon-big text-center icon-warning">
-                      <i className="nc-icon nc-light-3 text-success"></i>
+                      <i
+                        className="fas fa-store"
+                        style={{ color: "red", fontSize: "2.6rem" }}
+                      ></i>
                     </div>
                   </Col>
                   <Col xs="7">
@@ -98,7 +106,7 @@ const Dashboard = () => {
               <Card.Footer>
                 <hr></hr>
                 <div className="stats">
-                  <i className="far fa-calendar-alt mr-1"></i>
+                  <i className="fas fa-store mr-1"></i>
                   Total Stores
                 </div>
               </Card.Footer>
@@ -110,7 +118,10 @@ const Dashboard = () => {
                 <Row>
                   <Col xs="5">
                     <div className="icon-big text-center icon-warning">
-                      <i className="nc-icon nc-vector text-danger"></i>
+                      <i
+                        className="fas fa-box "
+                        style={{ color: "orange", fontSize: "2.6rem" }}
+                      ></i>
                     </div>
                   </Col>
                   <Col xs="7">
@@ -124,7 +135,7 @@ const Dashboard = () => {
               <Card.Footer>
                 <hr></hr>
                 <div className="stats">
-                  <i className="far fa-clock-o mr-1"></i>
+                  <i className="fas fa-box mr-1"></i>
                   Total Products
                 </div>
               </Card.Footer>
@@ -136,7 +147,7 @@ const Dashboard = () => {
                 <Row>
                   <Col xs="5">
                     <div className="icon-big text-center icon-warning">
-                      <i className="nc-icon nc-favourite-28 text-primary"></i>
+                      <i className="nc-icon nc-single-02 text-success"></i>
                     </div>
                   </Col>
                   <Col xs="7">
@@ -150,7 +161,7 @@ const Dashboard = () => {
               <Card.Footer>
                 <hr></hr>
                 <div className="stats">
-                  <i className="fas fa-redo mr-1"></i>
+                  <i className="fas fa-user text-orange fa-sm"></i>
                   Total Active Users
                 </div>
               </Card.Footer>
@@ -663,8 +674,8 @@ const Dashboard = () => {
             </Card>
           </Col>
         </Row> */}
-        <ProductCard />
-        <StoreCard />
+        <ProductCard  latestProduct={latestProduct}/>
+        <StoreCard  latestStore={latestStore}/>
       </Container>
     </>
   );
