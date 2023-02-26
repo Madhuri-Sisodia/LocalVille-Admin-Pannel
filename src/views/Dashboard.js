@@ -30,10 +30,10 @@ const Dashboard = () => {
           setTotalProducts(res?.data?.details?.no_of_products || 0);
           setTotalActiveUsers(res?.data?.details?.active_users || 0);
           setLatestStore(
-            res?.data?.details?.stores_products_data?.recent_added_stores || 0
+            res?.data?.details?.stores_products_data?.recent_added_stores 
           );
           setLatestProduct(
-            res?.data?.details?.stores_products_data?.recent_added_products || 0
+            res?.data?.details?.stores_products_data?.recent_added_products 
           );
         } else {
           alert("Fields not matched");
