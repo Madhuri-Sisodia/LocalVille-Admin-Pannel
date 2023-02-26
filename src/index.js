@@ -20,12 +20,11 @@ root.render(
     <Switch>
     <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
       <Route path="/admin/dashboard" render={(props) => <AdminLayout {...props} />} />
-      <Route path="/" render={(props) => <Login {...props} />} />
-      <Route path="/login" render={(props) => <Login {...props} />} />
-      {/* <Redirect from="/" to="/admin/dashboard" /> */}
-      
+      <Route path="/" render={(props) => <Login {...props} />} /> 
+     <Route path="/login" render={(props) => <Login {...props} />} />
+      <Redirect from="/" to="/admin/dashboard" />
       {/* <Route path="/" render={<Login />} />
-      <Redirect from="/" to="/login" /> */}
+      <Redirect from="/" to="/login" />  */}
     </Switch>
   </BrowserRouter>
 )

@@ -47,12 +47,12 @@ function Admin() {
     }
   }, [location]);
 
-  useEffect(()=>{
-    if(!localStorage.getItem("userData"))
-    {
-       history.push("/login");
-    }
-  },[])
+  // useEffect(()=>{
+  //   if(!localStorage.getItem("userData"))
+  //   {
+  //      history.push("/login");
+  //   }
+  // },[])
   return (
     <>
       <div className="wrapper">

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import ErrorMessage from "customComponents/ErrorMessage";
-import { useHistory } from "react-router-dom";
+import { useHistory} from "react-router-dom";
 import { Form, Button } from "rsuite";
 import logoWhite from "assets/img/logoWhite.png";
 import "../../assets/css/login.css";
 import LoginNavbar from "components/Navbars/LoginNavbar";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
+import User from "views/UserProfile";
 
 const Login = () => {
   const history = useHistory();
@@ -14,6 +15,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState([]);
   const [errors, setErrors] = useState({});
+  //   console.log(user)
 
   const validate = () => {
     let tempErrors = {};
@@ -35,43 +37,34 @@ const Login = () => {
   };
 
   const handleSubmit = (e) => {
-    // e.preventDefault();
-    if (validate()) {
-      console.log("Email", email);
+      e.preventDefault();
+     if (validate()) {
+     console.log("Email", email);
       console.log("Password", password);
-      const loginData = { email, password };
-      var data = new FormData();
-      data.append("email", email);
-      data.append("password", password);
+       const loginData = { email, password };
+       var data = new FormData();
+       data.append("email", email);
+       data.append("password", password);
 
-      console.log("usersss", data);
-      Http.PostAPI(apis.loginAdminData, data, null)
-        .then((res) => {
-          console.log("user", res);
+       console.log("usersss", data);
+       Http.PostAPI(apis.loginAdminData, data, null)
+         .then((res) => {
           if (res?.data?.status) {
-            setUser(res?.data?.data);
-            sessionStorage.setItem("loggedIn", JSON.stringify(loginData));
-            history.push("/admin/dashboard");
-          } else {
-            alert("Fields not matched");
-          }
-        })
-        .catch((e) => {
-          alert("Something went wrong.");
-          console.log("Error:", e);
-        });
-      setEmail("");
-      setPassword("");
+              setUser(res?.data?.data);
+              sessionStorage.setItem("loggedIn", JSON.stringify(loginData));
+              history.push("/admin/dashboard")
+            } else {
+              alert("Fields not matched");
+            }
+         })
+         .catch((e) => {
+           alert("Something went wrong.");
+           console.log("Error:", e);
+         });
+       setEmail("");
+       setPassword("");
     }
   };
-
-  useEffect(() => {
-    if (sessionStorage.getItem("loggedIn")) {
-      history.push("/admin/dashboard");
-    } else if (!sessionStorage.getItem("loggedIn")) {
-      history.push("/login");
-    }
-  }, [history]);
 
   return (
     <>
@@ -82,7 +75,7 @@ const Login = () => {
           <p className="textArea">LOCALVILLE VENDOR</p>
         </div>
         <div className="SecondSection">
-          <Form style={{ textAlign: "left" }} onSubmit={handleSubmit}>
+          <Form style={{ textAlign: "left" }} >
             <Form.Group controlId="email">
               <Form.ControlLabel style={{ color: "white" }}>
                 Email
@@ -120,6 +113,7 @@ const Login = () => {
               appearance="primary"
               type="submit"
               className="loginButton"
+              onClick={handleSubmit}
             >
               Login
             </Button>
