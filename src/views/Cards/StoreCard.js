@@ -62,7 +62,7 @@ const StoreCard = ({ latestStore }) => {
                       boxShadow: "0px 6px 10px rgba(0, 0, 0, 0.2)",
                     }}
                   >
-                    <Card.Img
+                    {/* <Card.Img
                       variant="top"
                       src={item.store_image}
                       alt="Image"
@@ -71,7 +71,8 @@ const StoreCard = ({ latestStore }) => {
                         borderRadius: "10px",
                       }}
                     />
-                    <Card.Body>
+                    */}
+                    <Card.Body style={{backgroundImage:`url(${item.store_image})`,backgroundColor:"red"}}>
                       <Card.Title
                         as="h5"
                         style={{
@@ -105,7 +106,7 @@ const StoreCard = ({ latestStore }) => {
                         <button className="plus">+</button>
                       </div> */}
                     </Card.Body>
-                    <Card.Footer>
+                    {/* <Card.Footer>
                       <hr></hr>
                       <div className="stats">
                         {item.verified == "1"
@@ -114,7 +115,7 @@ const StoreCard = ({ latestStore }) => {
                           ? "In Review"
                           : "Rejected"}
                       </div>
-                    </Card.Footer>
+                    </Card.Footer> */}
                     {/* <div className="card-buttons">
                       <Button
                         className="btn-btn-primary btn-round float-left"

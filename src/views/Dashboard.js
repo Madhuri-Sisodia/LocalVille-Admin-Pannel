@@ -13,8 +13,8 @@ const Dashboard = () => {
   const [totalStores, setTotalStores] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
   const [totalActiveUsers, setTotalActiveUsers] = useState(0);
-  const [latestStore, setLatestStore] = useState(null);
-  const [latestProduct, setLatestProduct] = useState(null);
+  const [latestStore, setLatestStore] = useState([]);
+  const [latestProduct, setLatestProduct] = useState([]);
 
   useEffect(() => {
     Http.GetAPI(apis.getDashboard + "?" + Math.random(), data, null)
