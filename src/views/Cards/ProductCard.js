@@ -59,37 +59,48 @@ const ProductCard = ({ latestProduct }) => {
                     style={{
                       padding: "5px 5px 5px 5px",
                       borderRadius: "20px 20px 20px 20px",
+                      boxShadow: "0px 6px 10px rgba(0, 0, 0, 0.2)",
                     }}
                   >
-                   <Card.Img
+                    <Card.Img
                       variant="top"
                       src={item.p_images}
                       alt="Image"
                       style={{
                         height: "200px",
                         borderRadius: "10px",
+                        color: "blueviolet",
                       }}
                     />
                     <Card.Body>
                       <Card.Title
-                        as="h4"
+                        as="h5"
                         style={{
                           fontWeight: "bold",
+                          fontSize: "1rem",
                         }}
                       >
                         {item.product_name}
                       </Card.Title>
-                      <p className="card-description">{item.product_desc}</p>
+                      <p
+                        className="card-description"
+                        style={{
+                          fontSize: "0.9rem",
+                        }}
+                      >
+                        {item.product_desc}
+                      </p>
 
-                      {/* <div
+                      <div
                         style={{
                           float: "left",
                           fontWeight: "bold",
+                          fontSize: "1.2rem",
                           color: "blueviolet",
                         }}
                       >
-                        {card.price}
-                      </div> */}
+                        {item.price}$
+                      </div>
                       {/* <div className="icons">
                         <button className="minus">-</button>
                         <div style={{ marginRight: "10px" }}>1</div>

@@ -43,15 +43,7 @@ const Dashboard = () => {
         alert("Something went wrong.");
         console.log("Error:", e);
       });
-  }, [
-    data,
-    totalUsers,
-    totalStores,
-    totalProducts,
-    totalActiveUsers,
-    latestProduct,
-    latestStore,
-  ]);
+  }, []);
 
   return (
     <>
@@ -674,8 +666,8 @@ const Dashboard = () => {
             </Card>
           </Col>
         </Row> */}
-        <ProductCard  latestProduct={latestProduct}/>
-        <StoreCard  latestStore={latestStore}/>
+        <ProductCard latestProduct={latestProduct} />
+        <StoreCard latestStore={latestStore} />
       </Container>
     </>
   );

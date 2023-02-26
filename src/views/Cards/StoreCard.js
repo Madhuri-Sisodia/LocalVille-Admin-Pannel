@@ -59,6 +59,7 @@ const StoreCard = ({ latestStore }) => {
                     style={{
                       padding: "5px 5px 5px 5px",
                       borderRadius: "20px 20px 20px 20px",
+                      boxShadow: "0px 6px 10px rgba(0, 0, 0, 0.2)",
                     }}
                   >
                     <Card.Img
@@ -72,14 +73,22 @@ const StoreCard = ({ latestStore }) => {
                     />
                     <Card.Body>
                       <Card.Title
-                        as="h4"
+                        as="h5"
                         style={{
                           fontWeight: "bold",
+                          fontSize: "1rem",
                         }}
                       >
                         {item.store_name}
                       </Card.Title>
-                      <p className="card-description">{item.store_desc}</p>
+                      <p
+                        className="card-description"
+                        style={{
+                          fontSize: "0.9rem",
+                        }}
+                      >
+                        {item.store_desc}
+                      </p>
 
                       {/* <div
                         style={{
