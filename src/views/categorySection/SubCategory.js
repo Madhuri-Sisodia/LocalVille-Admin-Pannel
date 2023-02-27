@@ -1,150 +1,165 @@
-import React from 'react';
-import { Table, Card, Col } from "react-bootstrap";
-import ReloadIcon from '@rsuite/icons/Reload';
-import CloseIcon from '@rsuite/icons/Close';
-import { Form, Radio, RadioGroup, Button, ButtonToolbar, Dropdown } from "rsuite";
-import '../../assets/css/admin.css';
+import React, { useState } from "react";
+import NotificationAlert from "react-notification-alert";
+import "../../assets/css/admin.css";
+import { Form, Button, ButtonToolbar, Dropdown } from "rsuite";
+import { Http } from "../../config/Service";
+import { apis } from "../../config/WebConstant";
+import { useEffect } from "react";
 
-
-function SubCategory() {
+const SubCategory = () => {
+    const [subCategoryName, setSubCategoryName] = useState("");
+    const [selectCategory, setSelectCategory] = useState("");
+    const [color, setColor] = useState(1);
+    const [size, setSize] = useState(1);
+    const [sizeAttribute, setSizeAttribute] = useState(1);
+    const [data, setData] = useState([]);
+    const [subCategory, setSubCategory] = useState([]);
+    // const [getCategoryData, setGetCategoryData] = useState([]);
+  
+    const notificationAlertRef = React.useRef(null);
+  
+    const notify = (place) => {
+      var color = Math.floor(Math.random() * 5 + 1);
+      var type;
+      switch (color) {
+        case 1:
+          type = "primary";
+          break;
+        case 2:
+          type = "success";
+          break;
+        case 3:
+          type = "danger";
+          break;
+        case 4:
+          type = "warning";
+          break;
+        case 5:
+          type = "info";
+          break;
+        default:
+          break;
+      }
+      var options = {};
+      options = {
+        place: place,
+        message: (
+          <div>
+            <div>
+              <b>Sub Categories Successfully Added..!!</b>
+            </div>
+          </div>
+        ),
+        type: type,
+        icon: "nc-icon nc-bell-55",
+        autoDismiss: 7,
+      };
+  
+      notificationAlertRef.current.notificationAlert(options);
+    };
+  
+    const handleSubmit = () => {
+      console.log("subCategoryName", subCategoryName);
+  
+      var data = new FormData();
+      data.append("category_id",selectCategory);
+      data.append("name", subCategoryName);
+      data.append("color",color);
+      data.append("size",size);
+      data.append("size_att",sizeAttribute);
+  
+      console.log("subCategory", data);
+      Http.PostAPI(apis.addProdSubCategory + "?" + Math.random(), data, null)
+        .then((res) => {
+          console.log("Data", res);
+          if (res?.data?.status) {
+            setSubCategory(res?.data?.data);
+            alert("Sub-category added successfully");
+          } else {
+            alert("Sub-category already exists");
+          }
+        })
+        .catch((e) => {
+          alert("Something went wrong.");
+          console.log("Error:", e);
+        });
+      setSubCategoryName("");
+      setSelectCategory("");
+    };
+  
+    console.log(apis.getProductCategory);
+    useEffect(() => {
+      
+      Http.PostAPI(apis.addProdSubCategory + "?" + Math.random(), data, null)
+        .then((res) => {
+          if (res?.data?.status) {
+            setData(res?.data?.data);
+          } else {
+            // alert("Fields not matched");
+          }
+        })
+        .catch((e) => {
+          alert("Something went wrong.");
+          console.log("Error:", e);
+        });
+    }, []);
+  
     return (
-        <div className="MainContainer">
-            <Form fluid>
-                <div className="Container">
-                    <div className="InnerContainer2">
-                    <div className="InnnerContainerCategory">
-                        <Form.ControlLabel style={{ color: "#6c757d", fontSize: "1rem", marginRight: "1rem" }}>
-                            <h5>Select Category</h5>
-                        </Form.ControlLabel>
-                        <Dropdown title="Select">
-                            <Dropdown.Item>New File</Dropdown.Item>
-                            <Dropdown.Item>New File with Current Profile</Dropdown.Item>
-                            <Dropdown.Item>Download As...</Dropdown.Item>
-                            <Dropdown.Item>Export PDF</Dropdown.Item>
-                            <Dropdown.Item>Export HTML</Dropdown.Item>
-                            <Dropdown.Item>Settings</Dropdown.Item>
-                            <Dropdown.Item>About</Dropdown.Item>
-                        </Dropdown>
-                    </div>
-                    <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
-                        Sub-Category Name
-                    </Form.ControlLabel>
-                    <Form.Control placeholder="Category Name" name="name" />
-                    </div>
-                    <br/>
-                    <div className="InnnerContainerRadio">
-                    <Col lg="4" sm="6">
-                        <div className="InnnerContainer1">
-                            < Form.ControlLabel style={{ color: "#6c757d", fontSize: "1rem" }}>Contain Sizes</Form.ControlLabel>
-                            <div className="InnnerContainer">
-                                <Form.Group controlId="radioList">
-                                    <RadioGroup name="radioList">
-                                        <Radio value="1">Yes</Radio>
-                                        <Radio value="0">No</Radio>
-                                    </RadioGroup>
-                                </Form.Group>
-                            </div>
-                           
-                        </div>
-                        </Col>
-                        <br />
-                        <Col lg="4" sm="6">
-                        <div className="InnnerContainer1">
-                            <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>Contain Colors</Form.ControlLabel>
-                            <div className="InnnerContainer">
-                                <Form.Group controlId="radioList">
-                                    <RadioGroup name="radioList">
-                                        <Radio value="1">Yes</Radio>
-                                        <Radio value="0">No</Radio>
-                                    </RadioGroup>
-                                </Form.Group>
-                            </div>
-                            
-                        </div>
-                        </Col>
-                    </div>
-                <br/>
-
-                    <Col md="12">
-                        <Card className="strpied-tabled-with-hover">
-
-                            <Card.Header style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                                <Card.Title as="h4">Sub-Categoty Table</Card.Title>
-                                <ReloadIcon
-                                    style={{ textAlign: "right", width: "3rem", height: "3rem", border: "2px solid #59afff", color: "#59afff", borderRadius: "5px", padding: "10px", margin: "10px" }}
-                                />
-                            </Card.Header>
-
-                            <Card.Body className="table-full-width table-responsive px-0">
-                                <Table className="table-hover table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th className="border-0">ID</th>
-                                            <th className="border-0">Category Name</th>
-                                            <th className="border-0">Category Type</th>
-                                            <th className="border-0">Actions</th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Dakota Rice</td>
-                                            <td>$36,738</td>
-                                            <td><CloseIcon className="closeButton" /></td>
-
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Minerva Hooper</td>
-                                            <td>$23,789</td>
-                                            <td><CloseIcon className="closeButton" /></td>
-
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>Sage Rodriguez</td>
-                                            <td>$56,142</td>
-                                            <td><CloseIcon className="closeButton" /></td>
-
-                                        </tr>
-                                        <tr>
-                                            <td>4</td>
-                                            <td>Philip Chaney</td>
-                                            <td>$38,735</td>
-                                            <td><CloseIcon className="closeButton" /></td>
-
-                                        </tr>
-                                        <tr>
-                                            <td>5</td>
-                                            <td>Doris Greene</td>
-                                            <td>$63,542</td>
-                                            <td><CloseIcon className="closeButton" /></td>
-
-                                        </tr>
-                                        <tr>
-                                            <td>6</td>
-                                            <td>Mason Porter</td>
-                                            <td>$78,615</td>
-                                            <td><CloseIcon className="closeButton" /></td>
-
-                                        </tr>
-                                    </tbody>
-                                </Table>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    <Form.Group>
-                    <ButtonToolbar>
-                        <Button appearance="primary" type="submit" style={{ marginTop: "3rem", marginBottom: "0.5rem" }} block>Submit</Button>
-
-                    </ButtonToolbar>
-                </Form.Group>
-                </div>
-               
-            </Form>
+      <>
+        <div className="rna-container">
+          <NotificationAlert ref={notificationAlertRef} />
         </div>
-    )
-}
+        <div className="MainContainer">
+          <div className="Container">
+            <Form fluid>
+              <Form.Group controlId="name-1">
+                <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
+                  Sub-Category Name
+                </Form.ControlLabel>
+                <Form.Control
+                  placeholder="Sub-Category Name"
+                  name="subCategoryName"
+                  value={subCategoryName}
+                  required="setSubCategoryName"
+                  onChange={(value) => setSubCategoryName(value)}
+                />
+              </Form.Group>
+              {/* <Form.Group controlId="name-1"> */}
+              <div className="InnnerContainerCategory">
+                <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
+                  Category
+                </Form.ControlLabel>
+                <select
+                  name="selectCategory"
+                  value={selectCategory}
+                  onChange={(event) => setSelectCategory(event.target.value)}
+                >
+                  <option value="">Select</option>
+                  {data.map((category) => (
+                    <option key={category.id} value={category.name}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+  
+              <Form.Group>
+                <ButtonToolbar>
+                  <Button
+                    appearance="primary"
+                    type="submit"
+                    style={{ marginTop: "3rem", marginBottom: "0.5rem" }}
+                    block onClick={handleSubmit}
+                  >
+                    Submit
+                  </Button>
+                </ButtonToolbar>
+              </Form.Group>
+            </Form>
+          </div>
+        </div>
+      </>
+    );
+  };
 
 export default SubCategory;
