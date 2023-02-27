@@ -14,5 +14,8 @@ export const apis = {
     updateStore:"update_store.php",
     addVendors:"add_vendors.php",
     getDashboard:"dashboard.php",
-    
+    addPrdouctCategory:"add_prod_category.php",
+    getProductCategory:"get_prod_category.php",
+    addProdSubCategory:"add_prod_subcategory.php",
+    getProdSubCategory:"get_prod_subcategory.php"
 }
