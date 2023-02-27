@@ -1,0 +1,12 @@
+.day-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+    font-size: 16px;
+    font-weight: bold;
+  }

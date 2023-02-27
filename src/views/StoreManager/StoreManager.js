@@ -10,7 +10,9 @@ import SearchIcon from "@rsuite/icons/Search";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import "../../assets/css/modal.css";
+import "../../assets/css/day.css";
 import UpdateStore from "./UpdateStore";
+import AddStore from "./AddStore";
 
 import {
   Modal,
@@ -25,11 +27,10 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-import AddStore from "./AddStore";
 
 // const data = [
 //   {
-//     Store_id: 1,
+//     vendor_id: 1,
 //     store_image: "https://dummyimage.com/300x200/000/fff",
 //     store_name: "Store 1",
 //     store_description: "This is the description for Store 1",
@@ -47,7 +48,7 @@ import AddStore from "./AddStore";
 //     status: "active",
 //   },
 //   {
-//     Store_id: 2,
+//     vendor_id: 2,
 //     store_image: "https://dummyimage.com/300x200/000/fff",
 //     store_name: "Store 2",
 //     store_description: "This is the description for Store 2",
@@ -65,7 +66,7 @@ import AddStore from "./AddStore";
 //     status: "block",
 //   },
 //   {
-//     Store_id: 3,
+//     vendor_id: 3,
 //     store_image: "https://dummyimage.com/300x200/000/fff",
 //     store_name: "Store 3",
 //     store_description: "This is the description for Store 3",
@@ -83,7 +84,7 @@ import AddStore from "./AddStore";
 //     status: "block",
 //   },
 //   {
-//     Store_id: 4,
+//     vendor_id: 4,
 //     store_image: "https://dummyimage.com/300x200/000/fff",
 //     store_name: "Store 4",
 //     store_description: "This is the description for Store 4",
@@ -106,13 +107,13 @@ const StoreManager = () => {
   const [showModal, setShowModal] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [data, setData] = useState([]);
-
+  const [showAddStore, setShowAddStore] = useState(false);
   const [rowData, setRowData] = useState([]);
   const [blockData, setBlockData] = useState([]);
   const [blockStore, setBlockStore] = useState([]);
-  const [showAddStore, setShowAddStore] = useState(false);
   const [showUpdateStore, setShowUpdateStore] = useState(false);
   const [selectedStore, setSelectedStore] = useState(null);
+  const [days, setDays] = useState([]);
 
   const getLocation = (latitude, longitude) => {
     const url = `https://www.google.com/maps?q=${latitude}+${longitude}`;
@@ -133,7 +134,7 @@ const StoreManager = () => {
         console.log("Error:", e);
       });
   };
-
+  console.log("data", data);
   useEffect(() => {
     getStore();
   }, []);
@@ -158,6 +159,17 @@ const StoreManager = () => {
       });
   };
 
+  const daysOfWeek = ["M", "T", "W", "Th", "F", "S", "Su"];
+
+  // let abc = rowData.opening_days.split("")
+  // console.log("ss",abc);
+
+  useEffect(() => {
+    if (rowData.opening_days) {
+      setDays(JSON.parse(rowData.opening_days));
+    }
+  }, [rowData]);
+  console.log("days", days);
   return (
     <>
       <Container fluid>
@@ -165,7 +177,7 @@ const StoreManager = () => {
           <Col md="12">
             <Card className="strpied-tabled-with-hover">
               <Card.Header>
-              <Button
+                <Button
                   className="btn-fill float-right"
                   style={{
                     backgroundColor: "blueviolet",
@@ -203,7 +215,7 @@ const StoreManager = () => {
                   <thead>
                     <tr>
                       <th className="border-0">Store ID</th>
-                      <th className="border-0">Store ID</th>
+                      <th className="border-0">Vendor ID</th>
                       <th className="border-0">Store Image</th>
                       <th className="border-0">Store Name</th>
                       <th className="border-0">Store Address</th>
@@ -234,7 +246,7 @@ const StoreManager = () => {
                         key={item.id}
                       >
                         <td>{item.id}</td>
-                        <td>{item.Store_id}</td>
+                        <td>{item.vendor_id}</td>
                         <td>
                           <img
                             src={item.store_image}
@@ -412,8 +424,8 @@ const StoreManager = () => {
           <Table striped bordered className="table">
             <tbody>
               <tr>
-                <td className="bold-col">Store ID:</td>
-                <td>{rowData.Store_id}</td>
+                <td className="bold-col">Vendor ID:</td>
+                <td>{rowData.vendor_id}</td>
               </tr>
               <tr>
                 <td className="bold-col">Store Image:</td>
@@ -463,23 +475,10 @@ const StoreManager = () => {
               </tr>
               <tr>
                 <td className="bold-col">Opening Days:</td>
-                <td
-                  style={{
-                    backgroundColor:
-                      rowData.opening_days == "[1,2,3,4,5,6]" ? "red" : "white",
-                    border: "none",
-                    height: "20px",
-                    width: "20px",
-                    fontSize: "0.75rem",
-                    color: "white",
-                    padding: " 10px",
-                    borderRadius: "50%",
-                    display: "inline-block",
-                  }}
-                >
-                  {rowData.opening_days == "[1,2,3,4,5,6]"
-                    ? "M,T,W,TH,F,S"
-                    : "S"}
+                <td>
+                  {days.map((dayNumber) => (
+                    <div key={dayNumber}>{daysOfWeek[dayNumber - 1]}</div>
+                  ))}
                 </td>
               </tr>
               <tr>

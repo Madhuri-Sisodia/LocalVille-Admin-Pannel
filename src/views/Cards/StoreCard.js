@@ -108,7 +108,7 @@ const StoreCard = ({ latestStore }) => {
                         <button className="plus">+</button>
                       </div> */}
                     </Card.Body>
-                    {/* <Card.Footer>
+                    <Card.Footer>
                       <hr></hr>
                       <div className="stats">
                         {item.verified == "1"
@@ -117,7 +117,7 @@ const StoreCard = ({ latestStore }) => {
                           ? "In Review"
                           : "Rejected"}
                       </div>
-                    </Card.Footer> */}
+                    </Card.Footer>
                     {/* <div className="card-buttons">
                       <Button
                         className="btn-btn-primary btn-round float-left"

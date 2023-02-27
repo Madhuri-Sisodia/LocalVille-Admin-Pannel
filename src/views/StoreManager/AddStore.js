@@ -69,7 +69,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
     data.append("opening_time", storeData.openingTime);
     data.append("closing_time", storeData.closingTime);
     console.log("updateStore", data);
-
+    
     Http.PostAPI(apis.addStore, data, null)
     .then((res) => {
       console.log("resp", res);
