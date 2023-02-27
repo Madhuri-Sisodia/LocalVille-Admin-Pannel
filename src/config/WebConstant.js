@@ -13,6 +13,7 @@ export const apis = {
     updateVendors:"update_vendors.php",
     updateStore:"update_store.php",
     addVendors:"add_vendors.php",
+    addStore:"add_store.php",
     getDashboard:"dashboard.php",
     
 }

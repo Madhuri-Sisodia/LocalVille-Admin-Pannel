@@ -57,12 +57,17 @@ const ProductCard = ({ latestProduct }) => {
                 <Col md="4" key={index}>
                   <Card
                     style={{
+                      background: `url(${item.p_images})`,
                       padding: "5px 5px 5px 5px",
                       borderRadius: "20px 20px 20px 20px",
                       boxShadow: "0px 6px 10px rgba(0, 0, 0, 0.2)",
+                      height: "200px",
+                      width: "100%",
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
                     }}
                   >
-                    <Card.Img
+                    {/* <Card.Img
                       variant="top"
                       src={item.p_images}
                       alt="Image"
@@ -71,7 +76,7 @@ const ProductCard = ({ latestProduct }) => {
                         borderRadius: "10px",
                         color: "blueviolet",
                       }}
-                    />
+                    /> */}
                     <Card.Body>
                       <Card.Title
                         as="h5"

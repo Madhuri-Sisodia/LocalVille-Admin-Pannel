@@ -60,6 +60,9 @@ const StoreCard = ({ latestStore }) => {
                       padding: "5px 5px 5px 5px",
                       borderRadius: "20px 20px 20px 20px",
                       boxShadow: "0px 6px 10px rgba(0, 0, 0, 0.2)",
+                      backgroundImage: `url(${item.store_image})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
                     }}
                   >
                     {/* <Card.Img
@@ -70,9 +73,8 @@ const StoreCard = ({ latestStore }) => {
                         height: "200px",
                         borderRadius: "10px",
                       }}
-                    />
-                    */}
-                    <Card.Body style={{backgroundImage:`url(${item.store_image})`,backgroundColor:"red"}}>
+                    /> */}
+                    <Card.Body>
                       <Card.Title
                         as="h5"
                         style={{

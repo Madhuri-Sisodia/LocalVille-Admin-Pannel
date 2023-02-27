@@ -25,11 +25,11 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-
+import AddStore from "./AddStore";
 
 // const data = [
 //   {
-//     vendor_id: 1,
+//     Store_id: 1,
 //     store_image: "https://dummyimage.com/300x200/000/fff",
 //     store_name: "Store 1",
 //     store_description: "This is the description for Store 1",
@@ -47,7 +47,7 @@ import {
 //     status: "active",
 //   },
 //   {
-//     vendor_id: 2,
+//     Store_id: 2,
 //     store_image: "https://dummyimage.com/300x200/000/fff",
 //     store_name: "Store 2",
 //     store_description: "This is the description for Store 2",
@@ -65,7 +65,7 @@ import {
 //     status: "block",
 //   },
 //   {
-//     vendor_id: 3,
+//     Store_id: 3,
 //     store_image: "https://dummyimage.com/300x200/000/fff",
 //     store_name: "Store 3",
 //     store_description: "This is the description for Store 3",
@@ -83,7 +83,7 @@ import {
 //     status: "block",
 //   },
 //   {
-//     vendor_id: 4,
+//     Store_id: 4,
 //     store_image: "https://dummyimage.com/300x200/000/fff",
 //     store_name: "Store 4",
 //     store_description: "This is the description for Store 4",
@@ -110,6 +110,7 @@ const StoreManager = () => {
   const [rowData, setRowData] = useState([]);
   const [blockData, setBlockData] = useState([]);
   const [blockStore, setBlockStore] = useState([]);
+  const [showAddStore, setShowAddStore] = useState(false);
   const [showUpdateStore, setShowUpdateStore] = useState(false);
   const [selectedStore, setSelectedStore] = useState(null);
 
@@ -164,6 +165,19 @@ const StoreManager = () => {
           <Col md="12">
             <Card className="strpied-tabled-with-hover">
               <Card.Header>
+              <Button
+                  className="btn-fill float-right"
+                  style={{
+                    backgroundColor: "blueviolet",
+                    borderColor: "blueviolet",
+                  }}
+                  type="submit"
+                  onClick={() => {
+                    setShowAddStore(true);
+                  }}
+                >
+                  Add Stores
+                </Button>
                 <Card.Title as="h4">Store Manager</Card.Title>
                 <p className="card-category">Store details and action</p>
                 <br></br>
@@ -189,7 +203,7 @@ const StoreManager = () => {
                   <thead>
                     <tr>
                       <th className="border-0">Store ID</th>
-                      <th className="border-0">Vendor ID</th>
+                      <th className="border-0">Store ID</th>
                       <th className="border-0">Store Image</th>
                       <th className="border-0">Store Name</th>
                       <th className="border-0">Store Address</th>
@@ -220,7 +234,7 @@ const StoreManager = () => {
                         key={item.id}
                       >
                         <td>{item.id}</td>
-                        <td>{item.vendor_id}</td>
+                        <td>{item.Store_id}</td>
                         <td>
                           <img
                             src={item.store_image}
@@ -339,6 +353,12 @@ const StoreManager = () => {
         getStore={getStore}
       />
 
+      <AddStore
+        showAddStore={showAddStore}
+        setShowAddStore={setShowAddStore}
+        getStore={getStore}
+      />
+
       <Modal
         className="modal-mini modal-primary"
         show={showModal}
@@ -392,8 +412,8 @@ const StoreManager = () => {
           <Table striped bordered className="table">
             <tbody>
               <tr>
-                <td className="bold-col">Vendor ID:</td>
-                <td>{rowData.vendor_id}</td>
+                <td className="bold-col">Store ID:</td>
+                <td>{rowData.Store_id}</td>
               </tr>
               <tr>
                 <td className="bold-col">Store Image:</td>
