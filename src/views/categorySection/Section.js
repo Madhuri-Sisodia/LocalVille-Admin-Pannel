@@ -1,18 +1,22 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import NotificationAlert from "react-notification-alert";
 import "../../assets/css/admin.css";
 import { Form, Button, ButtonToolbar, Dropdown } from "rsuite";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import { useEffect } from "react";
+import { Utils } from "CommonUtils/Utils";
 
 const Section = () => {
   const [sectionName, setSectionName] = useState("");
+  const [selectSection, setSelectSection] = useState("");
+  const {setCategoriesId} = useContext(Utils)
 //   const [selectCategory, setSelectCategory] = useState("");
   const [data, setData] = useState([]);
+  const [category, setCategory] = useState([]);
 //   const [category, setCategory] = useState([]);
   // const [getCategoryData, setGetCategoryData] = useState([]);
-
+console.log(sectionName)
   const notificationAlertRef = React.useRef(null);
 
   const notify = (place) => {
@@ -56,45 +60,36 @@ const Section = () => {
   };
 
   const handleSubmit = () => {
-    console.log("sectionName", sectionName);
 
-    var data = new FormData();
-    data.append("name", sectionName);
 
-    console.log("section", data);
-    Http.PostAPI(apis.addCategory, data, null)
-      .then((res) => {
-        console.log("Data", res);
-        if (res?.data?.status) {
-          setSection(res?.data?.data);
-          alert("Section added successfully");
-        } else {
-          alert("Section already exists");
-        }
-      })
-      .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
-      });
-    setSectionName("");
-    // setSelectCategory("");
+        const SelectedSection = data.filter((ele)=>{
+          return(ele.section_name==selectSection)
+        })  
+
+        // setCategoriesId(SelectedSection[0].id)
+      
+        var formdata = new FormData();
+        formdata.append("section_name",sectionName );
+
+        Http.PostAPI(apis.addCategory, formdata, null)
+        .then((res) => {
+          console.log("Data", res);
+          if (res?.data?.status) {
+            setCategory(res?.data?.data);
+            alert("Category added successfully");
+          } else {
+            alert("Category already exists");
+          }
+        })
+        .catch((e) => {
+          alert("Something went wrong.");
+          console.log("Error:", e);
+        });
   };
 
-//   useEffect(() => {
-//     Http.GetAPI(apis.getCategory + "?" + Math.random(), data, null)
-//       .then((res) => {
-//         if (res?.data?.status) {
-//           setData(res?.data?.data);
-//         } else {
-//           alert("Fields not matched");
-//         }
-//       })
-//       .catch((e) => {
-//         alert("Something went wrong.");
-//         console.log("Error:", e);
-//       });
-//   }, []);
 
+
+ 
   return (
     <>
       <div className="rna-container">
@@ -104,16 +99,22 @@ const Section = () => {
         <div className="Container">
           <Form fluid onSubmit={handleSubmit}>
             <Form.Group controlId="name-1">
-              <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
-                Category Section Name
+            <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
+                Add Category Section
               </Form.ControlLabel>
-              <Form.Control
-                placeholder="Category Section Name"
-                name="sectionName"
-                value={sectionName}
-                required="setSectionName"
-                onChange={(value) => setSectionName(value)}
-              />
+              <input type="text" onChange={(e)=>{ setSectionName(e.target.value)}} style={{width:"100%",height:"30px",borderRadius:"5px",padding:"10px",marginTop:"20px"}}/>
+               {/* <select
+                name="selectSection"
+                value={selectSection}
+                onChange={(event) => setSelectSection(event.target.value)}
+              >
+                <option value="">Select</option>
+                {data.map((category) => (
+                  <option key={category.id} value={category.section_name}>
+                    {category.section_name}
+                  </option>
+                ))}
+              </select> */}
             </Form.Group>
             {/* <Form.Group controlId="name-1"> */}
             {/* <div className="InnnerContainerCategory">

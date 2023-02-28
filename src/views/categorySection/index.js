@@ -25,6 +25,12 @@ function index() {
     <div className='MainContainer'>
      
         <Row>
+        <Col md={6} sm={12}>
+            <Card bordered header="Section" className="Categorycards" onClick={()=>setSelectedItem(4)}
+               />
+              
+          </Col>
+
           <Col md={6} sm={12}>
             <Card bordered header="Categories" className="Categorycards"
             cardid="1"
@@ -37,27 +43,10 @@ function index() {
               onClick={()=>setSelectedItem(2)}
               />
           </Col>
-
-          <Col md={6} sm={12} >
-            <Card bordered header=" Store Categories" className="Categorycards" onClick={()=>setSelectedItem(3)}
-               />
-          </Col>
         </Row>
         <br />
         <br />
         {/* <Gap/> */}
-        <Row>
-          <Col md={6} sm={12}>
-            <Card bordered header="Section" className="Categorycards" onClick={()=>setSelectedItem(4)}
-               />
-              
-          </Col>
-
-          <Col md={6} sm={12} >
-            <Card bordered header="Attributes" className="Categorycards" onClick={()=>setSelectedItem(5)}
-          />
-          </Col>
-        </Row>
 <br/>
 
         {selectedItem==1 && <Category/>}

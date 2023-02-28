@@ -4,16 +4,19 @@ import "../../assets/css/admin.css";
 import { Form, Button, ButtonToolbar, Dropdown } from "rsuite";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
-import { useEffect } from "react";
+import { useEffect,useContext } from "react";
+import { Utils } from "CommonUtils/Utils";
+
 
 const Category = () => {
   const [categoryName, setCategoryName] = useState("");
   const [selectSection, setSelectSection] = useState("");
   const [data, setData] = useState([]);
   const [category, setCategory] = useState([]);
-  // const [getCategoryData, setGetCategoryData] = useState([]);
-
+  const {setCategoriesId} = useContext(Utils)
+  
   const notificationAlertRef = React.useRef(null);
+  console.log(data)
 
   const notify = (place) => {
     var color = Math.floor(Math.random() * 5 + 1);
@@ -56,14 +59,21 @@ const Category = () => {
   };
 
   const handleSubmit = () => {
-    console.log("categoryName", categoryName);
 
-    var data = new FormData();
-    data.append("section_id",selectSection);
-    data.append("name", categoryName);
+    const SelectedSection = data.filter((ele)=>{
+      console.log(ele.name)
+      return(ele.section_name==selectSection)
+    })
+    const id = SelectedSection[0].id
+    setCategoriesId(id)
+   
+    var formdata = new FormData();
 
-    console.log("category", data);
-    Http.PostAPI(apis.addPrdouctCategory, data, null)
+    formdata.append("section_id",`${id}`);
+    formdata.append("name", categoryName);
+  
+    console.log("formdata=>",formdata)
+    Http.PostAPI(apis.addPrdouctCategory, formdata, null)
       .then((res) => {
         console.log("Data", res);
         if (res?.data?.status) {
@@ -82,8 +92,9 @@ const Category = () => {
   };
 
   useEffect(() => {
-    Http.GetAPI(apis.getCategory + "?" + Math.random(), data, null)
+    Http.GetAPI(apis.getCategory + "?" + Math.random(),data, null)
       .then((res) => {
+        console.log(res)
         if (res?.data?.status) {
           setData(res?.data?.data);
         } else {
@@ -96,6 +107,22 @@ const Category = () => {
       });
   }, []);
 
+  // useEffect(() => {
+  //   Http.GetAPI(apis.getCategory + "?" + Math.random(), data, null)
+  //     .then((res) => {
+  //       if (res?.data?.status) {
+  //         setData(res?.data?.data);
+  //       } else {
+  //         alert("Fields not matched");
+  //       }
+  //     })
+  //     .catch((e) => {
+  //       alert("Something went wrong.");
+  //       console.log("Error:", e);
+  //     });
+  // }, []);
+
+
   return (
     <>
       <div className="rna-container">
@@ -105,14 +132,16 @@ const Category = () => {
         <div className="Container">
           <Form fluid onSubmit={handleSubmit}>
             <Form.Group controlId="name-1">
-            <div className="InnnerContainerCategory">
-              <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
+            <div className="InnnerContainerCategory" style={{marginTop:"20px",marginBottom:"20px",flexDirection:"column"}}>
+              <Form.ControlLabel style={{ color: "#808080", fontSize: "0.9rem",marginRight:"20px",marginBottom:"20px"}}>
                 Category Section
               </Form.ControlLabel>
+              <div>
               <select
                 name="selectSection"
                 value={selectSection}
                 onChange={(event) => setSelectSection(event.target.value)}
+                style={{height:"30px",borderRadius:"5px",paddingLeft:"5px",paddingRight:"5px",borderColor: "#808020"}}
               >
                 <option value="">Select</option>
                 {data.map((category) => (
@@ -121,8 +150,9 @@ const Category = () => {
                   </option>
                 ))}
               </select>
+              </div>
             </div>
-              <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
+              <Form.ControlLabel style={{ color: "#808080", fontSize: "0.9rem",marginBottom:"10px",PaddingTop:"20px" }}>
                 Category Name
               </Form.ControlLabel>
               <Form.Control
@@ -133,15 +163,12 @@ const Category = () => {
                 onChange={(value) => setCategoryName(value)}
               />
             </Form.Group>
-            {/* <Form.Group controlId="name-1"> */}
-            
-
             <Form.Group>
               <ButtonToolbar>
                 <Button
                   appearance="primary"
                   type="submit"
-                  style={{ marginTop: "3rem", marginBottom: "0.5rem" }}
+                  style={{ marginTop: "1rem", marginBottom: "0.5rem" }}
                   block
                 >
                   Submit

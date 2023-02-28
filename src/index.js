@@ -8,7 +8,7 @@ import "./assets/css/animate.min.css";
 import "./assets/scss/light-bootstrap-dashboard-react.scss?v=2.0.0";
 import "./assets/css/demo.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-
+import Context from "CommonUtils/Utils";
 import AdminLayout from "layouts/Admin.js";
 import Login from "views/Auth/Login";
 
@@ -16,6 +16,7 @@ import Login from "views/Auth/Login";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
+  <Context>
   <BrowserRouter>
     <Switch>
     <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
@@ -27,4 +28,5 @@ root.render(
       <Redirect from="/" to="/login" />  */}
     </Switch>
   </BrowserRouter>
+  </Context>
 )
