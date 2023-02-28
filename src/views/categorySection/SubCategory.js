@@ -87,15 +87,13 @@ const SubCategory = () => {
       setSelectCategory("");
     };
   
-    console.log(apis.getProductCategory);
     useEffect(() => {
-      
-      Http.PostAPI(apis.addProdSubCategory + "?" + Math.random(), data, null)
+      Http.GetAPI(apis.getProductCategory + "?" + Math.random(), data, null)
         .then((res) => {
           if (res?.data?.status) {
             setData(res?.data?.data);
           } else {
-            // alert("Fields not matched");
+            alert("Fields not matched");
           }
         })
         .catch((e) => {
@@ -113,18 +111,6 @@ const SubCategory = () => {
           <div className="Container">
             <Form fluid>
               <Form.Group controlId="name-1">
-                <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
-                  Sub-Category Name
-                </Form.ControlLabel>
-                <Form.Control
-                  placeholder="Sub-Category Name"
-                  name="subCategoryName"
-                  value={subCategoryName}
-                  required="setSubCategoryName"
-                  onChange={(value) => setSubCategoryName(value)}
-                />
-              </Form.Group>
-              {/* <Form.Group controlId="name-1"> */}
               <div className="InnnerContainerCategory">
                 <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
                   Category
@@ -142,7 +128,18 @@ const SubCategory = () => {
                   ))}
                 </select>
               </div>
-  
+                <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
+                  Sub-Category Name
+                </Form.ControlLabel>
+                <Form.Control
+                  placeholder="Sub-Category Name"
+                  name="subCategoryName"
+                  value={subCategoryName}
+                  required="setSubCategoryName"
+                  onChange={(value) => setSubCategoryName(value)}
+                />
+              </Form.Group>
+              {/* <Form.Group controlId="name-1"> */}
               <Form.Group>
                 <ButtonToolbar>
                   <Button

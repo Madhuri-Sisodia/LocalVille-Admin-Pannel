@@ -3,6 +3,7 @@ import { Panel, Placeholder, Row, Col } from 'rsuite';
 import Category from './Category';
 import "../../assets/css/admin.css";
 import SubCategory from './SubCategory';
+import Section from'./Section';
 
 function index() {
   
@@ -11,8 +12,6 @@ function index() {
   const handleClick = () => {
 
   }
-
-
   const Card = (props) => {
     return(
       <Panel {...props}>
@@ -40,7 +39,7 @@ function index() {
           </Col>
 
           <Col md={6} sm={12} >
-            <Card bordered header=" Store Categories" className="Categorycards"
+            <Card bordered header=" Store Categories" className="Categorycards" onClick={()=>setSelectedItem(3)}
                />
           </Col>
         </Row>
@@ -49,13 +48,13 @@ function index() {
         {/* <Gap/> */}
         <Row>
           <Col md={6} sm={12}>
-            <Card bordered header="Section" className="Categorycards"
+            <Card bordered header="Section" className="Categorycards" onClick={()=>setSelectedItem(4)}
                />
               
           </Col>
 
           <Col md={6} sm={12} >
-            <Card bordered header="Attributes" className="Categorycards"
+            <Card bordered header="Attributes" className="Categorycards" onClick={()=>setSelectedItem(5)}
           />
           </Col>
         </Row>
@@ -63,6 +62,7 @@ function index() {
 
         {selectedItem==1 && <Category/>}
         {selectedItem==2 && <SubCategory/>}
+        {selectedItem==4 && <Section/>}
       
     </div>
   )
