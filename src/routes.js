@@ -8,9 +8,8 @@ import Notifications from "views/Notifications.js";
 import AdminManager from "views/AdminManager";
 // import SubCategory from "views/categorySection/SubCategory.js";
 import Category from "views/categorySection/index.js";
-import StoreManager from "views/StoreManager";
-import VendorsManager from "views/VendorsManager";
-import Product from "views/Product";
+import StoreManager from "views/StoreManager/StoreManager";
+import VendorsManager from "views/VendorsManager/VendorsManager";
 
 
 const dashboardRoutes = [
@@ -60,13 +59,13 @@ const dashboardRoutes = [
     layout: "/admin"
   },
 
-  {
-    path: "/product",
-    name: "Product",
-    icon: "nc-icon nc-circle-09",
-    component: Product,
-    layout: "/admin"
-  },
+  // {
+  //   path: "/product",
+  //   name: "Product",
+  //   icon: "nc-icon nc-circle-09",
+  //   component: Product,
+  //   layout: "/admin"
+  // },
 
   {
     path: "/user",

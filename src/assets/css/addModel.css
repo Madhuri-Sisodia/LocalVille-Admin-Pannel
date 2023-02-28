@@ -12,14 +12,11 @@
     
 }
 .body {
-    height: 300px;
+    height: 400px;
     overflow-y: scroll;
    
 }
-.label{
-    font-size:1rem;
-   margin-bottom: 0rem ;
-}
+
 
 .form{
     font-size: 0.9rem; 

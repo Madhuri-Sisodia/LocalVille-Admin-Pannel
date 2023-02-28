@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Input, Whisper, Tooltip, InputGroup } from "rsuite";
 import { RxCross1 } from "react-icons/rx";
 import { RiQuestionMark } from "react-icons/ri";
+import { MdPersonAddAlt1 } from "react-icons/md";
 import { BiBlock } from "react-icons/bi";
 import { RxUpdate } from "react-icons/rx";
 import SearchIcon from "@rsuite/icons/Search";
-import { Http } from "../config/Service";
-import { apis } from "../config/WebConstant";
+import { Http } from "../../config/Service";
+import { apis } from "../../config/WebConstant";
 import UpdateVendor from "./UpdateVendor";
-
+import AddVendor from "./AddVendor";
 import {
   Modal,
   Form,
@@ -73,22 +74,15 @@ import {
 
 const VendorsManager = () => {
   const [showModal, setShowModal] = useState(false);
-  const [deleteId, setDeleteId] = useState(null);
   const [data, setData] = useState([]);
   const [blockUser, setBlockUser] = useState([]);
   const [blockData, setBlockData] = useState([]);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [showAddVendor, setShowAddVendor] = useState(false);
+  const [currentModalIdx, setCurrentModalIdx] = useState(null);
+  const [selectedVendor, setSelectedVendor] = useState(null);
 
   const [isLoading, setIsLoading] = useState(true);
-
-  const handleDelete = (id) => {
-    setShowModal(false);
-    setDeleteId(id);
-    // data = data.filter(item => item.id !== id);
-  };
-  const handleUpdateClick = () => {
-    setShowUpdateModal(true);
-  };
 
   const getVendors = () => {
     Http.GetAPI(apis.getVendorsData + "?" + Math.random(), data, null)
@@ -138,7 +132,22 @@ const VendorsManager = () => {
           <Col md="12">
             <Card className="strpied-tabled-with-hover">
               <Card.Header>
+                <Button
+                  className="btn-fill float-right"
+                  style={{
+                    backgroundColor: "blueviolet",
+                    borderColor: "blueviolet",
+                  }}
+                  type="submit"
+                  onClick={() => {
+                    setShowAddVendor(true);
+                  }}
+                >
+                  Add Vendors
+                </Button>
+
                 <Card.Title as="h4">Vendors Manager</Card.Title>
+
                 <p className="card-category">Vendors details and action</p>
                 <br></br>
                 <InputGroup style={{ width: "250px" }}>
@@ -164,7 +173,7 @@ const VendorsManager = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {data.map((item) => (
+                    {data.map((item, index) => (
                       <tr style={{ fontSize: "0.95rem" }} key={item.id}>
                         <td>{item.id}</td>
                         <td>
@@ -177,7 +186,6 @@ const VendorsManager = () => {
                               borderRadius: "50%",
                             }}
                           />
-                          {console.log("image", item.user_image)}
                         </td>
                         <td>{item.name}</td>
                         <td>{item.email}</td>
@@ -202,20 +210,28 @@ const VendorsManager = () => {
                         <td>
                           <RxUpdate
                             style={{
-                              fontSize: "20px",
+                              fontSize: "18px",
                               cursor: "pointer",
                               color: "grey",
                             }}
-                            onClick={handleUpdateClick}
+                            onClick={() => {
+                              setSelectedVendor(item);
+                              setShowUpdateModal(true);
+                            }}
                           />{" "}
-                          <UpdateVendor
-                            showUpdateModal={showUpdateModal}
-                            setShowUpdateModal={setShowUpdateModal}
-                            item={item}
-                          />
+                          {/* <MdPersonAddAlt1
+                            style={{
+                              fontSize: "24px",
+                              cursor: "pointer",
+                              color: "grey",
+                            }}
+                            onClick={() => {
+                              setShowAddVendor(true);
+                            }}
+                          /> */}
                           <RxCross1
                             style={{
-                              fontSize: "20px",
+                              fontSize: "18px",
                               cursor: "pointer",
                               color: "#dc3545",
                             }}
@@ -233,6 +249,18 @@ const VendorsManager = () => {
             </Card>
           </Col>
         </Row>
+
+        <UpdateVendor
+          showUpdateModal={showUpdateModal}
+          setShowUpdateModal={setShowUpdateModal}
+          item={selectedVendor}
+          getVendors={getVendors}
+        />
+        <AddVendor
+          showAddVendor={showAddVendor}
+          setShowAddVendor={setShowAddVendor}
+          getVendors={getVendors}
+        />
 
         <Modal
           className="modal-mini modal-primary"

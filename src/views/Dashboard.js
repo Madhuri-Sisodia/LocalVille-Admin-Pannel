@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ChartistGraph from "react-chartist";
+import StoreCard from "./Cards/StoreCard";
+import { Http } from "../config/Service";
+import { apis } from "../config/WebConstant";
 // react-bootstrap components
 import {
   Badge,
@@ -15,8 +18,36 @@ import {
   OverlayTrigger,
   Tooltip,
 } from "react-bootstrap";
+import ProductCard from "./Cards/ProductCard";
 
-function Dashboard() {
+const Dashboard = () => {
+  const [data, setData] = useState([]);
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [totalStores, setTotalStores] = useState(0);
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [totalActiveUsers, setTotalActiveUsers] = useState(0);
+  const[latestStore,setLatestStore]= useState(null);
+
+  useEffect(() => {
+    Http.GetAPI(apis.getDashboard + "?" + Math.random(), data, null)
+      .then((res) => {
+        if (res?.data?.status) {
+          setData(res?.data?.details);
+          setTotalUsers(res?.data?.details?.total_users || 0);
+          setTotalStores(res?.data?.details?.no_of_Stores || 0);
+          setTotalProducts(res?.data?.details?.no_of_products || 0);
+          setTotalActiveUsers(res?.data?.details?.active_users || 0);
+          // setLatestStore(res?.data?.details?.stores_products_data || 0)
+        } else {
+          alert("Fields not matched");
+        }
+      })
+      .catch((e) => {
+        alert("Something went wrong.");
+        console.log("Error:", e);
+      });
+  }, []);
+
   return (
     <>
       <Container fluid>
@@ -32,8 +63,8 @@ function Dashboard() {
                   </Col>
                   <Col xs="7">
                     <div className="numbers">
-                      <p className="card-category">Number</p>
-                      <Card.Title as="h4">150GB</Card.Title>
+                      <p className="card-category">Users</p>
+                      <Card.Title as="h4">{totalUsers}</Card.Title>
                     </div>
                   </Col>
                 </Row>
@@ -42,7 +73,7 @@ function Dashboard() {
                 <hr></hr>
                 <div className="stats">
                   <i className="fas fa-redo mr-1"></i>
-                  Update Now
+                  Total Users
                 </div>
               </Card.Footer>
             </Card>
@@ -58,8 +89,8 @@ function Dashboard() {
                   </Col>
                   <Col xs="7">
                     <div className="numbers">
-                      <p className="card-category">Revenue</p>
-                      <Card.Title as="h4">$ 1,345</Card.Title>
+                      <p className="card-category">Stores</p>
+                      <Card.Title as="h4">{totalStores}</Card.Title>
                     </div>
                   </Col>
                 </Row>
@@ -68,7 +99,7 @@ function Dashboard() {
                 <hr></hr>
                 <div className="stats">
                   <i className="far fa-calendar-alt mr-1"></i>
-                  Last day
+                  Total Stores
                 </div>
               </Card.Footer>
             </Card>
@@ -84,8 +115,8 @@ function Dashboard() {
                   </Col>
                   <Col xs="7">
                     <div className="numbers">
-                      <p className="card-category">Errors</p>
-                      <Card.Title as="h4">23</Card.Title>
+                      <p className="card-category">Products</p>
+                      <Card.Title as="h4">{totalProducts}</Card.Title>
                     </div>
                   </Col>
                 </Row>
@@ -94,7 +125,7 @@ function Dashboard() {
                 <hr></hr>
                 <div className="stats">
                   <i className="far fa-clock-o mr-1"></i>
-                  In the last hour
+                  Total Products
                 </div>
               </Card.Footer>
             </Card>
@@ -110,8 +141,8 @@ function Dashboard() {
                   </Col>
                   <Col xs="7">
                     <div className="numbers">
-                      <p className="card-category">Followers</p>
-                      <Card.Title as="h4">+45K</Card.Title>
+                      <p className="card-category">Active Users</p>
+                      <Card.Title as="h4">{totalActiveUsers}</Card.Title>
                     </div>
                   </Col>
                 </Row>
@@ -120,7 +151,7 @@ function Dashboard() {
                 <hr></hr>
                 <div className="stats">
                   <i className="fas fa-redo mr-1"></i>
-                  Update now
+                  Total Active Users
                 </div>
               </Card.Footer>
             </Card>
@@ -234,7 +265,7 @@ function Dashboard() {
             </Card>
           </Col>
         </Row>
-        <Row>
+        {/* <Row>
           <Col md="6">
             <Card>
               <Card.Header>
@@ -631,10 +662,12 @@ function Dashboard() {
               </Card.Footer>
             </Card>
           </Col>
-        </Row>
+        </Row> */}
+        <ProductCard />
+        <StoreCard />
       </Container>
     </>
   );
-}
+};
 
 export default Dashboard;
