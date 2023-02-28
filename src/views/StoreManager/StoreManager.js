@@ -159,17 +159,21 @@ const StoreManager = () => {
       });
   };
 
-  const daysOfWeek = ["M", "T", "W", "Th", "F", "S", "Su"];
-
-  // let abc = rowData.opening_days.split("")
-  // console.log("ss",abc);
-
   useEffect(() => {
     if (rowData.opening_days) {
-      setDays(JSON.parse(rowData.opening_days));
+      let parsedDays;
+      if (Array.isArray(rowData.opening_days)) {
+        parsedDays = rowData.opening_days;
+        parsedDays = JSON.parse(rowData.opening_days);
+      } else if (typeof rowData.opening_days === 'string') {
+        parsedDays = rowData.opening_days.split(',');
+      } 
+      setDays(parsedDays);
     }
   }, [rowData]);
-  console.log("days", days);
+
+  const daysOfWeek = ["M", "T", "W", "Th", "F", "S", "Su"];
+
   return (
     <>
       <Container fluid>
@@ -476,8 +480,10 @@ const StoreManager = () => {
               <tr>
                 <td className="bold-col">Opening Days:</td>
                 <td>
-                  {days.map((dayNumber) => (
-                    <div key={dayNumber}>{daysOfWeek[dayNumber - 1]}</div>
+                  {days.map((day) => (
+                    <div key={day} className="day-circle">
+                      {daysOfWeek[day - 1] || day}
+                    </div>
                   ))}
                 </td>
               </tr>

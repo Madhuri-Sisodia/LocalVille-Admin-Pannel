@@ -23,6 +23,15 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
     openingTime: "",
     closingTime: "",
   });
+  const [selectedDays, setSelectedDays] = useState([]);
+
+  const toggleDaySelection = (day) => {
+    if (selectedDays.includes(day)) {
+      setSelectedDays(selectedDays.filter((d) => d !== day));
+    } else {
+      setSelectedDays([...selectedDays, day]);
+    }
+  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -69,30 +78,32 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
     data.append("opening_time", storeData.openingTime);
     data.append("closing_time", storeData.closingTime);
     console.log("updateStore", data);
-    
+
     Http.PostAPI(apis.addStore, data, null)
-    .then((res) => {
-      console.log("resp", res);
-      if (res?.data?.status) {
-        setStore(res?.data?.data);
-        getStore();
-      } else {
-        alert("Fields not matched");
-      }
-    })
-    .catch((e) => {
-      alert("Something went wrong.");
-      console.log("Error:", e);
-    });
-  resetForm();
-  setShowAddStore(false);
-};
+      .then((res) => {
+        console.log("resp", res);
+        if (res?.data?.status) {
+          setStore(res?.data?.data);
+          getStore();
+        } else {
+          alert("Fields not matched");
+        }
+      })
+      .catch((e) => {
+        alert("Something went wrong.");
+        console.log("Error:", e);
+      });
+    resetForm();
+    setShowAddStore(false);
+  };
 
   const handleInput = (e) => {
     setStoreData((previous) => {
       return { ...previous, [e.target.name]: e.target.value };
     });
   };
+
+  const daysOfWeek = ["M", "T", "W", "Th", "F", "S", "S"];
 
   return (
     <>
@@ -236,14 +247,19 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
 
             <Form.Group>
               <Form.Label className="add-label">Opening Days</Form.Label>
-              <Form.Control
-                type="text"
-                name="openingDays"
-                required
-                onChange={(e) => {
-                  handleInput(e);
-                }}
-              ></Form.Control>
+              <br />
+              {daysOfWeek.map((day) => {
+                const isSelected = selectedDays.includes(day);
+                return (
+                  <div
+                    key={day}
+                    className={`week-days ${isSelected ? "selected" : ""}`}
+                    onChange={() => toggleDaySelection(day)}
+                  >
+                    {day}
+                  </div>
+                );
+              })}
             </Form.Group>
 
             <Form.Group>
@@ -271,9 +287,21 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
             </Form.Group>
             <br></br>
 
-            <Button className="btn-fill" variant="primary" type="submit" block>
+            <button
+              
+              type="submit"
+              block
+              style={{
+                backgroundColor: "blueviolet",
+                border: "blueviolet",
+                borderRadius: "3px 3px 3px 3px",
+                width:"100%",
+                padding:"5px",
+                color:"white",
+              }}
+            >
               Add
-            </Button>
+            </button>
           </Form>
         </Modal.Body>
       </Modal>

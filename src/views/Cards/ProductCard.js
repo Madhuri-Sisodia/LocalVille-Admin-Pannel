@@ -35,19 +35,23 @@ const ProductCard = ({ latestProduct }) => {
       <Col md="12">
         <Card>
           <Card.Header>
-            <Button
-              className="btn-fill float-right"
+            <button
+              type="submit"
               style={{
                 backgroundColor: "blueviolet",
-                borderColor: "blueviolet",
+                border: "blueviolet",
+                borderRadius: "4px",
+                float: "right",
+                padding: "9px 19px",
+                color: "white",
               }}
-              type="submit"
               onClick={() => {
                 history.push("/admin/store");
               }}
             >
               View All
-            </Button>
+            </button>
+
             <Card.Title as="h4">Latest Products</Card.Title>
             <p className="card-category"></p>
           </Card.Header>
@@ -55,75 +59,52 @@ const ProductCard = ({ latestProduct }) => {
             <div className="row">
               {latestProduct.map((item, index) => (
                 <Col md="4" key={index}>
-                  <Card
-                    style={{
-                      background: `url(${item.p_images})`,
-                      padding: "5px 5px 5px 5px",
-                      borderRadius: "20px 20px 20px 20px",
-                      boxShadow: "0px 6px 10px rgba(0, 0, 0, 0.2)",
-                      height: "200px",
-                      width: "100%",
-                      backgroundSize: "cover",
-                      backgroundPosition: "center",
-                    }}
-                  >
-                    {/* <Card.Img
-                      variant="top"
-                      src={item.p_images}
-                      alt="Image"
+                  <Card className="card">
+                    <div
+                      className="card-div"
                       style={{
-                        height: "200px",
-                        borderRadius: "10px",
-                        color: "blueviolet",
+                        backgroundColor:
+                          item.is_verified == "1"
+                            ? "blueviolet"
+                            : item.is_verified == "0"
+                            ? "orange"
+                            : "red",
                       }}
-                    /> */}
-                    <Card.Body>
-                      <Card.Title
-                        as="h5"
-                        style={{
-                          fontWeight: "bold",
-                          fontSize: "1rem",
-                        }}
-                      >
-                        {item.product_name}
-                      </Card.Title>
-                      <p
-                        className="card-description"
-                        style={{
-                          fontSize: "0.9rem",
-                        }}
-                      >
-                        {item.product_desc}
-                      </p>
+                    >
+                      {item.is_verified == "1"
+                        ? "Verified"
+                        : item.is_verified == "0"
+                        ? "Pending"
+                        : "Rejected"}
+                    </div>
 
-                      <div
-                        style={{
-                          float: "left",
-                          fontWeight: "bold",
-                          fontSize: "1.2rem",
-                          color: "blueviolet",
-                        }}
-                      >
-                        {item.price}$
+                    <div
+                      className="image"
+                      style={{
+                        backgroundImage: `url(${item.p_image})`,
+                      }}
+                    >
+                      <div className="heading">
+                        <div className="price">{item.price}$</div>
+                        <h5 className="title">{item.product_name}</h5>
+
+                        <p className="card-description paragraph">
+                          {item.product_desc}
+                        </p>
                       </div>
-                      {/* <div className="icons">
+                    </div>
+                  </Card>
+                </Col>
+              ))}
+            </div>
+
+            {/* <div className="icons">
                         <button className="minus">-</button>
                         <div style={{ marginRight: "10px" }}>1</div>
                         <button className="plus">+</button>
                       </div> */}
-                    </Card.Body>
-                    <Card.Footer>
-                      <hr></hr>
-                      <div className="stats">
-                        {item.is_verified == "1"
-                          ? "Verified"
-                          : item.is_verified == "0"
-                          ? "Pending"
-                          : "Rejected"}
-                      </div>
-                    </Card.Footer>
 
-                    {/* <div className="card-buttons">
+            {/* <div className="card-buttons">
                       <Button
                         className="btn-btn-primary btn-round float-left"
                         style={{
@@ -150,10 +131,6 @@ const ProductCard = ({ latestProduct }) => {
                         Buy Now
                       </Button>
                     </div> */}
-                  </Card>
-                </Col>
-              ))}
-            </div>
           </Card.Body>
         </Card>
       </Col>
