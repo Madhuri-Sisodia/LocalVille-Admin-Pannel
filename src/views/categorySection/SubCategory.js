@@ -1,12 +1,31 @@
 import React from 'react';
+import { useEffect } from 'react';
 import { Table, Card, Col } from "react-bootstrap";
 import ReloadIcon from '@rsuite/icons/Reload';
 import CloseIcon from '@rsuite/icons/Close';
 import { Form, Radio, RadioGroup, Button, ButtonToolbar, Dropdown } from "rsuite";
 import '../../assets/css/admin.css';
+import { apis } from 'config/WebConstant';
+import { Http } from 'config/Service';
 
 
 function SubCategory() {
+
+    useEffect(() => {
+        Http.GetAPI(apis.getsubCategory + "?" + Math.random(), "data", null)
+          .then((res) => {
+            if (res?.data?.status) {
+               console.log("success")
+            } else {
+              alert("Fields not matched");
+            }
+          })
+          .catch((e) => {
+            alert("Something went wrong.");
+            console.log("Error:", e);
+          });
+      }, []);
+
     return (
         <div className="MainContainer">
             <Form fluid>
