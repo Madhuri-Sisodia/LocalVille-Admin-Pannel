@@ -19,10 +19,7 @@ const Dashboard = () => {
   useEffect(() => {
     Http.GetAPI(apis.getDashboard + "?" + Math.random(), data, null)
       .then((res) => {
-        console.log(
-          "res",
-          res.data.details.stores_products_data.recent_added_stores
-        );
+       
         if (res?.data?.status) {
           setData(res?.data?.details);
           setTotalUsers(res?.data?.details?.total_users || 0);

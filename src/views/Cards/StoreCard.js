@@ -64,7 +64,7 @@ const StoreCard = ({ latestStore }) => {
                       style={{
                         backgroundColor:
                           item.is_verified == "1"
-                            ? "blueviolet"
+                            ? "blue"
                             : item.is_verified == "0"
                             ? "orange"
                             : "red",

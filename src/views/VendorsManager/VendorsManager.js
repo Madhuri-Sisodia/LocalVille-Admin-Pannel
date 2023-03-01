@@ -208,38 +208,29 @@ const VendorsManager = () => {
                         </td>
                         <td>{item.login_count}</td>
                         <td>
-                          <RxUpdate
-                            style={{
-                              fontSize: "18px",
-                              cursor: "pointer",
-                              color: "grey",
-                            }}
+                          <Button
+                            className="btn-simple btn-link p-1"
+                            type="button"
+                            variant="primary"
                             onClick={() => {
                               setSelectedVendor(item);
                               setShowUpdateModal(true);
                             }}
-                          />{" "}
-                          {/* <MdPersonAddAlt1
-                            style={{
-                              fontSize: "24px",
-                              cursor: "pointer",
-                              color: "grey",
-                            }}
-                            onClick={() => {
-                              setShowAddVendor(true);
-                            }}
-                          /> */}
-                          <RxCross1
-                            style={{
-                              fontSize: "18px",
-                              cursor: "pointer",
-                              color: "#dc3545",
-                            }}
+                          >
+                            <i className="fas fa-edit"></i>
+                          </Button>
+
+                          <Button
+                            className="btn-simple btn-link p-1"
+                            type="button"
+                            variant="danger"
                             onClick={() => {
                               setShowModal(true);
                               setBlockData(item.id);
                             }}
-                          />
+                          >
+                            <i className="fas fa-times"></i>
+                          </Button>
                         </td>
                       </tr>
                     ))}
