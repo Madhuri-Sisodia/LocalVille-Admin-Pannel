@@ -10,7 +10,7 @@ import AdminManager from "views/AdminManager";
 import Category from "views/categorySection/index.js";
 import StoreManager from "views/StoreManager/StoreManager";
 import VendorsManager from "views/VendorsManager/VendorsManager";
-
+import StoreApproval from "views/StoreApproval/StoreApproval";
 
 const dashboardRoutes = [
   {
@@ -60,12 +60,21 @@ const dashboardRoutes = [
   },
 
   {
+    path: "/storeApproval",
+    name: "Store Approval",
+    icon: "nc-icon nc-circle-09",
+    component: StoreApproval,
+    layout: "/admin"
+  },
+
+  {
     path: "/user",
     name: "User Profile",
     icon: "nc-icon nc-circle-09",
     component: UserProfile,
     layout: "/admin"
   },
+
   {
     path: "/table",
     name: "Table List",
