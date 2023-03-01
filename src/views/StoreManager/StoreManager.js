@@ -165,9 +165,9 @@ const StoreManager = () => {
       if (Array.isArray(rowData.opening_days)) {
         parsedDays = rowData.opening_days;
         parsedDays = JSON.parse(rowData.opening_days);
-      } else if (typeof rowData.opening_days === 'string') {
-        parsedDays = rowData.opening_days.split(',');
-      } 
+      } else if (typeof rowData.opening_days === "string") {
+        parsedDays = rowData.opening_days.split(",");
+      }
       setDays(parsedDays);
     }
   }, [rowData]);
@@ -299,59 +299,60 @@ const StoreManager = () => {
                           </div>
                         </td>
                         <td>
-                          <MdLocationPin
-                            style={{
-                              fontSize: "25px",
-                              cursor: "pointer",
-                              color: "grey",
-                            }}
+                          <Button
+                            className="btn-simple btn-link p-1"
+                            type="button"
+                            variant="primary"
                             onClick={() =>
                               getLocation(item.latitude, item.longitude)
                             }
-                          />
+                          >
+                            <i className="fa fa-location-arrow"></i>
+                          </Button>
                         </td>
-                        <div style={{ marginTop: "1rem" }}>
-                          <span style={{ display: "inline-block" }}>
-                            <MdRemoveRedEye
-                              style={{
-                                fontSize: "22px",
-                                cursor: "pointer",
-                                color: "gray",
-                              }}
+                        <td>
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                            }}
+                          >
+                            <Button
+                              className="btn-simple btn-link p-1"
+                              type="button"
+                              variant="primary"
                               onClick={() => {
                                 setShowDetailsModal(true);
                                 setRowData(item);
                               }}
-                            />
-                          </span>
-                          <span style={{ display: "inline-block" }}>
-                            <RxUpdate
-                              style={{
-                                fontSize: "18px",
-                                cursor: "pointer",
-                                color: "grey",
-                              }}
+                            >
+                              <i className="fa fa-eye"></i>
+                            </Button>
+                            <Button
+                              className="btn-simple btn-link p-1"
+                              type="button"
+                              variant="primary"
                               onClick={() => {
                                 setSelectedStore(item);
                                 setShowUpdateStore(true);
                               }}
-                            />
-                          </span>
-                          <span style={{ display: "inline-block" }}>
-                            <RxCross1
-                              style={{
-                                fontSize: "18px",
-                                cursor: "pointer",
-                                color: "#dc3545",
-                              }}
+                            >
+                              <i className="fa fa-edit"></i>
+                            </Button>
+                            <Button
+                              className="btn-simple btn-link p-1"
+                              type="button"
+                              variant="danger"
                               onClick={() => {
                                 setShowModal(true);
                                 setShowDetailsModal(false);
                                 setBlockData(item.id);
                               }}
-                            />
-                          </span>
-                        </div>
+                            >
+                              <i className="fas fa-times"></i>
+                            </Button>
+                          </div>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
