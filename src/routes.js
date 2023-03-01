@@ -10,6 +10,7 @@ import AdminManager from "views/AdminManager";
 import Category from "views/categorySection/index.js";
 import StoreManager from "views/StoreManager/StoreManager";
 import VendorsManager from "views/VendorsManager/VendorsManager";
+import Products from "views/Products/Products";
 
 
 const dashboardRoutes = [
@@ -59,13 +60,13 @@ const dashboardRoutes = [
     layout: "/admin"
   },
 
-  // {
-  //   path: "/product",
-  //   name: "Product",
-  //   icon: "nc-icon nc-circle-09",
-  //   component: Product,
-  //   layout: "/admin"
-  // },
+  {
+    path: "/products",
+    name: "Products",
+    icon: "nc-icon nc-circle-09",
+    component: Products,
+    layout: "/admin"
+  },
 
   {
     path: "/user",
@@ -113,3 +114,4 @@ const dashboardRoutes = [
 ];
 
 export default dashboardRoutes;
+
