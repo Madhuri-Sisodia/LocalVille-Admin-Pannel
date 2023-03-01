@@ -104,10 +104,7 @@ const StoreApproval = () => {
                             className="btn-simple btn-link p-1"
                             type="button"
                             variant="success"
-                            onClick={() => {
-                              setSelectedStore(item);
-                              setShowVerifyStore(true);
-                            }}
+                            
                           >
                             <i className="fa fa-check"></i>
                           </Button>
