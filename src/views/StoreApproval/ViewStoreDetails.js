@@ -18,7 +18,7 @@ const ViewStoreDetails = () => {
   };
 
   const getStore = () => {
-    Http.GetAPI(apis.getStoreData + "?" + Math.random(), data, null)
+    Http.GetAPI(apis.getUnverifiedStore + "?" + Math.random(), data, null)
       .then((res) => {
         if (res?.data?.status) {
           setData(res?.data?.data);

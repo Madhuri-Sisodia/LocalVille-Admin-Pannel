@@ -4,24 +4,16 @@ import SearchIcon from "@rsuite/icons/Search";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import ViewStoreDetails from "./ViewStoreDetails";
+// import VerifiedStore from "./VerifiedStore";
 
-import {
-  Modal,
-  Form,
-  Badge,
-  Button,
-  Card,
-  Navbar,
-  Nav,
-  Table,
-  Container,
-  Row,
-  Col,
-} from "react-bootstrap";
+import { Button, Card, Table, Container, Row, Col } from "react-bootstrap";
 
 const StoreApproval = () => {
   const [data, setData] = useState([]);
-  const [storeDetails, setStoreDeatils] = useState(false);
+  const [showVerifiedStore, setShowVerifiedStore] = useState(false);
+  const [showStoreDetails, setShowStoreDetails] = useState(false);
+  const [rowData, setRowData] = useState([]);
+  const [store, setStore] = useState([]);
 
   useEffect(() => {
     Http.GetAPI(apis.getUnverifiedStore + "?" + Math.random(), data, null)
@@ -37,11 +29,6 @@ const StoreApproval = () => {
         console.log("Error:", e);
       });
   }, []);
-
-  const handleClick = () => {
-    console.log("store details");
-    setStoreDeatils(true);
-  };
 
   return (
     <>
@@ -95,7 +82,10 @@ const StoreApproval = () => {
                             className="btn-simple btn-link p-1"
                             type="button"
                             variant="primary" 
-                            onClick={handleClick}
+                            onClick={()=>{
+                              setShowStoreDetails(true);
+                              setRowData(item);
+                            }}
                           >
                             <i className="fa fa-eye"></i>
                           </Button>
@@ -104,6 +94,10 @@ const StoreApproval = () => {
                             className="btn-simple btn-link p-1"
                             type="button"
                             variant="success"
+                            onClick={()=>{
+                              setShowVerifiedStore(true);
+                              setStore(item);
+                            }}
                             
                           >
                             <i className="fa fa-check"></i>
@@ -125,9 +119,13 @@ const StoreApproval = () => {
             </Card>
           </Col>
         </Row>
+        
+        <ViewStoreDetails
+          showStoreDetails={showStoreDetails}
+          setShowStoreDetails={setShowStoreDetails}
+          rowData={rowData}
+        />
       </Container>
-
-      <ViewStoreDetails/>
     </>
   );
 };
