@@ -15,13 +15,11 @@ export const apis = {
     addVendors:"add_vendors.php",
     addStore:"add_store.php",
     getDashboard:"dashboard.php",
-<<<<<<< HEAD
     addPrdouctCategory:"add_prod_category.php",
     getProductCategory:"get_prod_category.php",
     addProdSubCategory:"add_prod_subcategory.php",
-    getProdSubCategory:"get_prod_subcategory.php"
-=======
+    getProdSubCategory:"get_prod_subcategory.php",
     getUnverifiedProducts:"unverified_products.php",
     updateVerifiedProduct:"update_verified_products.php"
->>>>>>> login_page
+
 }
