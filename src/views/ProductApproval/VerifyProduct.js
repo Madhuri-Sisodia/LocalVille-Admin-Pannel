@@ -28,13 +28,13 @@ const VerifyProduct = ({
   const handleUpdateProduct = (product) => {
     var data = new FormData();
     data.append("product_id", product.id);
-    data.append("verified_status", product.is_verified);
+    data.append("verified_status", 1);
     Http.PostAPI(apis.updateVerifiedProduct, data, null)
       .then((res) => {
         console.log("resp", res);
         if (res?.data?.status) {
           setUpdateProduct(res?.data?.data);
-          getUnverifiedProduct();
+          getUnverifiedProduct(true)
         } else {
           alert("Fields not matched");
         }
