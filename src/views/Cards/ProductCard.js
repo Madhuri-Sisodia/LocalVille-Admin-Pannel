@@ -2,6 +2,7 @@ import React from "react";
 import { Card, Col, Row, Button } from "react-bootstrap";
 import "../../assets/css/card.css";
 import { useHistory } from "react-router";
+import { FaRupeeSign } from "react-icons/fa";
 // const cardsData = [
 //   {
 //     title: "Iphones",
@@ -39,7 +40,7 @@ const ProductCard = ({ latestProduct }) => {
               type="submit"
               style={{
                 backgroundColor: "blueviolet",
-                border: "blueviolet",
+                border: "blue",
                 borderRadius: "4px",
                 float: "right",
                 padding: "9px 19px",
@@ -85,7 +86,7 @@ const ProductCard = ({ latestProduct }) => {
                       }}
                     >
                       <div className="heading">
-                        <div className="price">{item.price}$</div>
+                        <div className="price"><FaRupeeSign />{item.price}</div>
                         <h5 className="title">{item.product_name}</h5>
 
                         <p className="card-description paragraph">

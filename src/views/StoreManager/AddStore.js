@@ -33,11 +33,14 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
 
 
   const toggleDaySelection = (day) => {
+    console.log("sss",selectedDays)
     if (selectedDays.includes(day)) {
       setSelectedDays(selectedDays.filter((d) => d !== day));
+      console.log("sss",selectedDays)
     } else {
       setSelectedDays([...selectedDays, day]);
     }
+
   };
 
   const handleImageChange = (e) => {
@@ -64,6 +67,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
       openingDays: "",
       openingTime: "",
       closingTime: "",
+      selectedDays:"",
     });
     setImage(null);
   };
@@ -264,7 +268,12 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
                   <div
                     key={day}
                     className={`week-days ${isSelected ? "selected" : ""}`}
+<<<<<<< HEAD
                     onClick={() => toggleDaySelection(day)}
+=======
+                    name="selectedDays"
+                    onChange={() => toggleDaySelection(day)}
+>>>>>>> c83d1d1fa60d94ac3d8346ef1e2ef04abb21e463
                   >
                     {day}
                   </div>
