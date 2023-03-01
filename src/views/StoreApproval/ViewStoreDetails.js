@@ -1,41 +1,52 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { MdClose } from "react-icons/md";
-import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
-import "../../assets/css/modal.css";
+import {
+  Modal,
+  Form,
+  Badge,
+  Button,
+  Card,
+  Navbar,
+  Nav,
+  Table,
+  Container,
+  Row,
+  Col,
+} from "react-bootstrap";
 
-import { Modal, Table } from "react-bootstrap";
+// const ViewStoreDetails = () => {
+//   const [showDetailsModal, setShowDetailsModal] = useState(false);
+//   const [data, setData] = useState([]);
 
-const ViewStoreDetails = () => {
-  const [showDetailsModal, setShowDetailsModal] = useState(false);
-  const [data, setData] = useState([]);
+//   const [rowData, setRowData] = useState([]);
 
-  const [rowData, setRowData] = useState([]);
+//   const getLocation = (latitude, longitude) => {
+//     const url = `https://www.google.com/maps?q=${latitude}+${longitude}`;
+//     window.open(url);
+//   };
 
-  const getLocation = (latitude, longitude) => {
-    const url = `https://www.google.com/maps?q=${latitude}+${longitude}`;
-    window.open(url);
-  };
+//   const getStore = () => {
+//     Http.GetAPI(apis.getUnverifiedStore + "?" + Math.random(), data, null)
+//       .then((res) => {
+//         if (res?.data?.status) {
+//           setData(res?.data?.data);
+//         } else {
+//           alert("Fields not matched");
+//         }
+//       })
+//       .catch((e) => {
+//         alert("Something went wrong.");
+//         console.log("Error:", e);
+//       });
+//   };
 
-  const getStore = () => {
-    Http.GetAPI(apis.getUnverifiedStore + "?" + Math.random(), data, null)
-      .then((res) => {
-        if (res?.data?.status) {
-          setData(res?.data?.data);
-        } else {
-          alert("Fields not matched");
-        }
-      })
-      .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
-      });
-  };
+//   useEffect(() => {
+//     getStore();
+//   }, []);
 
-  useEffect(() => {
-    getStore();
-  }, []);
-
+const ViewStoreDetails = ({
+  showDetailsModal, setShowDetailsModal, rowData,
+}) => {
   return (
     <>
       <Modal show={showDetailsModal} onHide={() => setShowDetailsModal(false)}>

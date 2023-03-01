@@ -3,23 +3,38 @@ import { Input, Whisper, Tooltip, InputGroup } from "rsuite";
 import SearchIcon from "@rsuite/icons/Search";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
+
+import {
+  Modal,
+  Form,
+  Badge,
+  Button,
+  Card,
+  Navbar,
+  Nav,
+  Table,
+  Container,
+  Row,
+  Col,
+} from "react-bootstrap";
 import ViewStoreDetails from "./ViewStoreDetails";
 // import VerifiedStore from "./VerifiedStore";
-
-import { Button, Card, Table, Container, Row, Col } from "react-bootstrap";
 
 const StoreApproval = () => {
   const [data, setData] = useState([]);
   const [showVerifiedStore, setShowVerifiedStore] = useState(false);
   const [showStoreDetails, setShowStoreDetails] = useState(false);
+  // const [showRejectStore, setShowRejectStore] = useState(false);
+  const[storeApproval, setStoreApproval] = useState(false);
   const [rowData, setRowData] = useState([]);
   const [store, setStore] = useState([]);
 
-  useEffect(() => {
+  const getUnverifiedStore = () => {
     Http.GetAPI(apis.getUnverifiedStore + "?" + Math.random(), data, null)
       .then((res) => {
         if (res?.data?.status) {
           setData(res?.data?.data);
+          setStoreApproval(false);
         } else {
           alert("Fields not matched");
         }
@@ -28,7 +43,11 @@ const StoreApproval = () => {
         alert("Something went wrong.");
         console.log("Error:", e);
       });
-  }, []);
+  };
+
+  useEffect(() => {
+    getUnverifiedStore();
+  }, [storeApproval]);
 
   return (
     <>
@@ -37,9 +56,9 @@ const StoreApproval = () => {
           <Col md="12">
             <Card className="strpied-tabled-with-hover">
               <Card.Header>
-                <Card.Title as="h4">Stores Approval</Card.Title>
+                <Card.Title as="h4">Store Approval</Card.Title>
 
-                <p className="card-category">Stores approval and action</p>
+                <p className="card-category">Stores details and action</p>
                 <br></br>
                 <InputGroup style={{ width: "250px" }}>
                   <Input placeholder="Search" />
@@ -56,6 +75,7 @@ const StoreApproval = () => {
                       <th className="border-0">ID</th>
                       <th className="border-0">Store Image</th>
                       <th className="border-0">Store Name</th>
+                      <th className="border-0">Status</th>
 
                       <th className="border-0">Action</th>
                     </tr>
@@ -76,40 +96,65 @@ const StoreApproval = () => {
                           />
                         </td>
                         <td>{item.store_name}</td>
-
                         <td>
-                        <Button
+                          <div
+                            style={{
+                              backgroundColor:
+                                item.verified == "0"
+                                  ? "blue"
+                                  : item.verified == "1"
+                                  ? "green"
+                                  : "red",
+                              border: "none",
+                              fontSize: "0.75rem",
+                              color: "white",
+                              padding: "3px 10px",
+                              borderRadius: "17px",
+                              display: "inline-block",
+                            }}
+                          >
+                            {item.verified == "0"
+                              ? "unverified"
+                              : item.verified == "1"
+                              ? "verified"
+                              : "pending"}
+                          </div>
+                        </td>
+                        <td>
+                          <Button
                             className="btn-simple btn-link p-1"
                             type="button"
-                            variant="primary" 
-                            onClick={()=>{
+                            variant="primary"
+                            onClick={() => {
                               setShowStoreDetails(true);
                               setRowData(item);
                             }}
                           >
                             <i className="fa fa-eye"></i>
                           </Button>
-
                           <Button
                             className="btn-simple btn-link p-1"
                             type="button"
                             variant="success"
-                            onClick={()=>{
-                              setShowVerifiedStore(true);
-                              setStore(item);
-                            }}
-                            
+                            // onClick={() => {
+                            //   setShowVerifiedStore(true);
+                            //   setStore(item);
+                            // }}
                           >
-                            <i className="fa fa-check"></i>
+                            <i className="fas fa-check"></i>
                           </Button>
 
-                          <Button
+                          <button
                             className="btn-simple btn-link p-1"
                             type="button"
                             variant="danger"
+                            // onClick={() => {
+                            //   setShowRejectStore(true);
+                            //   setStore(item);
+                            // }}
                           >
                             <i className="fas fa-times"></i>
-                          </Button>
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -119,16 +164,29 @@ const StoreApproval = () => {
             </Card>
           </Col>
         </Row>
-        
+
+        {/* <VerifiedStore
+          showVerifiedStore={showVerifiedStore}
+          setShowVerifiedStore={setShowVerifiedStore}
+          store={store}
+          getUnverifiedStore={getUnverifiedStore}
+        /> */}
+
         <ViewStoreDetails
           showStoreDetails={showStoreDetails}
           setShowStoreDetails={setShowStoreDetails}
           rowData={rowData}
         />
+        {/* <RejectStore
+          showRejectStore={showRejectStore}
+          setShowRejectStore={setShowRejectStore}
+          store={store}
+          
+        /> */}
+        
       </Container>
     </>
   );
 };
-
 
 export default StoreApproval;
