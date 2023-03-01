@@ -17,13 +17,15 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-import VerifiedProduct from "./VerifiedProduct";
+import VerifyProduct from "./VerifyProduct";
 import ViewProduct from "./ViewProduct";
+import RejectProduct from "./RejectProduct";
 
 const ProductApproval = () => {
   const [data, setData] = useState([]);
   const [showVerifiedProduct, setShowVerifiedProduct] = useState(false);
   const [showProductDetails, setShowProductDetails] = useState(false);
+  const [showRejectProduct, setShowRejectProduct] = useState(false);
   const [rowData, setRowData] = useState([]);
   const [product, setProduct] = useState([]);
 
@@ -145,6 +147,10 @@ const ProductApproval = () => {
                             className="btn-simple btn-link p-1"
                             type="button"
                             variant="danger"
+                            onClick={() => {
+                              setShowRejectProduct(true);
+                              setProduct(item);
+                            }}
                           >
                             <i className="fas fa-times"></i>
                           </button>
@@ -158,7 +164,7 @@ const ProductApproval = () => {
           </Col>
         </Row>
 
-        <VerifiedProduct
+        <VerifyProduct
           showVerifiedProduct={showVerifiedProduct}
           setShowVerifiedProduct={setShowVerifiedProduct}
           product={product}
@@ -170,6 +176,13 @@ const ProductApproval = () => {
           setShowProductDetails={setShowProductDetails}
           rowData={rowData}
         />
+        <RejectProduct
+          showRejectProduct={showRejectProduct}
+          setShowRejectProduct={setShowRejectProduct}
+          product={product}
+          
+        />
+        
       </Container>
     </>
   );

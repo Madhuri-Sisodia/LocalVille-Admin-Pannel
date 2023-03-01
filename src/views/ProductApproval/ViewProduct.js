@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { MdClose } from "react-icons/md";
 import {
   Modal,
@@ -36,15 +36,15 @@ const ViewProduct = ({
           <Table striped bordered className="table">
             <tbody>
               <tr>
-                <td className="bold-col">Vendor ID:</td>
+                <td className="bold-col">ID:</td>
                 <td>{rowData.id}</td>
               </tr>
               <tr>
-                <td className="bold-col">Store Image:</td>
+                <td className="bold-col">Theme Image:</td>
                 <td>
                   <img
-                    src={rowData.store_image}
-                    alt={rowData.store_name}
+                    src={rowData.theme_img}
+                    alt="image"
                     style={{
                       width: "40px",
                       height: "40px",
@@ -54,90 +54,89 @@ const ViewProduct = ({
                 </td>
               </tr>
               <tr>
-                <td className="bold-col">Store Name:</td>
+                <td className="bold-col">Product Name:</td>
                 <td>{rowData.product_name}</td>
               </tr>
               <tr>
                 <td className="bold-col" style={{ whiteSpace: "nowrap" }}>
-                  Store Description:
+                  Product Description:
                 </td>
                 <td>{rowData.product_desc}</td>
               </tr>
               <tr>
-                <td className="bold-col" style={{ whiteSpace: "nowrap" }}>
-                  Store Address:
-                </td>
+                <td className="bold-col">Category:</td>
                 <td>{rowData.category}</td>
               </tr>
               <tr>
-                <td className="bold-col">Pincode:</td>
+                <td className="bold-col">Sub Category:</td>
                 <td>{rowData.sub_category}</td>
               </tr>
               <tr>
-                <td className="bold-col">City:</td>
+                <td className="bold-col">Buy:</td>
                 <td>{rowData.is_buy}</td>
               </tr>
               <tr>
-                <td className="bold-col">City:</td>
+                <td className="bold-col">Pick Up:</td>
                 <td>{rowData.is_pickup}</td>
               </tr>
               <tr>
-                <td className="bold-col">City:</td>
+                <td className="bold-col">Total Clicks:</td>
                 <td>{rowData.total_clicks}</td>
               </tr>
               <tr>
-                <td className="bold-col">City:</td>
+                <td className="bold-col">Product Status</td>
                 <td>{rowData.is_verified}</td>
               </tr>
               <tr>
-                <td className="bold-col">City:</td>
+                <td className="bold-col">Status:</td>
                 <td>{rowData.active}</td>
               </tr>
               <tr>
-                <td className="bold-col">State:</td>
+                <td className="bold-col">Created At:</td>
                 <td>{rowData.created_at}</td>
               </tr>
               <tr>
-                <td className="bold-col">Country:</td>
+                <td className="bold-col">Modified At:</td>
                 <td>{rowData.modified_at}</td>
               </tr>
 
               <tr>
-                <td className="bold-col">Opening Time:</td>
+                <td className="bold-col">Category Name:</td>
                 <td>{rowData.category_name}</td>
               </tr>
               <tr>
-                <td className="bold-col">Opening Time:</td>
+                <td className="bold-col">Sub Category Name:</td>
                 <td>{rowData.subcategory_name}</td>
               </tr>
               <tr>
-                <td className="bold-col">Opening Time:</td>
+                <td className="bold-col">Color:</td>
                 <td>{rowData.is_color}</td>
               </tr>
               <tr>
-                <td className="bold-col">Opening Time:</td>
+                <td className="bold-col">Size:</td>
                 <td>{rowData.is_size}</td>
               </tr>
 
               <tr>
-                <td className="bold-col">Closing Time:</td>
-                <td>{rowData.theme_img}</td>
-              </tr>
-
-              <tr>
-                <td className="bold-col">Total Clicks:</td>
+                <td className="bold-col">Price:</td>
                 <td>{rowData.price}</td>
               </tr>
               <tr>
-                <td className="bold-col">Store Created:</td>
+                <td className="bold-col">Discount Price:</td>
                 <td>{rowData.discount_price}</td>
-              </tr>
-              <tr>
-                <td className="bold-col">Store Updated:</td>
-                <td>{rowData.images?.images}</td>
               </tr>
             </tbody>
           </Table>
+          <div>
+            <img
+              src={rowData.images?.images}
+              alt="image"
+              style={{
+                width: "80px",
+                height: "80px",
+              }}
+            />
+          </div>
         </Modal.Body>
         <Modal.Footer></Modal.Footer>
       </Modal>

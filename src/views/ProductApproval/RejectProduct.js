@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { BiBlock } from "react-icons/bi";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 
@@ -17,15 +16,14 @@ import {
   Col,
 } from "react-bootstrap";
 
-const VerifiedProduct = ({
-  showVerifiedProduct,
-  setShowVerifiedProduct,
+const RejectProduct = ({
+  showRejectProduct,
+  setShowRejectProduct,
   product,
-  getUnverifiedProduct,
 }) => {
   const [updateProduct, setUpdateProduct] = useState([]);
 
-  const handleUpdateProduct = (product) => {
+  const handleRejectProduct = (product) => {
     var data = new FormData();
     data.append("product_id", product.id);
     data.append("verified_status", product.is_verified);
@@ -34,7 +32,6 @@ const VerifiedProduct = ({
         console.log("resp", res);
         if (res?.data?.status) {
           setUpdateProduct(res?.data?.data);
-          getUnverifiedProduct();
         } else {
           alert("Fields not matched");
         }
@@ -49,38 +46,33 @@ const VerifiedProduct = ({
     <>
       <Modal
         className="modal-mini modal-primary"
-        show={showVerifiedProduct}
-        onHide={() => setShowVerifiedProduct(false)}
+        show={showRejectProduct}
+        onHide={() => setShowRejectProduct(false)}
       >
         <Modal.Header className="justify-content-center">
           <div className="modal-profile">
-            <BiBlock
-              style={{
-                fontSize: "30px",
-                color: "gray",
-              }}
-            />
+            <i className="nc-icon nc-simple-remove"></i>
           </div>
         </Modal.Header>
         <Modal.Body className="text-center">
-          <p>Are you sure you want to verify this product?</p>
+          <p>Are you sure you want to reject this product?</p>
         </Modal.Body>
         <div className="modal-footer">
           <Button
             className="btn-simple"
             variant="danger"
             onClick={() => {
-              handleUpdateProduct(product);
-              setShowVerifiedProduct(false);
+              handleRejectProduct(product);
+              setShowRejectProduct(false);
             }}
           >
-            Verify
+            Reject
           </Button>
           <Button
             className="btn-simple"
             type="button"
             variant="secondary"
-            onClick={() => setShowVerifiedProduct(false)}
+            onClick={() => setShowRejectProduct(false)}
           >
             Close
           </Button>
@@ -89,4 +81,4 @@ const VerifiedProduct = ({
     </>
   );
 };
-export default VerifiedProduct;
+export default RejectProduct;
