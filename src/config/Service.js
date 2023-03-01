@@ -7,7 +7,7 @@ export var Http = {
     return axios({
         method: 'GET',
         url: base_url + url,
-        params: {},
+        params: {data},
         headers: {},
     }).then((e) => {
       console.log("getData", e);
@@ -20,12 +20,13 @@ export var Http = {
 },
   PostAPI: (url, body, token = null) => {
     console.log("Api",base_url + url);
+    console.log(body)
     var headers = {
       "Content-Type": "multipart/form-data",
       "Accept":'application/json',
       "Authorization":token
   };
-
+       
   console.log('body', body)
     return axios({
       method: 'POST',

@@ -3,6 +3,7 @@ import { Panel, Placeholder, Row, Col } from 'rsuite';
 import Category from './Category';
 import "../../assets/css/admin.css";
 import SubCategory from './SubCategory';
+import Section from'./Section';
 
 function index() {
   
@@ -11,8 +12,6 @@ function index() {
   const handleClick = () => {
 
   }
-
-
   const Card = (props) => {
     return(
       <Panel {...props}>
@@ -26,6 +25,12 @@ function index() {
     <div className='MainContainer'>
      
         <Row>
+        <Col md={6} sm={12}>
+            <Card bordered header="Section" className="Categorycards" onClick={()=>setSelectedItem(4)}
+               />
+              
+          </Col>
+
           <Col md={6} sm={12}>
             <Card bordered header="Categories" className="Categorycards"
             cardid="1"
@@ -38,6 +43,7 @@ function index() {
               onClick={()=>setSelectedItem(2)}
               />
           </Col>
+<<<<<<< HEAD
 
           <Col md={6} sm={12}>
             <Card bordered header="Section" className="Categorycards"
@@ -49,10 +55,13 @@ function index() {
             <Card bordered header=" Store Categories" className="Categorycards"
                />
           </Col> */}
+=======
+>>>>>>> product-store-approval
         </Row>
         <br />
         <br />
         {/* <Gap/> */}
+<<<<<<< HEAD
         <Row>
           
 
@@ -61,10 +70,13 @@ function index() {
           />
           </Col> */}
         </Row>
+=======
+>>>>>>> product-store-approval
 <br/>
 
         {selectedItem==1 && <Category/>}
         {selectedItem==2 && <SubCategory/>}
+        {selectedItem==4 && <Section/>}
       
     </div>
   )
