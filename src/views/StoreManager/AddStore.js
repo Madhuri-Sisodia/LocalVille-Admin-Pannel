@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { MdClose } from "react-icons/md";
 import { Modal, Form, Button } from "react-bootstrap";
 import { Http } from "../../config/Service";
@@ -8,6 +8,8 @@ import "../../assets/css/modal.css";
 const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
   const [store, setStore] = useState([]);
   const [image, setImage] = useState(null);
+  const timeRef = useRef()
+ 
   const [storeData, setStoreData] = useState({
     storeImage: "",
     storeName: "",
@@ -23,7 +25,12 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
     openingTime: "",
     closingTime: "",
   });
+
+  console.log(storeData)
   const [selectedDays, setSelectedDays] = useState([]);
+      
+  console.log(selectedDays)
+
 
   const toggleDaySelection = (day) => {
     if (selectedDays.includes(day)) {
@@ -34,6 +41,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
   };
 
   const handleImageChange = (e) => {
+  
     const file = e.target.files[0];
     setImage(file);
     setStoreData((previous) => {
@@ -61,6 +69,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
   };
 
   const handleSubmit = (event) => {
+
     event.preventDefault();
     var data = new FormData();
 
@@ -74,7 +83,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
     data.append("city", storeData.city);
     data.append("state", storeData.state);
     data.append("country", storeData.country);
-    data.append("opening_days", storeData.openingDays);
+    data.append("opening_days",selectedDays );
     data.append("opening_time", storeData.openingTime);
     data.append("closing_time", storeData.closingTime);
     console.log("updateStore", data);
@@ -98,12 +107,13 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
   };
 
   const handleInput = (e) => {
+    console.log(e.target.value)
     setStoreData((previous) => {
       return { ...previous, [e.target.name]: e.target.value };
     });
   };
 
-  const daysOfWeek = ["M", "T", "W", "Th", "F", "S", "S"];
+  const daysOfWeek = ["M", "T", "W", "Th", "F", "St", "S"];
 
   return (
     <>
@@ -254,7 +264,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
                   <div
                     key={day}
                     className={`week-days ${isSelected ? "selected" : ""}`}
-                    onChange={() => toggleDaySelection(day)}
+                    onClick={() => toggleDaySelection(day)}
                   >
                     {day}
                   </div>
@@ -262,31 +272,23 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
               })}
             </Form.Group>
 
-            <Form.Group>
-              <Form.Label className="add-label">Opening Time</Form.Label>
-              <Form.Control
-                type="text"
-                name="openingTime"
-                required
-                onChange={(e) => {
+            <div style={{display:"flex",flexDirectionL:"rows",marginTop:"20px",marginBottom:"right"}}>
+            <Form.Group style={{width:"50%"}}>
+              <Form.Label  className="add-label">Opening Time</Form.Label>
+              <br />
+              <input type="time" name="openingTime" onChange={(e) => {
                   handleInput(e);
-                }}
-              ></Form.Control>
+                }}/>
             </Form.Group>
-
-            <Form.Group>
-              <Form.Label className="add-label">Closing Time</Form.Label>
-              <Form.Control
-                type="text"
-                name="closingTime"
-                required
-                onChange={(e) => {
-                  handleInput(e);
-                }}
-              ></Form.Control>
+            <Form.Group style={{width:"50%"}}>
+              <Form.Label  className="add-label"
+              >Closing Time</Form.Label>
+              <br />
+              <input type="time" name="closingTime" onChange={(e)=>{ handleInput(e)}}/>
             </Form.Group>
+            </div>
+           
             <br></br>
-
             <button
               
               type="submit"
@@ -298,6 +300,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
                 width:"100%",
                 padding:"5px",
                 color:"white",
+                marginTop:"20px"
               }}
             >
               Add
