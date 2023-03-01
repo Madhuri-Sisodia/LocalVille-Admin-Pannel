@@ -43,7 +43,7 @@ function index() {
               onClick={()=>setSelectedItem(2)}
               />
           </Col>
-<<<<<<< HEAD
+
 
           <Col md={6} sm={12}>
             <Card bordered header="Section" className="Categorycards"
@@ -55,23 +55,9 @@ function index() {
             <Card bordered header=" Store Categories" className="Categorycards"
                />
           </Col> */}
-=======
->>>>>>> product-store-approval
-        </Row>
-        <br />
-        <br />
-        {/* <Gap/> */}
-<<<<<<< HEAD
-        <Row>
-          
 
-          {/* <Col md={6} sm={12} >
-            <Card bordered header="Attributes" className="Categorycards"
-          />
-          </Col> */}
         </Row>
-=======
->>>>>>> product-store-approval
+      
 <br/>
 
         {selectedItem==1 && <Category/>}
