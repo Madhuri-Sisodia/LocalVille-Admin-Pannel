@@ -10,7 +10,9 @@ import SearchIcon from "@rsuite/icons/Search";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import "../../assets/css/modal.css";
+import "../../assets/css/day.css";
 import UpdateStore from "./UpdateStore";
+import AddStore from "./AddStore";
 
 import {
   Modal,
@@ -25,7 +27,6 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-
 
 // const data = [
 //   {
@@ -106,12 +107,13 @@ const StoreManager = () => {
   const [showModal, setShowModal] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [data, setData] = useState([]);
-
+  const [showAddStore, setShowAddStore] = useState(false);
   const [rowData, setRowData] = useState([]);
   const [blockData, setBlockData] = useState([]);
   const [blockStore, setBlockStore] = useState([]);
   const [showUpdateStore, setShowUpdateStore] = useState(false);
   const [selectedStore, setSelectedStore] = useState(null);
+  const [days, setDays] = useState([]);
 
   const getLocation = (latitude, longitude) => {
     const url = `https://www.google.com/maps?q=${latitude}+${longitude}`;
@@ -132,7 +134,7 @@ const StoreManager = () => {
         console.log("Error:", e);
       });
   };
-
+  console.log("data", data);
   useEffect(() => {
     getStore();
   }, []);
@@ -157,6 +159,21 @@ const StoreManager = () => {
       });
   };
 
+  useEffect(() => {
+    if (rowData.opening_days) {
+      let parsedDays;
+      if (Array.isArray(rowData.opening_days)) {
+        parsedDays = rowData.opening_days;
+        parsedDays = JSON.parse(rowData.opening_days);
+      } else if (typeof rowData.opening_days === 'string') {
+        parsedDays = rowData.opening_days.split(',');
+      } 
+      setDays(parsedDays);
+    }
+  }, [rowData]);
+
+  const daysOfWeek = ["M", "T", "W", "Th", "F", "S", "Su"];
+
   return (
     <>
       <Container fluid>
@@ -164,6 +181,19 @@ const StoreManager = () => {
           <Col md="12">
             <Card className="strpied-tabled-with-hover">
               <Card.Header>
+                <Button
+                  className="btn-fill float-right"
+                  style={{
+                    backgroundColor: "blueviolet",
+                    borderColor: "blueviolet",
+                  }}
+                  type="submit"
+                  onClick={() => {
+                    setShowAddStore(true);
+                  }}
+                >
+                  Add Stores
+                </Button>
                 <Card.Title as="h4">Store Manager</Card.Title>
                 <p className="card-category">Store details and action</p>
                 <br></br>
@@ -339,6 +369,12 @@ const StoreManager = () => {
         getStore={getStore}
       />
 
+      <AddStore
+        showAddStore={showAddStore}
+        setShowAddStore={setShowAddStore}
+        getStore={getStore}
+      />
+
       <Modal
         className="modal-mini modal-primary"
         show={showModal}
@@ -443,23 +479,12 @@ const StoreManager = () => {
               </tr>
               <tr>
                 <td className="bold-col">Opening Days:</td>
-                <td
-                  style={{
-                    backgroundColor:
-                      rowData.opening_days == "[1,2,3,4,5,6]" ? "red" : "white",
-                    border: "none",
-                    height: "20px",
-                    width: "20px",
-                    fontSize: "0.75rem",
-                    color: "white",
-                    padding: " 10px",
-                    borderRadius: "50%",
-                    display: "inline-block",
-                  }}
-                >
-                  {rowData.opening_days == "[1,2,3,4,5,6]"
-                    ? "M,T,W,TH,F,S"
-                    : "S"}
+                <td>
+                  {days.map((day) => (
+                    <div key={day} className="day-circle">
+                      {daysOfWeek[day - 1] || day}
+                    </div>
+                  ))}
                 </td>
               </tr>
               <tr>

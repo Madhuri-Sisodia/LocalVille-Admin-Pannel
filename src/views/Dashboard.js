@@ -4,7 +4,7 @@ import StoreCard from "./Cards/StoreCard";
 import { Http } from "../config/Service";
 import { apis } from "../config/WebConstant";
 // react-bootstrap components
-import { Card, Container, Row, Col } from "react-bootstrap";
+import { Card, Container, Row, Col,Table,Form,Tooltip,OverlayTrigger,Button } from "react-bootstrap";
 import ProductCard from "./Cards/ProductCard";
 
 const Dashboard = () => {
@@ -268,7 +268,7 @@ const Dashboard = () => {
             </Card>
           </Col>
         </Row>
-        {/* <Row>
+        <Row>
           <Col md="6">
             <Card>
               <Card.Header>
@@ -665,7 +665,7 @@ const Dashboard = () => {
               </Card.Footer>
             </Card>
           </Col>
-        </Row> */}
+        </Row>
         <ProductCard latestProduct={latestProduct} />
         <StoreCard latestStore={latestStore} />
       </Container>

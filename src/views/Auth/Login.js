@@ -50,19 +50,20 @@ const Login = () => {
        Http.PostAPI(apis.loginAdminData, data, null)
          .then((res) => {
           if (res?.data?.status) {
-              setUser(res?.data?.data);
-              sessionStorage.setItem("loggedIn", JSON.stringify(loginData));
-              history.push("/admin/dashboard")
-            } else {
-              alert("Fields not matched");
-            }
-         })
-         .catch((e) => {
-           alert("Something went wrong.");
-           console.log("Error:", e);
-         });
-       setEmail("");
-       setPassword("");
+
+            setUser(res?.data?.data);
+            sessionStorage.setItem("loggedIn", JSON.stringify(res.data.data.token));
+            history.push("/admin/dashboard");
+          } else {
+            alert("Fields not matched");
+          }
+        })
+        .catch((e) => {
+          alert("Something went wrong.");
+          console.log("Error:", e);
+        });
+      setEmail("");
+      setPassword("");
     }
   };
 

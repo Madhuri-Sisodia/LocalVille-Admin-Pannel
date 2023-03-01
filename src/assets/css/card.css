@@ -1,40 +1,92 @@
 .icons {
-    display: flex;
-    align-items: center;
-    float: right;
-   
-    
-  }
+  display: flex;
+  align-items: center;
+  float: right;
+}
+
+.minus {
+  display: flex;
+  background-color: blueviolet;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid blueviolet;
+  margin-right: 8px;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+}
+.plus {
+  display: flex;
+  justify-content: center;
+  background-color: blueviolet;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid blueviolet;
+  margin-right: 8px;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+}
+
+.card {
+  border-radius: 20px 20px 20px 20px;
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.card-div {
+  position: absolute;
+  top: 10px;
+  left: -10px;
+  color: white;
+  padding: 5px 14px;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+.image {
+  background-size: cover;
+  background-position: center;
+  height: 200px;
+  border-radius: 20px 20px 0px 0px;
+}
+
+.heading {
+  position: absolute;
+  bottom: 0px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 2px;
+  width: 100%;
+  border-radius: 0px 0px 20px 20px;
+}
+.price {
+  float: right;
+  font-weight: bold;
+  font-size: 1rem;
+  color: white;
+  padding: 5px;
+  margin-right: 2px;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 1rem;
+  width: auto;
+  padding: 5px;
+  margin-bottom: 0px;
+}
+
+.paragraph {
+  font-size: 0.9rem;
+  width: auto;
+  padding: 5px;
+  margin-top: 0px;
+  margin-bottom: 1px;
   
-  .minus {
-    display: flex;
-    background-color: blueviolet;
-    justify-content: center;
-    align-items: center;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: 1px solid blueviolet;
-    margin-right: 8px;
-    font-size: 20px;
-    font-weight: bold;
-    color:white;
-    
-  }
-  .plus {
-    display: flex;
-    justify-content: center;
-    background-color: blueviolet;
-    align-items: center;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: 1px solid blueviolet;
-    margin-right: 8px;
-    font-size: 20px;
-    font-weight: bold;
-    color:white;
-  }
-  
-  
-  
+}
