@@ -113,6 +113,7 @@ const StoreManager = () => {
   const [blockStore, setBlockStore] = useState([]);
   const [showUpdateStore, setShowUpdateStore] = useState(false);
   const [selectedStore, setSelectedStore] = useState(null);
+  const [storeAdded,setAddStored] = useState(false)
   const [days, setDays] = useState([]);
 
   const getLocation = (latitude, longitude) => {
@@ -121,10 +122,13 @@ const StoreManager = () => {
   };
 
   const getStore = () => {
-    Http.GetAPI(apis.getStoreData + "?" + Math.random(), data, null)
+    console.log("hello")
+    Http.GetAPI(apis.getStoreData + "?" + Math.random(), "", null)
       .then((res) => {
+        console.log(res)
         if (res?.data?.status) {
           setData(res?.data?.data);
+          setAddStored(false)
         } else {
           alert("Fields not matched");
         }
@@ -137,7 +141,7 @@ const StoreManager = () => {
   console.log("data", data);
   useEffect(() => {
     getStore();
-  }, []);
+  }, [AddStore]);
 
   const handleBlockStore = (id) => {
     var data = new FormData();
@@ -373,6 +377,7 @@ const StoreManager = () => {
         showAddStore={showAddStore}
         setShowAddStore={setShowAddStore}
         getStore={getStore}
+        AddStore={setAddStored}
       />
 
       <Modal

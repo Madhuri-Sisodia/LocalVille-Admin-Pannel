@@ -4,12 +4,15 @@ import { Modal, Form, Button } from "react-bootstrap";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import "../../assets/css/modal.css";
+import usevendorData from "CommonUtils/CostomeComp";
 
-const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
+const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
   const [store, setStore] = useState([]);
   const [image, setImage] = useState(null);
-  const timeRef = useRef()
- 
+  const [selectSection,setSelectSection] = useState("")
+  const [vendortData,setVendorData] = useState([])
+  console.log(vendortData)
+  
   const [storeData, setStoreData] = useState({
     storeImage: "",
     storeName: "",
@@ -26,12 +29,10 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
     closingTime: "",
   });
 
-  console.log(storeData)
+
   const [selectedDays, setSelectedDays] = useState([]);
+
       
-  console.log(selectedDays)
-
-
   const toggleDaySelection = (day) => {
     if (selectedDays.includes(day)) {
       setSelectedDays(selectedDays.filter((d) => d !== day));
@@ -71,8 +72,16 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
   const handleSubmit = (event) => {
 
     event.preventDefault();
-    var data = new FormData();
 
+   const vendorid = vendortData.filter((ele)=>{
+            return(ele.email==selectSection)
+   })
+     
+   console.log(vendorid)
+    const id = vendorid[0].id
+    console.log(id)
+    var data = new FormData();
+     data.append("vendor_id",id)
     data.append("store_Image", storeData.storeImage);
     data.append("store_name", storeData.storeName);
     data.append("store_desc", storeData.storeDesc);
@@ -93,7 +102,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
         console.log("resp", res);
         if (res?.data?.status) {
           setStore(res?.data?.data);
-          getStore();
+          addStore(true)
         } else {
           alert("Fields not matched");
         }
@@ -114,6 +123,27 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
   };
 
   const daysOfWeek = ["M", "T", "W", "Th", "F", "St", "S"];
+
+  useEffect(()=>{
+    const getVendorsData=()=>{
+      Http.GetAPI(apis.getVendorsData + "?" + Math.random(), "", null)
+    .then((res) => { 
+      if (res?.data?.status) {
+        console.log("vendorData=>",res.data.data)
+        setVendorData(res.data.data)
+      } else {
+        alert("Fields not matched");
+      }
+    })
+    .catch((e) => {
+      setIsLoading(false);
+      alert("Something went wrong.");
+      console.log("Error:", e);
+    });
+  }
+  getVendorsData()
+  },[])
+ 
 
   return (
     <>
@@ -172,6 +202,26 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
                */}
 
             <Form.Group>
+            <Form.Label className="add-label">Store Name</Form.Label>
+            
+            <div style={{width:"50%",marginTop:"5px"}}>
+              <select
+                name="selectSection"
+                value={selectSection}
+               onChange={(event) => setSelectSection(event.target.value)}
+                style={{height:"35px",borderRadius:"5px",paddingLeft:"5px",paddingRight:"5px",borderColor: "#808020",width:"80%"}}  
+               >
+                <option value="">Select</option>
+                {vendortData.map((category) => (
+                  <option key={category.id} value={category.email}>
+                    {category.email}
+                  </option>
+                ))}
+              </select>
+              </div>
+            </Form.Group>
+
+            <Form.Group>
               <Form.Label className="add-label">Store Name</Form.Label>
               <Form.Control
                 name="storeName"
@@ -182,6 +232,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
                 required
               ></Form.Control>
             </Form.Group>
+
 
             <Form.Group>
               <Form.Label className="add-label">Store Description</Form.Label>

@@ -43,19 +43,6 @@ function index() {
               onClick={()=>setSelectedItem(2)}
               />
           </Col>
-
-
-          <Col md={6} sm={12}>
-            <Card bordered header="Section" className="Categorycards"
-               />
-              
-          </Col>
-
-          {/* <Col md={6} sm={12} >
-            <Card bordered header=" Store Categories" className="Categorycards"
-               />
-          </Col> */}
-
         </Row>
       
 <br/>

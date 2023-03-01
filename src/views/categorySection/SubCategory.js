@@ -1,90 +1,3 @@
-<<<<<<< HEAD
-import React from 'react';
-import { useEffect } from 'react';
-import { Table, Card, Col } from "react-bootstrap";
-import ReloadIcon from '@rsuite/icons/Reload';
-import CloseIcon from '@rsuite/icons/Close';
-import { Form, Radio, RadioGroup, Button, ButtonToolbar, Dropdown } from "rsuite";
-import '../../assets/css/admin.css';
-import { apis } from 'config/WebConstant';
-import { Http } from 'config/Service';
-
-
-function SubCategory() {
-
-    useEffect(() => {
-        Http.GetAPI(apis.getsubCategory + "?" + Math.random(), "data", null)
-          .then((res) => {
-            if (res?.data?.status) {
-               console.log("success")
-            } else {
-              alert("Fields not matched");
-            }
-          })
-          .catch((e) => {
-            alert("Something went wrong.");
-            console.log("Error:", e);
-          });
-      }, []);
-
-    return (
-        <div className="MainContainer">
-            <Form fluid>
-                <div className="Container">
-                    <div className="InnerContainer2">
-                    <div className="InnnerContainerCategory">
-                        <Form.ControlLabel style={{ color: "#6c757d", fontSize: "1rem", marginRight: "1rem" }}>
-                            <h5>Select Category</h5>
-                        </Form.ControlLabel>
-                        <Dropdown title="Select">
-                            <Dropdown.Item>New File</Dropdown.Item>
-                            <Dropdown.Item>New File with Current Profile</Dropdown.Item>
-                            <Dropdown.Item>Download As...</Dropdown.Item>
-                            <Dropdown.Item>Export PDF</Dropdown.Item>
-                            <Dropdown.Item>Export HTML</Dropdown.Item>
-                            <Dropdown.Item>Settings</Dropdown.Item>
-                            <Dropdown.Item>About</Dropdown.Item>
-                        </Dropdown>
-                    </div>
-                    <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
-                        Sub-Category Name
-                    </Form.ControlLabel>
-                    <Form.Control placeholder="Category Name" name="name" />
-                    </div>
-                    <br/>
-                    <div className="InnnerContainerRadio">
-                    <Col lg="4" sm="6">
-                        <div className="InnnerContainer1">
-                            < Form.ControlLabel style={{ color: "#6c757d", fontSize: "1rem" }}>Contain Sizes</Form.ControlLabel>
-                            <div className="InnnerContainer">
-                                <Form.Group controlId="radioList">
-                                    <RadioGroup name="radioList">
-                                        <Radio value="1">Yes</Radio>
-                                        <Radio value="0">No</Radio>
-                                    </RadioGroup>
-                                </Form.Group>
-                            </div>
-                           
-                        </div>
-                        </Col>
-                        <br />
-                        <Col lg="4" sm="6">
-                        <div className="InnnerContainer1">
-                            <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>Contain Colors</Form.ControlLabel>
-                            <div className="InnnerContainer">
-                                <Form.Group controlId="radioList">
-                                    <RadioGroup name="radioList">
-                                        <Radio value="1">Yes</Radio>
-                                        <Radio value="0">No</Radio>
-                                    </RadioGroup>
-                                </Form.Group>
-                            </div>
-                            
-                        </div>
-                        </Col>
-                    </div>
-                <br/>
-=======
 import React, { useState,useContext } from "react";
 import NotificationAlert from "react-notification-alert";
 import "../../assets/css/admin.css";
@@ -105,11 +18,6 @@ const SubCategory = () => {
   const [subCategory, setSubCategory] = useState([]);
   const {Categoriesid} = useContext(Utils)
  
->>>>>>> product-store-approval
-
-
-  // const [getCategoryData, setGetCategoryData] = useState([]);
-
   const notificationAlertRef = React.useRef(null);
 
   const notify = (place) => {
@@ -158,7 +66,6 @@ const SubCategory = () => {
         return(ele.name==selectCategory)
     })
 
-     console.log(id)
     var formdata = new FormData();
     formdata.append("category_id", selectCategory);
     formdata.append("name", subCategoryName);
@@ -208,7 +115,7 @@ const SubCategory = () => {
       <div className="MainContainer">
         <div className="Container">
           <Form fluid>
-            <Form.Group controlId="name-1">
+            <Form.Group controlId="name-1" style={{marginBottom:"20px"}}>
               <div className="InnnerContainerCategory" style={{marginTop:"20px",marginBottom:"20px",flexDirection:"column"}}>
                 <Form.ControlLabel style={{ color: "#808080", fontSize: "0.9rem",marginBottom:"10px",PaddingTop:"20px" }}>
                   Category
@@ -227,7 +134,7 @@ const SubCategory = () => {
                   ))}
                 </select>
               </div>
-              <Form.ControlLabel style={{ color: "#808080", fontSize: "0.9rem",fontSize:"20px",marginTop:"20px" }}>
+              <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem",marginTop:"20px" }}>
                 Sub-Category Name
               </Form.ControlLabel>
               <Form.Control
