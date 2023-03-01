@@ -35,19 +35,22 @@ const StoreCard = ({ latestStore }) => {
       <Col md="12">
         <Card>
           <Card.Header>
-            <Button
-              className="btn-fill float-right"
+            <button
+              type="submit"
               style={{
                 backgroundColor: "blueviolet",
-                borderColor: "blueviolet",
+                border: "blueviolet",
+                borderRadius: "4px",
+                float: "right",
+                padding: "9px 19px",
+                color: "white",
               }}
-              type="submit"
               onClick={() => {
                 history.push("/admin/store");
               }}
             >
               View All
-            </Button>
+            </button>
             <Card.Title as="h4">Latest Stores</Card.Title>
             <p className="card-category"></p>
           </Card.Header>
@@ -55,96 +58,38 @@ const StoreCard = ({ latestStore }) => {
             <div className="row">
               {latestStore.map((item, index) => (
                 <Col md="4" key={index}>
-                  <Card
-                    style={{
-                      padding: "5px 5px 5px 5px",
-                      borderRadius: "20px 20px 20px 20px",
-                      boxShadow: "0px 6px 10px rgba(0, 0, 0, 0.2)",
-                      backgroundImage: `url(${item.store_image})`,
-                      backgroundSize: "cover",
-                      backgroundPosition: "center",
-                    }}
-                  >
-                    {/* <Card.Img
-                      variant="top"
-                      src={item.store_image}
-                      alt="Image"
+                  <Card className="card">
+                    <div
+                      className="card-div"
                       style={{
-                        height: "200px",
-                        borderRadius: "10px",
+                        backgroundColor:
+                          item.is_verified == "1"
+                            ? "blueviolet"
+                            : item.is_verified == "0"
+                            ? "orange"
+                            : "red",
                       }}
-                    /> */}
-                    <Card.Body>
-                      <Card.Title
-                        as="h5"
-                        style={{
-                          fontWeight: "bold",
-                          fontSize: "1rem",
-                        }}
-                      >
-                        {item.store_name}
-                      </Card.Title>
-                      <p
-                        className="card-description"
-                        style={{
-                          fontSize: "0.9rem",
-                        }}
-                      >
-                        {item.store_desc}
-                      </p>
+                    >
+                      {item.is_verified == "1"
+                        ? "Verified"
+                        : item.is_verified == "0"
+                        ? "In Review"
+                        : "Rejected"}
+                    </div>
 
-                      {/* <div
-                        style={{
-                          float: "left",
-                          fontWeight: "bold",
-                          color: "blueviolet",
-                        }}
-                      >
-                        {card.price}
-                      </div> */}
-                      {/* <div className="icons">
-                        <button className="minus">-</button>
-                        <div style={{ marginRight: "10px" }}>1</div>
-                        <button className="plus">+</button>
-                      </div> */}
-                    </Card.Body>
-                    <Card.Footer>
-                      <hr></hr>
-                      <div className="stats">
-                        {item.verified == "1"
-                          ? "Verified"
-                          : item.verified == "0"
-                          ? "In Review"
-                          : "Rejected"}
+                    <div
+                      className="image"
+                      style={{
+                        backgroundImage: `url(${item.store_image})`,
+                      }}
+                    >
+                      <div className="heading">
+                        <h5 className="title">{item.store_name}</h5>
+                        <p className="card-description paragraph">
+                          {item.store_desc}
+                        </p>
                       </div>
-                    </Card.Footer>
-                    {/* <div className="card-buttons">
-                      <Button
-                        className="btn-btn-primary btn-round float-left"
-                        style={{
-                          color: "blueviolet",
-                          borderColor: "blueviolet",
-                          marginLeft: "10px",
-                          marginBottom: "8px",
-                        }}
-                        type="submit"
-                      >
-                        Add To Cart
-                      </Button>
-
-                      <Button
-                        className="btn-fill btn-round float-right"
-                        style={{
-                          backgroundColor: "blueviolet",
-                          borderColor: "blueviolet",
-                          marginRight: "10px",
-                          marginBottom: "8px",
-                        }}
-                        type="submit"
-                      >
-                        Buy Now
-                      </Button>
-                    </div> */}
+                    </div>
                   </Card>
                 </Col>
               ))}
