@@ -15,7 +15,7 @@ const VerifiedStore = ({
   const handleUpdateStore = (store) => {
     var data = new FormData();
     data.append("store_id", store.id);
-    data.append("verified_status", store.is_verified);
+    data.append("verified_status", 1);
     Http.PostAPI(apis.updateVerifiedStore, data, null)
       .then((res) => {
         console.log("resp", res);
@@ -37,7 +37,7 @@ const VerifiedStore = ({
       <Modal
         className="modal-mini modal-primary"
         show={showVerifiedStore}
-        onHide={() => setShowVerifiedStore(false)}
+        // onHide={() => setShowVerifiedStore(false)}
       >
         <Modal.Header className="justify-content-center">
           <div className="modal-profile">

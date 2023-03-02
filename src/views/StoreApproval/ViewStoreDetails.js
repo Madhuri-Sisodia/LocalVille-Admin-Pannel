@@ -45,16 +45,16 @@ import {
 //   }, []);
 
 const ViewStoreDetails = ({
-  showDetailsModal, setShowDetailsModal, rowData,
+  showStoreDetails, setShowStoreDetails, rowData,
 }) => {
   return (
     <>
-      <Modal show={showDetailsModal} onHide={() => setShowDetailsModal(false)}>
+      <Modal show={showStoreDetails} onHide={() => setShowStoreDetails(false)}>
         <Modal.Header style={{ borderBottom: "1px solid gray" }}>
           <Modal.Title className="title">View Store Details</Modal.Title>
           <MdClose
             className="close-icon"
-            onClick={() => setShowDetailsModal(false)}
+            onClick={() =>setShowStoreDetails(false)}
           />
         </Modal.Header>
 

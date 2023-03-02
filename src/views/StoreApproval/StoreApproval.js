@@ -18,16 +18,18 @@ import {
   Col,
 } from "react-bootstrap";
 import ViewStoreDetails from "./ViewStoreDetails";
-// import VerifiedStore from "./VerifiedStore";
+ import VerifiedStore from "./VerifiedStore";
+// import rej
 
 const StoreApproval = () => {
   const [data, setData] = useState([]);
   const [showVerifiedStore, setShowVerifiedStore] = useState(false);
   const [showStoreDetails, setShowStoreDetails] = useState(false);
-  // const [showRejectStore, setShowRejectStore] = useState(false);
+  const [showRejectStore, setShowRejectStore] = useState(false);
   const[storeApproval, setStoreApproval] = useState(false);
   const [rowData, setRowData] = useState([]);
   const [store, setStore] = useState([]);
+    
 
   const getUnverifiedStore = () => {
     Http.GetAPI(apis.getUnverifiedStore + "?" + Math.random(), data, null)
@@ -136,10 +138,10 @@ const StoreApproval = () => {
                             className="btn-simple btn-link p-1"
                             type="button"
                             variant="success"
-                            // onClick={() => {
-                            //   setShowVerifiedStore(true);
-                            //   setStore(item);
-                            // }}
+                            onClick={() => {
+                              setShowVerifiedStore(true);
+                              setStore(item);
+                            }}
                           >
                             <i className="fas fa-check"></i>
                           </Button>
@@ -148,10 +150,10 @@ const StoreApproval = () => {
                             className="btn-simple btn-link p-1"
                             type="button"
                             variant="danger"
-                            // onClick={() => {
-                            //   setShowRejectStore(true);
-                            //   setStore(item);
-                            // }}
+                            onClick={() => {
+                              setShowRejectStore(true);
+                              setStore(item);
+                            }}
                           >
                             <i className="fas fa-times"></i>
                           </button>
@@ -165,12 +167,12 @@ const StoreApproval = () => {
           </Col>
         </Row>
 
-        {/* <VerifiedStore
+        <VerifiedStore
           showVerifiedStore={showVerifiedStore}
           setShowVerifiedStore={setShowVerifiedStore}
           store={store}
           getUnverifiedStore={getUnverifiedStore}
-        /> */}
+        />
 
         <ViewStoreDetails
           showStoreDetails={showStoreDetails}
@@ -181,8 +183,7 @@ const StoreApproval = () => {
           showRejectStore={showRejectStore}
           setShowRejectStore={setShowRejectStore}
           store={store}
-          
-        /> */}
+            /> */}
         
       </Container>
     </>
