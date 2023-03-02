@@ -13,6 +13,7 @@ import "../../assets/css/modal.css";
 import "../../assets/css/day.css";
 import UpdateStore from "./UpdateStore";
 import AddStore from "./AddStore";
+import MAPDays from "./MAPDays";
 
 import {
   Modal,
@@ -115,7 +116,7 @@ const StoreManager = () => {
   const [selectedStore, setSelectedStore] = useState(null);
   const [storeAdded,setAddStored] = useState(false)
   const [days, setDays] = useState([]);
-
+  let parseDays;
   const getLocation = (latitude, longitude) => {
     const url = `https://www.google.com/maps?q=${latitude}+${longitude}`;
     window.open(url);
@@ -279,7 +280,17 @@ const StoreManager = () => {
                         <td>{item.city}</td>
                         <td>{item.state}</td>
                         <td>{item.country}</td>
-                        <td>{item.opening_days}</td>
+                        <td>
+                        {
+                         Array.isArray(item.opening_days)?
+                          ""
+                          :
+                          <div>
+                            { item.opening_days}
+                          </div> 
+                        }
+                          {/* */}
+                        </td>
                         <td>{item.opening_time}</td>
                         <td>{item.closing_time}</td>
                         <td>{item.total_clicks}</td>
@@ -378,7 +389,7 @@ const StoreManager = () => {
         showAddStore={showAddStore}
         setShowAddStore={setShowAddStore}
         getStore={getStore}
-        AddStore={setAddStored}
+        // AddStore={setAddStored}
       />
 
       <Modal
@@ -486,9 +497,9 @@ const StoreManager = () => {
               <tr>
                 <td className="bold-col">Opening Days:</td>
                 <td>
-                  {days.map((day) => (
-                    <div key={day} className="day-circle">
-                      {daysOfWeek[day - 1] || day}
+                  {days.map((day,index) => (
+                    <div key={day} className={`week-days`}>
+                      {daysOfWeek[index] || day}
                     </div>
                   ))}
                 </td>

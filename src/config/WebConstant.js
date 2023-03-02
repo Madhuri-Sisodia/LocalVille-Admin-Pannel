@@ -21,5 +21,4 @@ export const apis = {
     getProdSubCategory:"get_prod_subcategory.php",
     getUnverifiedProducts:"unverified_products.php",
     updateVerifiedProduct:"update_verified_products.php"
-
 }

@@ -29,6 +29,7 @@ const UpdateStore = ({
   });
   const [store, setStore] = useState([]);
   const [hideData, setHideData] = useState(true);
+  const [UpdateStoreImage,SetUpdateStoreImage] = useState("")
 
   const getInput = (e) => {
     setStoreData((previous) => {
@@ -38,7 +39,8 @@ const UpdateStore = ({
 
   const handleUpdateStore = () => {
     var data = new FormData();
-
+    
+    data.append("store_image",UpdateStoreImage)
     data.append("store_id", storeData.storeId ? storeData.storeId : item.id);
     data.append(
       "store_name",
@@ -156,6 +158,18 @@ const UpdateStore = ({
                   ></Form.Control>
                 </Form.Group>
               )}
+
+               <Form.Group style={{ marginBottom: "1rem" }}>
+                <label className="update-label">Store File</label>
+                <Form.Control
+                  className="update-form"
+                  name="storeName"
+                  onChange={(e) => {
+                    SetUpdateStoreImage(e.target.files[0])
+                  }}
+                  type="file"
+                ></Form.Control>
+              </Form.Group>
 
               <Form.Group style={{ marginBottom: "1rem" }}>
                 <label className="update-label">Store Name</label>

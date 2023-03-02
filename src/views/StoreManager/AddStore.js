@@ -9,9 +9,11 @@ import usevendorData from "CommonUtils/CostomeComp";
 const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
   const [store, setStore] = useState([]);
   const [image, setImage] = useState(null);
+  const [selectSection,setSelectSection] = useState("")
+  const [vendortData,setVendorData] = useState([])
+  const [storeImage,setStoreImage] = useState([])
 
   const [storeData, setStoreData] = useState({
-    storeImage: "",
     storeName: "",
     storeDesc: "",
     address: "",
@@ -26,29 +28,19 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
     closingTime: "",
   });
 
-  console.log(storeData);
+ 
   const [selectedDays, setSelectedDays] = useState([]);
-
-  console.log(selectedDays);
-
-  const toggleDaySelection = (day) => {
-    console.log("sss", selectedDays);
-    if (selectedDays.includes(day)) {
-      setSelectedDays(selectedDays.filter((d) => d !== day));
+  console.log(selectedDays)
+  const toggleDaySelection = (index) => {
+    if (selectedDays.includes(index+1)) {
+      setSelectedDays(selectedDays.filter((d) => d !== index+1));
       console.log("sss", selectedDays);
     } else {
-      setSelectedDays([...selectedDays, day]);
+      setSelectedDays([...selectedDays, index+1]);
     }
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setImage(file);
-    setStoreData((previous) => {
-      return { ...previous, storeImage: file };
-    });
-  };
-
+ 
   const resetForm = () => {
     setStoreData({
       storeImage: "",
@@ -75,13 +67,11 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
    const vendorid = vendortData.filter((ele)=>{
             return(ele.email==selectSection)
    })
-     
-   console.log(vendorid)
+   
     const id = vendorid[0].id
-    console.log(id)
     var data = new FormData();
      data.append("vendor_id",id)
-    data.append("store_Image", storeData.storeImage);
+     data.append("store_image",storeImage);
     data.append("store_name", storeData.storeName);
     data.append("store_desc", storeData.storeDesc);
     data.append("lat", storeData.latitude);
@@ -101,7 +91,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
         console.log("resp", res);
         if (res?.data?.status) {
           setStore(res?.data?.data);
-          addStore(true)
+          getStore()
         } else {
           alert("Fields not matched");
         }
@@ -202,7 +192,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
                */}
 
             <Form.Group>
-            <Form.Label className="add-label">Store Name</Form.Label>
+            <Form.Label className="add-label">Vendor Name</Form.Label>
             
             <div style={{width:"50%",marginTop:"5px"}}>
               <select
@@ -222,6 +212,18 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
             </Form.Group>
 
             <Form.Group>
+              <Form.Label className="add-label">Store Image</Form.Label>
+              <Form.Control
+                type="file"
+                name="storeDesc"
+                required
+                onChange={(e) => {
+                  setStoreImage(e.target.files[0])
+                }}
+              ></Form.Control>
+            </Form.Group>
+
+            <Form.Group>
               <Form.Label className="add-label">Store Name</Form.Label>
               <Form.Control
                 name="storeName"
@@ -232,8 +234,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
                 required
               ></Form.Control>
             </Form.Group>
-
-
+             
             <Form.Group>
               <Form.Label className="add-label">Store Description</Form.Label>
               <Form.Control
@@ -309,14 +310,14 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
             <Form.Group>
               <Form.Label className="add-label">Opening Days</Form.Label>
               <br />
-              {daysOfWeek.map((day) => {
-                const isSelected = selectedDays.includes(day);
+              {daysOfWeek.map((day,index) => {
+                const isSelected = selectedDays.includes(index+1);
                 return (
                   <div
                     key={day}
                     className={`week-days ${isSelected ? "selected" : ""}`}
                     name="selectedDays"
-                    onClick={() => toggleDaySelection(day)}
+                    onClick={() => toggleDaySelection(index)}
                   >
                     {day}
                   </div>
