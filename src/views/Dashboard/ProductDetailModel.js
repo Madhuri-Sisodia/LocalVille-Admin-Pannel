@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { MdClose } from "react-icons/md";
 import {
   Modal,
@@ -13,22 +13,22 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-const ViewProduct = ({
-  showProductDetails,
-  setShowProductDetails,
+const ProductDetailModel = ({
+  showProductDetail,
+  setShowProductDetail,
   rowData,
 }) => {
   return (
     <>
       <Modal
-        show={showProductDetails}
-        onHide={() => setShowProductDetails(false)}
+        show={showProductDetail}
+        onHide={() => setShowProductDetail(false)}
       >
         <Modal.Header style={{ borderBottom: "1px solid gray" }}>
-          <Modal.Title className="title">View Product Details</Modal.Title>
+          <Modal.Title className="title">Product Detail</Modal.Title>
           <MdClose
             className="close-icon"
-            onClick={() => setShowProductDetails(false)}
+            onClick={() => setShowProductDetail(false)}
           />
         </Modal.Header>
 
@@ -36,14 +36,14 @@ const ViewProduct = ({
           <Table striped bordered className="table">
             <tbody>
               <tr>
-                <td className="bold-col">ID:</td>
+                <td className="bold-col">Id:</td>
                 <td>{rowData.id}</td>
               </tr>
               <tr>
-                <td className="bold-col">Theme Image:</td>
+                <td className="bold-col">Image:</td>
                 <td>
                   <img
-                    src={rowData.theme_img}
+                    src={rowData.p_images}
                     alt="image"
                     style={{
                       width: "40px",
@@ -84,7 +84,7 @@ const ViewProduct = ({
                 <td>{rowData.total_clicks}</td>
               </tr>
               <tr>
-                <td className="bold-col">Product Status:</td>
+                <td className="bold-col">Store Status:</td>
                 <td
                   style={{
                     backgroundColor:
@@ -110,7 +110,20 @@ const ViewProduct = ({
               </tr>
               <tr>
                 <td className="bold-col">Status:</td>
-                <td>{rowData.active}</td>
+
+                <td
+                  style={{
+                    backgroundColor: rowData.active == "1" ? "green" : "red",
+                    border: "none",
+                    fontSize: "0.75rem",
+                    color: "white",
+                    padding: "0px 7px",
+                    borderRadius: "17px",
+                    display: "inline-block",
+                  }}
+                >
+                  {rowData.active == "1" ? "verified" : "unverified"}
+                </td>
               </tr>
               <tr>
                 <td className="bold-col">Created At:</td>
@@ -122,12 +135,12 @@ const ViewProduct = ({
               </tr>
 
               <tr>
-                <td className="bold-col">Category Name:</td>
-                <td>{rowData.category_name}</td>
+                <td className="bold-col">Product Created:</td>
+                <td>{rowData.p_created}</td>
               </tr>
               <tr>
-                <td className="bold-col">Sub Category Name:</td>
-                <td>{rowData.subcategory_name}</td>
+                <td className="bold-col">Product Modified:</td>
+                <td>{rowData.p_modified}</td>
               </tr>
               <tr>
                 <td className="bold-col">Color:</td>
@@ -143,25 +156,15 @@ const ViewProduct = ({
                 <td>{rowData.price}</td>
               </tr>
               <tr>
-                <td className="bold-col">Discount Price:</td>
-                <td>{rowData.discount_price}</td>
+                <td className="bold-col">Stock:</td>
+                <td>{rowData.in_stock}</td>
               </tr>
             </tbody>
           </Table>
-          <div>
-            <img
-              src={rowData.images?.images}
-              alt="image"
-              style={{
-                width: "80px",
-                height: "80px",
-              }}
-            />
-          </div>
         </Modal.Body>
         <Modal.Footer></Modal.Footer>
       </Modal>
     </>
   );
 };
-export default ViewProduct;
+export default ProductDetailModel;

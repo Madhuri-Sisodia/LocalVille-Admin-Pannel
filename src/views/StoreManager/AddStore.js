@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { MdClose } from "react-icons/md";
 import { Modal, Form, Button } from "react-bootstrap";
 import { Http } from "../../config/Service";
@@ -9,10 +9,7 @@ import usevendorData from "CommonUtils/CostomeComp";
 const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
   const [store, setStore] = useState([]);
   const [image, setImage] = useState(null);
-  const [selectSection,setSelectSection] = useState("")
-  const [vendortData,setVendorData] = useState([])
-  console.log(vendortData)
-  
+
   const [storeData, setStoreData] = useState({
     storeImage: "",
     storeName: "",
@@ -29,23 +26,22 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
     closingTime: "",
   });
 
-
+  console.log(storeData);
   const [selectedDays, setSelectedDays] = useState([]);
 
-      
+  console.log(selectedDays);
+
   const toggleDaySelection = (day) => {
-    console.log("sss",selectedDays)
+    console.log("sss", selectedDays);
     if (selectedDays.includes(day)) {
       setSelectedDays(selectedDays.filter((d) => d !== day));
-      console.log("sss",selectedDays)
+      console.log("sss", selectedDays);
     } else {
       setSelectedDays([...selectedDays, day]);
     }
-
   };
 
   const handleImageChange = (e) => {
-  
     const file = e.target.files[0];
     setImage(file);
     setStoreData((previous) => {
@@ -68,13 +64,12 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
       openingDays: "",
       openingTime: "",
       closingTime: "",
-      selectedDays:"",
+      selectedDays: "",
     });
     setImage(null);
   };
 
   const handleSubmit = (event) => {
-
     event.preventDefault();
 
    const vendorid = vendortData.filter((ele)=>{
@@ -96,7 +91,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
     data.append("city", storeData.city);
     data.append("state", storeData.state);
     data.append("country", storeData.country);
-    data.append("opening_days",selectedDays );
+    data.append("opening_days", selectedDays);
     data.append("opening_time", storeData.openingTime);
     data.append("closing_time", storeData.closingTime);
     console.log("updateStore", data);
@@ -120,7 +115,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
   };
 
   const handleInput = (e) => {
-    console.log(e.target.value)
+    console.log(e.target.value);
     setStoreData((previous) => {
       return { ...previous, [e.target.name]: e.target.value };
     });
@@ -158,6 +153,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
             className="close-icon"
             onClick={() => {
               setShowAddStore(false);
+              setSelectedDays("");
               resetForm();
             }}
           />
@@ -320,42 +316,58 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
                     key={day}
                     className={`week-days ${isSelected ? "selected" : ""}`}
                     name="selectedDays"
-                    onChange={() => toggleDaySelection(day)} >
+                    onClick={() => toggleDaySelection(day)}
+                  >
                     {day}
                   </div>
                 );
               })}
             </Form.Group>
 
-            <div style={{display:"flex",flexDirectionL:"rows",marginTop:"20px",marginBottom:"right"}}>
-            <Form.Group style={{width:"50%"}}>
-              <Form.Label  className="add-label">Opening Time</Form.Label>
-              <br />
-              <input type="time" name="openingTime" onChange={(e) => {
-                  handleInput(e);
-                }}/>
-            </Form.Group>
-            <Form.Group style={{width:"50%"}}>
-              <Form.Label  className="add-label"
-              >Closing Time</Form.Label>
-              <br />
-              <input type="time" name="closingTime" onChange={(e)=>{ handleInput(e)}}/>
-            </Form.Group>
+            <div
+              style={{
+                display: "flex",
+                flexDirectionL: "rows",
+                marginTop: "20px",
+                marginBottom: "right",
+              }}
+            >
+              <Form.Group style={{ width: "50%" }}>
+                <Form.Label className="add-label">Opening Time</Form.Label>
+                <br />
+                <input
+                  type="time"
+                  name="openingTime"
+                  onChange={(e) => {
+                    handleInput(e);
+                  }}
+                />
+              </Form.Group>
+              <Form.Group style={{ width: "50%" }}>
+                <Form.Label className="add-label">Closing Time</Form.Label>
+                <br />
+                <input
+                  type="time"
+                  name="closingTime"
+                  onChange={(e) => {
+                    handleInput(e);
+                  }}
+                />
+              </Form.Group>
             </div>
-           
+
             <br></br>
             <button
-              
               type="submit"
               block
               style={{
                 backgroundColor: "blueviolet",
                 border: "blueviolet",
                 borderRadius: "3px 3px 3px 3px",
-                width:"100%",
-                padding:"5px",
-                color:"white",
-                marginTop:"20px"
+                width: "100%",
+                padding: "5px",
+                color: "white",
+                marginTop: "20px",
               }}
             >
               Add

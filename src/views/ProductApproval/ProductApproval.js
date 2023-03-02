@@ -26,7 +26,6 @@ const ProductApproval = () => {
   const [showVerifiedProduct, setShowVerifiedProduct] = useState(false);
   const [showProductDetails, setShowProductDetails] = useState(false);
   const [showRejectProduct, setShowRejectProduct] = useState(false);
-  const [ProductAproval,setProductAproval] = useState(false)
   const [rowData, setRowData] = useState([]);
   const [product, setProduct] = useState([]);
 
@@ -35,7 +34,6 @@ const ProductApproval = () => {
       .then((res) => {
         if (res?.data?.status) {
           setData(res?.data?.data);
-          setProductAproval(false)
         } else {
           alert("Fields not matched");
         }
@@ -43,12 +41,12 @@ const ProductApproval = () => {
       .catch((e) => {
         alert("Something went wrong.");
         console.log("Error:", e);
-      }); 
+      });
   };
 
   useEffect(() => {
     getUnverifiedProduct();
-  }, [ProductAproval]);
+  }, []);
 
   return (
     <>
@@ -76,7 +74,6 @@ const ProductApproval = () => {
                       <th className="border-0">ID</th>
                       <th className="border-0">Product Image</th>
                       <th className="border-0">Product Name</th>
-                      <th className="border-0">Status</th>
 
                       <th className="border-0">Action</th>
                     </tr>
@@ -97,30 +94,7 @@ const ProductApproval = () => {
                           />
                         </td>
                         <td>{item.product_name}</td>
-                        <td>
-                          <div
-                            style={{
-                              backgroundColor:
-                                item.is_verified == "0"
-                                  ? "blue"
-                                  : item.is_verified == "1"
-                                  ? "green"
-                                  : "red",
-                              border: "none",
-                              fontSize: "0.75rem",
-                              color: "white",
-                              padding: "3px 10px",
-                              borderRadius: "17px",
-                              display: "inline-block",
-                            }}
-                          >
-                            {item.is_verified == "0"
-                              ? "unverified"
-                              : item.is_verified == "1"
-                              ? "verified"
-                              : "pending"}
-                          </div>
-                        </td>
+
                         <td>
                           <Button
                             className="btn-simple btn-link p-1"
@@ -145,7 +119,7 @@ const ProductApproval = () => {
                             <i className="fas fa-check"></i>
                           </Button>
 
-                          <button
+                          <Button
                             className="btn-simple btn-link p-1"
                             type="button"
                             variant="danger"
@@ -155,7 +129,7 @@ const ProductApproval = () => {
                             }}
                           >
                             <i className="fas fa-times"></i>
-                          </button>
+                          </Button>
                         </td>
                       </tr>
                     ))}
@@ -170,22 +144,20 @@ const ProductApproval = () => {
           showVerifiedProduct={showVerifiedProduct}
           setShowVerifiedProduct={setShowVerifiedProduct}
           product={product}
-          getUnverifiedProduct={setProductAproval}
+          getUnverifiedProduct={getUnverifiedProduct}
         />
 
         <ViewProduct
           showProductDetails={showProductDetails}
-          setShowProductDetails={setProductAproval}
+          setShowProductDetails={setShowProductDetails}
           rowData={rowData}
         />
         <RejectProduct
           showRejectProduct={showRejectProduct}
           setShowRejectProduct={setShowRejectProduct}
-          getUnverifiedProduct={setProductAproval}
+          getUnverifiedProduct={getUnverifiedProduct}
           product={product}
-          
         />
-        
       </Container>
     </>
   );
