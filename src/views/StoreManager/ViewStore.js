@@ -14,13 +14,10 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-const StoreDetailModal = ({
-  showDetailsModal,
-  setShowDetailsModal,
-  rowData,
-}) => {
-  const [days, setDays] = useState([]);
+const ViewStore = ({ showDetailsModal, setShowDetailsModal, rowData }) => {
+ const [days, setDays] = useState([]);
   const daysOfWeek = ["M", "T", "W", "Th", "F", "S", "Su"];
+  
 
   useEffect(() => {
     if (rowData.opening_days) {
@@ -129,31 +126,7 @@ const StoreDetailModal = ({
                 <td className="bold-col">Store Updated:</td>
                 <td>{rowData.updated_at}</td>
               </tr>
-              <tr>
-                <td className="bold-col">Store Status:</td>
-                <td
-                  style={{
-                    backgroundColor:
-                      rowData.verified == "1"
-                        ? "green"
-                        : rowData.verified == "0"
-                        ? "orange"
-                        : "red",
-                    border: "none",
-                    fontSize: "0.75rem",
-                    color: "white",
-                    padding: "0px 7px",
-                    borderRadius: "17px",
-                    display: "inline-block",
-                  }}
-                >
-                  {rowData.verified == "1"
-                        ? "verified"
-                        : rowData.verified == "0"
-                        ? "in review"
-                        : "rejected"}
-                </td>
-              </tr>
+
               <tr>
                 <td className="bold-col">Status:</td>
 
@@ -178,4 +151,4 @@ const StoreDetailModal = ({
     </>
   );
 };
-export default StoreDetailModal;
+export default ViewStore;

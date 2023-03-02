@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Input, Whisper, Tooltip, InputGroup } from "rsuite";
-import { RxCross1 } from "react-icons/rx";
-import { MdLocationPin } from "react-icons/md";
-import { MdRemoveRedEye } from "react-icons/md";
-import { MdClose } from "react-icons/md";
-import { BiBlock } from "react-icons/bi";
-import { RxUpdate } from "react-icons/rx";
 import SearchIcon from "@rsuite/icons/Search";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
@@ -13,6 +7,7 @@ import "../../assets/css/modal.css";
 import "../../assets/css/day.css";
 import UpdateStore from "./UpdateStore";
 import AddStore from "./AddStore";
+import BlockStore from "./BlockStore";
 
 import {
   Modal,
@@ -27,6 +22,8 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
+import ViewProduct from "views/ProductApproval/ViewProduct";
+import ViewStore from "./ViewStore";
 
 // const data = [
 //   {
@@ -138,26 +135,6 @@ const StoreManager = () => {
   useEffect(() => {
     getStore();
   }, []);
-
-  const handleBlockStore = (id) => {
-    var data = new FormData();
-    data.append("id", id);
-    console.log("usersss", data);
-    Http.PostAPI(apis.blockStore, data, null)
-      .then((res) => {
-        console.log("user", res);
-        if (res?.data?.status) {
-          setBlockStore(res?.data?.data);
-          getStore();
-        } else {
-          alert("Fields not matched");
-        }
-      })
-      .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
-      });
-  };
 
   useEffect(() => {
     if (rowData.opening_days) {
@@ -302,7 +279,7 @@ const StoreManager = () => {
                           <Button
                             className="btn-simple btn-link p-1"
                             type="button"
-                            style={{color:"gray"}}
+                            style={{ color: "gray" }}
                             onClick={() =>
                               getLocation(item.latitude, item.longitude)
                             }
@@ -320,7 +297,7 @@ const StoreManager = () => {
                             <Button
                               className="btn-simple btn-link p-1"
                               type="button"
-                              style={{color:"blue"}}
+                              style={{ color: "blue" }}
                               onClick={() => {
                                 setShowDetailsModal(true);
                                 setRowData(item);
@@ -339,13 +316,13 @@ const StoreManager = () => {
                             >
                               <i className="fa fa-edit"></i>
                             </Button>
+
                             <Button
                               className="btn-simple btn-link p-1"
                               type="button"
                               variant="danger"
                               onClick={() => {
                                 setShowModal(true);
-                                setShowDetailsModal(false);
                                 setBlockData(item.id);
                               }}
                             >
@@ -375,163 +352,17 @@ const StoreManager = () => {
         setShowAddStore={setShowAddStore}
         getStore={getStore}
       />
-
-      <Modal
-        className="modal-mini modal-primary"
-        show={showModal}
-        onHide={() => setShowModal(false)}
-      >
-        <Modal.Header className="justify-content-center">
-          <div className="modal-profile">
-            <BiBlock
-              style={{
-                fontSize: "30px",
-                color: "gray",
-              }}
-            />
-          </div>
-        </Modal.Header>
-        <Modal.Body className="text-center">
-          <p>Are you sure you want to block this store?</p>
-        </Modal.Body>
-        <div className="modal-footer">
-          <Button
-            className="btn-simple"
-            variant="danger"
-            onClick={() => {
-              handleBlockStore(blockData);
-              setShowModal(false);
-            }}
-          >
-            Block
-          </Button>
-          <Button
-            className="btn-simple"
-            type="button"
-            variant="secondary"
-            onClick={() => setShowModal(false)}
-          >
-            Close
-          </Button>
-        </div>
-      </Modal>
-
-      <Modal show={showDetailsModal} onHide={() => setShowDetailsModal(false)}>
-        <Modal.Header style={{ borderBottom: "1px solid gray" }}>
-          <Modal.Title className="title">View Store Details</Modal.Title>
-          <MdClose
-            className="close-icon"
-            onClick={() => setShowDetailsModal(false)}
-          />
-        </Modal.Header>
-
-        <Modal.Body className="body">
-          <Table striped bordered className="table">
-            <tbody>
-              <tr>
-                <td className="bold-col">Vendor ID:</td>
-                <td>{rowData.vendor_id}</td>
-              </tr>
-              <tr>
-                <td className="bold-col">Store Image:</td>
-                <td>
-                  <img
-                    src={rowData.store_image}
-                    alt={rowData.store_name}
-                    style={{
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "50%",
-                    }}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td className="bold-col">Store Name:</td>
-                <td>{rowData.store_name}</td>
-              </tr>
-              <tr>
-                <td className="bold-col" style={{ whiteSpace: "nowrap" }}>
-                  Store Description:
-                </td>
-                <td>{rowData.store_desc}</td>
-              </tr>
-              <tr>
-                <td className="bold-col" style={{ whiteSpace: "nowrap" }}>
-                  Store Address:
-                </td>
-                <td>{rowData.store_address}</td>
-              </tr>
-              <tr>
-                <td className="bold-col">Pincode:</td>
-                <td>{rowData.pincode}</td>
-              </tr>
-              <tr>
-                <td className="bold-col">City:</td>
-                <td>{rowData.city}</td>
-              </tr>
-              <tr>
-                <td className="bold-col">State:</td>
-                <td>{rowData.state}</td>
-              </tr>
-              <tr>
-                <td className="bold-col">Country:</td>
-                <td>{rowData.country}</td>
-              </tr>
-              <tr>
-                <td className="bold-col">Opening Days:</td>
-                <td>
-                  {days.map((day) => (
-                    <div key={day} className="day-circle">
-                      {daysOfWeek[day - 1] || day}
-                    </div>
-                  ))}
-                </td>
-              </tr>
-              <tr>
-                <td className="bold-col">Opening Time:</td>
-                <td>{rowData.opening_time}</td>
-              </tr>
-
-              <tr>
-                <td className="bold-col">Closing Time:</td>
-                <td>{rowData.closing_time}</td>
-              </tr>
-
-              <tr>
-                <td className="bold-col">Total Clicks:</td>
-                <td>{rowData.total_clicks}</td>
-              </tr>
-              <tr>
-                <td className="bold-col">Store Created:</td>
-                <td>{rowData.created_at}</td>
-              </tr>
-              <tr>
-                <td className="bold-col">Store Updated:</td>
-                <td>{rowData.updated_at}</td>
-              </tr>
-              <tr>
-                <td className="bold-col">Status:</td>
-
-                <td
-                  style={{
-                    backgroundColor: rowData.active == "1" ? "green" : "red",
-                    border: "none",
-                    fontSize: "0.75rem",
-                    color: "white",
-                    padding: "0px 7px",
-                    borderRadius: "17px",
-                    display: "inline-block",
-                  }}
-                >
-                  {rowData.active == "1" ? "active" : "block"}
-                </td>
-              </tr>
-            </tbody>
-          </Table>
-        </Modal.Body>
-        <Modal.Footer></Modal.Footer>
-      </Modal>
+      <BlockStore
+        showModal={showModal}
+        setShowModal={setShowModal}
+        blockData={blockData}
+        getStore={getStore}
+      />
+      <ViewStore
+        showDetailsModal={showDetailsModal}
+        setShowDetailsModal={setShowDetailsModal}
+        rowData={rowData}
+      />
     </>
   );
 };
