@@ -54,7 +54,7 @@ const StoreApproval = () => {
 
   useEffect(() => {
     getUnverifiedStore();
-  }, [storeApproval]);
+  }, []);
 
   return (
     <>
@@ -115,8 +115,8 @@ const StoreApproval = () => {
                         {/* <td>{item.opening_days}</td> */}
                         <td>
                           {item.opening_days == "[1,2,3,4,5,6]"
-                              ? "M,T,W,Th,F,S"
-                              : "S"}</td>
+                              ? "M,T,W,T,F,S"
+                              : item.opening_days}</td>
                         <td>
                           <MdLocationPin
                             style={{
@@ -189,6 +189,7 @@ const StoreApproval = () => {
         <RejectStore
           showRejectStore={showRejectStore}
           setShowRejectStore={setShowRejectStore}
+          getUnverifiedStore={getUnverifiedStore}
           store={store}
         />
         
