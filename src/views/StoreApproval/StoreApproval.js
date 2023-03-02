@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Input, Whisper, Tooltip, InputGroup } from "rsuite";
+import { MdLocationPin } from "react-icons/md";
 import SearchIcon from "@rsuite/icons/Search";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
+import "../../assets/css/modal.css";
 
 import {
   Modal,
@@ -17,19 +19,22 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-import ViewStoreDetails from "./ViewStoreDetails";
+ import ViewStoreDetails from "./ViewStoreDetails";
  import VerifiedStore from "./VerifiedStore";
-// import rej
+ import RejectStore from "./RejectStore";
 
 const StoreApproval = () => {
   const [data, setData] = useState([]);
   const [showVerifiedStore, setShowVerifiedStore] = useState(false);
   const [showStoreDetails, setShowStoreDetails] = useState(false);
   const [showRejectStore, setShowRejectStore] = useState(false);
-  const[storeApproval, setStoreApproval] = useState(false);
+  const [storeApproval, setStoreApproval] = useState(false);
   const [rowData, setRowData] = useState([]);
   const [store, setStore] = useState([]);
-    
+  const getLocation = (latitude, longitude) => {
+    const url = `https://www.google.com/maps?q=${latitude}+${longitude}`;
+    window.open(url);
+  };
 
   const getUnverifiedStore = () => {
     Http.GetAPI(apis.getUnverifiedStore + "?" + Math.random(), data, null)
@@ -71,14 +76,22 @@ const StoreApproval = () => {
                 <br></br>
               </Card.Header>
               <Card.Body className="table-full-width table-responsive px-0">
-                <Table className="table-hover table-striped">
+                <Table className="table-hover table-striped"
+                  responsive="xl"
+                  style={{
+                    tableLayout: "fixed",
+                    width: "100%",
+                    display: "block",
+                  }}
+                >
                   <thead>
                     <tr>
                       <th className="border-0">ID</th>
                       <th className="border-0">Store Image</th>
                       <th className="border-0">Store Name</th>
-                      <th className="border-0">Status</th>
-
+                      <th className="border-0">Store Address</th>
+                      <th className="border-0">Opening Days</th>
+                      <th className="border-0">Get Location</th>
                       <th className="border-0">Action</th>
                     </tr>
                   </thead>
@@ -98,29 +111,22 @@ const StoreApproval = () => {
                           />
                         </td>
                         <td>{item.store_name}</td>
+                        <td>{item.store_address}</td>
+                        {/* <td>{item.opening_days}</td> */}
+                        <td>{item.opening_days == "[1,2,3,4,5,6]"
+                              ? "M,T,W,Th,F,S"
+                              : "S"}</td>
                         <td>
-                          <div
+                          <MdLocationPin
                             style={{
-                              backgroundColor:
-                                item.verified == "0"
-                                  ? "blue"
-                                  : item.verified == "1"
-                                  ? "green"
-                                  : "red",
-                              border: "none",
-                              fontSize: "0.75rem",
-                              color: "white",
-                              padding: "3px 10px",
-                              borderRadius: "17px",
-                              display: "inline-block",
+                              fontSize: "25px",
+                              cursor: "pointer",
+                              color: "grey",
                             }}
-                          >
-                            {item.verified == "0"
-                              ? "unverified"
-                              : item.verified == "1"
-                              ? "verified"
-                              : "pending"}
-                          </div>
+                            onClick={() =>
+                              getLocation(item.latitude, item.longitude)
+                            }
+                          />
                         </td>
                         <td>
                           <Button
@@ -143,7 +149,7 @@ const StoreApproval = () => {
                               setStore(item);
                             }}
                           >
-                            <i className="fas fa-check"></i>
+                            <i className="fa fa-check"></i>
                           </Button>
 
                           <button
@@ -155,7 +161,7 @@ const StoreApproval = () => {
                               setStore(item);
                             }}
                           >
-                            <i className="fas fa-times"></i>
+                            <i className="fa fa-times"></i>
                           </button>
                         </td>
                       </tr>
@@ -179,11 +185,11 @@ const StoreApproval = () => {
           setShowStoreDetails={setShowStoreDetails}
           rowData={rowData}
         />
-        {/* <RejectStore
+        <RejectStore
           showRejectStore={showRejectStore}
           setShowRejectStore={setShowRejectStore}
           store={store}
-            /> */}
+        />
         
       </Container>
     </>

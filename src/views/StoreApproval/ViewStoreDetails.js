@@ -14,36 +14,6 @@ import {
   Col,
 } from "react-bootstrap";
 
-// const ViewStoreDetails = () => {
-//   const [showDetailsModal, setShowDetailsModal] = useState(false);
-//   const [data, setData] = useState([]);
-
-//   const [rowData, setRowData] = useState([]);
-
-//   const getLocation = (latitude, longitude) => {
-//     const url = `https://www.google.com/maps?q=${latitude}+${longitude}`;
-//     window.open(url);
-//   };
-
-//   const getStore = () => {
-//     Http.GetAPI(apis.getUnverifiedStore + "?" + Math.random(), data, null)
-//       .then((res) => {
-//         if (res?.data?.status) {
-//           setData(res?.data?.data);
-//         } else {
-//           alert("Fields not matched");
-//         }
-//       })
-//       .catch((e) => {
-//         alert("Something went wrong.");
-//         console.log("Error:", e);
-//       });
-//   };
-
-//   useEffect(() => {
-//     getStore();
-//   }, []);
-
 const ViewStoreDetails = ({
   showStoreDetails, setShowStoreDetails, rowData,
 }) => {
