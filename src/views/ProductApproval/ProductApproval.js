@@ -74,7 +74,6 @@ const ProductApproval = () => {
                       <th className="border-0">ID</th>
                       <th className="border-0">Product Image</th>
                       <th className="border-0">Product Name</th>
-                      <th className="border-0">Status</th>
 
                       <th className="border-0">Action</th>
                     </tr>
@@ -95,30 +94,7 @@ const ProductApproval = () => {
                           />
                         </td>
                         <td>{item.product_name}</td>
-                        <td>
-                          <div
-                            style={{
-                              backgroundColor:
-                                item.is_verified == "0"
-                                  ? "blue"
-                                  : item.is_verified == "1"
-                                  ? "green"
-                                  : "red",
-                              border: "none",
-                              fontSize: "0.75rem",
-                              color: "white",
-                              padding: "3px 10px",
-                              borderRadius: "17px",
-                              display: "inline-block",
-                            }}
-                          >
-                            {item.is_verified == "0"
-                              ? "unverified"
-                              : item.is_verified == "1"
-                              ? "verified"
-                              : "pending"}
-                          </div>
-                        </td>
+
                         <td>
                           <Button
                             className="btn-simple btn-link p-1"
@@ -143,7 +119,7 @@ const ProductApproval = () => {
                             <i className="fas fa-check"></i>
                           </Button>
 
-                          <button
+                          <Button
                             className="btn-simple btn-link p-1"
                             type="button"
                             variant="danger"
@@ -153,7 +129,7 @@ const ProductApproval = () => {
                             }}
                           >
                             <i className="fas fa-times"></i>
-                          </button>
+                          </Button>
                         </td>
                       </tr>
                     ))}

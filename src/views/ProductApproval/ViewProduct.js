@@ -84,8 +84,29 @@ const ViewProduct = ({
                 <td>{rowData.total_clicks}</td>
               </tr>
               <tr>
-                <td className="bold-col">Product Status</td>
-                <td>{rowData.is_verified}</td>
+                <td className="bold-col">Product Status:</td>
+                <td
+                  style={{
+                    backgroundColor:
+                      rowData.is_verified == "1"
+                        ? "green"
+                        : rowData.is_verified == "0"
+                        ? "orange"
+                        : "red",
+                    border: "none",
+                    fontSize: "0.75rem",
+                    color: "white",
+                    padding: "0px 7px",
+                    borderRadius: "17px",
+                    display: "inline-block",
+                  }}
+                >
+                  {rowData.is_verified == "1"
+                        ? "verified"
+                        : rowData.is_verified == "0"
+                        ? "pending"
+                        : "rejected"}
+                </td>
               </tr>
               <tr>
                 <td className="bold-col">Status:</td>

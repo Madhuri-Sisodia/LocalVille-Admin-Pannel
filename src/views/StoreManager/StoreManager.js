@@ -302,7 +302,7 @@ const StoreManager = () => {
                           <Button
                             className="btn-simple btn-link p-1"
                             type="button"
-                            variant="primary"
+                            style={{color:"gray"}}
                             onClick={() =>
                               getLocation(item.latitude, item.longitude)
                             }
@@ -320,7 +320,7 @@ const StoreManager = () => {
                             <Button
                               className="btn-simple btn-link p-1"
                               type="button"
-                              variant="primary"
+                              style={{color:"blue"}}
                               onClick={() => {
                                 setShowDetailsModal(true);
                                 setRowData(item);
