@@ -113,7 +113,8 @@ const StoreApproval = () => {
                         <td>{item.store_name}</td>
                         <td>{item.store_address}</td>
                         {/* <td>{item.opening_days}</td> */}
-                        <td>{item.opening_days == "[1,2,3,4,5,6]"
+                        <td>
+                          {item.opening_days == "[1,2,3,4,5,6]"
                               ? "M,T,W,Th,F,S"
                               : "S"}</td>
                         <td>

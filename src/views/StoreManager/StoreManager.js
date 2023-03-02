@@ -176,7 +176,16 @@ const StoreManager = () => {
                 <br></br>
               </Card.Header>
               <Card.Body className="table-full-width table-responsive px-0">
-                <Table className="table-hover table-striped">
+                <Table
+                  responsive="xl"
+                  style={{
+                    tableLayout: "fixed",
+                    width: "100%",
+                    overflowX: "scroll",
+                    display: "block",
+                  }}
+                  className="table-hover table-striped"
+                >
                   <thead>
                     <tr>
                       <th className="border-0">Store ID</th>
