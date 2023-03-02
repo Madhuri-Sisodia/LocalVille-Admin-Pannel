@@ -34,7 +34,7 @@ const VerifyProduct = ({
         console.log("resp", res);
         if (res?.data?.status) {
           setUpdateProduct(res?.data?.data);
-          getUnverifiedProduct(true)
+          getUnverifiedProduct();
         } else {
           alert("Fields not matched");
         }

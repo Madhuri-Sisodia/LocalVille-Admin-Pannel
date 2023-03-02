@@ -26,7 +26,6 @@ const ProductApproval = () => {
   const [showVerifiedProduct, setShowVerifiedProduct] = useState(false);
   const [showProductDetails, setShowProductDetails] = useState(false);
   const [showRejectProduct, setShowRejectProduct] = useState(false);
-  const [ProductAproval,setProductAproval] = useState(false)
   const [rowData, setRowData] = useState([]);
   const [product, setProduct] = useState([]);
 
@@ -35,7 +34,6 @@ const ProductApproval = () => {
       .then((res) => {
         if (res?.data?.status) {
           setData(res?.data?.data);
-          setProductAproval(false)
         } else {
           alert("Fields not matched");
         }
@@ -43,12 +41,12 @@ const ProductApproval = () => {
       .catch((e) => {
         alert("Something went wrong.");
         console.log("Error:", e);
-      }); 
+      });
   };
 
   useEffect(() => {
     getUnverifiedProduct();
-  }, [ProductAproval]);
+  }, []);
 
   return (
     <>
@@ -170,22 +168,20 @@ const ProductApproval = () => {
           showVerifiedProduct={showVerifiedProduct}
           setShowVerifiedProduct={setShowVerifiedProduct}
           product={product}
-          getUnverifiedProduct={setProductAproval}
+          getUnverifiedProduct={getUnverifiedProduct}
         />
 
         <ViewProduct
           showProductDetails={showProductDetails}
-          setShowProductDetails={setProductAproval}
+          setShowProductDetails={setShowProductDetails}
           rowData={rowData}
         />
         <RejectProduct
           showRejectProduct={showRejectProduct}
           setShowRejectProduct={setShowRejectProduct}
-          getUnverifiedProduct={setProductAproval}
+          getUnverifiedProduct={getUnverifiedProduct}
           product={product}
-          
         />
-        
       </Container>
     </>
   );
