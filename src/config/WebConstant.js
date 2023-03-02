@@ -15,6 +15,8 @@ export const apis = {
     updateProduct:"update_products.php",
     updateStore:"update_store.php",
     addVendors:"add_vendors.php",
+    addStore:"add_store.php",
     getDashboard:"dashboard.php",
-    
+    getUnverifiedProducts:"unverified_products.php",
+    updateVerifiedProduct:"update_verified_products.php"
 }

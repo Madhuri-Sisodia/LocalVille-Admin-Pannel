@@ -1,0 +1,33 @@
+.day-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: blueviolet;
+  color: white;
+  display: inline-grid;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.week-days {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: white;
+  border: 2px solid black;
+  color: black;
+  display: inline-grid;
+  align-items: center;
+  justify-content: center;
+  margin: 6px;
+  font-size: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.week-days.selected {
+    background-color: blueviolet;
+    color: white;
+  }

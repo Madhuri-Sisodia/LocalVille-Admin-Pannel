@@ -1,79 +1,111 @@
 import React from "react";
 import { Card, Col, Row, Button } from "react-bootstrap";
 import "../../assets/css/card.css";
+import { useHistory } from "react-router";
+import { FaRupeeSign } from "react-icons/fa";
+// const cardsData = [
+//   {
+//     title: "Iphones",
+//     content: "Product 1",
+//     image: "./Images/img3.jpg",
+//     description: "Example product #123",
+//     price: "229$",
+//   },
+//   {
+//     title: "Laptops",
+//     content: "Product 2",
+//     image: "./Images/img3.jpg",
+//     description: "Example product #123",
+//     price: "229$",
+//   },
+//   {
+//     title: "Cameras",
+//     content: "Product 3",
+//     image: "./Images/img3.jpg",
+//     description: "Example product #123",
+//     price: "229$",
+//   },
+// ];
 
-const cardsData = [
-  {
-    title: "Iphones",
-    content: "Product 1",
-    image: "./Images/img3.jpg",
-    description: "Example product #123",
-    price: "229$",
-  },
-  {
-    title: "Laptops",
-    content: "Product 2",
-    image: "./Images/img3.jpg",
-    description: "Example product #123",
-    price: "229$",
-  },
-  {
-    title: "Cameras",
-    content: "Product 3",
-    image: "./Images/img3.jpg",
-    description: "Example product #123",
-    price: "229$",
-  },
-];
+const ProductCard = ({ latestProduct }) => {
+  console.log("latestProduct", latestProduct);
 
-const ProductCard = () => {
+  const history = useHistory();
   return (
     <Row>
       <Col md="12">
         <Card>
           <Card.Header>
+            <button
+              type="submit"
+              style={{
+                backgroundColor: "blueviolet",
+                border: "blue",
+                borderRadius: "4px",
+                float: "right",
+                padding: "9px 19px",
+                color: "white",
+              }}
+              onClick={() => {
+                history.push("/admin/store");
+              }}
+            >
+              View All
+            </button>
+
             <Card.Title as="h4">Latest Products</Card.Title>
             <p className="card-category"></p>
           </Card.Header>
           <Card.Body>
             <div className="row">
-              {cardsData.map((card, index) => (
+              {latestProduct.map((item, index) => (
                 <Col md="4" key={index}>
-                  <Card
-                    style={{
-                      padding: "5px 5px 5px 5px",
-                      borderRadius: "20px 20px 20px 20px",
-                    }}
-                  >
-                    <Card.Img variant="top" src={card.image} />
-                    <Card.Body>
-                      <Card.Title
-                        as="h4"
-                        style={{
-                          fontWeight: "bold",
-                        }}
-                      >
-                        {card.title}
-                      </Card.Title>
-                      <p className="card-description">{card.description}</p>
+                  <Card className="card">
+                    <div
+                      className="card-div"
+                      style={{
+                        backgroundColor:
+                          item.is_verified == "1"
+                            ? "blueviolet"
+                            : item.is_verified == "0"
+                            ? "orange"
+                            : "red",
+                      }}
+                    >
+                      {item.is_verified == "1"
+                        ? "Verified"
+                        : item.is_verified == "0"
+                        ? "Pending"
+                        : "Rejected"}
+                    </div>
 
-                      <div
-                        style={{
-                          float: "left",
-                          fontWeight: "bold",
-                          color: "blueviolet",
-                        }}
-                      >
-                        {card.price}
+                    <div
+                      className="image"
+                      style={{
+                        backgroundImage: `url(${item.p_image})`,
+                      }}
+                    >
+                      <div className="heading">
+                        <div className="price"><FaRupeeSign />{item.price}</div>
+                        <h5 className="title">{item.product_name}</h5>
+
+                        <p className="card-description paragraph">
+                          {item.product_desc}
+                        </p>
                       </div>
-                      <div className="icons">
+                    </div>
+                  </Card>
+                </Col>
+              ))}
+            </div>
+
+            {/* <div className="icons">
                         <button className="minus">-</button>
                         <div style={{ marginRight: "10px" }}>1</div>
                         <button className="plus">+</button>
-                      </div>
-                    </Card.Body>
+                      </div> */}
 
-                    <div className="card-buttons">
+            {/* <div className="card-buttons">
                       <Button
                         className="btn-btn-primary btn-round float-left"
                         style={{
@@ -99,11 +131,7 @@ const ProductCard = () => {
                       >
                         Buy Now
                       </Button>
-                    </div>
-                  </Card>
-                </Col>
-              ))}
-            </div>
+                    </div> */}
           </Card.Body>
         </Card>
       </Col>
