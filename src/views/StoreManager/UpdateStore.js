@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { MdClose } from "react-icons/md";
 import { Modal, Form, Button } from "react-bootstrap";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
+import "../../assets/css/day.css";
 
 import "../../assets/css/modal.css";
 
@@ -29,6 +30,7 @@ const UpdateStore = ({
   });
   const [store, setStore] = useState([]);
   const [hideData, setHideData] = useState(true);
+  const [days, setDays] = useState([]);
 
   const getInput = (e) => {
     setStoreData((previous) => {
@@ -96,6 +98,29 @@ const UpdateStore = ({
         console.log("Error:", e);
       });
   };
+
+  const daysOfWeek = ["M", "T", "W", "Th", "F", "S", "Su"];
+  
+  
+
+  useEffect(() => {
+    if (item?.opening_days) {
+    let parsedDays;
+    if (Array.isArray(item?.opening_days)) {
+      parsedDays = item?.opening_days;
+    } else if (typeof item?.opening_days === "string") {
+      parsedDays = JSON.parse(item?.opening_days);
+    }
+      setDays(parsedDays);
+    }
+  }, [item]);
+
+  const openingDay = days.map((day,index) => (
+    <div key={index} className="day-circle">
+      {daysOfWeek[index - 1] || day}
+    </div>
+  ));
+
 
   return (
     <>
@@ -252,9 +277,10 @@ const UpdateStore = ({
                 <label className="update-label">Opening Days</label>
                 <Form.Control
                   className="update-form"
-                  defaultValue={item?.opening_days}
+                  defaultValue={openingDay}
+                  value={days}
                   type="text"
-                  name="openingDays"
+                  name="openingDay"
                   onChange={(e) => {
                     getInput(e);
                   }}
