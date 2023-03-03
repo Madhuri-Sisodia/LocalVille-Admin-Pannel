@@ -3,8 +3,6 @@ import SearchIcon from "@rsuite/icons/Search";
 import { Input, InputGroup } from "rsuite";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
-import { RxUpdate } from "react-icons/rx";
-import { RxCross1 } from "react-icons/rx";
 import { BiBlock } from "react-icons/bi";
 import { MdClose } from "react-icons/md";
 import UpdateProducts from "./UpdateProducts";
@@ -53,11 +51,12 @@ const Products = () => {
         alert("Something went wrong.");
         console.log("Error:", e);
       });
+      
   };
   useEffect(() => {
     getProducts();
   }, []);
-  console.log(blockData);
+  // console.log(blockData);
   const handleBlockProducts = (e) => {
     
     var data = new FormData();
