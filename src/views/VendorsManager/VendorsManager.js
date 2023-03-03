@@ -196,17 +196,19 @@ const VendorsManager = () => {
                             <i className="fas fa-edit"></i>
                           </Button>
 
-                          <Button
-                            className="btn-simple btn-link p-1"
-                            type="button"
-                            variant="danger"
-                            onClick={() => {
-                              setShowModal(true);
-                              setBlockData(item.id);
-                            }}
-                          >
-                            <i className="fas fa-times"></i>
-                          </Button>
+                          {item?.active == "1" && (
+                            <Button
+                              className="btn-simple btn-link p-1"
+                              type="button"
+                              variant="danger"
+                              onClick={() => {
+                                setShowModal(true);
+                                setBlockData(item.id);
+                              }}
+                            >
+                              <i className="fas fa-times"></i>
+                            </Button>
+                          )}
                         </td>
                       </tr>
                     ))}

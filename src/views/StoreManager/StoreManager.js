@@ -111,6 +111,7 @@ const StoreManager = () => {
   const [showUpdateStore, setShowUpdateStore] = useState(false);
   const [selectedStore, setSelectedStore] = useState(null);
   const [days, setDays] = useState([]);
+ 
 
   const getLocation = (latitude, longitude) => {
     const url = `https://www.google.com/maps?q=${latitude}+${longitude}`;
@@ -122,6 +123,7 @@ const StoreManager = () => {
       .then((res) => {
         if (res?.data?.status) {
           setData(res?.data?.data);
+          
         } else {
           alert("Fields not matched");
         }
@@ -317,17 +319,18 @@ const StoreManager = () => {
                               <i className="fa fa-edit"></i>
                             </Button>
 
-                            <Button
+                            {item?.active == "1" && (<Button
                               className="btn-simple btn-link p-1"
                               type="button"
                               variant="danger"
+                              disabled={storeBlocked}
                               onClick={() => {
                                 setShowModal(true);
                                 setBlockData(item.id);
                               }}
                             >
                               <i className="fas fa-times"></i>
-                            </Button>
+                            </Button>)}
                           </div>
                         </td>
                       </tr>

@@ -16,10 +16,11 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
+
 const BlockStore = ({ showModal, setShowModal, blockData, getStore }) => {
   const [blockStore, setBlockStore] = useState([]);
   const [blockReason, setBlockReason] = useState("");
-  
+
   const handleBlockStore = (id) => {
     var data = new FormData();
     data.append("id", id);
@@ -30,7 +31,6 @@ const BlockStore = ({ showModal, setShowModal, blockData, getStore }) => {
         if (res?.data?.status) {
           setBlockStore(res?.data?.data);
           getStore();
-       
         } else {
           alert("Fields not matched");
         }
@@ -70,18 +70,17 @@ const BlockStore = ({ showModal, setShowModal, blockData, getStore }) => {
           />
         </Modal.Body>
         <div className="modal-footer">
-          
-            <Button
-              className="btn-simple"
-              variant="danger"
-              onClick={() => {
-                handleBlockStore(blockData);
-                setShowModal(false);
-              }}
-            >
-              Block
-            </Button>
-          
+          <Button
+            className="btn-simple"
+            variant="danger"
+            onClick={() => {
+              handleBlockStore(blockData);
+              setShowModal(false);
+            }}
+          >
+            Block
+          </Button>
+
           <Button
             className="btn-simple"
             type="button"
