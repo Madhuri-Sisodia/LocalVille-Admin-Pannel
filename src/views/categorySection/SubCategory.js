@@ -17,7 +17,6 @@ const SubCategory = () => {
   const [data, setData] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
   const {Categoriesid} = useContext(Utils)
- 
   const notificationAlertRef = React.useRef(null);
 
   const notify = (place) => {
@@ -66,13 +65,16 @@ const SubCategory = () => {
   //       return(ele.name==selectCategory)
   //   })
     const handleSubmit = () => {
-       
+       console.log(selectCategory)
+       console.log(data)
       const SelectedCategory = data.filter((ele)=>{
-        console.log(ele.name)
-        return(ele.category_name==selectCategory)
+        return(ele.name==selectCategory)
       })
+          
+      console.log(SelectedCategory)
       const id = SelectedCategory[0].id
-      setCategoriesId(id)
+
+      // setCategoriesId(id)
 
     var formdata = new FormData();
     formdata.append("category_id", `${id}`);
@@ -80,8 +82,6 @@ const SubCategory = () => {
     formdata.append("color", color);
     formdata.append("size", size);
     formdata.append("size_att", sizeAttribute);
-
-    console.log("subCategory", data);
     Http.PostAPI(apis.addProdSubCategory + "?" + Math.random(), formdata, null)
       .then((res) => {
         console.log("Data", res);

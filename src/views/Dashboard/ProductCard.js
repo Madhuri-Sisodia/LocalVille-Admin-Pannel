@@ -4,6 +4,7 @@ import "../../assets/css/card.css";
 import { useHistory } from "react-router";
 import { FaRupeeSign } from "react-icons/fa";
 import ProductDetailModel from "./ProductDetailModel";
+
 // const cardsData = [
 //   {
 //     title: "Iphones",
@@ -30,7 +31,7 @@ import ProductDetailModel from "./ProductDetailModel";
 
 const ProductCard = ({ latestProduct }) => {
   console.log("latestProduct", latestProduct);
-
+   
   const history = useHistory();
   const [showProductDetail, setShowProductDetail] = useState(false);
   const [rowData, setRowData] = useState(false);
@@ -85,12 +86,10 @@ const ProductCard = ({ latestProduct }) => {
 
                     <div
                       className="image"
+                      style={{ backgroundImage: `url(${item.p_images})` }}
                       onClick={() => {
                         setShowProductDetail(true);
                         setRowData(item);
-                      }}
-                      style={{
-                        backgroundImage: `url(${item.p_images})`,
                       }}
                     >
                       {console.log("item", item)}

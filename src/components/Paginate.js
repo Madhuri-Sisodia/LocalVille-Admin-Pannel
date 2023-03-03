@@ -5,25 +5,29 @@ const Paginte = ()=>{
 
   const {setPageNo,pageNo} = useContext(Utils)
   const [PaginationArrya,setPaginationArrya] = useState([1,2,3])
-       
+   console.log(PaginationArrya)     
+
+
   const NextPAge=()=>{
     const arr = PaginationArrya
-    arr.shift()
-    console.log(arr)
-    arr.push(pageNo+1)
-    console.log(arr)
-    setPaginationArrya(arr)
     setPageNo(pageNo+1)
+    console.log(pageNo)
+    arr[0] = pageNo
+    arr[1] = pageNo+1
+    arr[2]= pageNo+2
+     setPaginationArrya(arr)
   }
 
    
   const PreviousPAge = ()=>{
     const arr = PaginationArrya
-    if(pageNo>1){
-      arr.pop()
-      arr.unshift(pageNo-1)
-      setPaginationArrya(arr)
+    if(pageNo>2){
       setPageNo(pageNo-1)
+      arr[2] = pageNo
+      arr[1] = pageNo-1
+      arr[0]= pageNo-2
+      setPaginationArrya(arr)
+      
     }
   }
 

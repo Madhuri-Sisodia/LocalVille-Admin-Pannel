@@ -127,12 +127,14 @@ const StoreManager = () => {
 
   const getStore = () => {
     console.log("hello")
-    Http.GetAPI(apis.getStoreData + "?" + Math.random(), "", null)
+    Http.GetAPI(apis.getStoreData + "?" + `page=${pageNo}`, "", null)
       .then((res) => {
         console.log(res)
         if (res?.data?.status) {
-          setData(res?.data?.data);
-          setAddStored(false)
+           if(res.data.data.length>0){
+            setData(res?.data?.data);
+            setAddStored(false)
+           }
         } else {
           alert("Fields not matched");
         }
@@ -169,6 +171,7 @@ const StoreManager = () => {
 
   useEffect(() => {
     if (rowData.opening_days) {
+     
       let parsedDays;
       if (Array.isArray(rowData.opening_days)) {
         parsedDays = rowData.opening_days;
@@ -283,14 +286,14 @@ const StoreManager = () => {
                         <td>{item.city}</td>
                         <td>{item.state}</td>
                         <td>{item.country}</td>
-                        <td>
+                        <td style={{display:"flex",flexDirection:"row",justifyContent:"Center",alignItems:"center",textAlign:"center"}}>
                         {
-                         Array.isArray(item.opening_days)?
-                          ""
-                          :
-                          <div>
-                            { item.opening_days}
-                          </div> 
+                         item.opening_days.split(",").map((ele,index)=>(
+                            <div key={index} style={{width:"10px",height:"10px",borderRadius:"50%",borderColor:"black"}}>
+
+                                {daysOfWeek[index] || ele}
+                             </div>
+                         ))
                         }
                           {/* */}
                         </td>
@@ -379,7 +382,9 @@ const StoreManager = () => {
             </Card>
           </Col>
         </Row>
+        <div style={{display:"flex",justifyContent:"center",textAlign:"center"}}>
         <Paginate/>
+        </div>
       </Container>
       <UpdateStore
         showUpdateStore={showUpdateStore}
