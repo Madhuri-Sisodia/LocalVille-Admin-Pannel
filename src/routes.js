@@ -1,4 +1,4 @@
-import Dashboard from "views/Dashboard.js";
+import Dashboard from "views/Dashboard/Dashboard";
 import UserProfile from "views/UserProfile.js";
 import TableList from "views/TableList.js";
 import Typography from "views/Typography.js";

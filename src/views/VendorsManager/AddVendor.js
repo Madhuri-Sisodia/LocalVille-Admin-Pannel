@@ -180,11 +180,22 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
                 <Form.Text className="text-danger">{errors.phone}</Form.Text>
               )}
             </Form.Group>
-            <br></br>
-
-            <Button className="btn-fill" variant="primary" type="submit" block>
+            
+            <button
+              type="submit"
+              block
+              style={{
+                backgroundColor: "blueviolet",
+                border: "blueviolet",
+                borderRadius: "3px 3px 3px 3px",
+                width: "100%",
+                padding: "5px",
+                color: "white",
+                marginTop: "20px",
+              }}
+            >
               Add
-            </Button>
+            </button>
           </Form>
         </Modal.Body>
       </Modal>

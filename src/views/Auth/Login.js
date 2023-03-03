@@ -50,7 +50,7 @@ const Login = () => {
           console.log("user", res);
           if (res?.data?.status) {
             setUser(res?.data?.data);
-            sessionStorage.setItem("loggedIn", JSON.stringify(loginData));
+            sessionStorage.setItem("loggedIn", JSON.stringify(res.data.data.token));
             history.push("/admin/dashboard");
           } else {
             alert("Fields not matched");

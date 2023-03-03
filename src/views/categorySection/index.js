@@ -39,25 +39,27 @@ function index() {
               />
           </Col>
 
-          <Col md={6} sm={12} >
-            <Card bordered header=" Store Categories" className="Categorycards"
-               />
-          </Col>
-        </Row>
-        <br />
-        <br />
-        {/* <Gap/> */}
-        <Row>
           <Col md={6} sm={12}>
             <Card bordered header="Section" className="Categorycards"
                />
               
           </Col>
 
-          <Col md={6} sm={12} >
+          {/* <Col md={6} sm={12} >
+            <Card bordered header=" Store Categories" className="Categorycards"
+               />
+          </Col> */}
+        </Row>
+        <br />
+        <br />
+        {/* <Gap/> */}
+        <Row>
+          
+
+          {/* <Col md={6} sm={12} >
             <Card bordered header="Attributes" className="Categorycards"
           />
-          </Col>
+          </Col> */}
         </Row>
 <br/>
 

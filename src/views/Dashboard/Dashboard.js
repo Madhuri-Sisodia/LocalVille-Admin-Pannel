@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from "react";
 import ChartistGraph from "react-chartist";
-import StoreCard from "./Cards/StoreCard";
-import { Http } from "../config/Service";
-import { apis } from "../config/WebConstant";
+import StoreCard from "./StoreCard";
+import { Http } from "../../config/Service";
+import { apis } from "../../config/WebConstant";
 // react-bootstrap components
-import { Card, Container, Row, Col,Table,Form,Tooltip,OverlayTrigger,Button } from "react-bootstrap";
-import ProductCard from "./Cards/ProductCard";
+import {
+  Card,
+  Container,
+  Row,
+  Col,
+  Table,
+  Form,
+  Tooltip,
+  OverlayTrigger,
+  Button,
+} from "react-bootstrap";
+import ProductCard from "./ProductCard";
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
@@ -19,7 +29,10 @@ const Dashboard = () => {
   useEffect(() => {
     Http.GetAPI(apis.getDashboard + "?" + Math.random(), data, null)
       .then((res) => {
-       
+        console.log(
+          "res",
+          res.data.details.stores_products_data.recent_added_products
+        );
         if (res?.data?.status) {
           setData(res?.data?.details);
           setTotalUsers(res?.data?.details?.total_users || 0);
@@ -27,10 +40,10 @@ const Dashboard = () => {
           setTotalProducts(res?.data?.details?.no_of_products || 0);
           setTotalActiveUsers(res?.data?.details?.active_users || 0);
           setLatestStore(
-            res?.data?.details?.stores_products_data?.recent_added_stores 
+            res?.data?.details?.stores_products_data?.recent_added_stores
           );
           setLatestProduct(
-            res?.data?.details?.stores_products_data?.recent_added_products 
+            res?.data?.details?.stores_products_data?.recent_added_products
           );
         } else {
           alert("Fields not matched");
@@ -292,31 +305,11 @@ const Dashboard = () => {
                       ],
                       series: [
                         [
-                          542,
-                          443,
-                          320,
-                          780,
-                          553,
-                          453,
-                          326,
-                          434,
-                          568,
-                          610,
-                          756,
+                          542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756,
                           895,
                         ],
                         [
-                          412,
-                          243,
-                          280,
-                          580,
-                          453,
-                          353,
-                          300,
-                          364,
-                          368,
-                          410,
-                          636,
+                          412, 243, 280, 580, 453, 353, 300, 364, 368, 410, 636,
                           695,
                         ],
                       ],

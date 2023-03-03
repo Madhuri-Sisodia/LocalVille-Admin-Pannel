@@ -1,8 +1,9 @@
-import React from "react";
+import React,{useState} from "react";
 import { Card, Col, Row, Button } from "react-bootstrap";
 import "../../assets/css/card.css";
 import { useHistory } from "react-router";
-import { FaRupeeSign } from "react-icons/fa";
+import StoreDetailModal from "./StoreDetailModal";
+
 // const cardsData = [
 //   {
 //     title: "Iphones",
@@ -27,10 +28,12 @@ import { FaRupeeSign } from "react-icons/fa";
 //   },
 // ];
 
-const ProductCard = ({ latestProduct }) => {
-  console.log("latestProduct", latestProduct);
-
+const StoreCard = ({ latestStore }) => {
   const history = useHistory();
+  console.log("latestStore", latestStore);
+
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [rowData, setRowData] = useState(false);
   return (
     <Row>
       <Col md="12">
@@ -40,7 +43,7 @@ const ProductCard = ({ latestProduct }) => {
               type="submit"
               style={{
                 backgroundColor: "blueviolet",
-                border: "blue",
+                border: "blueviolet",
                 borderRadius: "4px",
                 float: "right",
                 padding: "9px 19px",
@@ -52,45 +55,46 @@ const ProductCard = ({ latestProduct }) => {
             >
               View All
             </button>
-
-            <Card.Title as="h4">Latest Products</Card.Title>
+            <Card.Title as="h4">Latest Stores</Card.Title>
             <p className="card-category"></p>
           </Card.Header>
           <Card.Body>
             <div className="row">
-              {latestProduct.map((item, index) => (
+              {latestStore.map((item, index) => (
                 <Col md="4" key={index}>
                   <Card className="card">
                     <div
                       className="card-div"
                       style={{
                         backgroundColor:
-                          item.is_verified == "1"
-                            ? "blueviolet"
-                            : item.is_verified == "0"
+                          item.verified == "1"
+                            ? "blue"
+                            : item.verified == "0"
                             ? "orange"
                             : "red",
                       }}
                     >
-                      {item.is_verified == "1"
+                      {item.verified == "1"
                         ? "Verified"
-                        : item.is_verified == "0"
-                        ? "Pending"
+                        : item.verified == "0"
+                        ? "In Review"
                         : "Rejected"}
                     </div>
 
                     <div
                       className="image"
+                      onClick={() => {
+                        setShowDetailsModal(true);
+                        setRowData(item);
+                      }}
                       style={{
-                        backgroundImage: `url(${item.p_image})`,
+                        backgroundImage: `url(${item.store_image})`,
                       }}
                     >
                       <div className="heading">
-                        <div className="price"><FaRupeeSign />{item.price}</div>
-                        <h5 className="title">{item.product_name}</h5>
-
+                        <h5 className="title">{item.store_name}</h5>
                         <p className="card-description paragraph">
-                          {item.product_desc}
+                          {item.store_desc}
                         </p>
                       </div>
                     </div>
@@ -98,45 +102,16 @@ const ProductCard = ({ latestProduct }) => {
                 </Col>
               ))}
             </div>
-
-            {/* <div className="icons">
-                        <button className="minus">-</button>
-                        <div style={{ marginRight: "10px" }}>1</div>
-                        <button className="plus">+</button>
-                      </div> */}
-
-            {/* <div className="card-buttons">
-                      <Button
-                        className="btn-btn-primary btn-round float-left"
-                        style={{
-                          color: "blueviolet",
-                          borderColor: "blueviolet",
-                          marginLeft: "10px",
-                          marginBottom: "8px",
-                        }}
-                        type="submit"
-                      >
-                        Add To Cart
-                      </Button>
-
-                      <Button
-                        className="btn-fill btn-round float-right"
-                        style={{
-                          backgroundColor: "blueviolet",
-                          borderColor: "blueviolet",
-                          marginRight: "10px",
-                          marginBottom: "8px",
-                        }}
-                        type="submit"
-                      >
-                        Buy Now
-                      </Button>
-                    </div> */}
           </Card.Body>
         </Card>
       </Col>
+      <StoreDetailModal
+        showDetailsModal={showDetailsModal}
+        setShowDetailsModal={setShowDetailsModal}
+        rowData={rowData}
+      />
     </Row>
   );
 };
 
-export default ProductCard;
+export default StoreCard;

@@ -8,6 +8,8 @@ import "../../assets/css/modal.css";
 const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
   const [store, setStore] = useState([]);
   const [image, setImage] = useState(null);
+
+
   const [storeData, setStoreData] = useState({
     storeImage: "",
     storeName: "",
@@ -23,17 +25,20 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
     openingTime: "",
     closingTime: "",
   });
+
+  console.log(storeData);
   const [selectedDays, setSelectedDays] = useState([]);
 
+  console.log(selectedDays);
+
   const toggleDaySelection = (day) => {
-    console.log("sss",selectedDays)
+    console.log("sss", selectedDays);
     if (selectedDays.includes(day)) {
       setSelectedDays(selectedDays.filter((d) => d !== day));
-      console.log("sss",selectedDays)
+      console.log("sss", selectedDays);
     } else {
       setSelectedDays([...selectedDays, day]);
     }
-
   };
 
   const handleImageChange = (e) => {
@@ -59,7 +64,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
       openingDays: "",
       openingTime: "",
       closingTime: "",
-      selectedDays:"",
+      selectedDays: "",
     });
     setImage(null);
   };
@@ -78,7 +83,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
     data.append("city", storeData.city);
     data.append("state", storeData.state);
     data.append("country", storeData.country);
-    data.append("opening_days", storeData.openingDays);
+    data.append("opening_days", selectedDays);
     data.append("opening_time", storeData.openingTime);
     data.append("closing_time", storeData.closingTime);
     console.log("updateStore", data);
@@ -102,12 +107,13 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
   };
 
   const handleInput = (e) => {
+    console.log(e.target.value);
     setStoreData((previous) => {
       return { ...previous, [e.target.name]: e.target.value };
     });
   };
 
-  const daysOfWeek = ["M", "T", "W", "Th", "F", "S", "S"];
+  const daysOfWeek = ["M", "T", "W", "Th", "F", "St", "S"];
 
   return (
     <>
@@ -118,6 +124,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
             className="close-icon"
             onClick={() => {
               setShowAddStore(false);
+              setSelectedDays("");
               resetForm();
             }}
           />
@@ -259,7 +266,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
                     key={day}
                     className={`week-days ${isSelected ? "selected" : ""}`}
                     name="selectedDays"
-                    onChange={() => toggleDaySelection(day)}
+                    onClick={() => toggleDaySelection(day)}
                   >
                     {day}
                   </div>
@@ -267,42 +274,50 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
               })}
             </Form.Group>
 
-            <Form.Group>
-              <Form.Label className="add-label">Opening Time</Form.Label>
-              <Form.Control
-                type="text"
-                name="openingTime"
-                required
-                onChange={(e) => {
-                  handleInput(e);
-                }}
-              ></Form.Control>
-            </Form.Group>
+            <div
+              style={{
+                display: "flex",
+                flexDirectionL: "rows",
+                marginTop: "20px",
+                marginBottom: "right",
+              }}
+            >
+              <Form.Group style={{ width: "50%" }}>
+                <Form.Label className="add-label">Opening Time</Form.Label>
+                <br />
+                <input
+                  type="time"
+                  name="openingTime"
+                  onChange={(e) => {
+                    handleInput(e);
+                  }}
+                />
+              </Form.Group>
+              <Form.Group style={{ width: "50%" }}>
+                <Form.Label className="add-label">Closing Time</Form.Label>
+                <br />
+                <input
+                  type="time"
+                  name="closingTime"
+                  onChange={(e) => {
+                    handleInput(e);
+                  }}
+                />
+              </Form.Group>
+            </div>
 
-            <Form.Group>
-              <Form.Label className="add-label">Closing Time</Form.Label>
-              <Form.Control
-                type="text"
-                name="closingTime"
-                required
-                onChange={(e) => {
-                  handleInput(e);
-                }}
-              ></Form.Control>
-            </Form.Group>
-            <br></br>
-
+           
             <button
-              
               type="submit"
               block
               style={{
                 backgroundColor: "blueviolet",
                 border: "blueviolet",
                 borderRadius: "3px 3px 3px 3px",
-                width:"100%",
-                padding:"5px",
-                color:"white",
+                width: "100%",
+                padding: "5px",
+                color: "white",
+                marginTop: "20px",
               }}
             >
               Add

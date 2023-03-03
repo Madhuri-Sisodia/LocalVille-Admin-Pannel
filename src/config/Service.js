@@ -1,6 +1,6 @@
 import axios from "axios";
 import { base_url, prod_url } from "./WebConstant";
-
+console.log(base_url)
 export var Http = {
 
   GetAPI: (url, data, token = null) => {

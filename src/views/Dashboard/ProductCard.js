@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, Col, Row, Button } from "react-bootstrap";
 import "../../assets/css/card.css";
 import { useHistory } from "react-router";
-
+import { FaRupeeSign } from "react-icons/fa";
+import ProductDetailModel from "./ProductDetailModel";
 // const cardsData = [
 //   {
 //     title: "Iphones",
@@ -27,9 +28,13 @@ import { useHistory } from "react-router";
 //   },
 // ];
 
-const StoreCard = ({ latestStore }) => {
+const ProductCard = ({ latestProduct }) => {
+  console.log("latestProduct", latestProduct);
+
   const history = useHistory();
-  console.log("latestStore", latestStore);
+  const [showProductDetail, setShowProductDetail] = useState(false);
+  const [rowData, setRowData] = useState(false);
+
   return (
     <Row>
       <Col md="12">
@@ -39,7 +44,7 @@ const StoreCard = ({ latestStore }) => {
               type="submit"
               style={{
                 backgroundColor: "blueviolet",
-                border: "blueviolet",
+                border: "blue",
                 borderRadius: "4px",
                 float: "right",
                 padding: "9px 19px",
@@ -51,12 +56,13 @@ const StoreCard = ({ latestStore }) => {
             >
               View All
             </button>
-            <Card.Title as="h4">Latest Stores</Card.Title>
+
+            <Card.Title as="h4">Latest Products</Card.Title>
             <p className="card-category"></p>
           </Card.Header>
           <Card.Body>
             <div className="row">
-              {latestStore.map((item, index) => (
+              {latestProduct.map((item, index) => (
                 <Col md="4" key={index}>
                   <Card className="card">
                     <div
@@ -64,7 +70,7 @@ const StoreCard = ({ latestStore }) => {
                       style={{
                         backgroundColor:
                           item.is_verified == "1"
-                            ? "blue"
+                            ? "blueviolet"
                             : item.is_verified == "0"
                             ? "orange"
                             : "red",
@@ -73,20 +79,30 @@ const StoreCard = ({ latestStore }) => {
                       {item.is_verified == "1"
                         ? "Verified"
                         : item.is_verified == "0"
-                        ? "In Review"
+                        ? "Pending"
                         : "Rejected"}
                     </div>
 
                     <div
                       className="image"
+                      onClick={() => {
+                        setShowProductDetail(true);
+                        setRowData(item);
+                      }}
                       style={{
-                        backgroundImage: `url(${item.store_image})`,
+                        backgroundImage: `url(${item.p_images})`,
                       }}
                     >
+                      {console.log("item", item)}
                       <div className="heading">
-                        <h5 className="title">{item.store_name}</h5>
+                        <div className="price">
+                          <FaRupeeSign />
+                          {item.price}
+                        </div>
+                        <h5 className="title">{item.product_name}</h5>
+
                         <p className="card-description paragraph">
-                          {item.store_desc}
+                          {item.product_desc}
                         </p>
                       </div>
                     </div>
@@ -97,8 +113,13 @@ const StoreCard = ({ latestStore }) => {
           </Card.Body>
         </Card>
       </Col>
+      <ProductDetailModel
+        showProductDetail={showProductDetail}
+        setShowProductDetail={setShowProductDetail}
+        rowData={rowData}
+      />
     </Row>
   );
 };
 
-export default StoreCard;
+export default ProductCard;
