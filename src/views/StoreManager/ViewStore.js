@@ -97,9 +97,9 @@ const ViewStore = ({ showDetailsModal, setShowDetailsModal, rowData }) => {
               <tr>
                 <td className="bold-col">Opening Days:</td>
                 <td>
-                  {days.map((day) => (
+                  {days.map((day,index) => (
                     <div key={day} className="day-circle">
-                      {daysOfWeek[day - 1] || day}
+                      {daysOfWeek[index - 1] || day}
                     </div>
                   ))}
                 </td>
