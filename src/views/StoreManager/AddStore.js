@@ -115,7 +115,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
 
   useEffect(()=>{
     const getVendorsData=()=>{
-      Http.GetAPI(apis.getVendorsData + "?" + Math.random(), "", null)
+      Http.GetAPI(apis.getVendorsData + "?" + Math.random(), {page:3}, null)
     .then((res) => { 
       if (res?.data?.status) {
         console.log("vendorData=>",res.data.data)
