@@ -25,9 +25,9 @@ const UpdateProducts = ({ showUpdateModal, setShowUpdateModal, item,getProducts 
     data.append("v_name", productName ? productName : item.name);
     // data.append("phone_number", productPhone ? productPhone : item.phone);
 
-    console.log("updateProduct", data);
+    console.log("updateProducts", data);
 
-    Http.PostAPI(apis.updateProduct, data, null)
+    Http.PostAPI(apis.updateProducts, data, null)
       .then((res) => {
         console.log("data", res);
         if (res?.data?.status) {
