@@ -12,6 +12,7 @@ const Color = () => {
   const [colorCode, setColorCode] =useState("");
   const [selectColor, setColor] = useState("");
   const [selectColorCode, setSelectColorCode] = useState("");
+
 //   const {setSizeAttributeId} = useContext(Utils)
 //   const [selectCategory, setSelectCategory] = useState("");
   const [data, setData] = useState([]);
@@ -109,9 +110,12 @@ console.log(colorName)
               <input placeholder="Enter color" type="text" onChange={(e)=>{ setColor(e.target.value)}} style={{width:"100%",height:"30px",borderRadius:"5px",padding:"10px",marginTop:"20px"}}/>
                <br/>
                 <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
-                Add Color Code
+                Select Color
                 </Form.ControlLabel>
-              <input placeholder="Enter color code" type="text" onChange={(e)=>{ setColorCode(e.target.value)}} style={{width:"100%",height:"30px",borderRadius:"5px",padding:"10px",marginTop:"20px"}}/>
+              <input placeholder="Enter color code" type="color" onChange={(e)=>{ setColorCode(e.target.value)}} style={{width:"100px",height:"100px",borderRadius:"5px",padding:"10px",marginTop:"20px"}}/>
+               <div style={{marginTop:"20px"}}>
+               {colorCode}
+               </div>
                {/* <select
                 name="selectSection"
                 value={selectSection}
