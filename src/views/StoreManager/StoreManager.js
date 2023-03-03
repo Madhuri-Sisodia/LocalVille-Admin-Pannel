@@ -160,19 +160,22 @@ const StoreManager = () => {
           <Col md="12">
             <Card className="strpied-tabled-with-hover">
               <Card.Header>
-                <Button
-                  className="btn-fill float-right"
-                  style={{
-                    backgroundColor: "blueviolet",
-                    borderColor: "blueviolet",
-                  }}
-                  type="submit"
-                  onClick={() => {
-                    setShowAddStore(true);
-                  }}
-                >
-                  Add Stores
-                </Button>
+              <button
+              type="submit"
+              style={{
+                backgroundColor: "blueviolet",
+                border: "blueviolet",
+                borderRadius: "4px",
+                float: "right",
+                padding: "9px 19px",
+                color: "white",
+              }}
+              onClick={() => {
+                setShowAddStore(true);
+              }}
+            >
+              Add Stores
+            </button>
                 <Card.Title as="h4">Store Manager</Card.Title>
                 <p className="card-category">Store details and action</p>
                 <br></br>
