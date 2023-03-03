@@ -8,12 +8,13 @@ import { useEffect,useContext } from "react";
 import { Utils } from "CommonUtils/Utils";
 
 
-const Category = () => {
-  const [categoryName, setCategoryName] = useState("");
-  const [selectSection, setSelectSection] = useState("");
+const Size = () => {
+  const [sizeName, setSizeName] = useState("");
+  const [selectSizeAttribute, setSelectSizeAttribute] = useState("");
   const [data, setData] = useState([]);
-  const [category, setCategory] = useState([]);
+  const [sizeAttribute, setSizeAttribute] = useState([]);
   const {setCategoriesId} = useContext(Utils)
+  const [size,setSize] = useState("")
   
   const notificationAlertRef = React.useRef(null);
   console.log(data)
@@ -46,7 +47,7 @@ const Category = () => {
       message: (
         <div>
           <div>
-            <b>Categories Successfully Added..!!</b>
+            <b>Size Successfully Added..!!</b>
           </div>
         </div>
       ),
@@ -60,39 +61,40 @@ const Category = () => {
 
   const handleSubmit = () => {
 
-    const SelectedSection = data.filter((ele)=>{
+    const SelectedSizeAttribute = data.filter((ele)=>{
       console.log(ele.name)
-      return(ele.section_name==selectSection)
+      return(ele.attr_name==selectSizeAttribute)
     })
-    const id = SelectedSection[0].id
+    const id = SelectedSizeAttribute[0].id
     setCategoriesId(id)
    
     var formdata = new FormData();
 
-    formdata.append("section_id",`${id}`);
-    formdata.append("category_name", categoryName);
+    formdata.append("id",`${id}`);
+    formdata.append("size", sizeName);
   
     console.log("formdata=>",formdata)
-    Http.PostAPI(apis.addPrdouctCategory, formdata, null)
+    Http.PostAPI(apis.addSize, formdata, null)
       .then((res) => {
         console.log("Data", res);
-        if (res?.data?.status) {
-          setCategory(res?.data?.data);
-          alert("Category added successfully");
-        } else {
-          alert("Category already exists");
+        if (res?.data?.success) {
+          setSize(res?.data?.data);
+          alert("Size added successfully");
+        } 
+        else {
+          alert("Size already exists");
         }
       })
       .catch((e) => {
         alert("Something went wrong.");
         console.log("Error:", e);
       });
-    setCategoryName("");
-    setSelectSection("");
+    setSizeName("");
+    setSelectSizeAttribute("");
   };
 
   useEffect(() => {
-    Http.GetAPI(apis.getCategory + "?" + Math.random(),data, null)
+    Http.GetAPI(apis.getSizeAttributes + "?" + Math.random(),data, null)
       .then((res) => {
         console.log(res)
         if (res?.data?.status) {
@@ -134,33 +136,33 @@ const Category = () => {
             <Form.Group controlId="name-1">
             <div className="InnnerContainerCategory" style={{marginTop:"20px",marginBottom:"20px",flexDirection:"column"}}>
               <Form.ControlLabel style={{ color: "#808080", fontSize: "0.9rem",marginRight:"20px",marginBottom:"20px"}}>
-                Category Section
+                Size Attribute
               </Form.ControlLabel>
               <div>
               <select
-                name="selectSection"
-                value={selectSection}
-                onChange={(event) => setSelectSection(event.target.value)}
+                name="selectSizeAttribute"
+                value={selectSizeAttribute}
+                onChange={(event) => setSelectSizeAttribute(event.target.value)}
                 style={{height:"30px",borderRadius:"5px",paddingLeft:"5px",paddingRight:"5px",borderColor: "#808020"}}
               >
                 <option value="">Select</option>
-                {data.map((category) => (
-                  <option key={category.id} value={category.section_name}>
-                    {category.section_name}
+                {data.map((sizeAttribute) => (
+                  <option key={sizeAttribute.id} value={sizeAttribute.attr_name}>
+                    {sizeAttribute.attr_name}
                   </option>
                 ))}
               </select>
               </div>
             </div>
               <Form.ControlLabel style={{ color: "#808080", fontSize: "0.9rem",marginBottom:"10px",PaddingTop:"20px" }}>
-                Category Name
+                Size
               </Form.ControlLabel>
               <Form.Control
-                placeholder="Category Name"
-                name="categoryName"
-                value={categoryName}
-                required="setCategoryName"
-                onChange={(value) => setCategoryName(value)}
+                placeholder="Enter size"
+                name="sizeName"
+                value={sizeName}
+                required="setSizeName"
+                onChange={(value) => setSizeName(value)}
               />
             </Form.Group>
             <Form.Group>
@@ -182,4 +184,4 @@ const Category = () => {
   );
 };
 
-export default Category;
+export default Size;

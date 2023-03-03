@@ -7,16 +7,19 @@ import { apis } from "../../config/WebConstant";
 import { useEffect } from "react";
 import { Utils } from "CommonUtils/Utils";
 
-const Section = () => {
-  const [sectionName, setSectionName] = useState("");
-  const [selectSection, setSelectSection] = useState("");
-  const {setCategoriesId} = useContext(Utils)
+const Color = () => {
+  const [colorName, setcolorName] = useState("");
+  const [colorCode, setColorCode] =useState("");
+  const [selectColor, setColor] = useState("");
+  const [selectColorCode, setSelectColorCode] = useState("");
+  console.log(colorCode)
+//   const {setSizeAttributeId} = useContext(Utils)
 //   const [selectCategory, setSelectCategory] = useState("");
   const [data, setData] = useState([]);
-  const [category, setCategory] = useState([]);
+//   const [category, setCategory] = useState([]);
 //   const [category, setCategory] = useState([]);
   // const [getCategoryData, setGetCategoryData] = useState([]);
-console.log(sectionName)
+console.log(colorName)
   const notificationAlertRef = React.useRef(null);
 
   const notify = (place) => {
@@ -47,7 +50,7 @@ console.log(sectionName)
       message: (
         <div>
           <div>
-            <b>Section Successfully Added..!!</b>
+            <b>Color Successfully Added..!!</b>
           </div>
         </div>
       ),
@@ -62,30 +65,30 @@ console.log(sectionName)
   const handleSubmit = () => {
 
 
-        const SelectedSection = data.filter((ele)=>{
-          return(ele.section_name==selectSection)
+        const SelectedColor = data.filter((ele)=>{
+          return(ele.color==selectColor)
         })  
 
         // setCategoriesId(SelectedSection[0].id)
       
         var formdata = new FormData();
-        formdata.append("section_name",sectionName );
+        formdata.append("color",colorName);
+        formdata.append("code",colorCode);
 
-        Http.PostAPI(apis.addCategory, formdata, null)
+        Http.PostAPI(apis.addColor, formdata, null)
         .then((res) => {
-          console.log("Data", res);
-          if (res?.data?.status) {
-            setCategory(res?.data?.data);
-            alert("Category added successfully");
+          if (res?.data?.success) {
+            setColor(res?.data?.data);
+            alert("Color added successfully");
           } else {
-            alert("Category already exists");
+            alert("Color already exists");
           }
         })
         .catch((e) => {
           alert("Something went wrong.");
           console.log("Error:", e);
         });
-        setSectionName("");
+        setColor("");
   };
 
 
@@ -101,9 +104,14 @@ console.log(sectionName)
           <Form fluid onSubmit={handleSubmit}>
             <Form.Group controlId="name-1">
             <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
-                Add Category Section
+                Add Color
               </Form.ControlLabel>
-              <input type="text" onChange={(e)=>{ setSectionName(e.target.value)}} style={{width:"100%",height:"30px",borderRadius:"5px",padding:"10px",marginTop:"20px"}}/>
+              <input placeholder="Enter color" type="text" onChange={(e)=>{ setcolorName(e.target.value)}} style={{width:"100%",height:"30px",borderRadius:"5px",padding:"10px",marginTop:"20px"}}/>
+               <br/>
+                <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem",marginTop:"20px" }}>
+                Select Color
+                </Form.ControlLabel>
+              <input placeholder="Enter color code" type="color" onChange={(e)=>{ setColorCode(e.target.value)}} style={{width:"100px",height:"100px",borderRadius:"5px",padding:"10px",marginTop:"20px"}}/>
                {/* <select
                 name="selectSection"
                 value={selectSection}
@@ -155,4 +163,4 @@ console.log(sectionName)
   );
 };
 
-export default Section;
+export default Color;

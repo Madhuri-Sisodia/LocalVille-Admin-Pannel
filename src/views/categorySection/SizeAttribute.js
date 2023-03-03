@@ -7,16 +7,16 @@ import { apis } from "../../config/WebConstant";
 import { useEffect } from "react";
 import { Utils } from "CommonUtils/Utils";
 
-const Section = () => {
-  const [sectionName, setSectionName] = useState("");
-  const [selectSection, setSelectSection] = useState("");
+const SizeAttribute = () => {
+  const [sizeAttributeName, setSizeAttributeName] = useState("");
+  const [selectSizeAttribute, setSizeAttribute] = useState("");
   const {setCategoriesId} = useContext(Utils)
 //   const [selectCategory, setSelectCategory] = useState("");
   const [data, setData] = useState([]);
-  const [category, setCategory] = useState([]);
+//   const [category, setCategory] = useState([]);
 //   const [category, setCategory] = useState([]);
   // const [getCategoryData, setGetCategoryData] = useState([]);
-console.log(sectionName)
+console.log(sizeAttributeName)
   const notificationAlertRef = React.useRef(null);
 
   const notify = (place) => {
@@ -47,7 +47,7 @@ console.log(sectionName)
       message: (
         <div>
           <div>
-            <b>Section Successfully Added..!!</b>
+            <b>Size Attribute Successfully Added..!!</b>
           </div>
         </div>
       ),
@@ -62,30 +62,30 @@ console.log(sectionName)
   const handleSubmit = () => {
 
 
-        const SelectedSection = data.filter((ele)=>{
-          return(ele.section_name==selectSection)
+        const SelectedSizeAttribute = data.filter((ele)=>{
+          return(ele.sizeAttribute_name==selectSizeAttribute)
         })  
 
         // setCategoriesId(SelectedSection[0].id)
       
         var formdata = new FormData();
-        formdata.append("section_name",sectionName );
+        formdata.append("sizeAttribute_name",sizeAttributeName );
 
-        Http.PostAPI(apis.addCategory, formdata, null)
+        Http.PostAPI(apis.addSizeAttribute, formdata, null)
         .then((res) => {
           console.log("Data", res);
           if (res?.data?.status) {
-            setCategory(res?.data?.data);
-            alert("Category added successfully");
+            setSizeAttribute(res?.data?.data);
+            alert("Size Attribute added successfully");
           } else {
-            alert("Category already exists");
+            alert("Fields cannot be empty");
           }
         })
         .catch((e) => {
           alert("Something went wrong.");
           console.log("Error:", e);
         });
-        setSectionName("");
+        setSizeAttributeName("");
   };
 
 
@@ -101,9 +101,9 @@ console.log(sectionName)
           <Form fluid onSubmit={handleSubmit}>
             <Form.Group controlId="name-1">
             <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
-                Add Category Section
+                Add Size Attribute
               </Form.ControlLabel>
-              <input type="text" onChange={(e)=>{ setSectionName(e.target.value)}} style={{width:"100%",height:"30px",borderRadius:"5px",padding:"10px",marginTop:"20px"}}/>
+              <input type="text" onChange={(e)=>{ setSizeAttributeName(e.target.value)}} style={{width:"100%",height:"30px",borderRadius:"5px",padding:"10px",marginTop:"20px"}}/>
                {/* <select
                 name="selectSection"
                 value={selectSection}
@@ -155,4 +155,4 @@ console.log(sectionName)
   );
 };
 
-export default Section;
+export default SizeAttribute;

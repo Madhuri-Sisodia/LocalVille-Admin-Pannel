@@ -22,5 +22,9 @@ export const apis = {
     getUnverifiedProducts:"unverified_products.php",
     updateVerifiedProduct:"update_verified_products.php",
     getUnverifiedStore:"un_verif_stores.php",
-    updateVerifiedStore:"update_unve_store.php"
+    updateVerifiedStore:"update_unve_store.php",
+    addSizeAttribute:"add_size_attribute.php",
+    getSizeAttributes:"get_size_attributes.php",
+    addSize:"add_size.php",
+    addColor:"add_color.php"
 }
