@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Input, Whisper, Tooltip, InputGroup } from "rsuite";
-import { RxCross1 } from "react-icons/rx";
-import { RiQuestionMark } from "react-icons/ri";
-import { MdPersonAddAlt1 } from "react-icons/md";
-import { BiBlock } from "react-icons/bi";
-import { RxUpdate } from "react-icons/rx";
 import SearchIcon from "@rsuite/icons/Search";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
@@ -23,6 +18,7 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
+import BlockVendor from "./BlockVendor";
 
 // const data = [
 //   {
@@ -75,7 +71,7 @@ import {
 const VendorsManager = () => {
   const [showModal, setShowModal] = useState(false);
   const [data, setData] = useState([]);
-  const [blockUser, setBlockUser] = useState([]);
+
   const [blockData, setBlockData] = useState([]);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showAddVendor, setShowAddVendor] = useState(false);
@@ -105,26 +101,6 @@ const VendorsManager = () => {
     getVendors();
   }, []);
 
-  const handleBlockUser = (id) => {
-    var data = new FormData();
-    data.append("id", id);
-    console.log("usersss", data);
-    Http.PostAPI(apis.blockUser, data, null)
-      .then((res) => {
-        console.log("user", res);
-        if (res?.data?.status) {
-          setBlockUser(res?.data?.data);
-          getVendors();
-        } else {
-          alert("Fields not matched");
-        }
-      })
-      .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
-      });
-  };
-
   return (
     <>
       <Container fluid>
@@ -132,19 +108,22 @@ const VendorsManager = () => {
           <Col md="12">
             <Card className="strpied-tabled-with-hover">
               <Card.Header>
-                <Button
-                  className="btn-fill float-right"
-                  style={{
-                    backgroundColor: "blueviolet",
-                    borderColor: "blueviolet",
-                  }}
-                  type="submit"
-                  onClick={() => {
-                    setShowAddVendor(true);
-                  }}
-                >
-                  Add Vendors
-                </Button>
+              <button
+              type="submit"
+              style={{
+                backgroundColor: "blueviolet",
+                border: "blueviolet",
+                borderRadius: "4px",
+                float: "right",
+                padding: "9px 19px",
+                color: "white",
+              }}
+              onClick={() => {
+                setShowAddVendor(true);
+              }}
+            >
+              Add Vendors
+            </button>
 
                 <Card.Title as="h4">Vendors Manager</Card.Title>
 
@@ -220,17 +199,19 @@ const VendorsManager = () => {
                             <i className="fas fa-edit"></i>
                           </Button>
 
-                          <Button
-                            className="btn-simple btn-link p-1"
-                            type="button"
-                            variant="danger"
-                            onClick={() => {
-                              setShowModal(true);
-                              setBlockData(item.id);
-                            }}
-                          >
-                            <i className="fas fa-times"></i>
-                          </Button>
+                          {item?.active == "1" && (
+                            <Button
+                              className="btn-simple btn-link p-1"
+                              type="button"
+                              variant="danger"
+                              onClick={() => {
+                                setShowModal(true);
+                                setBlockData(item.id);
+                              }}
+                            >
+                              <i className="fas fa-times"></i>
+                            </Button>
+                          )}
                         </td>
                       </tr>
                     ))}
@@ -252,46 +233,12 @@ const VendorsManager = () => {
           setShowAddVendor={setShowAddVendor}
           getVendors={getVendors}
         />
-
-        <Modal
-          className="modal-mini modal-primary"
-          show={showModal}
-          onHide={() => setShowModal(false)}
-        >
-          <Modal.Header className="justify-content-center">
-            <div className="modal-profile">
-              <BiBlock
-                style={{
-                  fontSize: "30px",
-                  color: "gray",
-                }}
-              />
-            </div>
-          </Modal.Header>
-          <Modal.Body className="text-center">
-            <p>Are you sure you want to block this store?</p>
-          </Modal.Body>
-          <div className="modal-footer">
-            <Button
-              className="btn-simple"
-              variant="danger"
-              onClick={() => {
-                handleBlockUser(blockData);
-                setShowModal(false);
-              }}
-            >
-              Block
-            </Button>
-            <Button
-              className="btn-simple"
-              type="button"
-              variant="secondary"
-              onClick={() => setShowModal(false)}
-            >
-              Close
-            </Button>
-          </div>
-        </Modal>
+        <BlockVendor
+          showModal={showModal}
+          setShowModal={setShowModal}
+          blockData={blockData}
+          getVendors={getVendors}
+        />
       </Container>
     </>
   );

@@ -31,6 +31,7 @@ const StoreApproval = () => {
   const [storeApproval, setStoreApproval] = useState(false);
   const [rowData, setRowData] = useState([]);
   const [store, setStore] = useState([]);
+  const daysOfWeek = ["M", "T", "W", "T", "F", "S", "S"];
   const getLocation = (latitude, longitude) => {
     const url = `https://www.google.com/maps?q=${latitude}+${longitude}`;
     window.open(url);
@@ -114,9 +115,11 @@ const StoreApproval = () => {
                         <td>{item.store_address}</td>
                         {/* <td>{item.opening_days}</td> */}
                         <td>
-                          {item.opening_days == "[1,2,3,4,5,6]"
-                              ? "M,T,W,T,F,S"
-                              : item.opening_days}</td>
+                          {item.opening_days.split(",").map((ele,index)=>(
+                            <div key={index}  className="day-circle" style={{marginTop:"20px",width:"15px",height:"15px",background:"lightgray",color:"black"}}>
+                                    {daysOfWeek[index] || ele}
+                             </div>
+                         ))}</td>
                         <td>
                           <MdLocationPin
                             style={{

@@ -1,14 +1,11 @@
 import React, { useState, useEffect,useContext } from "react";
 import { Input, Whisper, Tooltip, InputGroup } from "rsuite";
-import { RxCross1 } from "react-icons/rx";
-import { MdLocationPin } from "react-icons/md";
-import { MdRemoveRedEye } from "react-icons/md";
-import { MdClose } from "react-icons/md";
-import { BiBlock } from "react-icons/bi";
-import { RxUpdate } from "react-icons/rx";
 import SearchIcon from "@rsuite/icons/Search";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
+import { MdBlock } from "react-icons/md";
+import { MdClose } from "react-icons/md";
+import { BiBlock } from "react-icons/bi";
 import "../../assets/css/modal.css";
 import "../../assets/css/day.css";
 import UpdateStore from "./UpdateStore";
@@ -16,6 +13,7 @@ import AddStore from "./AddStore";
 import MAPDays from "./MAPDays";
 import Paginate from "../../components/Paginate";
 import { Utils } from "CommonUtils/Utils";
+
 
 import {
   Modal,
@@ -30,6 +28,8 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
+import ViewProduct from "views/ProductApproval/ViewProduct";
+import ViewStore from "./ViewStore";
 
 // const data = [
 //   {
@@ -116,10 +116,14 @@ const StoreManager = () => {
   const [blockStore, setBlockStore] = useState([]);
   const [showUpdateStore, setShowUpdateStore] = useState(false);
   const [selectedStore, setSelectedStore] = useState(null);
+
   const [storeAdded,setAddStored] = useState(false)
   const [days, setDays] = useState([]);
   const {pageNo} = useContext(Utils)
   let parseDays;
+
+
+
   const getLocation = (latitude, longitude) => {
     const url = `https://www.google.com/maps?q=${latitude}+${longitude}`;
     window.open(url);
@@ -148,6 +152,7 @@ const StoreManager = () => {
   useEffect(() => {
     getStore();
   }, [pageNo]);
+
 
   const handleBlockStore = (id) => {
     var data = new FormData();
@@ -183,7 +188,7 @@ const StoreManager = () => {
     }
   }, [rowData]);
 
-  const daysOfWeek = ["M", "T", "W", "Th", "F", "S", "Su"];
+  const daysOfWeek = ["M", "T", "W", "T", "F", "S", "S"];
 
   return (
     <>
@@ -192,19 +197,22 @@ const StoreManager = () => {
           <Col md="12">
             <Card className="strpied-tabled-with-hover">
               <Card.Header>
-                <Button
-                  className="btn-fill float-right"
+                <button
+                  type="submit"
                   style={{
                     backgroundColor: "blueviolet",
-                    borderColor: "blueviolet",
+                    border: "blueviolet",
+                    borderRadius: "4px",
+                    float: "right",
+                    padding: "9px 19px",
+                    color: "white",
                   }}
-                  type="submit"
                   onClick={() => {
                     setShowAddStore(true);
                   }}
                 >
                   Add Stores
-                </Button>
+                </button>
                 <Card.Title as="h4">Store Manager</Card.Title>
                 <p className="card-category">Store details and action</p>
                 <br></br>
@@ -289,9 +297,8 @@ const StoreManager = () => {
                         <td style={{display:"flex",flexDirection:"row",justifyContent:"Center",alignItems:"center",textAlign:"center"}}>
                         {
                          item.opening_days.split(",").map((ele,index)=>(
-                            <div key={index} style={{width:"10px",height:"10px",borderRadius:"50%",borderColor:"black"}}>
-
-                                {daysOfWeek[index] || ele}
+                            <div key={index}  className="day-circle" style={{marginTop:"20px",width:"15px",height:"15px",background:"lightgray",color:"black"}}>
+                                    {daysOfWeek[index] || ele}
                              </div>
                          ))
                         }
@@ -323,7 +330,7 @@ const StoreManager = () => {
                           <Button
                             className="btn-simple btn-link p-1"
                             type="button"
-                            style={{color:"gray"}}
+                            style={{ color: "gray" }}
                             onClick={() =>
                               getLocation(item.latitude, item.longitude)
                             }
@@ -341,7 +348,7 @@ const StoreManager = () => {
                             <Button
                               className="btn-simple btn-link p-1"
                               type="button"
-                              style={{color:"blue"}}
+                              style={{ color: "blue" }}
                               onClick={() => {
                                 setShowDetailsModal(true);
                                 setRowData(item);
@@ -360,18 +367,21 @@ const StoreManager = () => {
                             >
                               <i className="fa fa-edit"></i>
                             </Button>
-                            <Button
-                              className="btn-simple btn-link p-1"
-                              type="button"
-                              variant="danger"
-                              onClick={() => {
-                                setShowModal(true);
-                                setShowDetailsModal(false);
-                                setBlockData(item.id);
-                              }}
-                            >
-                              <i className="fas fa-times"></i>
-                            </Button>
+
+                            {item?.active == "1" && (
+                              <Button
+                                className="btn-simple btn-link p-1"
+                                type="button"
+                                variant="danger"
+                                // disabled={storeBlocked}
+                                onClick={() => {
+                                  setShowModal(true);
+                                  setBlockData(item.id);
+                                }}
+                              >
+                                <i className="fas fa-times"></i>
+                              </Button>
+                            )}
                           </div>
                         </td>
                       </tr>

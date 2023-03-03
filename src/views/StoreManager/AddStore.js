@@ -357,7 +357,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
               </Form.Group>
             </div>
 
-            <br></br>
+           
             <button
               type="submit"
               block

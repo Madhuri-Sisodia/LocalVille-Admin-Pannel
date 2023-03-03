@@ -14,27 +14,19 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-const StoreDetailModal = ({
-  showDetailsModal,
-  setShowDetailsModal,
-  rowData,
-}) => {
-  const [days, setDays] = useState([]);
+const ViewStore = ({ showDetailsModal, setShowDetailsModal, rowData }) => {
+ const [days, setDays] = useState([]);
   const daysOfWeek = ["M", "T", "W", "Th", "F", "S", "Su"];
+  
 
   useEffect(() => {
     if (rowData.opening_days) {
-      let parsedDays;
-      if (Array.isArray(rowData.opening_days)) {
-        parsedDays = rowData.opening_days;
-      } else if (typeof rowData.opening_days === "string") {
-        try {
-          parsedDays = JSON.parse(rowData.opening_days);
-        } catch (error) {
-          console.error("Error parsing JSON:", error);
-          parsedDays = [];
-        }
-      }
+    let parsedDays;
+    if (Array.isArray(rowData.opening_days)) {
+      parsedDays = rowData.opening_days;
+    } else if (typeof rowData.opening_days === "string") {
+      parsedDays = JSON.parse(rowData.opening_days);
+    }
       setDays(parsedDays);
     }
   }, [rowData]);
@@ -105,9 +97,9 @@ const StoreDetailModal = ({
               <tr>
                 <td className="bold-col">Opening Days:</td>
                 <td>
-                  {days.map((day) => (
+                  {days.map((day,index) => (
                     <div key={day} className="day-circle">
-                      {daysOfWeek[day - 1] || day}
+                      {daysOfWeek[index - 1] || day}
                     </div>
                   ))}
                 </td>
@@ -134,31 +126,7 @@ const StoreDetailModal = ({
                 <td className="bold-col">Store Updated:</td>
                 <td>{rowData.updated_at}</td>
               </tr>
-              <tr>
-                <td className="bold-col">Store Status:</td>
-                <td
-                  style={{
-                    backgroundColor:
-                      rowData.verified == "1"
-                        ? "green"
-                        : rowData.verified == "0"
-                        ? "orange"
-                        : "red",
-                    border: "none",
-                    fontSize: "0.75rem",
-                    color: "white",
-                    padding: "0px 7px",
-                    borderRadius: "17px",
-                    display: "inline-block",
-                  }}
-                >
-                  {rowData.verified == "1"
-                    ? "verified"
-                    : rowData.verified == "0"
-                    ? "in review"
-                    : "rejected"}
-                </td>
-              </tr>
+
               <tr>
                 <td className="bold-col">Status:</td>
 
@@ -183,4 +151,4 @@ const StoreDetailModal = ({
     </>
   );
 };
-export default StoreDetailModal;
+export default ViewStore;

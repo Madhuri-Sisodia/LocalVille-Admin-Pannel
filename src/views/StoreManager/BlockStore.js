@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { BiBlock } from "react-icons/bi";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 
@@ -16,25 +17,20 @@ import {
   Col,
 } from "react-bootstrap";
 
-const RejectProduct = ({
-  showRejectProduct,
-  setShowRejectProduct,
-  product,
-  getUnverifiedProduct,
-}) => {
-  const [updateProduct, setUpdateProduct] = useState([]);
-  const [rejectReason, setRejectReason] = useState("");
+const BlockStore = ({ showModal, setShowModal, blockData, getStore }) => {
+  const [blockStore, setBlockStore] = useState([]);
+  const [blockReason, setBlockReason] = useState("");
 
-  const handleRejectProduct = (product) => {
+  const handleBlockStore = (id) => {
     var data = new FormData();
-    data.append("product_id", product.id);
-    data.append("verified_status", 2);
-    Http.PostAPI(apis.updateVerifiedProduct, data, null)
+    data.append("id", id);
+    console.log("usersss", data);
+    Http.PostAPI(apis.blockStore, data, null)
       .then((res) => {
-        console.log("resp", res);
+        console.log("user", res);
         if (res?.data?.status) {
-          setUpdateProduct(res?.data?.data);
-          getUnverifiedProduct();
+          setBlockStore(res?.data?.data);
+          getStore();
         } else {
           alert("Fields not matched");
         }
@@ -49,43 +45,49 @@ const RejectProduct = ({
     <>
       <Modal
         className="modal-mini modal-primary"
-        show={showRejectProduct}
-        onHide={() => setShowRejectProduct(false)}
+        show={showModal}
+        onHide={() => setShowModal(false)}
       >
         <Modal.Header className="justify-content-center">
           <div className="modal-profile">
-            <i className="nc-icon nc-simple-remove"></i>
+            <BiBlock
+              style={{
+                fontSize: "30px",
+                marginBottom: "14px",
+                color: "gray",
+              }}
+            />
           </div>
         </Modal.Header>
         <Modal.Body className="text-center">
-          <p>Are you sure you want to reject this product?</p>
+          <p>Are you sure you want to block this store?</p>
           <textarea
             style={{ fontSize: "0.9rem" }}
             placeholder="Enter Reason"
             maxLength={200}
-            value={rejectReason}
-            onChange={(event) => setRejectReason(event.target.value)}
+            value={blockReason}
+            onChange={(event) => setBlockReason(event.target.value)}
           />
         </Modal.Body>
-
         <div className="modal-footer">
           <Button
             className="btn-simple"
             variant="danger"
             onClick={() => {
-              handleRejectProduct(product);
-              setShowRejectProduct(false);
+              handleBlockStore(blockData);
+              setShowModal(false);
             }}
           >
-            Reject
+            Block
           </Button>
+
           <Button
             className="btn-simple"
             type="button"
             variant="secondary"
             onClick={() => {
-              setShowRejectProduct(false);
-              setRejectReason("");
+              setShowModal(false);
+              setBlockReason("");
             }}
           >
             Close
@@ -95,4 +97,4 @@ const RejectProduct = ({
     </>
   );
 };
-export default RejectProduct;
+export default BlockStore;

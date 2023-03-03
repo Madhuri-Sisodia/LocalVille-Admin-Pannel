@@ -102,10 +102,10 @@ const ViewProduct = ({
                   }}
                 >
                   {rowData.is_verified == "1"
-                        ? "verified"
-                        : rowData.is_verified == "0"
-                        ? "pending"
-                        : "rejected"}
+                    ? "verified"
+                    : rowData.is_verified == "0"
+                    ? "pending"
+                    : "rejected"}
                 </td>
               </tr>
               <tr>
@@ -148,16 +148,19 @@ const ViewProduct = ({
               </tr>
             </tbody>
           </Table>
-          <div>
-            <img
-              src={rowData.images?.images}
-              alt="image"
-              style={{
-                width: "80px",
-                height: "80px",
-              }}
-            />
-          </div>
+          {rowData.images && rowData.images.length > 0 && (
+            <div>
+              <img
+                src={rowData.images[0].images}
+                alt="image"
+                style={{
+                  width: "70px",
+                  height: "70px",
+                }}
+              />
+              
+            </div>
+          )}
         </Modal.Body>
         <Modal.Footer></Modal.Footer>
       </Modal>

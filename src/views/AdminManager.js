@@ -184,18 +184,22 @@ const AdminManager = () => {
                 )}
               </Form.Group>
             </div>
-            <Form.Group>
-              <ButtonToolbar>
-                <Button
-                  appearance="primary"
-                  type="submit"
-                  style={{ marginTop: "3rem", marginBottom: "0.5rem" }}
-                  block
-                >
-                  Submit
-                </Button>
-              </ButtonToolbar>
-            </Form.Group>
+            <button
+              type="submit"
+              block
+              style={{
+                backgroundColor: "blueviolet",
+                border: "blueviolet",
+                borderRadius: "3px 3px 3px 3px",
+                width: "100%",
+                padding: "10px",
+                color: "white",
+                marginTop: "20px",
+                fontSize:"0.9rem"
+              }}
+            >
+              Submit
+            </button>
           </Form>
         </div>
       </div>
