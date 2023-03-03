@@ -11,7 +11,7 @@ import Category from "views/categorySection/index.js";
 import StoreManager from "views/StoreManager/StoreManager";
 import VendorsManager from "views/VendorsManager/VendorsManager";
 import ProductApproval from "views/ProductApproval/ProductApproval";
-
+import StoreApproval from "views/StoreApproval/StoreApproval";
 
 const dashboardRoutes = [
   {
@@ -66,8 +66,24 @@ const dashboardRoutes = [
     component: ProductApproval,
     layout: "/admin"
   },
+  {
+    path: "/storeApproval",
+    name: "Store Approval",
+    icon: "nc-icon nc-circle-09",
+    component: StoreApproval,
+    layout: "/admin"
+  },
+
+  {
+    path: "/user",
+    name: "User Profile",
+    icon: "nc-icon nc-circle-09",
+    component: UserProfile,
+    layout: "/admin"
+  },
 
   // {
+
   //   path: "/user",
   //   name: "User Profile",
   //   icon: "nc-icon nc-circle-09",
@@ -88,13 +104,23 @@ const dashboardRoutes = [
   //   component: Typography,
   //   layout: "/admin"
   // },
-  {
-    path: "/icons",
-    name: "Icons",
-    icon: "nc-icon nc-atom",
-    component: Icons,
-    layout: "/admin"
-  },
+
+  // {
+  //   path: "/icons",
+  //   name: "Icons",
+  //   icon: "nc-icon nc-atom",
+  //   component: Icons,
+  //   layout: "/admin"
+  // },
+
+  // {
+  //   path: "/icons",
+  //   name: "Icons",
+  //   icon: "nc-icon nc-atom",
+  //   component: Icons,
+  //   layout: "/admin"
+  // },
+
   // {
   //   path: "/maps",
   //   name: "Maps",
