@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { Input, Whisper, Tooltip, InputGroup } from "rsuite";
 import { RxCross1 } from "react-icons/rx";
 import { MdLocationPin } from "react-icons/md";
@@ -14,6 +14,8 @@ import "../../assets/css/day.css";
 import UpdateStore from "./UpdateStore";
 import AddStore from "./AddStore";
 import MAPDays from "./MAPDays";
+import Paginate from "../../components/Paginate";
+import { Utils } from "CommonUtils/Utils";
 
 import {
   Modal,
@@ -116,6 +118,7 @@ const StoreManager = () => {
   const [selectedStore, setSelectedStore] = useState(null);
   const [storeAdded,setAddStored] = useState(false)
   const [days, setDays] = useState([]);
+  const {pageNo} = useContext(Utils)
   let parseDays;
   const getLocation = (latitude, longitude) => {
     const url = `https://www.google.com/maps?q=${latitude}+${longitude}`;
@@ -142,7 +145,7 @@ const StoreManager = () => {
   console.log("data", data);
   useEffect(() => {
     getStore();
-  }, [AddStore]);
+  }, [pageNo]);
 
   const handleBlockStore = (id) => {
     var data = new FormData();
@@ -376,8 +379,8 @@ const StoreManager = () => {
             </Card>
           </Col>
         </Row>
+        <Paginate/>
       </Container>
-
       <UpdateStore
         showUpdateStore={showUpdateStore}
         setShowUpdateStore={setShowUpdateStore}
