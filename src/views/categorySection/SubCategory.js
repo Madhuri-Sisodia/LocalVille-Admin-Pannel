@@ -64,16 +64,24 @@ const SubCategory = () => {
     notificationAlertRef.current.notificationAlert(options);
   };
 
-  const handleSubmit = () => {
-      console.log("hello")
-    const id = data.filter((ele)=>{
-        return(ele.name==selectCategory)
-    })
+  // const handleSubmit = () => {
+  //     // console.log("hello")
+  //   const id = data.filter((ele)=>{
+  //       return(ele.name==selectCategory)
+  //   })
+    const handleSubmit = () => {
+       
+      const SelectedCategory = data.filter((ele)=>{
+        console.log(ele.name)
+        return(ele.category_name==selectCategory)
+      })
+      const id = SelectedCategory[0].id
+      setCategoriesId(id)
 
      console.log(id)
     var formdata = new FormData();
-    formdata.append("category_id", selectCategory);
-    formdata.append("name", subCategoryName);
+    formdata.append("category_id", `${id}`);
+    formdata.append("subcategory_name", subCategoryName);
     formdata.append("color", color);
     formdata.append("size", size);
     formdata.append("size_att", sizeAttribute);
@@ -152,30 +160,30 @@ const SubCategory = () => {
               <div style={{display:"flex",flexDirection:"row"}}>
                 <div style={{width:"50%",paddingLeft:"10px"}}>
                 <h4 style={{fontSize:"1rem"}}>Color</h4>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" id="flexRadioDefault1" onChnage={()=>setColor(1)}/>
-                  <label class="form-check-label" for="flexRadioDefault1">
+                <div className="form-check">
+                  <input className="form-check-input" type="radio" id="flexRadioDefault1" onChnage={()=>setColor(1)}/>
+                  <label className="form-check-label" htmlFor="flexRadioDefault1">
                     Yes
                   </label>
                 </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" onChnage={()=>setColor(0)} />
-                  <label class="form-check-label" for="flexRadioDefault2">
+                <div className="form-check">
+                  <input className="form-check-input" type="radio" onChnage={()=>setColor(0)} />
+                  <label className="form-check-label" htmlFor="flexRadioDefault2">
                     No
                   </label>
                 </div>
                 </div>
                 <div style={{paddingLeft:"10px"}}>
                 <h4 style={{width:"50%",fontSize:"1rem"}}>Size</h4>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" id="flexRadioDefault1" onChnage={()=>setSize(1)}/>
-                  <label class="form-check-label" for="flexRadioDefault1">
+                <div className="form-check">
+                  <input className="form-check-input" type="radio" id="flexRadioDefault1" onChnage={()=>setSize(1)}/>
+                  <label className="form-check-label" htmlFor="flexRadioDefault1">
                     Yes
                   </label>
                 </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" onChnage={()=>setSize(0)}/>
-                  <label class="form-check-label" for="flexRadioDefault2">
+                <div className="form-check">
+                  <input className="form-check-input" type="radio" onChnage={()=>setSize(0)}/>
+                  <label className="form-check-label" htmlFor="flexRadioDefault2">
                     No
                   </label>
                 </div>
@@ -183,15 +191,15 @@ const SubCategory = () => {
               </div>
               <div style={{paddingLeft:"10px"}}>
               <h4 style={{fontSize:"1rem"}}>Size att</h4>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" id="flexRadioDefault1" onChnage={()=>setSizeAttribute(1)}/>
-                <label class="form-check-label" for="flexRadioDefault1">
+              <div className="form-check">
+                <input className="form-check-input" type="radio" id="flexRadioDefault1" onChnage={()=>setSizeAttribute(1)}/>
+                <label className="form-check-label" htmlFor="flexRadioDefault1">
                   Yes
                 </label>
               </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" onChnage={()=>setSizeAttribute(0)}/>
-                <label class="form-check-label" for="flexRadioDefault2">
+              <div className="form-check">
+                <input className="form-check-input" type="radio" onChnage={()=>setSizeAttribute(0)}/>
+                <label className="form-check-label" htmlFor="flexRadioDefault2">
                   No
                 </label>
               </div>

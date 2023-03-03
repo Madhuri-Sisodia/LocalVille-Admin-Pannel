@@ -3,7 +3,11 @@ import { Panel, Placeholder, Row, Col } from 'rsuite';
 import Category from './Category';
 import "../../assets/css/admin.css";
 import SubCategory from './SubCategory';
-import Section from'./Section';
+import Section from './Section';
+import SizeAttribute from './SizeAttribute';
+import Size from './Size';
+import Color from './Color';
+
 
 function index() {
   
@@ -26,7 +30,7 @@ function index() {
      
         <Row>
         <Col md={6} sm={12}>
-            <Card bordered header="Section" className="Categorycards" onClick={()=>setSelectedItem(4)}
+            <Card bordered header="Section" className="Categorycards" onClick={()=>setSelectedItem(1)}
                />
               
           </Col>
@@ -34,13 +38,33 @@ function index() {
           <Col md={6} sm={12}>
             <Card bordered header="Categories" className="Categorycards"
             cardid="1"
-            onClick={()=>setSelectedItem(1)}
+            onClick={()=>setSelectedItem(2)}
             />
           </Col>
           
           <Col md={6} sm={12}>
             <Card bordered header="Sub Categories" className="Categorycards"
-              onClick={()=>setSelectedItem(2)}
+              onClick={()=>setSelectedItem(3)}
+              />
+          </Col>
+        </Row>
+        <br/>
+        <Row>
+          <Col md={6} sm={12}>
+            <Card bordered header="Size Attribute" className="Categorycards"
+              onClick={()=>setSelectedItem(4)}
+              />
+          </Col>
+
+          <Col md={6} sm={12}>
+            <Card bordered header="Size" className="Categorycards"
+              onClick={()=>setSelectedItem(5)}
+              />
+          </Col>
+
+          <Col md={6} sm={12}>
+            <Card bordered header="Color" className="Categorycards"
+              onClick={()=>setSelectedItem(6)}
               />
           </Col>
         </Row>
@@ -48,10 +72,13 @@ function index() {
         <br />
         {/* <Gap/> */}
 <br/>
-
-        {selectedItem==1 && <Category/>}
-        {selectedItem==2 && <SubCategory/>}
-        {selectedItem==4 && <Section/>}
+        {selectedItem==1 && <Section/>}
+        {selectedItem==2 && <Category/>}
+        {selectedItem==3 && <SubCategory/>}
+        {selectedItem==4 && <SizeAttribute/>}
+        {selectedItem==5 && <Size/>}
+        {selectedItem==6 && <Color/>}
+        
       
     </div>
   )
