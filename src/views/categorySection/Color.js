@@ -12,7 +12,7 @@ const Color = () => {
   const [colorCode, setColorCode] =useState("");
   const [selectColor, setColor] = useState("");
   const [selectColorCode, setSelectColorCode] = useState("");
-
+  console.log(colorCode)
 //   const {setSizeAttributeId} = useContext(Utils)
 //   const [selectCategory, setSelectCategory] = useState("");
   const [data, setData] = useState([]);
@@ -77,8 +77,7 @@ console.log(colorName)
 
         Http.PostAPI(apis.addColor, formdata, null)
         .then((res) => {
-          console.log("Data", res);
-          if (res?.data?.status) {
+          if (res?.data?.success) {
             setColor(res?.data?.data);
             alert("Color added successfully");
           } else {
@@ -107,15 +106,12 @@ console.log(colorName)
             <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
                 Add Color
               </Form.ControlLabel>
-              <input placeholder="Enter color" type="text" onChange={(e)=>{ setColor(e.target.value)}} style={{width:"100%",height:"30px",borderRadius:"5px",padding:"10px",marginTop:"20px"}}/>
+              <input placeholder="Enter color" type="text" onChange={(e)=>{ setcolorName(e.target.value)}} style={{width:"100%",height:"30px",borderRadius:"5px",padding:"10px",marginTop:"20px"}}/>
                <br/>
-                <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
+                <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem",marginTop:"20px" }}>
                 Select Color
                 </Form.ControlLabel>
               <input placeholder="Enter color code" type="color" onChange={(e)=>{ setColorCode(e.target.value)}} style={{width:"100px",height:"100px",borderRadius:"5px",padding:"10px",marginTop:"20px"}}/>
-               <div style={{marginTop:"20px"}}>
-               {colorCode}
-               </div>
                {/* <select
                 name="selectSection"
                 value={selectSection}

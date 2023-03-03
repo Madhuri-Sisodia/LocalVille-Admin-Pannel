@@ -14,6 +14,7 @@ const Size = () => {
   const [data, setData] = useState([]);
   const [sizeAttribute, setSizeAttribute] = useState([]);
   const {setCategoriesId} = useContext(Utils)
+  const [size,setSize] = useState("")
   
   const notificationAlertRef = React.useRef(null);
   console.log(data)
@@ -76,7 +77,7 @@ const Size = () => {
     Http.PostAPI(apis.addSize, formdata, null)
       .then((res) => {
         console.log("Data", res);
-        if (res?.data?.status) {
+        if (res?.data?.success) {
           setSize(res?.data?.data);
           alert("Size added successfully");
         } 
