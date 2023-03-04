@@ -65,26 +65,26 @@ const ViewProduct = ({
               </tr>
               <tr>
                 <td className="bold-col">Category:</td>
-                <td>{rowData.category}</td>
+                <td>{rowData.category == "1" ? "Yes" : "No"}</td>
               </tr>
               <tr>
                 <td className="bold-col">Sub Category:</td>
-                <td>{rowData.sub_category}</td>
+                <td>{rowData.sub_category == "1" ? "Yes" : "No"}</td>
               </tr>
               <tr>
                 <td className="bold-col">Buy:</td>
-                <td>{rowData.is_buy}</td>
+                <td>{rowData.is_buy  == "1" ? "Yes" : "No"}</td>
               </tr>
               <tr>
                 <td className="bold-col">Pick Up:</td>
-                <td>{rowData.is_pickup}</td>
+                <td>{rowData.is_pickup  == "1" ? "Yes" : "No"}</td>
               </tr>
               <tr>
                 <td className="bold-col">Total Clicks:</td>
                 <td>{rowData.total_clicks}</td>
               </tr>
               <tr>
-                <td className="bold-col">Product Status:</td>
+                <td className="bold-col">Approved Status:</td>
                 <td
                   style={{
                     backgroundColor:
@@ -109,8 +109,20 @@ const ViewProduct = ({
                 </td>
               </tr>
               <tr>
-                <td className="bold-col">Status:</td>
-                <td>{rowData.active}</td>
+                <td className="bold-col"> Product Status:</td>
+                <td
+                  style={{
+                    backgroundColor: rowData.active == "1" ? "green" : "red",
+                    border: "none",
+                    fontSize: "0.75rem",
+                    color: "white",
+                    padding: "0px 7px",
+                    borderRadius: "17px",
+                    display: "inline-block",
+                  }}
+                >
+                  {rowData.active == "1" ? "active" : "block"}
+                </td>
               </tr>
               <tr>
                 <td className="bold-col">Created At:</td>
@@ -131,11 +143,11 @@ const ViewProduct = ({
               </tr>
               <tr>
                 <td className="bold-col">Color:</td>
-                <td>{rowData.is_color}</td>
+                <td>{rowData.is_color == "1" ? "Yes" : "No"}</td>
               </tr>
               <tr>
                 <td className="bold-col">Size:</td>
-                <td>{rowData.is_size}</td>
+                <td>{rowData.is_size == "1" ? "Yes" : "No"}</td>
               </tr>
 
               <tr>
