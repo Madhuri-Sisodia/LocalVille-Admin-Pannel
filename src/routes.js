@@ -62,7 +62,6 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-<<<<<<< HEAD
     path: "/products",
     name: "Products",
     icon: "nc-icon nc-circle-09",
@@ -73,7 +72,6 @@ const dashboardRoutes = [
   {
     path: "/user",
     name: "User Profile",
-=======
     path: "/notification",
     name: "Notification Manager",
     icon: "nc-icon nc-circle-09",
@@ -81,7 +79,6 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
->>>>>>> 94366a8a1adde34799cd3d018d4b2a9042251f0a
     path: "/productapproval",
     name: "Product Approval",
     icon: "nc-icon nc-circle-09",

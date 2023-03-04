@@ -5,16 +5,30 @@ import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import "../../assets/css/modal.css";
 
-const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
-  const [products, setProducts] = useState([]);
-  const [errors, setErrors] = useState({});
+const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
+  const [product, setProduct] = useState([]);
   const [image, setImage] = useState(null);
+
+
   const [productData, setProductData] = useState({
-    productImage: null,
+    // productImage: "",
     productName: "",
-    email: "",
-    phone: "",
+    productDesc: "",
+    category: "",
+    sub_category: "",
+    is_buy: "",
+    is_pickup: "",
+    color: "",
+    size: "",
+    price: "",
+    dis_price: "",
+    in_stock: "",
+   
   });
+
+  console.log(productData);
+  
+
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -26,82 +40,68 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
 
   const resetForm = () => {
     setProductData({
-      productImage: null,
+      // productImage: "",
       productName: "",
-      email: "",
-      phone: "",
+      productDesc: "",
+      category: "",
+      sub_category: "",
+      is_buy: "",
+      is_pickup: "",
+      color: "",
+      in_stock: "",
+      size: "",
+    price: "",
+    dis_price: "",
+    
     });
     setImage(null);
   };
 
-  const validate = () => {
-    let tempErrors = {};
-
-    if (!productData.productName) {
-      tempErrors.productName = "Name is required";
-    }
-    if (!productData.email) {
-      tempErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(productData.email)) {
-      tempErrors.email = "Email is invalid";
-    }
-    if (!productData.productImage) {
-      tempErrors.productImage = "Image is required";
-    } else if (
-      productData.productImage.type !== "image/png" &&
-      productData.productImage.type !== "image/jpg" &&
-      productData.productImage.type !== "image/jpeg"
-    ) {
-      tempErrors.productImage =
-        "please select a valid image file (png, jpg, jpeg)";
-    }
-    if (!productData.phone) {
-      tempErrors.phone = "phone is required";
-    } else if (!/^\d{10}$/.test(productData.phone)) {
-      tempErrors.phone = "phone number must be 10 digits";
-    }
-    setErrors(tempErrors);
-
-    return Object.keys(tempErrors).length === 0;
-  };
-
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (validate()) {
-      console.log(productData);
+    var data = new FormData();
 
-      var data = new FormData();
+    // data.append("product_Image", productData.productImage);
+    data.append("product_name", productData.productName);
+    data.append("product_desc", productData.productDesc);
+    data.append("category", productData.category);
+    data.append("sub_category", productData.sub_category);
+    data.append("is_buy", productData.is_buy);
+    data.append("is_pickup", productData.is_pickup);
+    data.append("color", productData.color);
+    data.append("size", productData.size);
+    data.append("price", productData.price);
+    data.append("dis_price", productData.dis_price);
+    data.append("in_stock", productData.in_stock);
+    data.append("sku", productData.in_stock);
+   
+    console.log("updateproduct", data);
 
-      data.append("name", productData.productName);
-      data.append("email", productData.email);
-      data.append("phonenumber", productData.phone);
-      // data.append("image", productData.productImage);
-      console.log("dddd", data);
-
-      Http.PostAPI(apis.addProducts, data, null)
-        .then((res) => {
-          console.log("resp", res);
-          if (res?.data?.status) {
-            setProducts(res?.data?.data);
-            getProducts();
-          } else {
-            alert("Fields not matched");
-          }
-        })
-        .catch((e) => {
-          alert("Something went wrong.");
-          console.log("Error:", e);
-        });
-      resetForm();
-      setShowAddProduct(false);
-    }
+    Http.PostAPI(apis.addProducts, data, null)
+      .then((res) => {
+        console.log("resp", res);
+        if (res?.data?.status) {
+          setProduct(res?.data?.data);
+          getProduct();
+        } else {
+          alert("Fields not matched");
+        }
+      })
+      .catch((e) => {
+        alert("Something went wrong.");
+        // console.log("Error:", e);
+      });
+    resetForm();
+    setShowAddProduct(false);
   };
 
   const handleInput = (e) => {
+    console.log(e.target.value);
     setProductData((previous) => {
       return { ...previous, [e.target.name]: e.target.value };
     });
   };
+
 
   return (
     <>
@@ -113,78 +113,161 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
             onClick={() => {
               setShowAddProduct(false);
               resetForm();
-              setErrors("");
             }}
           />
         </Modal.Header>
         <Modal.Body className="add-body">
           <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="productImage">
+          {/* <Form.Group controlId="ProductImage">
               <Form.Label className="add-label">Product Image</Form.Label>
               <Form.Control
                 type="file"
                 accept=".png, .jpg, .jpeg"
                 onChange={handleImageChange}
-              />
+              /> */}
 
-              {errors.productImage && (
+              {/* {errors.productImage && (
                 <Form.Text className="text-danger">
                   {errors.productImage}
                 </Form.Text>
-              )}
+              )} */}
+            {/* </Form.Group> */}
+
+            <Form.Group>
+              <Form.Label className="add-label">Product Name</Form.Label>
+              <Form.Control
+                name="productName"
+                onChange={(e) => {
+                  handleInput(e);
+                }}
+                type="text"
+                required
+              ></Form.Control>
             </Form.Group>
 
-            <Form.Group controlId="vendorName">
-              <Form.Label className="add-label">product Name</Form.Label>
+            <Form.Group>
+              <Form.Label className="add-label">Product Description</Form.Label>
               <Form.Control
                 type="text"
-                name="vendorName"
-                placeholder="Enter product name"
+                name="productDesc"
+                required
                 onChange={(e) => {
                   handleInput(e);
                 }}
-              />
-              {errors.productName && (
-                <Form.Text className="text-danger">
-                  {errors.productName}
-                </Form.Text>
-              )}
+              ></Form.Control>
             </Form.Group>
 
-            <Form.Group controlId="email">
-              <Form.Label className="add-label">Email</Form.Label>
+            <Form.Group>
+              <Form.Label className="add-label">Category</Form.Label>
               <Form.Control
-                type="email"
-                name="email"
-                placeholder="Enter email"
+                type="text"
+                name="category"
+                required
                 onChange={(e) => {
                   handleInput(e);
                 }}
-              />
-              {errors.email && (
-                <Form.Text className="text-danger">{errors.email}</Form.Text>
-              )}
+              ></Form.Control>
             </Form.Group>
 
-            <Form.Group controlId="phone">
-              <Form.Label className="add-label">phone</Form.Label>
+            <Form.Group>
+              <Form.Label className="add-label">SubCategory</Form.Label>
               <Form.Control
-                type="tel"
-                name="phone"
-                placeholder="Enter phone"
+                type="text"
+                name="sub_category"
+                required
                 onChange={(e) => {
                   handleInput(e);
                 }}
-              />
-              {errors.phone && (
-                <Form.Text className="text-danger">{errors.phone}</Form.Text>
-              )}
+              ></Form.Control>
             </Form.Group>
-            <br></br>
 
-            <Button className="btn-fill" variant="primary" type="submit" block>
+            <Form.Group>
+              <Form.Label className="add-label">Buy</Form.Label>
+              <Form.Control
+                type="text"
+                name="is_buy"
+                required
+                onChange={(e) => {
+                  handleInput(e);
+                }}
+              ></Form.Control>
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label className="add-label">Pickup</Form.Label>
+              <Form.Control
+                type="text"
+                name="is_pickup"
+                required
+                onChange={(e) => {
+                  handleInput(e);
+                }}
+              ></Form.Control>
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label className="add-label">Color</Form.Label>
+              <Form.Control
+                type="text"
+                name="color"
+                required
+                onChange={(e) => {
+                  handleInput(e);
+                }}
+              ></Form.Control>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label className="add-label">Size</Form.Label>
+              <Form.Control
+                type="text"
+                name="size"
+                required
+                onChange={(e) => {
+                  handleInput(e);
+                }}
+              ></Form.Control>
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label className="add-label">Price</Form.Label>
+              <Form.Control
+                type="text"
+                name="price"
+                required
+                onChange={(e) => {
+                  handleInput(e);
+                }}
+              ></Form.Control>
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label className="add-label">Discounted Price</Form.Label>
+              <Form.Control
+                type="text"
+                name="dis_price"
+                required
+                onChange={(e) => {
+                  handleInput(e);
+                }}
+              ></Form.Control>
+            </Form.Group>
+
+           
+            <button
+              type="submit"
+              block
+              style={{
+                backgroundColor: "blueviolet",
+                border: "blueviolet",
+                borderRadius: "3px 3px 3px 3px",
+                width: "100%",
+                padding: "5px",
+                color: "white",
+                marginTop: "20px",
+              }}
+            >
               Add
-            </Button>
+            </button>
           </Form>
         </Modal.Body>
       </Modal>

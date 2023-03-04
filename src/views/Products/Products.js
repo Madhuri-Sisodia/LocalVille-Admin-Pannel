@@ -51,14 +51,14 @@ const Products = () => {
         alert("Something went wrong.");
         console.log("Error:", e);
       });
-      
+
   };
   useEffect(() => {
     getProducts();
   }, []);
   // console.log(blockData);
   const handleBlockProducts = (e) => {
-    
+
     var data = new FormData();
     data.append("product_id", blockData);
     console.log("usersss", data);
@@ -84,7 +84,7 @@ const Products = () => {
           <Col md="12">
             <Card className="strpied-tabled-with-hover">
               <Card.Header>
-              <Button
+                <Button
                   className="btn-fill float-right"
                   style={{
                     backgroundColor: "blueviolet",
@@ -122,25 +122,23 @@ const Products = () => {
                   <thead>
                     <tr>
                       <th className="border-0"> ID</th>
-                      <th className="border-0">UPloader Vendor ID</th>
+                      <th className="border-0">Uploader Vendor ID</th>
+                      <th className="border-0">Products Image</th>
                       <th className="border-0">Products Name</th>
                       <th className="border-0">Products Description</th>
                       <th className="border-0">Category</th>
                       <th className="border-0">SubCategory</th>
                       <th className="border-0"> buy</th>
                       <th className="border-0">Pickup</th>
-                      <th className="border-0"></th>
-                      {/* <th className="border-0"></th> */}
                       <th className="border-0">Total Clicks</th>
                       <th className="border-0">Verified</th>
-                      <th className="border-0"> Created</th>
-                      <th className="border-0">Modified</th>
+                      <th className="border-0">Status</th>
                       <th className="border-0">Category Name</th>
                       <th className="border-0">SubCategory Name</th>
                       <th className="border-0">Color</th>
                       <th className="border-0">Size</th>
-                      <th className="border-0">Status</th>
-                      <th className="border-0"></th>
+                      <th className="border-0">Price</th>
+                      <th className="border-0">Discounted Price</th>                    
                       <th className="border-0">Action</th>
                     </tr>
                   </thead>
@@ -159,7 +157,7 @@ const Products = () => {
                         <td>
                           <img
                             src={item.theme_img}
-                            alt={item.product_name}
+                            alt={item.product_image}
                             style={{
                               width: "50px",
                               height: "50px",
@@ -173,22 +171,12 @@ const Products = () => {
                         <td title={item.product_desc}>
                           {item.product_desc.slice(0, 8)}
                         </td>
-                        {/* <td title={item.product_address}>
-                          {item.product_address.slice(0, 10)}
-                        </td> */}
                         <td>{item.category}</td>
                         <td>{item.sub_category}</td>
                         <td>{item.is_buy}</td>
                         <td>{item.is_pickup}</td>
                         <td>{item.total_clicks}</td>
                         <td>{item.is_verified}</td>
-                        <td>{item.category_name}</td>
-                        <td>{item.subcategory_name}</td>
-                        <td>{item.is_color}</td>
-                        <td>{item.is_size}</td>
-                        <td>{item.price}</td>
-                        <td>{item.discount_price}</td>
-
                         <td>
                           <div
                             style={{
@@ -205,9 +193,13 @@ const Products = () => {
                             {item.active == "1" ? "active" : "block"}
                           </div>
                         </td>
-                        <td>
+                        <td>{item.category_name}</td>
+                        <td>{item.subcategory_name}</td>
+                        <td>{item.is_color}</td>
+                        <td>{item.is_size}</td>
+                        <td>{item.price}</td>
+                        <td>{item.discount_price}</td>
 
-                        </td>
                         <td>
                           <div
                             style={{
@@ -236,9 +228,9 @@ const Products = () => {
                               }}
                             >
                               <i className="fa fa-edit"></i>
-                            </Button> 
+                            </Button>
                             <Button
-                            index= {item.id}
+                              index={item.id}
                               className="btn-simple btn-link p-1"
                               type="button"
                               variant="danger"
@@ -250,7 +242,7 @@ const Products = () => {
                               }}
                             >
                               <i className="fas fa-times"
-                              id={item.id}
+                                id={item.id}
 
                               ></i>
                             </Button>
@@ -269,159 +261,159 @@ const Products = () => {
           setShowUpdateProduct={setShowUpdateProduct}
           item={selectedProducts}
           getProducts={getProducts}
-        /> 
-       <AddProduct
+        />
+        <AddProduct
           showAddProduct={showAddProduct}
-          setShowAddproduct={setShowAddProduct}
+          setShowAddProduct={setShowAddProduct}
           getProducts={getProducts}
-        />  
+        />
         <Modal
-        className="modal-mini modal-primary"
-        show={showModal}
-        onHide={() => setShowModal(false)}
-      >
-        <Modal.Header className="justify-content-center">
-          <div className="modal-profile">
-            <BiBlock
-              style={{
-                fontSize: "30px",
-                color: "gray",
+          className="modal-mini modal-primary"
+          show={showModal}
+          onHide={() => setShowModal(false)}
+        >
+          <Modal.Header className="justify-content-center">
+            <div className="modal-profile">
+              <BiBlock
+                style={{
+                  fontSize: "30px",
+                  color: "gray",
+                }}
+              />
+            </div>
+          </Modal.Header>
+          <Modal.Body className="text-center">
+            <p>Are you sure you want to block this Product?</p>
+          </Modal.Body>
+          <div className="modal-footer">
+            <Button
+              //  id= {item.id}
+              className="btn-simple"
+              variant="danger"
+              onClick={() => {
+                handleBlockProducts(blockData);
+                setShowModal(false);
               }}
-            />
+            >
+              Block
+            </Button>
+            <Button
+              className="btn-simple"
+              type="button"
+              variant="secondary"
+              onClick={() => setShowModal(false)}
+            >
+              Close
+            </Button>
           </div>
-        </Modal.Header>
-        <Modal.Body className="text-center">
-          <p>Are you sure you want to block this Product?</p>
-        </Modal.Body>
-       <div className="modal-footer">
-          <Button
-            //  id= {item.id}
-            className="btn-simple"
-            variant="danger"
-            onClick={() => {
-              handleBlockProducts(blockData);
-              setShowModal(false);
-            }}
-          >
-            Block
-          </Button>
-          <Button
-            className="btn-simple"
-            type="button"
-            variant="secondary"
-            onClick={() => setShowModal(false)}
-          >
-            Close
-          </Button>
-        </div>
-      </Modal> 
+        </Modal>
 
-       <Modal show={showDetailsModal} onHide={() => setShowDetailsModal(false)}>
-        <Modal.Header style={{ borderBottom: "1px solid gray" }}>
-          <Modal.Title className="title">View Product Details</Modal.Title>
-          <MdClose
-            className="close-icon"
-            onClick={() => setShowDetailsModal(false)}
-          />
-        </Modal.Header> 
+        <Modal show={showDetailsModal} onHide={() => setShowDetailsModal(false)}>
+          <Modal.Header style={{ borderBottom: "1px solid gray" }}>
+            <Modal.Title className="title">View Product Details</Modal.Title>
+            <MdClose
+              className="close-icon"
+              onClick={() => setShowDetailsModal(false)}
+            />
+          </Modal.Header>
 
-         <Modal.Body className="body">
-          <Table striped bordered className="table">
-            <tbody>
-              <tr>
-                <td className="bold-col">Uploader Vendor ID:</td>
-                <td>{rowData.uploader_vendor_id}</td>
-              </tr>
-              <tr>
-                <td className="bold-col">Product Image:</td>
-                <td>
-                  <img
-                    src={rowData.product_image}
-                    alt={rowData.product_name}
+          <Modal.Body className="body">
+            <Table striped bordered className="table">
+              <tbody>
+                <tr>
+                  <td className="bold-col">Uploader Vendor ID:</td>
+                  <td>{rowData.uploader_vendor_id}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Product Image:</td>
+                  <td>
+                    <img
+                      src={rowData.theme_img}
+                      alt={rowData.product_name}
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "50%",
+                      }}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Product Name:</td>
+                  <td>{rowData.product_name}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col" style={{ whiteSpace: "nowrap" }}>
+                    Product Description:
+                  </td>
+                  <td>{rowData.product_desc}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col" style={{ whiteSpace: "nowrap" }}>
+                    Category
+                  </td>
+                  <td>{rowData.category}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">SubCategory:</td>
+                  <td>{rowData.sub_category}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Is buy:</td>
+                  <td>{rowData.is_buy}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Is Pickup:</td>
+                  <td>{rowData.is_pickup}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Verified:</td>
+                  <td>{rowData.is_verified}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Opening Time:</td>
+                  <td>{rowData.opening_time}</td>
+                </tr>
+
+                <tr>
+                  <td className="bold-col">Closing Time:</td>
+                  <td>{rowData.closing_time}</td>
+                </tr>
+
+                <tr>
+                  <td className="bold-col">Total Clicks:</td>
+                  <td>{rowData.total_clicks}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Product Created:</td>
+                  <td>{rowData.category_name}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Product Updated:</td>
+                  <td>{rowData.subcategory_name}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Status:</td>
+
+                  <td
                     style={{
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "50%",
+                      backgroundColor: rowData.active == "1" ? "green" : "red",
+                      border: "none",
+                      fontSize: "0.75rem",
+                      color: "white",
+                      padding: "0px 7px",
+                      borderRadius: "17px",
+                      display: "inline-block",
                     }}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td className="bold-col">Product Name:</td>
-                <td>{rowData.product_name}</td>
-              </tr>
-              <tr>
-                <td className="bold-col" style={{ whiteSpace: "nowrap" }}>
-                  Product Description:
-                </td>
-                <td>{rowData.product_desc}</td>
-              </tr>
-              <tr>
-                <td className="bold-col" style={{ whiteSpace: "nowrap" }}>
-                  Category
-                </td>
-                <td>{rowData.category}</td>
-              </tr>
-              <tr>
-                <td className="bold-col">SubCategory:</td>
-                <td>{rowData.sub_category}</td>
-              </tr>
-              <tr>
-                <td className="bold-col">Is buy:</td>
-                <td>{rowData.is_buy}</td>
-              </tr>
-              <tr>
-                <td className="bold-col">Is Pickup:</td>
-                <td>{rowData.is_pickup}</td>
-              </tr>
-              <tr>
-                <td className="bold-col">Verified:</td>
-                <td>{rowData.is_verified}</td>
-              </tr>
-              <tr>
-                <td className="bold-col">Opening Time:</td>
-                <td>{rowData.opening_time}</td>
-              </tr>
-
-              <tr>
-                <td className="bold-col">Closing Time:</td>
-                <td>{rowData.closing_time}</td>
-              </tr>
-
-              <tr>
-                <td className="bold-col">Total Clicks:</td>
-                <td>{rowData.total_clicks}</td>
-              </tr>
-              <tr>
-                <td className="bold-col">Product Created:</td>
-                <td>{rowData.category_name}</td>
-              </tr>
-              <tr>
-                <td className="bold-col">Product Updated:</td>
-                <td>{rowData.subcategory_name}</td>
-              </tr>
-             <tr>
-                <td className="bold-col">Status:</td>
-
-               <td
-                  style={{
-                    backgroundColor: rowData.active == "1" ? "green" : "red",
-                    border: "none",
-                    fontSize: "0.75rem",
-                    color: "white",
-                    padding: "0px 7px",
-                    borderRadius: "17px",
-                    display: "inline-block",
-                  }}
-                >
-                  {rowData.active == "1" ? "active" : "block"}
-                </td>
-               </tr>
-            </tbody>
-          </Table>
-        </Modal.Body>
-        <Modal.Footer></Modal.Footer> 
-      </Modal>   
+                  >
+                    {rowData.active == "1" ? "active" : "block"}
+                  </td>
+                </tr>
+              </tbody>
+            </Table>
+          </Modal.Body>
+          <Modal.Footer></Modal.Footer>
+        </Modal>
       </Container>
     </>
   );
