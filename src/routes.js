@@ -12,6 +12,7 @@ import StoreManager from "views/StoreManager/StoreManager";
 import VendorsManager from "views/VendorsManager/VendorsManager";
 import Products from "views/Products/Products";
 import ProductApproval from "views/ProductApproval/ProductApproval";
+import NotificationManager from "views/NotificationManager";
 
 
 const dashboardRoutes = [
@@ -61,6 +62,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
+<<<<<<< HEAD
     path: "/products",
     name: "Products",
     icon: "nc-icon nc-circle-09",
@@ -71,6 +73,15 @@ const dashboardRoutes = [
   {
     path: "/user",
     name: "User Profile",
+=======
+    path: "/notification",
+    name: "Notification Manager",
+    icon: "nc-icon nc-circle-09",
+    component: NotificationManager,
+    layout: "/admin"
+  },
+  {
+>>>>>>> 94366a8a1adde34799cd3d018d4b2a9042251f0a
     path: "/productapproval",
     name: "Product Approval",
     icon: "nc-icon nc-circle-09",

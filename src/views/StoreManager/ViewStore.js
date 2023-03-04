@@ -21,12 +21,17 @@ const ViewStore = ({ showDetailsModal, setShowDetailsModal, rowData }) => {
 
   useEffect(() => {
     if (rowData.opening_days) {
-    let parsedDays;
-    if (Array.isArray(rowData.opening_days)) {
-      parsedDays = rowData.opening_days;
-    } else if (typeof rowData.opening_days === "string") {
-      parsedDays = JSON.parse(rowData.opening_days);
-    }
+      let parsedDays;
+      if (Array.isArray(rowData.opening_days)) {
+        parsedDays = rowData.opening_days;
+      } else if (typeof rowData.opening_days === "string") {
+        try {
+          parsedDays = JSON.parse(rowData.opening_days);
+        } catch (error) {
+          console.error("Error parsing JSON:", error);
+          parsedDays = [];
+        }
+      }
       setDays(parsedDays);
     }
   }, [rowData]);

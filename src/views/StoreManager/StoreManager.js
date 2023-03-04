@@ -309,7 +309,7 @@ const StoreManager = () => {
                                 className="btn-simple btn-link p-1"
                                 type="button"
                                 variant="danger"
-                                disabled={storeBlocked}
+                                
                                 onClick={() => {
                                   setShowModal(true);
                                   setBlockData(item.id);
