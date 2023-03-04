@@ -92,19 +92,26 @@ const UpdateVendor = ({ showUpdateModal, setShowUpdateModal, item,getVendors }) 
                 ></Form.Control>
               </Form.Group>
               <br></br>
-              <Button
-                className="btn-fill"
-                appearance="primary"
-                type="submit"
-                block
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleUpdateVendor();
-                  setShowUpdateModal(false);
-                }}
-              >
-                Update
-              </Button>
+              <button
+              type="submit"
+              block
+              onClick={(e) => {
+                e.preventDefault();
+                handleUpdateVendor();
+                setShowUpdateModal(false);
+              }}
+              style={{
+                backgroundColor: "blueviolet",
+                border: "blueviolet",
+                borderRadius: "3px 3px 3px 3px",
+                width: "100%",
+                padding: "5px",
+                color: "white",
+                marginTop: "20px",
+              }}
+            >
+              Update
+            </button>
             </Form>
           </Modal.Body>
         </Modal>

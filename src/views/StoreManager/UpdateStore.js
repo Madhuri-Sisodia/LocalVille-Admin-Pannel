@@ -44,7 +44,6 @@ const UpdateStore = ({
     }
   };
 
-
   const [days, setDays] = useState([]);
   const daysOfWeek = ["M", "T", "W", "Th", "F", "S", "Su"];
 
@@ -62,6 +61,7 @@ const UpdateStore = ({
         }
       }
       setDays(parsedDays);
+      console.log("ppp", parsedDays);
     }
   }, [item]);
 
@@ -104,7 +104,7 @@ const UpdateStore = ({
     );
     data.append(
       "opening_days",
-      storeData.openingDays ? storeData.openingDays : item.opening_days
+      selectedDays ? selectedDays : item.opening_days
     );
     data.append(
       "opening_time",
@@ -142,6 +142,7 @@ const UpdateStore = ({
               className="update-close-icon"
               onClick={() => {
                 setShowUpdateStore(false);
+                setSelectedDays("");
               }}
             />
           </Modal.Header>
@@ -289,15 +290,15 @@ const UpdateStore = ({
                   {days.map((day) => {
                     const isSelected = selectedDays.includes(day);
                     return (
-                    <div
-                    className={`week-days ${isSelected ? "selected" : ""}`}
-                    name="selectedDays"
-                    onClick={() => toggleDaySelection(day)}
-                    >
-                      {daysOfWeek[day - 1] || day}
-                    </div>
+                      <div
+                        className={`week-days ${isSelected ? "selected" : ""}`}
+                        name="selectedDays"
+                        onClick={() => toggleDaySelection(day)}
+                      >
+                        {daysOfWeek[day - 1] || day}
+                      </div>
                     );
-                    })}
+                  })}
                 </div>
               </Form.Group>
               <Form.Group>
@@ -326,10 +327,7 @@ const UpdateStore = ({
                 ></Form.Control>
               </Form.Group>
 
-              <br></br>
-              <Button
-                className="btn-fill"
-                appearance="primary"
+              <button
                 type="submit"
                 block
                 onClick={(e) => {
@@ -337,9 +335,18 @@ const UpdateStore = ({
                   handleUpdateStore();
                   setShowUpdateStore(false);
                 }}
+                style={{
+                  backgroundColor: "blueviolet",
+                  border: "blueviolet",
+                  borderRadius: "3px 3px 3px 3px",
+                  width: "100%",
+                  padding: "5px",
+                  color: "white",
+                  marginTop: "20px",
+                }}
               >
                 Update
-              </Button>
+              </button>
             </Form>
           </Modal.Body>
         </Modal>

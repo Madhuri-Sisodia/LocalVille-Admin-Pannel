@@ -66,6 +66,9 @@ const NotificationManager = () => {
             <Form.Group>
               <Form.ControlLabel>MESSAGE</Form.ControlLabel>
               <Form.Control
+                componentClass="textarea"
+                rows={4}
+                maxLength={300}
                 placeholder=" Message"
                 name="message"
                 type="textarea"

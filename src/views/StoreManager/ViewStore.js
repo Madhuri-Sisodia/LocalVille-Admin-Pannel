@@ -15,9 +15,8 @@ import {
   Col,
 } from "react-bootstrap";
 const ViewStore = ({ showDetailsModal, setShowDetailsModal, rowData }) => {
- const [days, setDays] = useState([]);
+  const [days, setDays] = useState([]);
   const daysOfWeek = ["M", "T", "W", "Th", "F", "S", "Su"];
-  
 
   useEffect(() => {
     if (rowData.opening_days) {
@@ -47,7 +46,9 @@ const ViewStore = ({ showDetailsModal, setShowDetailsModal, rowData }) => {
           />
         </Modal.Header>
         <Modal.Body className="body">
+        <div style={{fontSize:"0.9rem",fontWeight:"bold"}}>Store Details</div>
           <Table striped bordered className="table">
+           
             <tbody>
               <tr>
                 <td className="bold-col"> Store Id:</td>
@@ -148,6 +149,13 @@ const ViewStore = ({ showDetailsModal, setShowDetailsModal, rowData }) => {
                   {rowData.active == "1" ? "active" : "block"}
                 </td>
               </tr>
+            </tbody>
+          </Table>
+          
+          <div style={{fontSize:"0.9rem",fontWeight:"bold",marginTop:"33px"}}>Vendor Details</div>
+          <Table striped bordered className="table">
+          
+            <tbody>
               <tr>
                 <td className="bold-col">Vendor Id:</td>
                 <td>{rowData.vendor_id}</td>
