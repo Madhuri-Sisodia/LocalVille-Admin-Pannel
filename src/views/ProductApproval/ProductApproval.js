@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Input, Whisper, Tooltip, InputGroup } from "rsuite";
 import SearchIcon from "@rsuite/icons/Search";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
+import Paginte from "components/Paginate";
+import { Utils } from "CommonUtils/Utils";
 
 import {
   Modal,
@@ -26,14 +28,17 @@ const ProductApproval = () => {
   const [showVerifiedProduct, setShowVerifiedProduct] = useState(false);
   const [showProductDetails, setShowProductDetails] = useState(false);
   const [showRejectProduct, setShowRejectProduct] = useState(false);
+  const {pageNo,setDisabledNext} = useContext(Utils)
   const [rowData, setRowData] = useState([]);
   const [product, setProduct] = useState([]);
 
   const getUnverifiedProduct = () => {
-    Http.GetAPI(apis.getUnverifiedProducts + "?" + Math.random(), data, null)
+    Http.GetAPI(apis.getUnverifiedProducts + "?" +`page=${pageNo}`, data, null)
       .then((res) => {
         if (res?.data?.status) {
-          setData(res?.data?.data);
+          if(res.data.data.length>0){
+            setData(res?.data?.data);
+          }
         } else {
           alert("Fields not matched");
         }
@@ -46,7 +51,7 @@ const ProductApproval = () => {
 
   useEffect(() => {
     getUnverifiedProduct();
-  }, []);
+  }, [pageNo]);
 
   return (
     <>
@@ -138,6 +143,9 @@ const ProductApproval = () => {
               </Card.Body>
             </Card>
           </Col>
+          <div style={{display:"flex",justifyContent:"center",textAlign:"center"}}>
+        <Paginte/>
+        </div>
         </Row>
 
         <VerifyProduct

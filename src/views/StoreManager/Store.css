@@ -1,0 +1,11 @@
+
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    color: blueviolet;
+  }
+ 
+  ::-webkit-scrollbar-thumb {
+    background: blueviolet
+  }

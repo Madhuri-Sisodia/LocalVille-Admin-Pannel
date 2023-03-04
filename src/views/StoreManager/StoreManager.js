@@ -13,6 +13,8 @@ import AddStore from "./AddStore";
 import MAPDays from "./MAPDays";
 import Paginate from "../../components/Paginate";
 import { Utils } from "CommonUtils/Utils";
+import { Scrollbars } from 'react-custom-scrollbars';
+import "./Store.css"
 
 
 import {
@@ -119,7 +121,7 @@ const StoreManager = () => {
 
   const [storeAdded,setAddStored] = useState(false)
   const [days, setDays] = useState([]);
-  const {pageNo} = useContext(Utils)
+  const {pageNo,setDisabledNext} = useContext(Utils)
   let parseDays;
 
 
@@ -133,11 +135,13 @@ const StoreManager = () => {
     console.log("hello")
     Http.GetAPI(apis.getStoreData + "?" + `page=${pageNo}`, "", null)
       .then((res) => {
-        console.log(res)
         if (res?.data?.status) {
            if(res.data.data.length>0){
             setData(res?.data?.data);
             setAddStored(false)
+           }
+           else{
+            setDisabledNext(false)
            }
         } else {
           alert("Fields not matched");
@@ -192,7 +196,7 @@ const StoreManager = () => {
 
   return (
     <>
-      <Container fluid>
+      <Container fluid >
         <Row>
           <Col md="12">
             <Card className="strpied-tabled-with-hover">
@@ -224,14 +228,14 @@ const StoreManager = () => {
                 </InputGroup>
                 <br></br>
               </Card.Header>
-              <Card.Body className="table-full-width table-responsive px-0">
+              <Card.Body className="table-full-width table-responsive px-0" >
                 <Table
                   responsive="xl"
                   style={{
                     tableLayout: "fixed",
                     width: "100%",
-                    overflowX: "scroll",
                     display: "block",
+                    overflowX:"scroll",
                   }}
                   className="table-hover table-striped"
                 >

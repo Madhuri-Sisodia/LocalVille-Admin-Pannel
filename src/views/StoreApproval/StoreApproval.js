@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { Input, Whisper, Tooltip, InputGroup } from "rsuite";
 import { MdLocationPin } from "react-icons/md";
 import SearchIcon from "@rsuite/icons/Search";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import "../../assets/css/modal.css";
+import Paginte from "components/Paginate";
+import { Utils } from "CommonUtils/Utils";
 
 import {
   Modal,
@@ -29,6 +31,7 @@ const StoreApproval = () => {
   const [showStoreDetails, setShowStoreDetails] = useState(false);
   const [showRejectStore, setShowRejectStore] = useState(false);
   const [storeApproval, setStoreApproval] = useState(false);
+  const {pageNo,setDisabledNext} = useContext(Utils)
   const [rowData, setRowData] = useState([]);
   const [store, setStore] = useState([]);
   const daysOfWeek = ["M", "T", "W", "T", "F", "S", "S"];
@@ -38,11 +41,13 @@ const StoreApproval = () => {
   };
 
   const getUnverifiedStore = () => {
-    Http.GetAPI(apis.getUnverifiedStore + "?" + Math.random(), data, null)
+    Http.GetAPI(apis.getUnverifiedStore + "?" + `page=${pageNo}`, data, null)
       .then((res) => {
         if (res?.data?.status) {
-          setData(res?.data?.data);
-          setStoreApproval(false);
+              if(res.data.data.length>0){
+                setData(res?.data?.data);
+                setStoreApproval(false);
+              }
         } else {
           alert("Fields not matched");
         }
@@ -55,7 +60,7 @@ const StoreApproval = () => {
 
   useEffect(() => {
     getUnverifiedStore();
-  }, []);
+  }, [pageNo]);
 
   return (
     <>
@@ -80,9 +85,7 @@ const StoreApproval = () => {
                 <Table className="table-hover table-striped"
                   responsive="xl"
                   style={{
-                    tableLayout: "fixed",
                     width: "100%",
-                    display: "block",
                   }}
                 >
                   <thead>
@@ -174,6 +177,9 @@ const StoreApproval = () => {
                 </Table>
               </Card.Body>
             </Card>
+            <div style={{display:"flex",justifyContent:"center",textAlign:"center"}}>
+        <Paginte/>
+        </div>
           </Col>
         </Row>
 
@@ -200,5 +206,6 @@ const StoreApproval = () => {
     </>
   );
 };
+
 
 export default StoreApproval;

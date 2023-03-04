@@ -4,7 +4,9 @@ export const Utils = createContext();
 
 const Context = ({ children }) => {
  const [Categoriesid,setCategoriesId] = useState("")
+ const [disalbledNext,setDisabledNext] = useState(true)
  const [pageNo,setPageNo] = useState(1)
+ 
   return (
     <>
       <Utils.Provider
@@ -12,7 +14,9 @@ const Context = ({ children }) => {
           Categoriesid,
           setCategoriesId,
           pageNo,
-          setPageNo
+          setPageNo,
+          disalbledNext,
+          setDisabledNext
         }}
       >
         {children}

@@ -5,6 +5,9 @@ import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import "../../assets/css/modal.css";
 import usevendorData from "CommonUtils/CostomeComp";
+import Autocomplete from "react-google-autocomplete";
+import GoogleAutocomplete from "components/googleAutoComplete";
+    
 
 const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
   const [store, setStore] = useState([]);
@@ -192,8 +195,23 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
                */}
 
             <Form.Group>
+          
+
+{/* <Autocomplete
+  apiKey={"AIzaSyB-kdr28fp0OftydizXQjTMGUTUbrdgzVE"}
+  style={{ width: "90%" }}
+  onPlaceSelected={(place) => {
+    console.log(place);
+  }}
+  options={{
+    types: ["(regions)"],
+    componentRestrictions: { country: "in" },
+  }}
+/>; */}
+
             <Form.Label className="add-label">Vendor Name</Form.Label>
             
+           <GoogleAutocomplete/>
             <div style={{width:"50%",marginTop:"5px"}}>
               <select
                 name="selectSection"
@@ -202,9 +220,11 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
                 style={{height:"35px",borderRadius:"5px",paddingLeft:"5px",paddingRight:"5px",borderColor: "#808020",width:"80%"}}  
                >
                 <option value="">Select</option>
-                {vendortData.map((category) => (
-                  <option key={category.id} value={category.email}>
-                    {category.email}
+                {vendortData.map((category,index) => (
+                  <option key={category.id} value={category.email} style={{fontSize:"14px",paddingBottom:"10px",paddintTop:"10px"}}>
+                    <li>
+                    {` ${index+1} ${"   "} Name:${category.name},${"        "} \n Email-id:${category.email}`} 
+                    </li>
                   </option>
                 ))}
               </select>

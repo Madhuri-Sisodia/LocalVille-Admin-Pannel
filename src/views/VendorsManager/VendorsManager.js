@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { Input, Whisper, Tooltip, InputGroup } from "rsuite";
 import SearchIcon from "@rsuite/icons/Search";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import UpdateVendor from "./UpdateVendor";
+import { Utils } from "CommonUtils/Utils";
+import Paginte from "components/Paginate";
 import AddVendor from "./AddVendor";
 import {
   Modal,
@@ -77,15 +79,22 @@ const VendorsManager = () => {
   const [showAddVendor, setShowAddVendor] = useState(false);
   const [currentModalIdx, setCurrentModalIdx] = useState(null);
   const [selectedVendor, setSelectedVendor] = useState(null);
+  const {pageNo,setDisabledNext} = useContext(Utils)
 
   const [isLoading, setIsLoading] = useState(true);
 
   const getVendors = () => {
-    Http.GetAPI(apis.getVendorsData + "?" + Math.random(), data, null)
+    Http.GetAPI(apis.getVendorsData + "?" + `page=${pageNo}`, data, null)
       .then((res) => {
         setIsLoading(false);
         if (res?.data?.status) {
-          setData(res?.data?.data);
+          if(res.data.data.length>0){
+            setData(res?.data?.data);
+            setDisabledNext(true)
+          }
+          else{
+            setDisabledNext(false)
+          }
         } else {
           alert("Fields not matched");
         }
@@ -99,7 +108,7 @@ const VendorsManager = () => {
 
   useEffect(() => {
     getVendors();
-  }, []);
+  }, [pageNo]);
 
   return (
     <>
@@ -219,6 +228,9 @@ const VendorsManager = () => {
                 </Table>
               </Card.Body>
             </Card>
+            <div style={{display:"flex",justifyContent:"center",textAlign:"center"}}>
+        <Paginte/>
+        </div>
           </Col>
         </Row>
 

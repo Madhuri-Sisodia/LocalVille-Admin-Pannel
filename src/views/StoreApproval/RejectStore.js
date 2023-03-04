@@ -23,11 +23,12 @@ const RejectStore = ({
   getUnverifiedStore
 }) => {
   const [updateStore, setUpdateStore] = useState([]);
-
+  const [RejectReason,setRejectReson] = useState("")
   const handleRejectStore = (store) => {
     var data = new FormData();
     data.append("store_id", store.id);
     data.append("verified_status", 2);
+    data.append("ReajectReason",RejectReason)
     Http.PostAPI(apis.updateVerifiedStore, data, null)
       .then((res) => {
         console.log("resp", res);
@@ -58,6 +59,12 @@ const RejectStore = ({
         </Modal.Header>
         <Modal.Body className="text-center">
           <p>Are you sure you want to reject this store?</p>
+          <div class="form-group">
+    <textarea class="form-control" id="exampleFormControlTextarea1" rows="2"
+     placeholder="Enter Reasons"
+     onChange={(e)=>{setRejectReson(e.target.value)}}
+    ></textarea>
+  </div>
         </Modal.Body>
         <div className="modal-footer">
           <Button
