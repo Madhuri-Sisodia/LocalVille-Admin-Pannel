@@ -23,11 +23,11 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
     price: "",
     dis_price: "",
     in_stock: "",
-   
+
   });
 
   console.log(productData);
-  
+
 
 
   const handleImageChange = (e) => {
@@ -50,9 +50,9 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
       color: "",
       in_stock: "",
       size: "",
-    price: "",
-    dis_price: "",
-    
+      price: "",
+      dis_price: "",
+
     });
     setImage(null);
   };
@@ -73,8 +73,7 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
     data.append("price", productData.price);
     data.append("dis_price", productData.dis_price);
     data.append("in_stock", productData.in_stock);
-    data.append("sku", productData.in_stock);
-   
+
     console.log("updateproduct", data);
 
     Http.PostAPI(apis.addProducts, data, null)
@@ -118,7 +117,7 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
         </Modal.Header>
         <Modal.Body className="add-body">
           <Form onSubmit={handleSubmit}>
-          {/* <Form.Group controlId="ProductImage">
+            {/* <Form.Group controlId="ProductImage">
               <Form.Label className="add-label">Product Image</Form.Label>
               <Form.Control
                 type="file"
@@ -126,7 +125,7 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
                 onChange={handleImageChange}
               /> */}
 
-              {/* {errors.productImage && (
+            {/* {errors.productImage && (
                 <Form.Text className="text-danger">
                   {errors.productImage}
                 </Form.Text>
@@ -252,7 +251,7 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
               ></Form.Control>
             </Form.Group>
 
-           
+
             <button
               type="submit"
               block
