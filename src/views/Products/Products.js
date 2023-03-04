@@ -40,7 +40,7 @@ const Products = () => {
       .then((res) => {
         setIsLoading(false);
         if (res?.data?.status) {
-          console.log(res?.data?.data,"productdata")
+          // console.log(res?.data?.data,"productdata")
           setData(res?.data?.data);
         } else {
           alert("Fields not matched");
@@ -400,7 +400,7 @@ const Products = () => {
                 <td className="bold-col">Product Updated:</td>
                 <td>{rowData.subcategory_name}</td>
               </tr>
-              {/* <tr>
+             <tr>
                 <td className="bold-col">Status:</td>
 
                <td
@@ -416,7 +416,7 @@ const Products = () => {
                 >
                   {rowData.active == "1" ? "active" : "block"}
                 </td>
-               </tr> */}
+               </tr>
             </tbody>
           </Table>
         </Modal.Body>

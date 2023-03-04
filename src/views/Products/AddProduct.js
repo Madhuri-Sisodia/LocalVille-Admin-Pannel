@@ -6,12 +6,12 @@ import { apis } from "../../config/WebConstant";
 import "../../assets/css/modal.css";
 
 const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
-  const [Products, setProducts] = useState([]);
+  const [products, setProducts] = useState([]);
   const [errors, setErrors] = useState({});
   const [image, setImage] = useState(null);
-  const [ProductData, setProductData] = useState({
-    ProductImage: null,
-    ProductName: "",
+  const [productData, setProductData] = useState({
+    productImage: null,
+    productName: "",
     email: "",
     phone: "",
   });
@@ -20,14 +20,14 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
     const file = e.target.files[0];
     setImage(file);
     setProductData((previous) => {
-      return { ...previous, ProductImage: file };
+      return { ...previous, productImage: file };
     });
   };
 
   const resetForm = () => {
     setProductData({
-      ProductImage: null,
-      ProductName: "",
+      productImage: null,
+      productName: "",
       email: "",
       phone: "",
     });
@@ -37,28 +37,28 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
   const validate = () => {
     let tempErrors = {};
 
-    if (!ProductData.ProductName) {
-      tempErrors.ProductName = "Name is required";
+    if (!productData.productName) {
+      tempErrors.productName = "Name is required";
     }
-    if (!ProductData.email) {
+    if (!productData.email) {
       tempErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(ProductData.email)) {
+    } else if (!/\S+@\S+\.\S+/.test(productData.email)) {
       tempErrors.email = "Email is invalid";
     }
-    if (!ProductData.ProductImage) {
-      tempErrors.ProductImage = "Image is required";
+    if (!productData.productImage) {
+      tempErrors.productImage = "Image is required";
     } else if (
-      ProductData.ProductImage.type !== "image/png" &&
-      ProductData.ProductImage.type !== "image/jpg" &&
-      ProductData.ProductImage.type !== "image/jpeg"
+      productData.productImage.type !== "image/png" &&
+      productData.productImage.type !== "image/jpg" &&
+      productData.productImage.type !== "image/jpeg"
     ) {
-      tempErrors.ProductImage =
-        "Please select a valid image file (png, jpg, jpeg)";
+      tempErrors.productImage =
+        "please select a valid image file (png, jpg, jpeg)";
     }
-    if (!ProductData.phone) {
-      tempErrors.phone = "Phone is required";
-    } else if (!/^\d{10}$/.test(ProductData.phone)) {
-      tempErrors.phone = "Phone number must be 10 digits";
+    if (!productData.phone) {
+      tempErrors.phone = "phone is required";
+    } else if (!/^\d{10}$/.test(productData.phone)) {
+      tempErrors.phone = "phone number must be 10 digits";
     }
     setErrors(tempErrors);
 
@@ -68,14 +68,14 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (validate()) {
-      console.log(ProductData);
+      console.log(productData);
 
       var data = new FormData();
 
-      data.append("name", ProductData.ProductName);
-      data.append("email", ProductData.email);
-      data.append("phonenumber", ProductData.phone);
-      // data.append("image", ProductData.ProductImage);
+      data.append("name", productData.productName);
+      data.append("email", productData.email);
+      data.append("phonenumber", productData.phone);
+      // data.append("image", productData.productImage);
       console.log("dddd", data);
 
       Http.PostAPI(apis.addProducts, data, null)
@@ -119,7 +119,7 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
         </Modal.Header>
         <Modal.Body className="add-body">
           <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="ProductImage">
+            <Form.Group controlId="productImage">
               <Form.Label className="add-label">Product Image</Form.Label>
               <Form.Control
                 type="file"
@@ -127,26 +127,26 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
                 onChange={handleImageChange}
               />
 
-              {errors.ProductImage && (
+              {errors.productImage && (
                 <Form.Text className="text-danger">
-                  {errors.ProductImage}
+                  {errors.productImage}
                 </Form.Text>
               )}
             </Form.Group>
 
             <Form.Group controlId="vendorName">
-              <Form.Label className="add-label">Product Name</Form.Label>
+              <Form.Label className="add-label">product Name</Form.Label>
               <Form.Control
                 type="text"
                 name="vendorName"
-                placeholder="Enter Product name"
+                placeholder="Enter product name"
                 onChange={(e) => {
                   handleInput(e);
                 }}
               />
-              {errors.ProductName && (
+              {errors.productName && (
                 <Form.Text className="text-danger">
-                  {errors.ProductName}
+                  {errors.productName}
                 </Form.Text>
               )}
             </Form.Group>
@@ -167,7 +167,7 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
             </Form.Group>
 
             <Form.Group controlId="phone">
-              <Form.Label className="add-label">Phone</Form.Label>
+              <Form.Label className="add-label">phone</Form.Label>
               <Form.Control
                 type="tel"
                 name="phone"
