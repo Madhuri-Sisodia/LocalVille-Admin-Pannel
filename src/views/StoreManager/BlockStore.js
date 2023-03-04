@@ -61,7 +61,9 @@ const BlockStore = ({ showModal, setShowModal, blockData, getStore }) => {
         </Modal.Header>
         <Modal.Body className="text-center">
           <p>Are you sure you want to block this store?</p>
-          <textarea
+          <Form.Control
+            componentClass="textarea"
+            rows={3}
             style={{ fontSize: "0.9rem" }}
             placeholder="Enter Reason"
             maxLength={200}

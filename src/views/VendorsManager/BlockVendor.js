@@ -60,7 +60,9 @@ const BlockVendor = ({ showModal, setShowModal, blockData, getVendors }) => {
         </Modal.Header>
         <Modal.Body className="text-center">
           <p>Are you sure you want to block this vendor?</p>
-          <textarea
+          <Form.Control
+            componentClass="textarea"
+            rows={3}
             style={{ fontSize: "0.9rem" }}
             placeholder="Enter Reason"
             maxLength={200}
