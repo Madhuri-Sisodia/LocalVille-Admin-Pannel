@@ -13,7 +13,6 @@ import AddStore from "./AddStore";
 import MAPDays from "./MAPDays";
 import Paginate from "../../components/Paginate";
 import { Utils } from "CommonUtils/Utils";
-import { Scrollbars } from 'react-custom-scrollbars';
 import "./Store.css"
 
 
@@ -377,7 +376,9 @@ const StoreManager = () => {
                                 className="btn-simple btn-link p-1"
                                 type="button"
                                 variant="danger"
-                                // disabled={storeBlocked}
+
+                                // disabled={storeBlocked
+                                
                                 onClick={() => {
                                   setShowModal(true);
                                   setBlockData(item.id);
@@ -411,7 +412,7 @@ const StoreManager = () => {
         showAddStore={showAddStore}
         setShowAddStore={setShowAddStore}
         getStore={getStore}
-        // AddStore={setAddStored}
+
       />
 
       <Modal

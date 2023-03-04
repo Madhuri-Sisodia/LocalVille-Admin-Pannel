@@ -3,6 +3,7 @@ import { MdClose } from "react-icons/md";
 import { Modal, Form, Button } from "react-bootstrap";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
+import "../../assets/css/day.css";
 
 import "../../assets/css/modal.css";
 
@@ -98,6 +99,8 @@ const UpdateStore = ({
         console.log("Error:", e);
       });
   };
+
+ 
 
   return (
     <>

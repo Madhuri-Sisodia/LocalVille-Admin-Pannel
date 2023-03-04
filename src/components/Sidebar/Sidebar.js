@@ -52,9 +52,10 @@ function Sidebar({ color, image, routes }) {
                     to={prop.layout + prop.path}
                     className="nav-link"
                     activeClassName="active"
+                    
                   >
                     <i className={prop.icon} />
-                    <p>{prop.name}</p>
+                    <p style={{fontSize:"11px"}}>{prop.name}</p>
                   </NavLink>
                 </li>
               );

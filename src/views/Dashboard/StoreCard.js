@@ -3,7 +3,7 @@ import { Card, Col, Row, Button } from "react-bootstrap";
 import "../../assets/css/card.css";
 import { useHistory } from "react-router";
 import StoreDetailModal from "./StoreDetailModal";
-
+const imageVAr = "https://localville.in/apis/seller_api/../seller_api/stores/Madhuri Emporier - 1677848041.png"
 // const cardsData = [
 //   {
 //     title: "Iphones",
@@ -88,7 +88,7 @@ const StoreCard = ({ latestStore }) => {
                         setRowData(item);
                       }}
                       style={{
-                        backgroundImage: `url(${item.store_image})`,
+                        backgroundImage: `url(${imageVAr})`,
                       }}
                     >
                       <div className="heading">
