@@ -12,8 +12,14 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
   const [vendortData,setVendorData] = useState([])
   const [selectSection,setSelectSection] = useState("")
   const [getStoreData,setGetStoreData] = useState([])
-  console.log("heelo from addproduct")
-  console.log("storeData=>",getStoreData)
+  const [getProcat,setGetProCat] = useState([])
+  const [getProSubcat,setGetProSubCat] = useState([])
+  const [selectProCat,setSelectProCat] = useState("")
+  const [selectProSubCat,setSelectProSubCat] = useState("")
+  const [size,setSize] = useState("No")
+  const [color,setColor] = useState("No")
+  const [bay,setBay] = useState("No")
+  const [Pickup,setPickup] = useState("No")
 
   const [productData, setProductData] = useState({
     // productImage: "",
@@ -23,12 +29,11 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
     sub_category: "",
     is_buy: "",
     is_pickup: "",
-    color: "",
-    size: "",
+    color: false,
+    size: false,
     price: "",
     dis_price: "",
     in_stock: "",
-
   });
 
   console.log(productData);
@@ -61,6 +66,53 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
     });
     setImage(null);
   };
+   
+
+  useEffect(() => {
+    Http.GetAPI(apis.getProductCategory ,"", null)
+      .then((res) => {
+        if (res?.data?.status) {
+          setGetProCat(res?.data?.data);
+        } else {
+          alert("Fields not matched");
+        }
+      })
+      .catch((e) => {
+        alert("Something went wrong.");
+        console.log("Error:", e);
+      });
+  }, []);
+
+
+  useEffect(() => {
+    if(selectProCat){
+     console.log()
+      const vendorid = getProcat.filter((ele)=>{
+        return(ele.name==selectProCat)
+            })
+
+            console.log(vendorid)
+
+      
+      Http.GetAPI(apis.getProdSubCategory + "?" + `category_id=${vendorid[0].id}`, "", null)
+      .then((res) => {
+        if (res?.data?.status) {
+          setGetProSubCat(res?.data?.data);
+        } else {
+          alert("Fields not matched");
+        }
+      })
+      .catch((e) => {
+        alert("Something went wrong.");
+        console.log("Error:", e);
+      });
+    }
+  }, [selectProCat]);
+  
+
+
+
+
 
 
   const getStore = () => {
@@ -103,12 +155,12 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
     data.append("store_id",vendorid[0].id)
     data.append("product_name", productData.productName);
     data.append("product_desc", productData.productDesc);
-    data.append("category", productData.category);
-    data.append("sub_category", productData.sub_category);
-    data.append("is_buy", productData.is_buy);
-    data.append("is_pickup", productData.is_pickup);
-    data.append("color", productData.color);
-    data.append("size", productData.size);
+    data.append("category",selectProCat);
+    data.append("sub_category",selectProSubCat);
+    data.append("is_buy", bay);
+    data.append("is_pickup", Pickup);
+    data.append("color", color=="Yes"?1:0);
+    data.append("size", size=="Yes"?1:0);
     data.append("price", productData.price);
     data.append("dis_price", productData.dis_price);
     data.append("in_stock", productData.in_stock);
@@ -215,73 +267,140 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
 
             <Form.Group>
               <Form.Label className="add-label">Category</Form.Label>
-              <Form.Control
-                type="text"
-                name="category"
-                required
-                onChange={(e) => {
-                  handleInput(e);
-                }}
-              ></Form.Control>
+              <div style={{width:"50%",marginTop:"5px",marginBottom:"15px"}}>
+              <select
+                name="selectSection"
+                value={selectProCat}
+               onChange={(event) => setSelectProCat(event.target.value)}
+                style={{height:"35px",borderRadius:"5px",paddingLeft:"5px",paddingRight:"5px",borderColor: "#808020",width:"80%"}}  
+               >
+                <option value="">Select</option>
+                {getProcat.map((category,index) => (
+                  <option key={category.id} value={category.email} style={{fontSize:"14px",paddingBottom:"10px",paddintTop:"10px"}}>
+                    <li>
+                    {`${category.name}`} 
+                    </li>
+                  </option>
+                ))}
+              </select>
+              </div>
             </Form.Group>
 
             <Form.Group>
               <Form.Label className="add-label">SubCategory</Form.Label>
-              <Form.Control
-                type="text"
-                name="sub_category"
-                required
-                onChange={(e) => {
-                  handleInput(e);
-                }}
-              ></Form.Control>
+              <div style={{width:"50%",marginTop:"5px",marginBottom:"15px"}}>
+              <select
+                name="selectSection"
+                value={selectProSubCat}
+               onChange={(event) => setSelectProSubCat(event.target.value)}
+                style={{height:"35px",borderRadius:"5px",paddingLeft:"5px",paddingRight:"5px",borderColor: "#808020",width:"80%"}}  
+               >
+                <option value="">Select</option>
+                {getProSubcat.map((category,index) => (
+                  <option key={category.id} value={category.email} style={{fontSize:"14px",paddingBottom:"10px",paddintTop:"10px"}}>
+                    <li>
+                    {`${category.name}`} 
+                    </li>
+                  </option>
+                ))}
+              </select>
+              </div>
             </Form.Group>
 
             <Form.Group>
               <Form.Label className="add-label">Buy</Form.Label>
-              <Form.Control
-                type="text"
-                name="is_buy"
-                required
-                onChange={(e) => {
-                  handleInput(e);
-                }}
-              ></Form.Control>
+              <div style={{width:"50%",marginTop:"5px",marginBottom:"15px"}}>
+              <select
+                name="selectSection"
+                value={bay}
+               onChange={(event) => setBay(event.target.value)}
+                style={{height:"35px",borderRadius:"5px",paddingLeft:"5px",paddingRight:"5px",borderColor: "#808020",width:"80%"}}  
+               >
+                <option value="">Select</option>  
+                  <option  style={{fontSize:"14px",paddingBottom:"10px",paddintTop:"10px"}}>
+                    <li>
+                     Yes
+                    </li>
+                  </option>
+                  <option  style={{fontSize:"14px",paddingBottom:"10px",paddintTop:"10px"}}>
+                    <li>
+                     No
+                    </li>
+                  </option>
+              </select>
+              </div>
             </Form.Group>
 
             <Form.Group>
               <Form.Label className="add-label">Pickup</Form.Label>
-              <Form.Control
-                type="text"
-                name="is_pickup"
-                required
-                onChange={(e) => {
-                  handleInput(e);
-                }}
-              ></Form.Control>
+              <div style={{width:"50%",marginTop:"5px",marginBottom:"15px"}}>
+              <select
+                name="selectSection"
+                value={Pickup}
+               onChange={(event) => setPickup(event.target.value)}
+                style={{height:"35px",borderRadius:"5px",paddingLeft:"5px",paddingRight:"5px",borderColor: "#808020",width:"80%"}}  
+               >
+                <option value="">Select</option>  
+                  <option  style={{fontSize:"14px",paddingBottom:"10px",paddintTop:"10px"}}>
+                    <li>
+                     Yes
+                    </li>
+                  </option>
+                  <option  style={{fontSize:"14px",paddingBottom:"10px",paddintTop:"10px"}}>
+                    <li>
+                     No
+                    </li>
+                  </option>
+              </select>
+              </div>
             </Form.Group>
 
             <Form.Group>
               <Form.Label className="add-label">Color</Form.Label>
-              <Form.Control
-                type="text"
-                name="color"
-                required
-                onChange={(e) => {
-                  handleInput(e);
-                }}
-              ></Form.Control>
+              <div style={{width:"50%",marginTop:"5px",marginBottom:"15px"}}>
+              <select
+                name="selectSection"
+                value={color}
+               onChange={(event) => setColor(event.target.value)}
+                style={{height:"35px",borderRadius:"5px",paddingLeft:"5px",paddingRight:"5px",borderColor: "#808020",width:"80%"}}  
+               >
+                <option value="">Select</option>
+                  <option style={{fontSize:"14px",paddingBottom:"10px",paddintTop:"10px"}}>
+                    <li>
+                     Yes
+                    </li>
+                  </option>
+                  <option style={{fontSize:"14px",paddingBottom:"10px",paddintTop:"10px"}}>
+                    <li>
+                     No
+                    </li>
+                  </option>
+
+              </select>
+              </div>
             </Form.Group>
             <Form.Group>
               <Form.Label className="add-label">Size</Form.Label>
-              <Form.Control
-                type="text"
-                name="size"
-                required
-                onChange={(e) => {
-                  handleInput(e);
-                }}
-              ></Form.Control>
+              <div style={{width:"50%",marginTop:"5px",marginBottom:"15px"}}>
+              <select
+                name="selectSection"
+                value={size}
+               onChange={(event) => setSize(event.target.value)}
+                style={{height:"35px",borderRadius:"5px",paddingLeft:"5px",paddingRight:"5px",borderColor: "#808020",width:"80%"}}  
+               >
+                <option value="">Select</option>  
+                  <option  style={{fontSize:"14px",paddingBottom:"10px",paddintTop:"10px"}}>
+                    <li>
+                     Yes
+                    </li>
+                  </option>
+                  <option  style={{fontSize:"14px",paddingBottom:"10px",paddintTop:"10px"}}>
+                    <li>
+                     No
+                    </li>
+                  </option>
+              </select>
+              </div>
             </Form.Group>
 
             <Form.Group>

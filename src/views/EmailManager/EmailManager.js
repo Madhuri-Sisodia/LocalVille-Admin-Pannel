@@ -69,7 +69,6 @@ const EmailManager = () => {
               <MultipleSelect data ={data}/>
                
             </Form.Group>
-
             <Form.Group>
               <Form.ControlLabel>TITLE</Form.ControlLabel>
               <Form.Control

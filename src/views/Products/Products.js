@@ -7,6 +7,7 @@ import { BiBlock } from "react-icons/bi";
 import { MdClose } from "react-icons/md";
 import UpdateProducts from "./UpdateProducts";
 import AddProduct from "./AddProduct";
+
  console.log("hello")
 
 import {
@@ -34,7 +35,10 @@ const Products = () => {
   const [rowData, setRowData] = useState([]);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState(null);
-  const [showUpdateProduct, setShowUpdateProduct] = useState(false);
+  const [showUpdateProduct, setShowUpdateProduct] = useState(false);  
+  
+
+ 
 
   const getProducts = () => {
     Http.GetAPI(apis.getProducts + "?" + Math.random(), data, null)
