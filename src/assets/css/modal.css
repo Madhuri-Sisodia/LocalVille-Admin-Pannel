@@ -3,6 +3,7 @@
 .table tbody tr td {
   padding: 1px 8px;
   font-size: 0.8rem;
+  text-align: center;
 }
 
 
@@ -26,6 +27,17 @@
   height: 300px;
   overflow-y: scroll;
 }
+ .modal-body::-webkit-scrollbar {
+    width: 8px;
+ }
+  .modal-body::-webkit-scrollbar-track {
+    background-color: rgb(234, 228, 228);
+  }
+  .modal-body::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 6px rgba(156, 7, 231, 0.93);
+    border-radius: 5px;
+    /* color:rgba(156, 7, 231, 0.93) !important ; */
+  }
 @media (max-width: 768px) {
   .table tbody tr td {
     padding: 1px 5px;

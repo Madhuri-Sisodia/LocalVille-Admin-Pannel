@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { MdClose } from "react-icons/md";
 import { Modal, Form, Button } from "react-bootstrap";
 import { Http } from "../../config/Service";
@@ -7,6 +7,10 @@ import "../../assets/css/modal.css";
 import usevendorData from "CommonUtils/CostomeComp";
 import Autocomplete from "react-google-autocomplete";
 import GoogleAutocomplete from "components/googleAutoComplete";
+import GooglePlacesPicker from "components/googlePlacesPicker";
+import { Utils } from "CommonUtils/Utils";
+import axios from "axios";
+
     
 
 const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
@@ -15,7 +19,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
   const [selectSection,setSelectSection] = useState("")
   const [vendortData,setVendorData] = useState([])
   const [storeImage,setStoreImage] = useState([])
-
+  const {location} = useContext(Utils)
   const [storeData, setStoreData] = useState({
     storeName: "",
     storeDesc: "",
@@ -31,7 +35,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
     closingTime: "",
   });
 
- 
+ console.log(storeData)
   const [selectedDays, setSelectedDays] = useState([]);
   console.log(selectedDays)
   const toggleDaySelection = (index) => {
@@ -63,6 +67,34 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
     });
     setImage(null);
   };
+    
+  useEffect(()=>{
+    if(storeData.pincode){
+  const getCity = async()=>{
+          try{
+            const Result = await axios.get("https://api.postalpincode.in/pincode/"+storeData.pincode)
+             const data = Result?.data[0]?.PostOffice
+             console.log(data)
+             if(data.length>=1){
+             setStoreData((previous)=>{
+               return{...previous,city:data[0]?.District}
+             })
+             setStoreData((previous)=>{
+              return{...previous,country:data[0]?.Country}
+            })
+            setStoreData((previous)=>{
+              return{...previous,state:data[0]?.State}
+            })
+           }}
+          catch(error){
+           console.log(error)
+          }
+       }
+       getCity()
+    }
+    
+  },[storeData.pincode])
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -75,6 +107,8 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
     var data = new FormData();
      data.append("vendor_id",id)
      data.append("store_image",storeImage);
+     data.append("lat",location.lat)
+     data.append("long",location.lng)
     data.append("store_name", storeData.storeName);
     data.append("store_desc", storeData.storeDesc);
     data.append("lat", storeData.latitude);
@@ -208,10 +242,18 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
     componentRestrictions: { country: "in" },
   }}
 />; */}
+          <Form.Group>
+              <Form.Label className="add-label">Store Address</Form.Label>
+              <div style={{marginBottom:"20px"}}>     
+              <GoogleAutocomplete/>
+              </div>   
+              <div>
+          <GooglePlacesPicker/>
+          </div>
+            </Form.Group>
 
             <Form.Label className="add-label">Vendor Name</Form.Label>
             
-           <GoogleAutocomplete/>
             <div style={{width:"50%",marginTop:"5px"}}>
               <select
                 name="selectSection"
@@ -296,10 +338,8 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
               <Form.Control
                 type="text"
                 name="city"
-                required
-                onChange={(e) => {
-                  handleInput(e);
-                }}
+                value={storeData.city}
+                disabled
               ></Form.Control>
             </Form.Group>
 
@@ -308,10 +348,8 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
               <Form.Control
                 type="text"
                 name="state"
-                required
-                onChange={(e) => {
-                  handleInput(e);
-                }}
+                value={storeData.state}
+                disabled
               ></Form.Control>
             </Form.Group>
 
@@ -320,10 +358,8 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
               <Form.Control
                 type="text"
                 name="country"
-                required
-                onChange={(e) => {
-                  handleInput(e);
-                }}
+                value={storeData.country}
+                disabled
               ></Form.Control>
             </Form.Group>
 

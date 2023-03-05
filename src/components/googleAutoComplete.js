@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState,useContext } from 'react';
 import PlacesAutocomplete from 'react-places-autocomplete';
+import { Utils } from 'CommonUtils/Utils';
 
 import {
     geocodeByAddress,
@@ -11,18 +12,16 @@ import {
   const GoogleAutocomplete  = ()=>{
 
  const [address,setAdress] = useState("")
- const [coordinates,setCoordinates] = useState({
-    lat:null,
-    lng:null
- })
-       console.log(address)
-       console.log(coordinates)
+ const {Selectedcoordinates,setSelectedCoordinates} = useContext(Utils)
+  //console.log(Selectedcoordinates)
+      //  console.log(address)
+      //  console.log(coordinates)
 
  const handleSelect = async value =>{
     const result  = await geocodeByAddress(value)
     const loc = await getLatLng(result[0])
-    setAdress(value)
-    setCoordinates(loc)
+        setAdress(value)
+    setSelectedCoordinates(loc)
  }
 
 
@@ -40,8 +39,9 @@ import {
                 placeholder: 'Search Places ...',
                 className: 'location-search-input',
               })}
+              style={{width:"100%",borderRadius:"5px",borderColor:"#E3E3E3"}}
             />
-            <div className="autocomplete-dropdown-container">
+            <div className="autocomplete-dropdown-container" style={{border:"1px solid #E3E3E3",borderRadius:"5px",position:"relative",zIndex:1}}>
               {loading && <div>Loading...</div>}
               {suggestions.map(suggestion => {
                 const className = suggestion.active

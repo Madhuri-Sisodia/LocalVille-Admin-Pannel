@@ -10,9 +10,11 @@ import AdminManager from "views/AdminManager";
 import Category from "views/categorySection/index.js";
 import StoreManager from "views/StoreManager/StoreManager";
 import VendorsManager from "views/VendorsManager/VendorsManager";
+import Products from "views/Products/Products";
 import ProductApproval from "views/ProductApproval/ProductApproval";
 import StoreApproval from "views/StoreApproval/StoreApproval";
 import NotificationManager from "views/NotificationManager";
+import EmailManager from "views/EmailManager/EmailManager";
 
 
 const dashboardRoutes = [
@@ -62,12 +64,14 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    path: "/notification",
-    name: "Notification Manager",
+    path: "/products",
+    name: "Products",
     icon: "nc-icon nc-circle-09",
-    component: NotificationManager,
+    component: Products,
     layout: "/admin"
   },
+
+
   {
     path: "/productapproval",
     name: "Product Approval",
@@ -82,6 +86,23 @@ const dashboardRoutes = [
     component: StoreApproval,
     layout: "/admin"
   },
+  {
+    path: "/user",
+    name: "User Profile",
+    path: "/notification",
+    name: "Notification Manager",
+    icon: "nc-icon nc-circle-09",
+    component: NotificationManager,
+    layout: "/admin"
+  },
+  {
+    path: "/Emailer",
+    name: "Email Manager",
+    icon: "nc-icon nc-circle-09",
+    component: EmailManager,
+    layout: "/admin"
+  }
+  ,
 
   {
     path: "/user",
@@ -148,3 +169,4 @@ const dashboardRoutes = [
 ];
 
 export default dashboardRoutes;
+

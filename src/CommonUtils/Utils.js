@@ -6,6 +6,11 @@ const Context = ({ children }) => {
  const [Categoriesid,setCategoriesId] = useState("")
  const [disalbledNext,setDisabledNext] = useState(true)
  const [pageNo,setPageNo] = useState(1)
+ const [Selectedcoordinates,setSelectedCoordinates] = useState({
+  lat:null,
+  lng:null
+})
+const [location, setLocation] = useState("");
  
   return (
     <>
@@ -16,7 +21,11 @@ const Context = ({ children }) => {
           pageNo,
           setPageNo,
           disalbledNext,
-          setDisabledNext
+          setDisabledNext,
+          Selectedcoordinates,
+          setSelectedCoordinates,
+          location, 
+          setLocation
         }}
       >
         {children}
