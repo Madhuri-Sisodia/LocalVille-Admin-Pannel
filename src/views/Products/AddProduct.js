@@ -34,9 +34,10 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
     price: "",
     dis_price: "",
     in_stock: "",
+    productImage:""
   });
 
-  console.log(productData);
+  console.log(productData.productImage);
 
 
 
@@ -164,6 +165,7 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
     data.append("price", productData.price);
     data.append("dis_price", productData.dis_price);
     data.append("in_stock", productData.in_stock);
+    data.append("product_images",productData.productImage)
    
     Http.PostAPI(apis.addProducts, data, null)
       .then((res) => {
@@ -222,6 +224,18 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
             {/* </Form.Group> */}
 
             <Form.Group>
+            <Form.Label className="add-label">Product Image</Form.Label>
+              <Form.Control
+                name="productImage"
+                onChange={(e) => {
+                  console.log(e.target.files[0])
+                   setProductData((previous)=>{
+                          return {...previous,productImage:e.target.files[0]}
+                   })  
+                  }}
+                type="file"
+              ></Form.Control>
+
             <Form.Label className="add-label">Select Vendor</Form.Label>
             <div style={{width:"50%",marginTop:"5px",marginBottom:"15px"}}>
               <select
