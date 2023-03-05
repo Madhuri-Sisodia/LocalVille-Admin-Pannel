@@ -42,15 +42,25 @@ const BannerManager = () => {
     redirect: "",
     url: "",
   });
-  const [formDataList, setFormDataList] = useState([]);
+  const [tableData, setTableData] = useState([]);
 
   const handleSubmit = () => {
     const newFormData = { ...formData };
-    setFormDataList([...formDataList, newFormData]);
+    setTableData([...tableData, newFormData]);
     console.log(formData);
-    setFormData("");
+    resetForm();
+    
   };
+   
 
+  const resetForm=()=>{
+    setFormData({
+      image: "",
+      redirect: "",
+      url: "",
+    });
+
+  }
   const handleFieldChange = (value, name) => {
     setFormData({ ...formData, [name]: value });
   };
@@ -132,12 +142,12 @@ const BannerManager = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {formDataList.map((item, index) => (
+                      {tableData.map((item, index) => (
                         <tr key={index}>
                           <td>{item.id}</td>
                           <td>
                             <img
-                              src={item.image}
+                              src="https://i.pravatar.cc/50"
                               alt="image"
                               style={{
                                 width: "50px",
