@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MdClose } from "react-icons/md";
 import { Modal, Form, Button } from "react-bootstrap";
 import { Http } from "../../config/Service";
@@ -30,6 +30,40 @@ const UpdateStore = ({
   });
   const [store, setStore] = useState([]);
   const [hideData, setHideData] = useState(true);
+  const [selectedDays, setSelectedDays] = useState([]);
+
+  console.log(selectedDays);
+
+  const toggleDaySelection = (day) => {
+    console.log("sss", selectedDays);
+    if (selectedDays.includes(day)) {
+      setSelectedDays(selectedDays.filter((d) => d !== day));
+      console.log("sss", selectedDays);
+    } else {
+      setSelectedDays([...selectedDays, day]);
+    }
+  };
+
+  const [days, setDays] = useState([]);
+  const daysOfWeek = ["M", "T", "W", "Th", "F", "S", "Su"];
+
+  useEffect(() => {
+    if (item?.opening_days) {
+      let parsedDays;
+      if (Array.isArray(item?.opening_days)) {
+        parsedDays = item?.opening_days;
+      } else if (typeof item?.opening_days === "string") {
+        try {
+          parsedDays = JSON.parse(item?.opening_days);
+        } catch (error) {
+          console.error("Error parsing JSON:", error);
+          parsedDays = [];
+        }
+      }
+      setDays(parsedDays);
+      console.log("ppp", parsedDays);
+    }
+  }, [item]);
 
   const getInput = (e) => {
     setStoreData((previous) => {
@@ -70,7 +104,7 @@ const UpdateStore = ({
     );
     data.append(
       "opening_days",
-      storeData.openingDays ? storeData.openingDays : item.opening_days
+      selectedDays ? selectedDays : item.opening_days
     );
     data.append(
       "opening_time",
@@ -98,8 +132,6 @@ const UpdateStore = ({
       });
   };
 
- 
-
   return (
     <>
       {item != null && (
@@ -110,6 +142,7 @@ const UpdateStore = ({
               className="update-close-icon"
               onClick={() => {
                 setShowUpdateStore(false);
+                setSelectedDays("");
               }}
             />
           </Modal.Header>
@@ -252,18 +285,22 @@ const UpdateStore = ({
               </Form.Group>
 
               <Form.Group>
-                <label className="update-label">Opening Days</label>
-                <Form.Control
-                  className="update-form"
-                  defaultValue={item?.opening_days}
-                  type="text"
-                  name="openingDays"
-                  onChange={(e) => {
-                    getInput(e);
-                  }}
-                ></Form.Control>
+                <Form.Label className="update-label">Opening Days</Form.Label>
+                <div className="update-form">
+                  {days.map((day) => {
+                    const isSelected = selectedDays.includes(day);
+                    return (
+                      <div
+                        className={`week-days ${isSelected ? "selected" : ""}`}
+                        name="selectedDays"
+                        onClick={() => toggleDaySelection(day)}
+                      >
+                        {daysOfWeek[day - 1] || day}
+                      </div>
+                    );
+                  })}
+                </div>
               </Form.Group>
-
               <Form.Group>
                 <label className="update-label">Opening Time</label>
                 <Form.Control
@@ -290,10 +327,7 @@ const UpdateStore = ({
                 ></Form.Control>
               </Form.Group>
 
-              <br></br>
-              <Button
-                className="btn-fill"
-                appearance="primary"
+              <button
                 type="submit"
                 block
                 onClick={(e) => {
@@ -301,9 +335,18 @@ const UpdateStore = ({
                   handleUpdateStore();
                   setShowUpdateStore(false);
                 }}
+                style={{
+                  backgroundColor: "blueviolet",
+                  border: "blueviolet",
+                  borderRadius: "3px 3px 3px 3px",
+                  width: "100%",
+                  padding: "5px",
+                  color: "white",
+                  marginTop: "20px",
+                }}
               >
                 Update
-              </Button>
+              </button>
             </Form>
           </Modal.Body>
         </Modal>

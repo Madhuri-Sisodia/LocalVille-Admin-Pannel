@@ -13,25 +13,11 @@ class Footer extends Component {
                   Home
                 </a>
               </li>
-              <li>
-                <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                  Company
-                </a>
-              </li>
-              <li>
-                <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                  Portfolio
-                </a>
-              </li>
-              <li>
-                <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                  Blog
-                </a>
-              </li>
             </ul>
             <p className="copyright text-center">
               © {new Date().getFullYear()}{" "}
-              <a href="https://localville.in/">Localville</a> We make your business online
+              <a href="https://localville.in/">Localville</a> We make your
+              business online
             </p>
           </nav>
         </Container>

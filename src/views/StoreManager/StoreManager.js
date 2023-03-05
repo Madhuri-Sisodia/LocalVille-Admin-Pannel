@@ -214,7 +214,9 @@ const StoreManager = () => {
                         key={item.id}
                       >
                         <td>{item.id}</td>
-                        <td>{item.vendor_id}</td>
+                        <td title={item.store_name}>
+                          {item.vendor_id}
+                        </td>
                         <td>
                           <img
                             src={item.store_image}
@@ -309,7 +311,6 @@ const StoreManager = () => {
                                 className="btn-simple btn-link p-1"
                                 type="button"
                                 variant="danger"
-                                
                                 onClick={() => {
                                   setShowModal(true);
                                   setBlockData(item.id);

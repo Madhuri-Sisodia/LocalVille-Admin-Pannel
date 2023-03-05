@@ -9,7 +9,6 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
   const [store, setStore] = useState([]);
   const [image, setImage] = useState(null);
 
-
   const [storeData, setStoreData] = useState({
     storeImage: "",
     storeName: "",
@@ -32,10 +31,8 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
   console.log(selectedDays);
 
   const toggleDaySelection = (day) => {
-    console.log("sss", selectedDays);
     if (selectedDays.includes(day)) {
       setSelectedDays(selectedDays.filter((d) => d !== day));
-      console.log("sss", selectedDays);
     } else {
       setSelectedDays([...selectedDays, day]);
     }
@@ -306,7 +303,6 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
               </Form.Group>
             </div>
 
-           
             <button
               type="submit"
               block
