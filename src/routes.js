@@ -12,6 +12,7 @@ import StoreManager from "views/StoreManager/StoreManager";
 import VendorsManager from "views/VendorsManager/VendorsManager";
 import ProductApproval from "views/ProductApproval/ProductApproval";
 import NotificationManager from "views/NotificationManager";
+import BannerManager from "views/BannerManager";
 
 
 const dashboardRoutes = [
@@ -27,6 +28,14 @@ const dashboardRoutes = [
     name: "Admin Manager",
     icon: "nc-icon nc-circle-09",
     component: AdminManager,
+    layout: "/admin"
+  },
+
+  {
+    path: "/banner",
+    name: "Banner Manager",
+    icon: "nc-icon nc-circle-09",
+    component: BannerManager,
     layout: "/admin"
   },
   {
