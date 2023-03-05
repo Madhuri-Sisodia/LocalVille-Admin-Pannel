@@ -229,7 +229,7 @@ const Products = () => {
                               variant="primary"
                               onClick={() => {
                                 setSelectedProducts(item);
-                                setShowUpdateProduct(true);
+                                setShowUpdateModal(true);
                               }}
                             >
                               <i className="fa fa-edit"></i>
@@ -262,8 +262,8 @@ const Products = () => {
           </Col>
         </Row>
         <UpdateProducts
-          showUpdateProduct={showUpdateProduct}
-          setShowUpdateProduct={setShowUpdateProduct}
+          showUpdateModal={showUpdateModal}
+          setShowUpdateModal={setShowUpdateModal}
           item={selectedProducts}
           getProducts={getProducts}
         />

@@ -5,25 +5,27 @@ import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import "../../assets/css/modal.css";
 
-const UpdateProducts = ({ showUpdateModal, setShowUpdateModal, item,getProducts }) => {
+const UpdateProducts = ({ showUpdateModal, setShowUpdateModal, item, getProducts }) => {
   // console.log("item", item)
   const [products, setProducts] = useState([]);
   const [data, setData] = useState([]);
   const [hideId, setHideId] = useState(true);
   const [productId, setProductId] = useState();
   const [productName, setProductName] = useState();
-//   const [productPhone, setproductPhone] = useState();
- 
+  const [productDescription, setProductDescription] = useState();
+  const [productBuy, setProductBuy] = useState();
+  const [productPickup, setProductPickup] = useState();
+
 
   const handleUpdateProducts = () => {
-    // console.log("Vn",productName);
-    // console.log("VI",productId);
-    // console.log("VP",productPhone);
+
     var data = new FormData();
     // console.log(item.phone);
-    data.append("product_id", productId ? productId : item.id);
-    data.append("v_name", productName ? productName : item.name);
-    // data.append("phone_number", productPhone ? productPhone : item.phone);
+    data.append("pid", productId ? productId : item.id);
+    data.append("product_name", productName ? productName : item.name);
+    data.append("product_desc", productDescription ? productDescription : item.description);
+    data.append("is_buy", productBuy ? productBuy : item.buy);
+    data.append("is_pickup", productPickup ? productPickup : item.pickup);
 
     console.log("updateProducts", data);
 
@@ -58,8 +60,8 @@ const UpdateProducts = ({ showUpdateModal, setShowUpdateModal, item,getProducts 
           </Modal.Header>
           <Modal.Body className="update-body">
             <Form>
-              {!hideId &&<Form.Group style={{ marginTop: "0rem", marginBottom: "1rem" }}>
-                <label className="update-label">product ID</label>
+              {!hideId && <Form.Group style={{ marginTop: "0rem", marginBottom: "1rem" }}>
+                <label className="update-label">Product ID</label>
                 <Form.Control
                   className="update-form"
                   defaultValue={item?.id}
@@ -70,13 +72,43 @@ const UpdateProducts = ({ showUpdateModal, setShowUpdateModal, item,getProducts 
               </Form.Group>}
 
               <Form.Group style={{ marginBottom: "1rem" }}>
-                <label className="update-label">product Name</label>
+                <label className="update-label">Product Name</label>
 
                 <Form.Control
                   className="update-form"
                   defaultValue={item?.name}
                   name="productName"
                   onChange={(value) => setProductName(value.target.value)}
+                  type="text"
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group style={{ marginBottom: "1rem" }}>
+                <label className="update-label">Product Description</label>
+                <Form.Control
+                  className="update-form"
+                  defaultValue={item?.description}
+                  name="productDescription"
+                  onChange={(value) => setProductDescription(value.target.value)}
+                  type="text"
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group style={{ marginBottom: "1rem" }}>
+                <label className="update-label">Product buy</label>
+                <Form.Control
+                  className="update-form"
+                  defaultValue={item?.buy}
+                  name="productBuy"
+                  onChange={(value) => setProductBuy(value.target.value)}
+                  type="text"
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group style={{ marginBottom: "1rem" }}>
+                <label className="update-label">Product pickup</label>
+                <Form.Control
+                  className="update-form"
+                  defaultValue={item?.pickup}
+                  name="productPickup"
+                  onChange={(value) => setProductPickup(value.target.value)}
                   type="text"
                 ></Form.Control>
               </Form.Group>
