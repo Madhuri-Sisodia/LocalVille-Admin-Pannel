@@ -121,9 +121,20 @@ const StoreManager = () => {
   const [storeAdded,setAddStored] = useState(false)
   const [days, setDays] = useState([]);
   const {pageNo,setDisabledNext} = useContext(Utils)
+  const [totalPages,setTotalPages] = useState(0)
   let parseDays;
 
-
+  const Debounce = (fun)=>{
+    let timer;
+    return (...arg)=>{
+        if(timer){
+            clearTimeout(timer)
+        }
+        timer = setTimeout(()=>{
+            fun.call(this,arg)
+        },500)
+    }
+}
 
   const getLocation = (latitude, longitude) => {
     const url = `https://www.google.com/maps?q=${latitude}+${longitude}`;
@@ -136,6 +147,7 @@ const StoreManager = () => {
       .then((res) => {
         if (res?.data?.status) {
            if(res.data.data.length>0){
+            setTotalPages(res.data.total_pages)           
             setData(res?.data?.data);
             setAddStored(false)
            }
@@ -176,6 +188,31 @@ const StoreManager = () => {
         console.log("Error:", e);
       });
   };
+
+  const filtervendor = (e)=>{
+
+    Http.GetAPI(apis.searchstore + "?" +`search=${e}`, "", null)
+    .then((res) => {
+      if (res?.data?.status) {
+        if(res.data.data.length>0){
+          setData(res?.data?.data);
+          setDisabledNext(true)
+        }
+        else{
+          setDisabledNext(false)
+        }
+      } else {
+        alert("Fields not matched");
+      }
+    })
+    .catch((e) => {
+      setIsLoading(false);
+      alert("Something went wrong.");
+      console.log("Error:", e);
+    });
+   }
+
+   const search =  Debounce(filtervendor)
 
   useEffect(() => {
     if (rowData.opening_days) {
@@ -220,7 +257,7 @@ const StoreManager = () => {
                 <p className="card-category">Store details and action</p>
                 <br></br>
                 <InputGroup style={{ width: "250px" }}>
-                  <Input placeholder="Search" />
+                  <Input placeholder="Search" onChange={(e)=>{search(e)}} />
                   <InputGroup.Button>
                     <SearchIcon />
                   </InputGroup.Button>
@@ -272,7 +309,9 @@ const StoreManager = () => {
                         key={item.id}
                       >
                         <td>{item.id}</td>
-                        <td>{item.vendor_id}</td>
+                        <td title={item.store_name}>
+                          {item.vendor_id}
+                        </td>
                         <td>
                           <img
                             src={item.store_image}
@@ -398,14 +437,14 @@ const StoreManager = () => {
           </Col>
         </Row>
         <div style={{display:"flex",justifyContent:"center",textAlign:"center"}}>
-        <Paginate/>
+        <Paginate pages={totalPages}/>
         </div>
       </Container>
       <UpdateStore
-        showUpdateStore={showUpdateStore}
-        setShowUpdateStore={setShowUpdateStore}
-        item={selectedStore}
-        getStore={getStore}
+         showUpdateStore={showUpdateStore}
+         setShowUpdateStore={setShowUpdateStore}
+         item={selectedStore}
+         getStore={getStore}
       />
 
       <AddStore

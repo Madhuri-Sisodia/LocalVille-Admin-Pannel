@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import ErrorMessage from "customComponents/ErrorMessage";
 import { useHistory} from "react-router-dom";
 import { Form, Button } from "rsuite";
@@ -8,6 +8,7 @@ import LoginNavbar from "components/Navbars/LoginNavbar";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import User from "views/UserProfile";
+import { Utils } from "CommonUtils/Utils";
 
 const Login = () => {
   const history = useHistory();
@@ -15,7 +16,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState([]);
   const [errors, setErrors] = useState({});
-  //   console.log(user)
+ 
 
   const validate = () => {
     let tempErrors = {};
@@ -50,9 +51,10 @@ const Login = () => {
        Http.PostAPI(apis.loginAdminData, data, null)
          .then((res) => {
           if (res?.data?.status) {
-
-            setUser(res?.data?.data);
+             setUser(res?.data?.data);
             sessionStorage.setItem("loggedIn", JSON.stringify(res.data.data.token));
+            sessionStorage.setItem("name",res.data.data.name)
+              
             history.push("/admin/dashboard");
           } else {
             alert("Fields not matched");

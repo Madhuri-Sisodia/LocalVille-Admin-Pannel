@@ -1,4 +1,4 @@
-import { useState,useContext } from 'react';
+import { useState,useContext, useEffect } from 'react';
 import PlacesAutocomplete from 'react-places-autocomplete';
 import { Utils } from 'CommonUtils/Utils';
 
@@ -13,10 +13,7 @@ import {
 
  const [address,setAdress] = useState("")
  const {Selectedcoordinates,setSelectedCoordinates} = useContext(Utils)
-  //console.log(Selectedcoordinates)
-      //  console.log(address)
-      //  console.log(coordinates)
-
+  
  const handleSelect = async value =>{
     const result  = await geocodeByAddress(value)
     const loc = await getLatLng(result[0])

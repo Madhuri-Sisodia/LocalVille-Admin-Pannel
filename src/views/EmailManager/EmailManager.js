@@ -6,6 +6,7 @@ import "../../assets/css/admin.css";
 import MultipleSelect from "components/multipleSelect";
 import { Http } from "config/Service";
 import { apis } from "config/WebConstant";
+import MyComponent from "components/React-Quil-text-Editor";
 
 const EmailManager = () => {
   const [selectedVendors, setSelectedVendors] = useState([]);
@@ -81,14 +82,7 @@ const EmailManager = () => {
             </Form.Group>
             <Form.Group>
               <Form.ControlLabel>MESSAGE</Form.ControlLabel>
-              <Form.Control
-                placeholder=" Message"
-                name="message"
-                type="textarea"
-                value={message}
-                onChange={(value) => setMessage(value)}
-                required
-              />
+             <MyComponent/>
             </Form.Group>
             <button
               type="submit"

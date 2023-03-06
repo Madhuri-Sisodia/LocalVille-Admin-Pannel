@@ -65,26 +65,26 @@ const ProductDetailModel = ({
               </tr>
               <tr>
                 <td className="bold-col">Category:</td>
-                <td>{rowData.category}</td>
+                <td>{rowData.category  == "1" ? "Yes" : "No"}</td>
               </tr>
               <tr>
                 <td className="bold-col">Sub Category:</td>
-                <td>{rowData.sub_category}</td>
+                <td>{rowData.sub_category  == "1" ? "Yes" : "No"}</td>
               </tr>
               <tr>
                 <td className="bold-col">Buy:</td>
-                <td>{rowData.is_buy}</td>
+                <td>{rowData.is_buy  == "1" ? "Yes" : "No"}</td>
               </tr>
               <tr>
                 <td className="bold-col">Pick Up:</td>
-                <td>{rowData.is_pickup}</td>
+                <td>{rowData.is_pickup  == "1" ? "Yes" : "No"}</td>
               </tr>
               <tr>
                 <td className="bold-col">Total Clicks:</td>
                 <td>{rowData.total_clicks}</td>
               </tr>
               <tr>
-                <td className="bold-col">Store Status:</td>
+                <td className="bold-col">Approved Status:</td>
                 <td
                   style={{
                     backgroundColor:
@@ -109,7 +109,7 @@ const ProductDetailModel = ({
                 </td>
               </tr>
               <tr>
-                <td className="bold-col">Status:</td>
+                <td className="bold-col"> Product Status:</td>
 
                 <td
                   style={{
@@ -144,11 +144,11 @@ const ProductDetailModel = ({
               </tr>
               <tr>
                 <td className="bold-col">Color:</td>
-                <td>{rowData.is_color}</td>
+                <td>{rowData.is_color  == "1" ? "Yes" : "No"}</td>
               </tr>
               <tr>
                 <td className="bold-col">Size:</td>
-                <td>{rowData.is_size}</td>
+                <td>{rowData.is_size  == "1" ? "Yes" : "No"}</td>
               </tr>
 
               <tr>
@@ -157,7 +157,7 @@ const ProductDetailModel = ({
               </tr>
               <tr>
                 <td className="bold-col">Stock:</td>
-                <td>{rowData.in_stock}</td>
+                <td>{rowData.in_stock  == "1" ? "Yes" : "No"}</td>
               </tr>
             </tbody>
           </Table>

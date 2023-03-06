@@ -74,7 +74,7 @@ const SubCategory = () => {
       console.log(SelectedCategory)
       const id = SelectedCategory[0].id
           console.log(id)
-      // setCategoriesId(id)
+    
 
     var formdata = new FormData();
     formdata.append("category_id", `${id}`);

@@ -2,11 +2,12 @@ import { useContext,useState } from "react";
 import { Utils } from "CommonUtils/Utils";
 import { useEffect } from "react";
 
-const Paginte = ()=>{
+const Paginte = ({pages})=>{
 
   const {setPageNo,pageNo,disalbledNext} = useContext(Utils)
   const [PaginationArrya,setPaginationArrya] = useState([1])
- 
+   const arr = []
+   
    console.log(disalbledNext)
   const NextPAge=()=>{
     const arr = PaginationArrya
@@ -16,6 +17,34 @@ const Paginte = ()=>{
     setPageNo(pageNo+1)
     
   }
+
+  let i=0
+  const increasePages=()=>{
+    if(i<=pages){
+      arr=[]
+      for(j=i;j<i+5;j++){
+        arr.push(j+1)
+      }
+      i=i+5
+    }
+    else{
+      if(arr[arr.length-1]<pages){
+        diff = pages%5
+        arr=[]
+        for(j=i+1;j<diff;j++){
+          arr.push(j)
+        }
+        const button = document.getElementById("next")
+        button.setAttribute("disabled","")
+      }
+      else{
+        const button = document.getElementById("next")
+        button.setAttribute("disabled","")
+      }
+    }
+  }
+      
+  
 
    
   const PreviousPAge = ()=>{

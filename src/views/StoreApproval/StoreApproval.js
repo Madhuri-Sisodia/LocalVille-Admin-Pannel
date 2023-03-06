@@ -86,16 +86,17 @@ const StoreApproval = () => {
                   responsive="xl"
                   style={{
                     width: "100%",
+                    textAlign:"center"
                   }}
                 >
                   <thead>
                     <tr>
-                      <th className="border-0">ID</th>
-                      <th className="border-0">Store Image</th>
-                      <th className="border-0">Store Name</th>
-                      <th className="border-0">Store Address</th>
-                      <th className="border-0">Opening Days</th>
-                      <th className="border-0">Get Location</th>
+                      <th className="border-0" >ID</th>
+                      <th className="border-0" >Store Image</th>
+                      <th className="border-0" >Store Name</th>
+                      <th className="border-0" >Store Address</th>
+                      <th className="border-0" >Opening Days</th>
+                      <th className="border-0" >Get Location</th>
                       <th className="border-0">Action</th>
                     </tr>
                   </thead>
@@ -159,7 +160,7 @@ const StoreApproval = () => {
                             <i className="fa fa-check"></i>
                           </Button>
 
-                          <button
+                          <Button
                             className="btn-simple btn-link p-1"
                             type="button"
                             variant="danger"
@@ -169,7 +170,7 @@ const StoreApproval = () => {
                             }}
                           >
                             <i className="fa fa-times"></i>
-                          </button>
+                          </Button>
                         </td>
                       </tr>
                     ))}

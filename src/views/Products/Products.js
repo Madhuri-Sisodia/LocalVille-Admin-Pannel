@@ -37,8 +37,29 @@ const Products = () => {
   const [selectedProducts, setSelectedProducts] = useState(null);
   const [showUpdateProduct, setShowUpdateProduct] = useState(false);  
   
+  const verifiedProduct=(verify)=>{
+        if(verify==2){
+          return "Rejected"
+        }
+        else if(verify==1){
+          return "Verified"
+        }
+        else{
+          return "Pending"
+        }
+  }
 
- 
+  const Debounce = (fun)=>{
+    let timer;
+    return (...arg)=>{
+        if(timer){
+            clearTimeout(timer)
+        }
+        timer = setTimeout(()=>{
+            fun.call(this,arg)
+        },500)
+    }
+}
 
   const getProducts = () => {
     Http.GetAPI(apis.getProducts + "?" + Math.random(), data, null)
@@ -82,6 +103,26 @@ const Products = () => {
         console.log("Error:", e);
       });
   };
+
+     
+  const filtervendor = (e)=>{
+    Http.GetAPI(apis.searchproduct + "?" +`search=${e}`,"", null)
+    .then((res) => {
+      if (res?.data?.status) {
+          setData(res?.data?.data);
+      } else {
+        alert("Fields not matched");
+      }
+    })
+    .catch((e) => {
+      setIsLoading(false);
+      alert("Something went wrong.");
+      console.log("Error:", e);
+    });
+   }
+
+   const search =  Debounce(filtervendor)
+
   return (
     <>
       <Container fluid>
@@ -106,7 +147,7 @@ const Products = () => {
                 <p className="card-category">product details and action</p>
                 <br></br>
                 <InputGroup style={{ width: "250px" }}>
-                  <Input placeholder="Search" />
+                  <Input placeholder="Search" onChange={(e)=>{search(e)}} />
                   <InputGroup.Button>
                     <SearchIcon />
                   </InputGroup.Button>
@@ -176,12 +217,12 @@ const Products = () => {
                         <td title={item.product_desc}>
                           {item.product_desc.slice(0, 8)}
                         </td>
-                        <td>{item.category}</td>
-                        <td>{item.sub_category}</td>
-                        <td>{item.is_buy}</td>
-                        <td>{item.is_pickup}</td>
+                        <td>{item.category_name}</td>
+                        <td>{item.subcategory_name}</td>
+                        <td>{(item.is_buy==1)?"Yes":"No"}</td>
+                        <td>{(item.is_pickup==1)?"Yes":"No"}</td>
                         <td>{item.total_clicks}</td>
-                        <td>{item.is_verified}</td>
+                        <td>{verifiedProduct(item.is_verified)}</td>
                         <td>
                           <div
                             style={{
@@ -200,8 +241,8 @@ const Products = () => {
                         </td>
                         <td>{item.category_name}</td>
                         <td>{item.subcategory_name}</td>
-                        <td>{item.is_color}</td>
-                        <td>{item.is_size}</td>
+                        <td>{(item.is_color==1)?"Yes":"No"}</td>
+                        <td>{(item.is_size==1)?"Yes":"No"}</td>
                         <td>{item.price}</td>
                         <td>{item.discount_price}</td>
 

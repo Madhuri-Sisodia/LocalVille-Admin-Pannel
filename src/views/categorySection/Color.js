@@ -77,7 +77,7 @@ console.log(colorName)
 
         Http.PostAPI(apis.addColor, formdata, null)
         .then((res) => {
-          if (res?.data?.success) {
+          if (res?.data?.status) {
             setColor(res?.data?.data);
             alert("Color added successfully");
           } else {

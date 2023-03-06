@@ -5,23 +5,23 @@ import { Utils } from 'CommonUtils/Utils';
 import MapPicker from 'react-google-map-picker'
 import { useEffect } from 'react';
 
-let DefaultLocation={ lat: 10, lng: 106}
-const DefaultZoom = 10;
+
 
 
 const GooglePlacesPicker = () => {
-
-  const [defaultLocation, setDefaultLocation] = useState(DefaultLocation);
+  let DefaultLocation={ lat: 10, lng: 106}
+  const DefaultZoom = 15;
   const {Selectedcoordinates} = useContext(Utils)
-   
+  const [defaultLocation, setDefaultLocation] = useState(DefaultLocation);
+   //console.log(Selectedcoordinates)
   const [location, setLocation] = useState(defaultLocation);
-   
+    
     
   useEffect(()=>{
-      if(Selectedcoordinates.lat){
-    setDefaultLocation({...Selectedcoordinates})
-    setLocation({...location})
-      }
+    if(Selectedcoordinates.lat){
+      setDefaultLocation({...Selectedcoordinates})
+      setLocation({...location}) 
+    }
   },[Selectedcoordinates])
 
 

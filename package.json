@@ -22,6 +22,7 @@
     "react-multi-select-component": "^4.3.4",
     "react-notification-alert": "0.0.13",
     "react-places-autocomplete": "^7.3.0",
+    "react-quill": "^2.0.0",
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",
     "react-scripts": "5.0.1",

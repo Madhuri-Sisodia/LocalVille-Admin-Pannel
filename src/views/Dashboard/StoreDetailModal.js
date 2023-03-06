@@ -135,7 +135,7 @@ const StoreDetailModal = ({
                 <td>{rowData.updated_at}</td>
               </tr>
               <tr>
-                <td className="bold-col">Store Status:</td>
+                <td className="bold-col">Approved Status:</td>
                 <td
                   style={{
                     backgroundColor:
@@ -160,7 +160,7 @@ const StoreDetailModal = ({
                 </td>
               </tr>
               <tr>
-                <td className="bold-col">Status:</td>
+                <td className="bold-col">Store Status:</td>
 
                 <td
                   style={{

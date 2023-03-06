@@ -7,6 +7,7 @@ import UpdateVendor from "./UpdateVendor";
 import { Utils } from "CommonUtils/Utils";
 import Paginte from "components/Paginate";
 import AddVendor from "./AddVendor";
+
 import {
   Modal,
   Form,
@@ -83,6 +84,18 @@ const VendorsManager = () => {
 
   const [isLoading, setIsLoading] = useState(true);
 
+  const Debounce = (fun)=>{
+    let timer;
+    return (...arg)=>{
+        if(timer){
+            clearTimeout(timer)
+        }
+        timer = setTimeout(()=>{
+            fun.call(this,arg)
+        },500)
+    }
+}
+
   const getVendors = () => {
     Http.GetAPI(apis.getVendorsData + "?" + `page=${pageNo}`, data, null)
       .then((res) => {
@@ -110,6 +123,33 @@ const VendorsManager = () => {
     getVendors();
   }, [pageNo]);
 
+
+   const filtervendor = (e)=>{
+    console.log(e)
+    Http.GetAPI(apis.searchvendor + "?" +`search=${e} & page=${pageNo}`, data, null)
+    .then((res) => {
+      setIsLoading(false);
+      if (res?.data?.status) {
+        if(res.data.data.length>0){
+          setData(res?.data?.data);
+          setDisabledNext(true)
+        }
+        else{
+          setDisabledNext(false)
+        }
+      } else {
+        alert("Fields not matched");
+      }
+    })
+    .catch((e) => {
+      setIsLoading(false);
+      alert("Something went wrong.");
+      console.log("Error:", e);
+    });
+   }
+
+  const search =  Debounce(filtervendor)
+    
   return (
     <>
       <Container fluid>
@@ -139,7 +179,7 @@ const VendorsManager = () => {
                 <p className="card-category">Vendors details and action</p>
                 <br></br>
                 <InputGroup style={{ width: "250px" }}>
-                  <Input placeholder="Search" />
+                  <Input placeholder="Search" onChange={(e)=>{search(e)}} />
                   <InputGroup.Button>
                     <SearchIcon />
                   </InputGroup.Button>

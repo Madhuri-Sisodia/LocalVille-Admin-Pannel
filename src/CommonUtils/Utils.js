@@ -7,10 +7,12 @@ const Context = ({ children }) => {
  const [disalbledNext,setDisabledNext] = useState(true)
  const [pageNo,setPageNo] = useState(1)
  const [Selectedcoordinates,setSelectedCoordinates] = useState({
-  lat:null,
-  lng:null
+  lat: null, 
+  lng: null
 })
 const [location, setLocation] = useState("");
+const [userEmail,setUserEmail] = useState("")
+const [password,setPassword] = useState("")
  
   return (
     <>
@@ -25,7 +27,11 @@ const [location, setLocation] = useState("");
           Selectedcoordinates,
           setSelectedCoordinates,
           location, 
-          setLocation
+          setLocation,
+          userEmail,
+          setUserEmail,
+          password,
+          setPassword
         }}
       >
         {children}

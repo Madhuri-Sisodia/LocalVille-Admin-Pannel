@@ -66,7 +66,7 @@ console.log(sectionName)
           return(ele.section_name==selectSection)
         })  
 
-        // setCategoriesId(SelectedSection[0].id)
+        setCategoriesId(SelectedSection[0].id)
       
         var formdata = new FormData();
         formdata.append("section_name",sectionName );
@@ -103,7 +103,7 @@ console.log(sectionName)
             <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
                 Add Category Section
               </Form.ControlLabel>
-              <input type="text" onChange={(e)=>{ setSectionName(e.target.value)}} style={{width:"100%",height:"30px",borderRadius:"5px",padding:"10px",marginTop:"20px"}}/>
+              <input type="text" placeholder="Enter Category Section" onChange={(e)=>{ setSectionName(e.target.value)}} style={{width:"100%",height:"30px",borderRadius:"5px",padding:"10px",marginTop:"20px"}}/>
                {/* <select
                 name="selectSection"
                 value={selectSection}
