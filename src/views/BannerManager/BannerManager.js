@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
+import { Http } from "../../config/Service";
+import { apis } from "../../config/WebConstant";
 import {
   Form,
   Radio,
@@ -11,10 +13,11 @@ import {
 import { Table, Card, Col } from "react-bootstrap";
 import CloseIcon from "@rsuite/icons/Close";
 
-import "../assets/css/admin.css";
+import "../../assets/css/admin.css";
+import BlockBanner from "./BlockBanner";
 
 const BannerManager = () => {
-  const data = [
+  const dummyData = [
     {
       id: 1,
       image: "https://i.pravatar.cc/50",
@@ -42,25 +45,45 @@ const BannerManager = () => {
     redirect: "",
     url: "",
   });
-  const [tableData, setTableData] = useState([]);
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [blockData, setBlockData] = useState([]);
+
+
+  const getBanner = () => {
+    Http.GetAPI(apis.getBanner + "?" + Math.random(), data, null)
+      .then((res) => {
+        setIsLoading(false);
+        if (res?.data?.status) {
+          setData(res?.data?.data);
+        } else {
+          alert("Fields not matched");
+        }
+      })
+      .catch((e) => {
+        setIsLoading(false);
+        alert("Something went wrong.");
+        console.log("Error:", e);
+      });
+  };
+
+  useEffect(() => {
+    getBanner();
+  }, []);
 
   const handleSubmit = () => {
-    const newFormData = { ...formData };
-    setTableData([...tableData, newFormData]);
     console.log(formData);
     resetForm();
-    
   };
-   
 
-  const resetForm=()=>{
+  const resetForm = () => {
     setFormData({
       image: "",
       redirect: "",
       url: "",
     });
-
-  }
+  };
   const handleFieldChange = (value, name) => {
     setFormData({ ...formData, [name]: value });
   };
@@ -118,7 +141,10 @@ const BannerManager = () => {
             </button>
 
             <div style={{ marginTop: "80px" }}>
-              <Card className="strpied-tabled-with-hover">
+              <Card
+                className="strpied-tabled-with-hover"
+                style={{ borderRadius: "10px" }}
+              >
                 <Card.Header
                   style={{
                     display: "flex",
@@ -142,12 +168,12 @@ const BannerManager = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {tableData.map((item, index) => (
+                      {data.map((item, index) => (
                         <tr key={index}>
                           <td>{item.id}</td>
                           <td>
                             <img
-                              src="https://i.pravatar.cc/50"
+                              src={item.image}
                               alt="image"
                               style={{
                                 width: "50px",
@@ -156,13 +182,15 @@ const BannerManager = () => {
                               }}
                             />
                           </td>
-                          <td>{item.redirect}</td>
+                          <td style={{textAlign:"center"}}>
+                              {item.is_redirect == "1" ? "Yes" : "No"}
+                           </td>
                           <td>{item.url}</td>
                           <td>
                             <div
                               style={{
                                 backgroundColor:
-                                  item.status == "active" ? "green" : "red",
+                                  item.active == "1" ? "green" : "red",
                                 border: "none",
                                 fontSize: "0.75rem",
                                 color: "white",
@@ -171,17 +199,23 @@ const BannerManager = () => {
                                 display: "inline-block",
                               }}
                             >
-                              {item.status == "active" ? "active" : "block"}
+                              {item.active == "1" ? "active" : "block"}
                             </div>
                           </td>
                           <td>
+                          {item?.active == "1" && (
                             <Button
                               className="btn-simple btn-link p-1"
                               type="button"
                               style={{ cursor: "pointer", color: "red" }}
+                              onClick={() => {
+                                setShowModal(true);
+                                setBlockData(item.id);
+                              }}
                             >
                               <i className="fas fa-times"></i>
                             </Button>
+                             )}
                           </td>
                         </tr>
                       ))}
@@ -193,6 +227,13 @@ const BannerManager = () => {
           </Form>
         </div>
       </div>
+
+      <BlockBanner
+          showModal={showModal}
+          setShowModal={setShowModal}
+          blockData={blockData}
+          getBanner={getBanner}
+        />
     </>
   );
 };

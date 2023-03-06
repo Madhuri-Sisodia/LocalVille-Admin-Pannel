@@ -104,6 +104,8 @@ const ProductCard = ({ latestProduct }) => {
                         <p className="card-description paragraph">
                           {item.product_desc}
                         </p>
+                        <p className="card-description paragraph">{item.p_created}</p>
+                        
                       </div>
                     </div>
                   </Card>

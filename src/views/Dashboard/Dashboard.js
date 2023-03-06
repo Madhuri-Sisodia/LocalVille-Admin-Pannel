@@ -182,19 +182,32 @@ const Dashboard = () => {
                   <ChartistGraph
                     data={{
                       labels: [
-                        "9:00AM",
-                        "12:00AM",
-                        "3:00PM",
-                        "6:00PM",
-                        "9:00PM",
-                        "12:00PM",
-                        "3:00AM",
-                        "6:00AM",
+                        "Jan",
+                        "Feb",
+                        "Mar",
+                        "Apr",
+                        "May",
+                        "June",
+                        "July",
+                        "Aug",
+                        "Sep",
+                        "Oct",
+                        "Nov",
+                        "Dec",
                       ],
                       series: [
-                        [287, 385, 490, 492, 554, 586, 698, 695],
-                        [67, 152, 143, 240, 287, 335, 435, 437],
-                        [23, 113, 67, 108, 190, 239, 307, 308],
+                        [
+                          287, 385, 490, 492, 554, 560, 598, 600, 650, 660, 700,
+                          800,
+                        ],
+                        [
+                          67, 152, 143, 240, 287, 335, 435, 437, 480, 500, 600,
+                          610,
+                        ],
+                        [
+                          23, 113, 67, 108, 190, 239, 280, 290, 340, 400, 420,
+                          500,
+                        ],
                       ],
                     }}
                     type="Line"
@@ -211,7 +224,7 @@ const Dashboard = () => {
                       showPoint: true,
                       fullWidth: true,
                       chartPadding: {
-                        right: 50,
+                        right: 60,
                       },
                     }}
                     responsiveOptions={[
@@ -232,9 +245,9 @@ const Dashboard = () => {
               <Card.Footer>
                 <div className="legend">
                   <i className="fas fa-circle text-info"></i>
-                  Open <i className="fas fa-circle text-danger"></i>
-                  Click <i className="fas fa-circle text-warning"></i>
-                  Click Second Time
+                  Revenue <i className="fas fa-circle text-danger"></i>
+                  Cancel Order <i className="fas fa-circle text-warning"></i>
+                  Complete Order
                 </div>
                 <hr></hr>
                 <div className="stats">
@@ -247,7 +260,7 @@ const Dashboard = () => {
           <Col md="4">
             <Card>
               <Card.Header>
-                <Card.Title as="h4">Email Statistics</Card.Title>
+                <Card.Title as="h4">Users Statistics</Card.Title>
                 <p className="card-category">Last Campaign Performance</p>
               </Card.Header>
               <Card.Body>
@@ -257,17 +270,25 @@ const Dashboard = () => {
                 >
                   <ChartistGraph
                     data={{
-                      labels: ["40%", "20%", "40%"],
-                      series: [40, 20, 40],
+                      labels: [
+                        `${totalActiveUsers}%`,
+                        `${totalUsers - totalActiveUsers}%`,
+                        `${totalUsers}%`,
+                      ],
+                      series: [
+                        totalActiveUsers,
+                        totalUsers - totalActiveUsers,
+                        totalUsers,
+                      ],
                     }}
                     type="Pie"
                   />
                 </div>
-                <div className="legend">
+                <div className="legend" style={{ fontSize: "0.8rem" }}>
                   <i className="fas fa-circle text-info"></i>
-                  Open <i className="fas fa-circle text-danger"></i>
-                  Bounce <i className="fas fa-circle text-warning"></i>
-                  Unsubscribe
+                  Active Users <i className="fas fa-circle text-danger"></i>
+                  Block Users <i className="fas fa-circle text-warning"></i>
+                  Total Users
                 </div>
                 <hr></hr>
                 <div className="stats">
@@ -278,7 +299,7 @@ const Dashboard = () => {
             </Card>
           </Col>
         </Row>
-        <Row>
+        {/* <Row>
           <Col md="6">
             <Card>
               <Card.Header>
@@ -655,7 +676,7 @@ const Dashboard = () => {
               </Card.Footer>
             </Card>
           </Col>
-        </Row>
+        </Row> */}
         <ProductCard latestProduct={latestProduct} />
         <StoreCard latestStore={latestStore} />
       </Container>

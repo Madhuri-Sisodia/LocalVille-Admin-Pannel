@@ -96,6 +96,7 @@ const StoreCard = ({ latestStore }) => {
                         <p className="card-description paragraph">
                           {item.store_desc}
                         </p>
+                        <p className="card-description paragraph">{item.created_at}</p>
                       </div>
                     </div>
                   </Card>

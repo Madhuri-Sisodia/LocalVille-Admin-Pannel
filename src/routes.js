@@ -12,7 +12,7 @@ import StoreManager from "views/StoreManager/StoreManager";
 import VendorsManager from "views/VendorsManager/VendorsManager";
 import ProductApproval from "views/ProductApproval/ProductApproval";
 import NotificationManager from "views/NotificationManager";
-import BannerManager from "views/BannerManager";
+import BannerManager from "views/BannerManager/BannerManager";
 
 
 const dashboardRoutes = [
