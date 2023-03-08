@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import {
@@ -17,29 +17,29 @@ import "../../assets/css/admin.css";
 import BlockBanner from "./BlockBanner";
 
 const BannerManager = () => {
-  const dummyData = [
-    {
-      id: 1,
-      image: "https://i.pravatar.cc/50",
-      redirect: "Yes",
-      url: "url1",
-      status: "active",
-    },
-    {
-      id: 2,
-      image: "https://i.pravatar.cc/50",
-      redirect: "Yes",
-      url: "url2",
-      status: "block",
-    },
-    {
-      id: 3,
-      image: "https://i.pravatar.cc/50",
-      redirect: "No",
-      url: "url3",
-      status: "active",
-    },
-  ];
+  // const dummyData = [
+  //   {
+  //     id: 1,
+  //     image: "https://i.pravatar.cc/50",
+  //     redirect: "Yes",
+  //     url: "url1",
+  //     status: "active",
+  //   },
+  //   {
+  //     id: 2,
+  //     image: "https://i.pravatar.cc/50",
+  //     redirect: "Yes",
+  //     url: "url2",
+  //     status: "block",
+  //   },
+  //   {
+  //     id: 3,
+  //     image: "https://i.pravatar.cc/50",
+  //     redirect: "No",
+  //     url: "url3",
+  //     status: "active",
+  //   },
+  // ];
   const [formData, setFormData] = useState({
     image: "",
     redirect: "",
@@ -49,7 +49,7 @@ const BannerManager = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [blockData, setBlockData] = useState([]);
-
+  const [addBanner, setAddBanner] = useState([]);
 
   const getBanner = () => {
     Http.GetAPI(apis.getBanner + "?" + Math.random(), data, null)
@@ -74,6 +74,25 @@ const BannerManager = () => {
 
   const handleSubmit = () => {
     console.log(formData);
+    var data = new FormData();
+    data.append("banner_image", formData.image);
+    data.append("is_redirect", formData.redirect);
+    data.append("url", formData.url);
+    data.append("active", 1);
+
+    Http.PostAPI(apis.addBanner, data, null)
+      .then((res) => {
+        console.log("resp", res);
+        if (res?.data?.status) {
+          setAddBanner(res?.data?.data);
+        } else {
+          alert("Fields not matched");
+        }
+      })
+      .catch((e) => {
+        alert("Something went wrong.");
+        console.log("Error:", e);
+      });
     resetForm();
   };
 
@@ -84,6 +103,8 @@ const BannerManager = () => {
       url: "",
     });
   };
+
+  
   const handleFieldChange = (value, name) => {
     setFormData({ ...formData, [name]: value });
   };
@@ -182,9 +203,9 @@ const BannerManager = () => {
                               }}
                             />
                           </td>
-                          <td style={{textAlign:"center"}}>
-                              {item.is_redirect == "1" ? "Yes" : "No"}
-                           </td>
+                          <td style={{ textAlign: "center" }}>
+                            {item.is_redirect == "1" ? "Yes" : "No"}
+                          </td>
                           <td>{item.url}</td>
                           <td>
                             <div
@@ -203,19 +224,19 @@ const BannerManager = () => {
                             </div>
                           </td>
                           <td>
-                          {item?.active == "1" && (
-                            <Button
-                              className="btn-simple btn-link p-1"
-                              type="button"
-                              style={{ cursor: "pointer", color: "red" }}
-                              onClick={() => {
-                                setShowModal(true);
-                                setBlockData(item.id);
-                              }}
-                            >
-                              <i className="fas fa-times"></i>
-                            </Button>
-                             )}
+                            {item?.active == "1" && (
+                              <Button
+                                className="btn-simple btn-link p-1"
+                                type="button"
+                                style={{ cursor: "pointer", color: "red" }}
+                                onClick={() => {
+                                  setShowModal(true);
+                                  setBlockData(item.id);
+                                }}
+                              >
+                                <i className="fas fa-times"></i>
+                              </Button>
+                            )}
                           </td>
                         </tr>
                       ))}
@@ -229,11 +250,11 @@ const BannerManager = () => {
       </div>
 
       <BlockBanner
-          showModal={showModal}
-          setShowModal={setShowModal}
-          blockData={blockData}
-          getBanner={getBanner}
-        />
+        showModal={showModal}
+        setShowModal={setShowModal}
+        blockData={blockData}
+        getBanner={getBanner}
+      />
     </>
   );
 };
