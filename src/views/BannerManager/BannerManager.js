@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
+import NotificationAlert from "react-notification-alert";
+import html2canvas from "html2canvas";
 import {
   Form,
   Radio,
@@ -47,12 +49,35 @@ const BannerManager = () => {
   });
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [imageUrl, setImageUrl] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [blockData, setBlockData] = useState([]);
   const [addBanner, setAddBanner] = useState([]);
 
+  const notificationAlertRef = React.useRef(null);
+
+  const notify = (place) => {
+    var options = {};
+    options = {
+      place: place,
+      message: (
+        <div>
+          <div>
+            <b>Banner Details Successfully Added..!!</b>
+          </div>
+        </div>
+      ),
+      type: "success",
+      icon: "nc-icon nc-bell-55",
+      autoDismiss: 7,
+    };
+
+    notificationAlertRef.current.notificationAlert(options);
+  };
+
+
   const getBanner = () => {
-    Http.GetAPI(apis.getBanner + "?" + Math.random(), data, null)
+    Http.GetAPI(apis.getBanner + "?" + Math.random(), data)
       .then((res) => {
         setIsLoading(false);
         if (res?.data?.status) {
@@ -71,20 +96,48 @@ const BannerManager = () => {
   useEffect(() => {
     getBanner();
   }, []);
+  // -------------------------------------------Base64--------------------
+  // var base64String = "";
+  // function Uploaded() {
+  //     var file = document.querySelector(
+  //         'input[type=file]')['files'][0];
+  //     var reader = new FileReader();
+  //     reader.onload = function () {
+  //         base64String = reader.result.replace("data:", "")
+  //             .replace(/^.+,/, "");
+  //         let imageBase64Stringsep = base64String;
+  //         console.log("string1", base64String);
+
+  //     }
+  //     reader.readAsDataURL(file);
+
+  //}
+  // *********************************************************************
+  const resetForm = () => {
+    setFormData({
+      image: "",
+      redirect: "",
+      url: "",
+    });
+    setImageUrl("");
+  };
 
   const handleSubmit = () => {
-    console.log(formData);
+   
+
     var data = new FormData();
-    data.append("banner_image", formData.image);
+    data.append("banner_image", imageUrl);
+     console.log("images", imageUrl);
     data.append("is_redirect", formData.redirect);
     data.append("url", formData.url);
     data.append("active", 1);
 
-    Http.PostAPI(apis.addBanner, data, null)
+    Http.PostAPI(apis.addBanner, data)
       .then((res) => {
         console.log("resp", res);
         if (res?.data?.status) {
           setAddBanner(res?.data?.data);
+          getBanner();
         } else {
           alert("Fields not matched");
         }
@@ -94,33 +147,32 @@ const BannerManager = () => {
         console.log("Error:", e);
       });
     resetForm();
-  };
-
-  const resetForm = () => {
-    setFormData({
-      image: "",
-      redirect: "",
-      url: "",
-    });
+    notify("tr");
   };
 
   
+
   const handleFieldChange = (value, name) => {
     setFormData({ ...formData, [name]: value });
   };
 
   return (
     <>
+     <div className="rna-container">
+        <NotificationAlert ref={notificationAlertRef} />
+      </div>
       <div className="MainContainer">
         <div className="Container">
           <Form fluid onSubmit={handleSubmit}>
             <Form.Group>
-              <Form.ControlLabel>IMAGE</Form.ControlLabel>
-              <Form.Control
-                name="image"
-                accept="image/*"
+              <Form.ControlLabel htmlFor="file">IMAGE</Form.ControlLabel>
+              <input
                 type="file"
-                onChange={(value) => handleFieldChange(value, "image")}
+                name="imageUrl"
+                required
+                onChange={(e) => {
+                  setImageUrl(e.target.files[0]);
+                }}
               />
             </Form.Group>
             <Form.Group>
@@ -129,6 +181,7 @@ const BannerManager = () => {
                 name="redirect"
                 inline
                 onChange={(value) => handleFieldChange(value, "redirect")}
+                required
               >
                 <Radio value="Yes">Yes</Radio>
                 <Radio value="No">No</Radio>
@@ -141,6 +194,7 @@ const BannerManager = () => {
                 name="url"
                 type="url"
                 onChange={(value) => handleFieldChange(value, "url")}
+                required
               />
             </Form.Group>
 

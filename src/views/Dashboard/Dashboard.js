@@ -27,7 +27,7 @@ const Dashboard = () => {
   const [latestProduct, setLatestProduct] = useState([]);
 
   useEffect(() => {
-    Http.GetAPI(apis.getDashboard + "?" + Math.random(), data, null)
+    Http.GetAPI(apis.getDashboard + "?" + Math.random(), data)
       .then((res) => {
         console.log(
           "res",

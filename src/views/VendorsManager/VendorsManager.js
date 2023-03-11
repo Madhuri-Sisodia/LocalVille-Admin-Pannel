@@ -81,7 +81,7 @@ const VendorsManager = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const getVendors = () => {
-    Http.GetAPI(apis.getVendorsData + "?" + Math.random(), data, null)
+    Http.GetAPI(apis.getVendorsData + "?" + Math.random(), data)
       .then((res) => {
         setIsLoading(false);
         if (res?.data?.status) {

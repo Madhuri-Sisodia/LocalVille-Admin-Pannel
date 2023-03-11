@@ -19,5 +19,6 @@ export const apis = {
     updateVerifiedProduct:"update_verified_products.php",
     getBanner:"get_store_banner.php",
     blockBanner:"block_store_banner.php",
-    addBanner:"add_store_banner.php"
+    addBanner:"add_store_banner.php",
+    addNotificationManager:"send_notification_vendors.php"
 }

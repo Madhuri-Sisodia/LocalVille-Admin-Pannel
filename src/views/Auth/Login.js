@@ -47,7 +47,7 @@ const Login = () => {
       console.log("usersss", data);
       Http.PostAPI(apis.loginAdminData, data, null)
         .then((res) => {
-          console.log("user", res);
+          console.log("resp", res);
           if (res?.data?.status) {
             setUser(res?.data?.data);
             sessionStorage.setItem("loggedIn", JSON.stringify(res.data.data.token));

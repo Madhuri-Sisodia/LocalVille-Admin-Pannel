@@ -1,46 +1,70 @@
 import axios from "axios";
 import { base_url, prod_url } from "./WebConstant";
-console.log(base_url)
-export var Http = {
 
-  GetAPI: (url, data, token = null) => {
+const userToken = JSON.parse(sessionStorage.getItem("loggedIn"));
+
+export var Http = {
+  GetAPI: (url, data, token = userToken) => {
+    console.log("token", token);
+   let header = {
+      "Content-Type": "multipart/form-data",
+      Accept: "application/json",
+      Authorization: userToken,
+    }
     return axios({
-        method: 'GET',
-        url: base_url + url,
-        params: {},
-        headers: {},
-    }).then((e) => {
-      console.log("getData", e);
-        return e;
-    }).catch((e) => {
-      console.log("error", e);
-        alert('Something went wrong!');
-        return e;
+      method: "GET",
+      url: base_url + url,
+      params: {},
+      headers:header,
+      
     })
-},
-  PostAPI: (url, body, token = null) => {
-    console.log("Api",base_url + url);
+      .then((e) => {
+        console.log("getData", e);
+        return e;
+      })
+      .catch((e) => {
+        console.log("error", e);
+        if (e?.response?.status == 401) {
+          alert(
+            "Your account is logged in another device, Please login again."
+          );
+          sessionStorage.clear();
+          history.push("/login");
+        } else {
+          ("Something went wrong!");
+        }
+        return e;
+      });
+  },
+  PostAPI: (url, body, token = userToken) => {
+    console.log("Api", base_url + url);
     var headers = {
       "Content-Type": "multipart/form-data",
-      "Accept":'application/json',
-      "Authorization":token
-  };
+      Accept: "application/json",
+      Authorization: userToken,
+    };
 
-  console.log('body', body)
+    console.log("body", body);
     return axios({
-      method: 'POST',
+      method: "POST",
       url: base_url + url,
       data: body,
       headers: headers,
-  }).then((e) => {
-      return e;
-  }).catch((e) => {
-      console.log('Error', e);
-      alert( 'Something went wrong!')
-      return e;
-  })
+    })
+      .then((e) => {
+        return e;
+      })
+      .catch((e) => {
+        if (e?.response?.status == 401) {
+          alert(
+            "Your account is logged in another device, Please login again."
+          );
+          sessionStorage.clear();
+           history.push("/login");
+        } else {
+          ("Something went wrong!");
+        }
+        return e;
+      });
   },
 };
-
-
-

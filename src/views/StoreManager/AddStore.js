@@ -68,7 +68,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    var data = new FormData();
+   
 
     data.append("store_Image", storeData.storeImage);
     data.append("store_name", storeData.storeName);
