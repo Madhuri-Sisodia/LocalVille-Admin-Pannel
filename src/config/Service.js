@@ -1,14 +1,21 @@
 import axios from "axios";
 import { base_url, prod_url } from "./WebConstant";
 console.log(base_url)
+const UserToken = JSON.parse(sessionStorage.getItem("loggedIn"))
+console.log(UserToken)
 export var Http = {
-
-  GetAPI: (url, data, token = null) => {
+  GetAPI: (url, data) => {
+    let header = {
+      "Content-Type": "multipart/form-data",
+      "Accept":'application/json',
+      "Authorization":UserToken
+  }
+  console.log(header)
     return axios({
         method: 'GET',
         url: base_url + url,
         params: {data},
-        headers: {},
+        headers:header,
     }).then((e) => {
       console.log("getData", e);
         return e;
@@ -17,14 +24,14 @@ export var Http = {
         alert('Something went wrong!');
         return e;
     })
-},
-  PostAPI: (url, body, token = null) => {
+},//Authorization
+  PostAPI: (url, body) => {
     console.log("Api",base_url + url);
     console.log(body)
     var headers = {
       "Content-Type": "multipart/form-data",
       "Accept":'application/json',
-      "Authorization":token
+      "Authorization":JSON.parse(sessionStorage.getItem("loggedIn"))
   };
        
   console.log('body', body)

@@ -3,6 +3,7 @@ import ChartistGraph from "react-chartist";
 import StoreCard from "./StoreCard";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
+import axios from "axios";
 // react-bootstrap components
 import {
   Card,
@@ -25,9 +26,27 @@ const Dashboard = () => {
   const [totalActiveUsers, setTotalActiveUsers] = useState(0);
   const [latestStore, setLatestStore] = useState([]);
   const [latestProduct, setLatestProduct] = useState([]);
+   
+  useEffect(()=>{
+    fetch("https://jsonplaceholder.typicode.com/posts", {
+     
+    // Adding method type
+    method: "GET",
+      
+    // Adding headers to the request
+    headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        "Authorization":sessionStorage.getItem("loggedIn")
+    }
+})
+//getResult()
+  },[])
+
 
   useEffect(() => {
-    Http.GetAPI(apis.getDashboard + "?" + Math.random(), data, null)
+    Http.GetAPI(apis.getDashboard + "?" + Math.random(), data,{headers:{
+      Authorization:sessionStorage.getItem("loggedIn")
+    }})
       .then((res) => {
         console.log(
           "res",

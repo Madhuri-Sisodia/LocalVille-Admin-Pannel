@@ -18,25 +18,26 @@ const Paginte = ({pages})=>{
     
   }
 
-  let i=0
+  let i=1
   const increasePages=()=>{
-    if(i<=pages){
+    if(i<pages){
       arr=[]
       for(j=i;j<i+5;j++){
-        arr.push(j+1)
+        arr.push(j)
       }
       i=i+5
     }
     else{
       if(arr[arr.length-1]<pages){
         diff = pages%5
+        if(diff!=0){
         arr=[]
-        for(j=i+1;j<diff;j++){
+        for(j=i;j<diff;j++){
           arr.push(j)
         }
         const button = document.getElementById("next")
         button.setAttribute("disabled","")
-      }
+        }}
       else{
         const button = document.getElementById("next")
         button.setAttribute("disabled","")

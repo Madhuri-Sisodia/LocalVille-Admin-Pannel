@@ -4,6 +4,7 @@ import { Modal, Form, Button } from "react-bootstrap";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import "../../assets/css/modal.css";
+import Size from "components/size";
 import { get } from "jquery";
 
 const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
@@ -16,13 +17,16 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
   const [getProSubcat,setGetProSubCat] = useState([])
   const [selectProCat,setSelectProCat] = useState("")
   const [selectProSubCat,setSelectProSubCat] = useState("")
-  const [size,setSize] = useState("No")
-  const [color,setColor] = useState("No")
+  const [getsize,setGetSize] = useState([])
+  const [color,setColor] = useState([])
   const [bay,setBay] = useState("No")
   const [Pickup,setPickup] = useState("No")
+  const [productPrice,setProductPrice] = useState([]) 
+  const [productDiscountPrice,setProductDiscountPrice] = useState([]) 
+   
+  console.log(getsize,color,productPrice,productDiscountPrice)
 
   const [productData, setProductData] = useState({
-    // productImage: "",
     productName: "",
     productDesc: "",
     category: "",
@@ -58,12 +62,7 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
       sub_category: "",
       is_buy: "",
       is_pickup: "",
-      color: "",
       in_stock: "",
-      size: "",
-      price: "",
-      dis_price: "",
-
     });
     setImage(null);
   };
@@ -160,12 +159,42 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
     data.append("sub_category",selectProSubCat);
     data.append("is_buy", bay);
     data.append("is_pickup", Pickup);
-    data.append("color", color=="Yes"?1:0);
-    data.append("size", size=="Yes"?1:0);
-    data.append("price", productData.price);
-    data.append("dis_price", productData.dis_price);
     data.append("in_stock", productData.in_stock);
-    data.append("product_images",productData.productImage)
+    
+    if(productData.productImage.length<4){
+      for(let i=0;i<productData.productImage.length;i++){
+        console.log(productData.productImage[i])
+        data.append(`product_images[${i}]`,productData.productImage[i])
+      }
+    }
+    else{
+      for(let i=0;i<4;i++){
+        console.log(productData.productImage[i])
+        data.append(`product_images[${i}]`,productData.productImage[i])
+      }
+    }
+   
+       
+    for(let i=0;i<getsize.length;i++){
+      console.log(getsize[i].id)
+      data.append(`size[${i}]`,getsize[i].id)
+    }
+
+    for(let i=0;i<color.length;i++){
+      console.log(color[i].id)
+      data.append(`color[${i}]`,color[i].id)
+    }
+
+    for(let i=0;i<productPrice.length;i++){
+      console.log(productPrice[i])
+      data.append(`price[${i}]`,productPrice[i])
+    }
+
+    for(let i=0;i<productDiscountPrice.length;i++){
+      console.log(productDiscountPrice[i])
+      data.append(`dis_price[${i}]`,productDiscountPrice[i])
+    }
+
    
     Http.PostAPI(apis.addProducts, data, null)
       .then((res) => {
@@ -183,6 +212,10 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
       });
     resetForm();
     setShowAddProduct(false);
+    setGetSize([])
+    setColor([])
+    setProductPrice([])
+    setProductDiscountPrice([])
   };
 
   const handleInput = (e) => {
@@ -208,29 +241,15 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
         </Modal.Header>
         <Modal.Body className="add-body">
           <Form onSubmit={handleSubmit}>
-            {/* <Form.Group controlId="ProductImage">
-              <Form.Label className="add-label">Product Image</Form.Label>
-              <Form.Control
-                type="file"
-                accept=".png, .jpg, .jpeg"
-                onChange={handleImageChange}
-              /> */}
-
-            {/* {errors.productImage && (
-                <Form.Text className="text-danger">
-                  {errors.productImage}
-                </Form.Text>
-              )} */}
-            {/* </Form.Group> */}
-
             <Form.Group>
             <Form.Label className="add-label">Product Image</Form.Label>
               <Form.Control
                 name="productImage"
+                multiple
                 onChange={(e) => {
-                  console.log(e.target.files[0])
+                  console.log(e.target.files)
                    setProductData((previous)=>{
-                          return {...previous,productImage:e.target.files[0]}
+                          return {...previous,productImage:e.target.files}
                    })  
                   }}
                 type="file"
@@ -254,7 +273,6 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
                 ))}
               </select>
               </div>
-
 
               <Form.Label className="add-label">Product Name</Form.Label>
               <Form.Control
@@ -346,6 +364,15 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
             </Form.Group>
 
             <Form.Group>
+              <Form.Label className="add-label">Add Attributes</Form.Label>
+               <Size 
+               getSize={setGetSize}
+               price={setProductPrice}
+               disPrice={setProductDiscountPrice}
+               getColor={setColor}
+               />
+            </Form.Group>
+            <Form.Group>
               <Form.Label className="add-label">Pickup</Form.Label>
               <div style={{width:"50%",marginTop:"5px",marginBottom:"15px"}}>
               <select
@@ -368,80 +395,6 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
               </select>
               </div>
             </Form.Group>
-
-            <Form.Group>
-              <Form.Label className="add-label">Color</Form.Label>
-              <div style={{width:"50%",marginTop:"5px",marginBottom:"15px"}}>
-              <select
-                name="selectSection"
-                value={color}
-               onChange={(event) => setColor(event.target.value)}
-                style={{height:"35px",borderRadius:"5px",paddingLeft:"5px",paddingRight:"5px",borderColor: "#808020",width:"80%"}}  
-               >
-                <option value="">Select</option>
-                  <option style={{fontSize:"14px",paddingBottom:"10px",paddintTop:"10px"}}>
-                    <li>
-                     Yes
-                    </li>
-                  </option>
-                  <option style={{fontSize:"14px",paddingBottom:"10px",paddintTop:"10px"}}>
-                    <li>
-                     No
-                    </li>
-                  </option>
-
-              </select>
-              </div>
-            </Form.Group>
-            <Form.Group>
-              <Form.Label className="add-label">Size</Form.Label>
-              <div style={{width:"50%",marginTop:"5px",marginBottom:"15px"}}>
-              <select
-                name="selectSection"
-                value={size}
-               onChange={(event) => setSize(event.target.value)}
-                style={{height:"35px",borderRadius:"5px",paddingLeft:"5px",paddingRight:"5px",borderColor: "#808020",width:"80%"}}  
-               >
-                <option value="">Select</option>  
-                  <option  style={{fontSize:"14px",paddingBottom:"10px",paddintTop:"10px"}}>
-                    <li>
-                     Yes
-                    </li>
-                  </option>
-                  <option  style={{fontSize:"14px",paddingBottom:"10px",paddintTop:"10px"}}>
-                    <li>
-                     No
-                    </li>
-                  </option>
-              </select>
-              </div>
-            </Form.Group>
-
-            <Form.Group>
-              <Form.Label className="add-label">Price</Form.Label>
-              <Form.Control
-                type="text"
-                name="price"
-                required
-                onChange={(e) => {
-                  handleInput(e);
-                }}
-              ></Form.Control>
-            </Form.Group>
-
-            <Form.Group>
-              <Form.Label className="add-label">Discounted Price</Form.Label>
-              <Form.Control
-                type="text"
-                name="dis_price"
-                required
-                onChange={(e) => {
-                  handleInput(e);
-                }}
-              ></Form.Control>
-            </Form.Group>
-
-
             <button
               type="submit"
               style={{

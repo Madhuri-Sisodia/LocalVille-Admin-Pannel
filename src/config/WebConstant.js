@@ -31,6 +31,8 @@ export const apis = {
     getSizeAttributes:"get_size_attributes.php",
     addSize:"add_size.php",
     addColor:"add_color.php",
+    getColor:"get_color.php",
+    getSize:"get_size.php",
     searchvendor:"search_vendor.php",
     searchproduct:"search_product.php",
     searchstore:"search_store.php"
