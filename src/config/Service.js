@@ -36,19 +36,25 @@ export var Http = {
        
   console.log('body', body)
     return axios({
-      method: 'POST',
+      method: "POST",
       url: base_url + url,
       data: body,
       headers: headers,
-  }).then((e) => {
-      return e;
-  }).catch((e) => {
-      console.log('Error', e);
-      alert( 'Something went wrong!')
-      return e;
-  })
+    })
+      .then((e) => {
+        return e;
+      })
+      .catch((e) => {
+        if (e?.response?.status == 401) {
+          alert(
+            "Your account is logged in another device, Please login again."
+          );
+          sessionStorage.clear();
+           history.push("/login");
+        } else {
+          ("Something went wrong!");
+        }
+        return e;
+      });
   },
 };
-
-
-

@@ -10,7 +10,11 @@
     "chartist": "0.11.4",
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.9",
+<<<<<<< HEAD
     "jwt-decode": "^3.1.2",
+=======
+    "html2canvas": "^1.4.1",
+>>>>>>> 4dea630ab9232bf4a0b56c108900555988e1436b
     "react": "^18.2.0",
     "react-bootstrap": "^2.4.0",
     "react-chartist": "0.14.4",

@@ -35,5 +35,9 @@ export const apis = {
     getSize:"get_size.php",
     searchvendor:"search_vendor.php",
     searchproduct:"search_product.php",
-    searchstore:"search_store.php"
+    searchstore:"search_store.php",
+    getBanner:"get_store_banner.php",
+    blockBanner:"block_store_banner.php",
+    addBanner:"add_store_banner.php",
+    addNotificationManager:"send_notification_vendors.php"
 }

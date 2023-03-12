@@ -142,8 +142,7 @@ const StoreManager = () => {
   };
 
   const getStore = () => {
-    console.log("hello")
-    Http.GetAPI(apis.getStoreData + "?" + `page=${pageNo}`, "", null)
+    Http.GetAPI(apis.getStoreData + "?" + Math.random(), data)
       .then((res) => {
         if (res?.data?.status) {
            if(res.data.data.length>0){

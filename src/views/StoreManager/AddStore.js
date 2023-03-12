@@ -98,7 +98,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+  
    const vendorid = vendortData.filter((ele)=>{
             return(ele.email==selectSection)
    })

@@ -8,21 +8,13 @@ import "../../assets/css/modal.css";
 const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
   const [vendors, setVendors] = useState([]);
   const [errors, setErrors] = useState({});
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState("");
   const [vendorData, setVendorData] = useState({
     vendorImage: null,
     vendorName: "",
     email: "",
     phone: "",
   });
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setImage(file);
-    setVendorData((previous) => {
-      return { ...previous, vendorImage: file };
-    });
-  };
 
   const resetForm = () => {
     setVendorData({
@@ -31,7 +23,7 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
       email: "",
       phone: "",
     });
-    setImage(null);
+    setImage("");
   };
 
   const validate = () => {
@@ -45,15 +37,14 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
     } else if (!/\S+@\S+\.\S+/.test(vendorData.email)) {
       tempErrors.email = "Email is invalid";
     }
-    if (!vendorData.vendorImage) {
-      tempErrors.vendorImage = "Image is required";
+    if (!image) {
+      tempErrors.image = "Image is required";
     } else if (
-      vendorData.vendorImage.type !== "image/png" &&
-      vendorData.vendorImage.type !== "image/jpg" &&
-      vendorData.vendorImage.type !== "image/jpeg"
+      image.type !== "image/png" &&
+      image.type !== "image/jpg" &&
+      image.type !== "image/jpeg"
     ) {
-      tempErrors.vendorImage =
-        "Please select a valid image file (png, jpg, jpeg)";
+      tempErrors.image = "Please select a valid image file (png, jpg, jpeg)";
     }
     if (!vendorData.phone) {
       tempErrors.phone = "Phone is required";
@@ -71,14 +62,14 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
       console.log(vendorData);
 
       var data = new FormData();
-
+      data.append("image", image);
       data.append("name", vendorData.vendorName);
       data.append("email", vendorData.email);
       data.append("phonenumber", vendorData.phone);
-      // data.append("image", vendorData.vendorImage);
+
       console.log("dddd", data);
 
-      Http.PostAPI(apis.addVendors, data, null)
+      Http.PostAPI(apis.addVendors, data)
         .then((res) => {
           console.log("resp", res);
           if (res?.data?.status) {
@@ -121,16 +112,15 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="vendorImage">
               <Form.Label className="add-label">Vendor Image</Form.Label>
-              <Form.Control
+               <Form.Control
+                name="image"
                 type="file"
-                accept=".png, .jpg, .jpeg"
-                onChange={handleImageChange}
+                accept="image/*"
+                onChange={(e) => setImage(e.target.files[0])}
               />
 
-              {errors.vendorImage && (
-                <Form.Text className="text-danger">
-                  {errors.vendorImage}
-                </Form.Text>
+              {errors.image && (
+                <Form.Text className="text-danger">{errors.image}</Form.Text>
               )}
             </Form.Group>
 
@@ -180,7 +170,7 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
                 <Form.Text className="text-danger">{errors.phone}</Form.Text>
               )}
             </Form.Group>
-            
+
             <button
               type="submit"
               block
