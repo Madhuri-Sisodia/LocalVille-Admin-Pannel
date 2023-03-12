@@ -14,12 +14,9 @@ import Products from "views/Products/Products";
 import ProductApproval from "views/ProductApproval/ProductApproval";
 import StoreApproval from "views/StoreApproval/StoreApproval";
 import NotificationManager from "views/NotificationManager";
-<<<<<<< HEAD
 import EmailManager from "views/EmailManager/EmailManager";
-import BannerManager from "views/BannerManager";
-=======
+// import BannerManager from "views/BannerManager";
 import BannerManager from "views/BannerManager/BannerManager";
->>>>>>> 4dea630ab9232bf4a0b56c108900555988e1436b
 
 
 const dashboardRoutes = [
@@ -114,8 +111,8 @@ const dashboardRoutes = [
     icon: "nc-icon nc-circle-09",
     component: EmailManager,
     layout: "/admin"
-  }
-  ,
+  },
+  
 
   // {
   //   path: "/user",

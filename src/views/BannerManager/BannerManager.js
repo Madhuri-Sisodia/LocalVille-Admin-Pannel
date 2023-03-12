@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import NotificationAlert from "react-notification-alert";
-import html2canvas from "html2canvas";
+
 import {
   Form,
   Radio,

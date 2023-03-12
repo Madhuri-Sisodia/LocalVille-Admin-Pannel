@@ -1,12 +1,12 @@
-
-import React, { useState,useEffect } from "react";
-import { Form, Button, ButtonToolbar, SelectPicker, Checkbox } from "rsuite";
+import { useState,useEffect } from "react";
+import { Form} from "rsuite";
 import ErrorMessage from "customComponents/ErrorMessage";
 import "../../assets/css/admin.css";
-import MultipleSelect from "components/multipleSelect";
+import MultipleSelect from "components/MultipleSelect";
 import { Http } from "config/Service";
 import { apis } from "config/WebConstant";
 import MyComponent from "components/React-Quil-text-Editor";
+import { Data } from "@react-google-maps/api";
 
 const EmailManager = () => {
   const [selectedVendors, setSelectedVendors] = useState([]);
@@ -57,17 +57,11 @@ const EmailManager = () => {
           >
             <Form.Group>
               <Form.ControlLabel>VENDORS</Form.ControlLabel>
-              {/* <SelectPicker
-                data={vendors}
-                name="vendors"
-                placeholder="Select vendors"
-                style={{ width: 300 }}
-                value={selectedVendors}
-                onChange={(value) => setSelectedVendors(value)}
-                searchable={false}
-                required
-              /> */}
-              <MultipleSelect data ={data}/>
+              <MultipleSelect 
+              data={data}
+              setSelectedVendors={setSelectedVendors}
+              selectedVendors={selectedVendors}
+              />
                
             </Form.Group>
             <Form.Group>

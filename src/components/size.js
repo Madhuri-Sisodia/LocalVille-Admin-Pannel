@@ -7,7 +7,7 @@ import { apis } from "../config/WebConstant";
 import "../assets/css/day.css";
 import {ColorSize} from "../CommonUtils/ColorSize"
 
-const Size  = ({getSize,price,disPrice,getColor})=>{
+const Size  = ({setAttributes,attributes})=>{
      const [showAddProduct, setShowAddProduct] = useState(false);
     const [ingridents, setingridents] = useState([])
     const [sizeData,setSizeData] = useState([])
@@ -16,6 +16,17 @@ const Size  = ({getSize,price,disPrice,getColor})=>{
     const [getSelectedColor,setGetSelectedColor] = useState("")
     const [discountPrice,setDiscountPrice] = useState("")
     const [NewPrice,setNewPrice] = useState("")
+    const [isAdded,setIsAdded] = useState(false)
+    const [getAttributes,setGetAttributes] = useState({
+      
+        Size:"",
+        Color:"",
+        Price:"",
+      dis_Price:""
+      
+    })
+
+    console.log(getAttributes)
 
     const increaseIngridents = ()=>{
         setingridents([...ingridents,""])
@@ -25,8 +36,10 @@ const Size  = ({getSize,price,disPrice,getColor})=>{
   const deleteIngredent = (e)=>{
        const Result = [...ingridents] 
        Result.splice(e.target.id,1)
-       console.log(Result)
        setingridents(Result)
+       const Att = [...attributes]
+       Att.splice(e.target.id,1)
+       setAttributes(Att)
   }
 
   
@@ -50,6 +63,10 @@ const Size  = ({getSize,price,disPrice,getColor})=>{
         ColorSize()
   },[])
 
+
+ useEffect(()=>{
+
+ },[])
 
 
   useEffect(()=>{
@@ -77,28 +94,40 @@ const Size  = ({getSize,price,disPrice,getColor})=>{
      sizeData.filter((ele)=>{
          if(ele.name==getSelectedSize){
           console.log(ele.name)
-           getSize((previous)=>{
-               return [...previous ,ele]
-           })
+           setGetAttributes((previous)=>{
+            return {...previous ,Size:ele}
+        })
          }
      })
-     price((previous)=>{
-          return [...previous,NewPrice]
-     })
-     disPrice((previous)=>{
-             return [...previous,discountPrice]
-     })
+
+     setGetAttributes((previous)=>{
+      return {...previous ,Price:NewPrice}
+  })
+
+     setGetAttributes((previous)=>{
+      return {...previous ,dis_Price:discountPrice}
+  })
      
      colorData.filter((ele)=>{
           if(ele.name==getSelectedColor){
-               getColor((previous)=>{
-                   return [...previous ,ele]
-               })
+               setGetAttributes((previous)=>{
+                return {...previous ,Color:ele}
+            })
              }
      })
-
+     setIsAdded(true)
      setShowAddProduct(false)
    };
+
+   useEffect(()=>{
+       if(isAdded){
+       setAttributes((previous)=>{
+        return [...previous,getAttributes]
+        })
+       setIsAdded(false)
+       }
+   },[isAdded])
+
 
  return(
     <>
@@ -133,6 +162,7 @@ const Size  = ({getSize,price,disPrice,getColor})=>{
               >Color</Form.Label>
               <div style={{width:"100%",margin:"auto",marginTop:"5px",marginBottom:"5px",paddingRight:"10px"}}>
               <select
+              required
                 name="selectSection"
                 value={getSelectedColor}
                onChange={(event) => setGetSelectedColor(event.target.value)}
@@ -156,6 +186,7 @@ const Size  = ({getSize,price,disPrice,getColor})=>{
               >Size</Form.Label>
               <div style={{width:"100%",margin:"auto",marginTop:"5px",marginBottom:"5px",paddingLeft:"10px"}}>
               <select
+              required
                 name="selectSection"
                 value={getSelectedSize}
                onChange={(event) => setGetSelectedSize(event.target.value)}
@@ -176,9 +207,9 @@ const Size  = ({getSize,price,disPrice,getColor})=>{
             <Form.Group>
               <Form.Label className="add-label">Price</Form.Label>
               <Form.Control
+               required
                 type="text"
                 name="price"
-                required
                 onChange={(e) => {
                     setNewPrice(e.target.value);
                 }}
@@ -187,9 +218,9 @@ const Size  = ({getSize,price,disPrice,getColor})=>{
             <Form.Group>
               <Form.Label className="add-label">Discounted Price</Form.Label>
               <Form.Control
+               required
                 type="text"
                 name="dis_price"
-                required
                 onChange={(e) => {
                     setDiscountPrice(e.target.value);
                 }}

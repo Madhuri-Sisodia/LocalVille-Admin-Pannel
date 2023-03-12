@@ -23,8 +23,8 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
   const [Pickup,setPickup] = useState("No")
   const [productPrice,setProductPrice] = useState([]) 
   const [productDiscountPrice,setProductDiscountPrice] = useState([]) 
-   
-  console.log(getsize,color,productPrice,productDiscountPrice)
+  const [attributes,setAttributes] = useState([])
+  console.log("att=>",attributes)
 
   const [productData, setProductData] = useState({
     productName: "",
@@ -33,8 +33,7 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
     sub_category: "",
     is_buy: "",
     is_pickup: "",
-    color: false,
-    size: false,
+    Attributes:"",
     price: "",
     dis_price: "",
     in_stock: "",
@@ -161,39 +160,20 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
     data.append("is_pickup", Pickup);
     data.append("in_stock", productData.in_stock);
     
-    if(productData.productImage.length<4){
-      for(let i=0;i<productData.productImage.length;i++){
-        console.log(productData.productImage[i])
-        data.append(`product_images[${i}]`,productData.productImage[i])
-      }
-    }
-    else{
+     if(productData.productImage){
       for(let i=0;i<4;i++){
-        console.log(productData.productImage[i])
-        data.append(`product_images[${i}]`,productData.productImage[i])
+        data.append(`product_images[${i}]`,productData?.productImage[i])
       }
     }
+
+    for(let i=0;i<attributes.length;i++){
+      data.append(`color[${i}]`,attributes[i].Color.id)
+      data.append(`size[${i}]`,attributes[i].Size.id)
+      data.append(`price[${i}]`,attributes[i].Price)
+      data.append(`dis_price[${i}]`,attributes[i].dis_Price)
+    }
+
    
-       
-    for(let i=0;i<getsize.length;i++){
-      console.log(getsize[i].id)
-      data.append(`size[${i}]`,getsize[i].id)
-    }
-
-    for(let i=0;i<color.length;i++){
-      console.log(color[i].id)
-      data.append(`color[${i}]`,color[i].id)
-    }
-
-    for(let i=0;i<productPrice.length;i++){
-      console.log(productPrice[i])
-      data.append(`price[${i}]`,productPrice[i])
-    }
-
-    for(let i=0;i<productDiscountPrice.length;i++){
-      console.log(productDiscountPrice[i])
-      data.append(`dis_price[${i}]`,productDiscountPrice[i])
-    }
 
    
     Http.PostAPI(apis.addProducts, data, null)
@@ -366,10 +346,8 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
             <Form.Group>
               <Form.Label className="add-label">Add Attributes</Form.Label>
                <Size 
-               getSize={setGetSize}
-               price={setProductPrice}
-               disPrice={setProductDiscountPrice}
-               getColor={setColor}
+               setAttributes={setAttributes}
+               attributes={attributes}
                />
             </Form.Group>
             <Form.Group>

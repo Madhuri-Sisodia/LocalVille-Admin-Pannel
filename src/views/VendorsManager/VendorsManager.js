@@ -97,11 +97,7 @@ const VendorsManager = () => {
 }
 
   const getVendors = () => {
-<<<<<<< HEAD
     Http.GetAPI(apis.getVendorsData + "?" + `page=${pageNo}`, data, null)
-=======
-    Http.GetAPI(apis.getVendorsData + "?" + Math.random(), data)
->>>>>>> 4dea630ab9232bf4a0b56c108900555988e1436b
       .then((res) => {
         setIsLoading(false);
         if (res?.data?.status) {
