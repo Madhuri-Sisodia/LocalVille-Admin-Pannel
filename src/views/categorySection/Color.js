@@ -20,6 +20,7 @@ const Color = () => {
 //   const [category, setCategory] = useState([]);
   // const [getCategoryData, setGetCategoryData] = useState([]);
 console.log(colorName)
+
   const notificationAlertRef = React.useRef(null);
 
   const notify = (place) => {

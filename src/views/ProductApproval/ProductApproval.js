@@ -28,16 +28,18 @@ const ProductApproval = () => {
   const [showVerifiedProduct, setShowVerifiedProduct] = useState(false);
   const [showProductDetails, setShowProductDetails] = useState(false);
   const [showRejectProduct, setShowRejectProduct] = useState(false);
+  const [totalPages,setTotalPages] = useState(0)
   const {pageNo,setDisabledNext} = useContext(Utils)
   const [rowData, setRowData] = useState([]);
   const [product, setProduct] = useState([]);
 
   const getUnverifiedProduct = () => {
-    Http.GetAPI(apis.getUnverifiedProducts + "?" +`page=${pageNo}`, data, null)
+    Http.GetAPI(apis.getUnverifiedProducts + "?" +`page=${pageNo}`, "", null)
       .then((res) => {
         if (res?.data?.status) {
           if(res.data.data.length>0){
             setData(res?.data?.data);
+            setTotalPages(res.data.total_pages)
           }
         } else {
           alert("Fields not matched");
@@ -144,7 +146,7 @@ const ProductApproval = () => {
             </Card>
           </Col>
           <div style={{display:"flex",justifyContent:"center",textAlign:"center"}}>
-        <Paginte/>
+        <Paginte pages={totalPages}/>
         </div>
         </Row>
 

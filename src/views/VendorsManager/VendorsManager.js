@@ -74,7 +74,7 @@ import BlockVendor from "./BlockVendor";
 const VendorsManager = () => {
   const [showModal, setShowModal] = useState(false);
   const [data, setData] = useState([]);
-
+  const [totalPages,setTotalPages] = useState(0)
   const [blockData, setBlockData] = useState([]);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showAddVendor, setShowAddVendor] = useState(false);
@@ -104,6 +104,7 @@ const VendorsManager = () => {
           if(res.data.data.length>0){
             setData(res?.data?.data);
             setDisabledNext(true)
+            setTotalPages(res.data.total_pages)
           }
           else{
             setDisabledNext(false)
@@ -269,7 +270,7 @@ const VendorsManager = () => {
               </Card.Body>
             </Card>
             <div style={{display:"flex",justifyContent:"center",textAlign:"center"}}>
-        <Paginte/>
+        <Paginte pages={totalPages}/>
         </div>
           </Col>
         </Row>
