@@ -27,24 +27,11 @@ const Dashboard = () => {
   const [latestStore, setLatestStore] = useState([]);
   const [latestProduct, setLatestProduct] = useState([]);
    
-  useEffect(()=>{
-    fetch("https://jsonplaceholder.typicode.com/posts", {
-     
-    // Adding method type
-    method: "GET",
-      
-    // Adding headers to the request
-    headers: {
-        "Content-type": "application/json; charset=UTF-8",
-        "Authorization":sessionStorage.getItem("loggedIn")
-    }
-})
-//getResult()
-  },[])
+  
 
 
   useEffect(() => {
-    Http.GetAPI(apis.getDashboard + "?" + Math.random(), data)
+    Http.GetAPI(process.env.REACT_APP_GETDASHBOARD + "?" + Math.random(), data)
       .then((res) => {
         console.log(
           "res",

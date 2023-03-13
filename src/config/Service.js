@@ -1,8 +1,8 @@
-import axios from "axios";
-import { base_url, prod_url } from "./WebConstant";
-console.log(base_url)
+import axios from "axios";//import { base_url, prod_url } from "./WebConstant";
 const UserToken = JSON.parse(sessionStorage.getItem("loggedIn"))
-console.log(UserToken)
+const base_url = process.env.REACT_APP_BASEURL
+console.log(process.env.REACT_APP_BASEURL)
+
 export var Http = {
   GetAPI: (url, data) => {
     let header = {

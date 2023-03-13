@@ -24,7 +24,7 @@ const BlockVendor = ({ showModal, setShowModal, blockData, getVendors }) => {
     var data = new FormData();
     data.append("id", id);
     console.log("usersss", data);
-    Http.PostAPI(apis.blockUser, data, null)
+    Http.PostAPI(process.env.REACT_APP_BLOCKUSER, data, null)
       .then((res) => {
         console.log("user", res);
         if (res?.data?.status) {

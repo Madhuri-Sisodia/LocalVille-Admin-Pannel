@@ -123,7 +123,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
     data.append("closing_time", storeData.closingTime);
     console.log("updateStore", data);
 
-    Http.PostAPI(apis.addStore, data, null)
+    Http.PostAPI(process.env.REACT_APP_ADDSTORE, data, null)
       .then((res) => {
         console.log("resp", res);
         if (res?.data?.status) {
@@ -152,7 +152,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
 
   useEffect(()=>{
     const getVendorsData=()=>{
-      Http.GetAPI(apis.getVendorsData + "?" + Math.random(), {page:3}, null)
+      Http.GetAPI(process.env.REACT_APP_GETVENDORSDATA + "?" + Math.random(), {page:3}, null)
     .then((res) => { 
       if (res?.data?.status) {
         console.log("vendorData=>",res.data.data)

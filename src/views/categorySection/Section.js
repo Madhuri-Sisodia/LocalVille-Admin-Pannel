@@ -71,7 +71,7 @@ console.log(sectionName)
         var formdata = new FormData();
         formdata.append("section_name",sectionName );
 
-        Http.PostAPI(apis.addCategory, formdata, null)
+        Http.PostAPI(process.env.REACT_APP_ADDCATEGORYSECTION, formdata, null)
         .then((res) => {
           console.log("Data", res);
           if (res?.data?.status) {

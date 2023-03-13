@@ -73,7 +73,7 @@ const AdminManager = () => {
       data.append("password", password);
 
       console.log("usersss", data);
-      Http.PostAPI(apis.addAdminData, data, null)
+      Http.PostAPI(process.env.REACT_APP_ADDADMINDATA, data, null)
         .then((res) => {
           console.log("user", res);
           if (res?.data?.status) {

@@ -25,7 +25,7 @@ const BlockBanner = ({ showModal, setShowModal, blockData, getBanner }) => {
     data.append("banner_id", id);
     data.append("reason", blockReason);
 
-    Http.PostAPI(apis.blockBanner, data, null)
+    Http.PostAPI(process.env.REACT_APP_BLOCKBANNER, data, null)
       .then((res) => {
         console.log("resp", res);
         if (res?.data?.status) {

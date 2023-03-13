@@ -41,7 +41,7 @@ const StoreApproval = () => {
   };
 
   const getUnverifiedStore = () => {
-    Http.GetAPI(apis.getUnverifiedStore + "?" + `page=${pageNo}`, data, null)
+    Http.GetAPI(process.env.REACT_APP_GETUNVERIFIEDSTORE + "?" + `page=${pageNo}`, data, null)
       .then((res) => {
         if (res?.data?.status) {
               if(res.data.data.length>0){

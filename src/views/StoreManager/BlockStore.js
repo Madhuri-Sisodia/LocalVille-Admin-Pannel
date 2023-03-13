@@ -25,7 +25,7 @@ const BlockStore = ({ showModal, setShowModal, blockData, getStore }) => {
     var data = new FormData();
     data.append("id", id);
     console.log("usersss", data);
-    Http.PostAPI(apis.blockStore, data, null)
+    Http.PostAPI(process.env.REACT_APP_BLOCKSTORE, data, null)
       .then((res) => {
         console.log("user", res);
         if (res?.data?.status) {

@@ -121,7 +121,7 @@ const UpdateStore = ({
     );
     console.log("updateStore", data);
 
-    Http.PostAPI(apis.updateStore, data, null)
+    Http.PostAPI(process.env.REACT_APP_UPDATESTORE, data, null)
       .then((res) => {
         console.log("data", res);
         if (res?.data?.status) {

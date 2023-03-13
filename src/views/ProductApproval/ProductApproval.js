@@ -33,7 +33,7 @@ const ProductApproval = () => {
   const [product, setProduct] = useState([]);
 
   const getUnverifiedProduct = () => {
-    Http.GetAPI(apis.getUnverifiedProducts + "?" +`page=${pageNo}`, data, null)
+    Http.GetAPI(process.env.REACT_APP_GETUNVERIFIEDPRODUCTS + "?" +`page=${pageNo}`, data, null)
       .then((res) => {
         if (res?.data?.status) {
           if(res.data.data.length>0){

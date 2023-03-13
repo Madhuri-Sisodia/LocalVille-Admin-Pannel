@@ -94,7 +94,7 @@ const Size = () => {
   };
 
   useEffect(() => {
-    Http.GetAPI(apis.getSizeAttributes + "?" + Math.random(),data, null)
+    Http.GetAPI(process.env.REACT_APP_GETSIZEATTRIBUTES + "?" + Math.random(),data, null)
       .then((res) => {
         console.log(res)
         if (res?.data?.status) {
@@ -108,21 +108,6 @@ const Size = () => {
         console.log("Error:", e);
       });
   }, []);
-
-  // useEffect(() => {
-  //   Http.GetAPI(apis.getCategory + "?" + Math.random(), data, null)
-  //     .then((res) => {
-  //       if (res?.data?.status) {
-  //         setData(res?.data?.data);
-  //       } else {
-  //         alert("Fields not matched");
-  //       }
-  //     })
-  //     .catch((e) => {
-  //       alert("Something went wrong.");
-  //       console.log("Error:", e);
-  //     });
-  // }, []);
 
 
   return (

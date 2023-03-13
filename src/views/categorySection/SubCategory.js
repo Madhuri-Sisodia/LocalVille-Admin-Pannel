@@ -82,7 +82,7 @@ const SubCategory = () => {
     formdata.append("color", color);
     formdata.append("size", size);
     formdata.append("size_att", sizeAttribute);
-    Http.PostAPI(apis.addProdSubCategory + "?" + Math.random(), formdata, null)
+    Http.PostAPI(process.env.REACT_APP_ADDPRODSUBCATEGORY + "?" + Math.random(), formdata, null)
       .then((res) => {
         console.log("Data", res);
         if (res?.data?.status) {
@@ -101,7 +101,7 @@ const SubCategory = () => {
   };
 
   useEffect(() => {
-    Http.GetAPI(apis.getProductCategory + "?" + `category_id=${Categoriesid}`, data, null)
+    Http.GetAPI(process.env.REACT_APP_GETPRODUCTCATEGORY + "?" + `category_id=${Categoriesid}`, data, null)
       .then((res) => {
         if (res?.data?.status) {
           setData(res?.data?.data);

@@ -29,7 +29,7 @@ const RejectProduct = ({
     var data = new FormData();
     data.append("product_id", product.id);
     data.append("verified_status", 2);
-    Http.PostAPI(apis.updateVerifiedProduct, data, null)
+    Http.PostAPI(process.env.REACT_APP_UPDATEVERIFIEDSTORE, data, null)
       .then((res) => {
         console.log("resp", res);
         if (res?.data?.status) {

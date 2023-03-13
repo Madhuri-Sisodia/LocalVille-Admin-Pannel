@@ -64,18 +64,15 @@ console.log(colorName)
 
   const handleSubmit = () => {
 
-
         const SelectedColor = data.filter((ele)=>{
           return(ele.color==selectColor)
         })  
 
-        // setCategoriesId(SelectedSection[0].id)
-      
         var formdata = new FormData();
         formdata.append("color",colorName);
         formdata.append("code",colorCode);
 
-        Http.PostAPI(apis.addColor, formdata, null)
+        Http.PostAPI(process.env.REACT_APP_ADDCOLOR, formdata, null)
         .then((res) => {
           if (res?.data?.status) {
             setColor(res?.data?.data);

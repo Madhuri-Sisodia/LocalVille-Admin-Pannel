@@ -77,7 +77,7 @@ const BannerManager = () => {
 
 
   const getBanner = () => {
-    Http.GetAPI(apis.getBanner + "?" + Math.random(), data)
+    Http.GetAPI(process.env.REACT_APP_GETBANNER + "?" + Math.random(), data)
       .then((res) => {
         setIsLoading(false);
         if (res?.data?.status) {
@@ -96,23 +96,7 @@ const BannerManager = () => {
   useEffect(() => {
     getBanner();
   }, []);
-  // -------------------------------------------Base64--------------------
-  // var base64String = "";
-  // function Uploaded() {
-  //     var file = document.querySelector(
-  //         'input[type=file]')['files'][0];
-  //     var reader = new FileReader();
-  //     reader.onload = function () {
-  //         base64String = reader.result.replace("data:", "")
-  //             .replace(/^.+,/, "");
-  //         let imageBase64Stringsep = base64String;
-  //         console.log("string1", base64String);
-
-  //     }
-  //     reader.readAsDataURL(file);
-
-  //}
-  // *********************************************************************
+  
   const resetForm = () => {
     setFormData({
       image: "",
@@ -132,7 +116,7 @@ const BannerManager = () => {
     data.append("url", formData.url);
     data.append("active", 1);
 
-    Http.PostAPI(apis.addBanner, data)
+    Http.PostAPI(process.env.REACT_APP_ADDBANNER, data)
       .then((res) => {
         console.log("resp", res);
         if (res?.data?.status) {

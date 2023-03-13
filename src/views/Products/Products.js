@@ -62,7 +62,7 @@ const Products = () => {
 }
 
   const getProducts = () => {
-    Http.GetAPI(apis.getProducts + "?" + Math.random(), data, null)
+    Http.GetAPI(process.env.REACT_APP_GETPRODUCTS + "?" + Math.random(), data, null)
       .then((res) => {
         setIsLoading(false);
         if (res?.data?.status) {
@@ -88,7 +88,7 @@ const Products = () => {
     var data = new FormData();
     data.append("product_id", blockData);
     console.log("usersss", data);
-    Http.PostAPI(apis.blockProducts, data, null)
+    Http.PostAPI(process.env.REACT_APP_BLOCKPRODUCTS, data, null)
       .then((res) => {
         console.log("user", res);
         if (res?.data?.status) {
@@ -106,7 +106,7 @@ const Products = () => {
 
      
   const filtervendor = (e)=>{
-    Http.GetAPI(apis.searchproduct + "?" +`search=${e}`,"", null)
+    Http.GetAPI(process.env.REACT_APP_SEARCHPRODUCT + "?" +`search=${e}`,"", null)
     .then((res) => {
       if (res?.data?.status) {
           setData(res?.data?.data);

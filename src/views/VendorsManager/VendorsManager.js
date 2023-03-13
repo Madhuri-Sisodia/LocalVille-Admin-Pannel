@@ -97,7 +97,7 @@ const VendorsManager = () => {
 }
 
   const getVendors = () => {
-    Http.GetAPI(apis.getVendorsData + "?" + `page=${pageNo}`, data, null)
+    Http.GetAPI(proceess.evn.REACT_APP_GETVENDORSDATA + "?" + `page=${pageNo}`, data, null)
       .then((res) => {
         setIsLoading(false);
         if (res?.data?.status) {

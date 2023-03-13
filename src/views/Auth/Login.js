@@ -48,7 +48,7 @@ const Login = () => {
        data.append("password", password);
 
        console.log("usersss", data);
-       Http.PostAPI(apis.loginAdminData, data, null)
+       Http.PostAPI(process.env.REACT_APP_LOGINADMINDATA, data, null)
          .then((res) => {
           if (res?.data?.status) {
              setUser(res?.data?.data);

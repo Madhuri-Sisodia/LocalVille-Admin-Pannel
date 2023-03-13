@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Button, ButtonToolbar, SelectPicker, Checkbox } from "rsuite";
 import ErrorMessage from "customComponents/ErrorMessage";
 import "../assets/css/admin.css";
-import MultipleSelect from "components/MultipleSelect";
+import MultipleSelect from "../components/multipleSelect";
 import NotificationAlert from "react-notification-alert";
 import { Http } from "config/Service";
 import { apis } from "config/WebConstant";
@@ -79,7 +79,7 @@ const NotificationManager = () => {
     data.append("title", title);
     data.append("message", message);
 
-    Http.PostAPI(apis.addNotificationManager, data)
+    Http.PostAPI(process.env.REACT_APP_ADDNOTICATIONMANAGER, data)
       .then((res) => {
         console.log("resp", res);
         if (res?.data?.status) {

@@ -142,7 +142,7 @@ const StoreManager = () => {
   };
 
   const getStore = () => {
-    Http.GetAPI(apis.getStoreData + "?" + Math.random(), data)
+    Http.GetAPI(process.env.REACT_APP_GETSTOREDATA + "?" + Math.random(), data)
       .then((res) => {
         if (res?.data?.status) {
            if(res.data.data.length>0){
@@ -172,7 +172,7 @@ const StoreManager = () => {
     var data = new FormData();
     data.append("id", id);
     console.log("usersss", data);
-    Http.PostAPI(apis.blockStore, data, null)
+    Http.PostAPI(process.env.REACT_APP_BLOCKSTORE, data, null)
       .then((res) => {
         console.log("user", res);
         if (res?.data?.status) {
@@ -190,7 +190,7 @@ const StoreManager = () => {
 
   const filtervendor = (e)=>{
 
-    Http.GetAPI(apis.searchstore + "?" +`search=${e}`, "", null)
+    Http.GetAPI(process.env.REACT_APP_SEARCHSTORE + "?" +`search=${e}`, "", null)
     .then((res) => {
       if (res?.data?.status) {
         if(res.data.data.length>0){

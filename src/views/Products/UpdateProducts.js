@@ -64,7 +64,7 @@ const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct }) => {
    
 
   useEffect(() => {
-    Http.GetAPI(apis.getProductCategory ,"", null)
+    Http.GetAPI(process.env.REACT_APP_GETPRODUCTCATEGORY,"", null)
       .then((res) => {
         if (res?.data?.status) {
           setGetProCat(res?.data?.data);
@@ -89,7 +89,7 @@ const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct }) => {
             console.log(vendorid)
 
       
-      Http.GetAPI(apis.getProdSubCategory + "?" + `category_id=${vendorid[0].id}`, "", null)
+      Http.GetAPI(process.env.REACT_APP_GETPRODSUBCATEGORY + "?" + `category_id=${vendorid[0].id}`, "", null)
       .then((res) => {
         if (res?.data?.status) {
           setGetProSubCat(res?.data?.data);
@@ -112,7 +112,7 @@ const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct }) => {
 
   const getStore = () => {
     console.log("hello")
-    Http.GetAPI(apis.getStoreData + "?" + Math.random(), "", null)
+    Http.GetAPI(process.env.REACT_APP_GETSTOREDATA + "?" + Math.random(), "", null)
       .then((res) => {
         if (res?.data?.status) {
            if(res.data.data.length>0){
@@ -170,7 +170,7 @@ const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct }) => {
       }
 
    
-    Http.PostAPI(apis.updateProducts, data, null)
+    Http.PostAPI(process.env.REACT_APP_UPDATEPRODUCTS, data, null)
       .then((res) => {
         console.log("resp", res);
         if (res?.data?.status) {
