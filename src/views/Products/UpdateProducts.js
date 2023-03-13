@@ -7,7 +7,7 @@ import "../../assets/css/modal.css";
 import Size from "components/size";
 import { get } from "jquery";
 
-const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct }) => {
+const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct,item }) => {
   const [product, setProduct] = useState([]);
   const [image, setImage] = useState(null);
   const [vendortData,setVendorData] = useState([])

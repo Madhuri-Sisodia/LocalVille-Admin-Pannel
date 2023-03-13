@@ -32,6 +32,7 @@ const StoreApproval = () => {
   const [showRejectStore, setShowRejectStore] = useState(false);
   const [storeApproval, setStoreApproval] = useState(false);
   const {pageNo,setDisabledNext} = useContext(Utils)
+  const [totalPages,setTotalPages] = useState(0)
   const [rowData, setRowData] = useState([]);
   const [store, setStore] = useState([]);
   const daysOfWeek = ["M", "T", "W", "T", "F", "S", "S"];
@@ -46,6 +47,7 @@ const StoreApproval = () => {
         if (res?.data?.status) {
               if(res.data.data.length>0){
                 setData(res?.data?.data);
+                setTotalPages(res.data.total_pages)
                 setStoreApproval(false);
               }
         } else {
@@ -179,7 +181,7 @@ const StoreApproval = () => {
               </Card.Body>
             </Card>
             <div style={{display:"flex",justifyContent:"center",textAlign:"center"}}>
-        <Paginte/>
+        <Paginte pages={totalPages}/>
         </div>
           </Col>
         </Row>

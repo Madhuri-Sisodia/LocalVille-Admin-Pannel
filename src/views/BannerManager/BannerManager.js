@@ -82,6 +82,7 @@ const BannerManager = () => {
         setIsLoading(false);
         if (res?.data?.status) {
           setData(res?.data?.data);
+          console.log(res.data.data)
         } else {
           alert("Fields not matched");
         }
@@ -107,12 +108,19 @@ const BannerManager = () => {
   };
 
   const handleSubmit = () => {
-   
+    let redirectImg
+    console.log(formData.redirect=="Yes")
+    if(formData.redirect=="Yes"){
+            redirectImg = "1"
+    }
+    else{
+      redirectImg = "0"
+    }
 
+    console.log(redirectImg)
     var data = new FormData();
     data.append("banner_image", imageUrl);
-     console.log("images", imageUrl);
-    data.append("is_redirect", formData.redirect);
+    data.append("is_redirect", redirectImg);
     data.append("url", formData.url);
     data.append("active", 1);
 
@@ -136,9 +144,14 @@ const BannerManager = () => {
 
   
 
-  const handleFieldChange = (value, name) => {
-    setFormData({ ...formData, [name]: value });
+  const handleFieldChange = (e,name) => {
+    setFormData((previous)=>{
+      return {...previous,[name]:e}
+    });
+   
   };
+  
+  console.log(formData)
 
   return (
     <>
@@ -164,7 +177,7 @@ const BannerManager = () => {
               <RadioGroup
                 name="redirect"
                 inline
-                onChange={(value) => handleFieldChange(value, "redirect")}
+                onChange={(e) => handleFieldChange(e,'redirect')}
                 required
               >
                 <Radio value="Yes">Yes</Radio>
@@ -177,7 +190,7 @@ const BannerManager = () => {
               <Form.Control
                 name="url"
                 type="url"
-                onChange={(value) => handleFieldChange(value, "url")}
+                onChange={(e) => handleFieldChange(e,'url')}
                 required
               />
             </Form.Group>
@@ -242,7 +255,8 @@ const BannerManager = () => {
                             />
                           </td>
                           <td style={{ textAlign: "center" }}>
-                            {item.is_redirect == "1" ? "Yes" : "No"}
+                            {console.log(item.is_redirect)}
+                            {(item.is_redirect == 1) ? "Yes" : "No"}
                           </td>
                           <td>{item.url}</td>
                           <td>

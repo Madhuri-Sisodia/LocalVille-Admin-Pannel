@@ -74,13 +74,13 @@ import BlockVendor from "./BlockVendor";
 const VendorsManager = () => {
   const [showModal, setShowModal] = useState(false);
   const [data, setData] = useState([]);
-
+  const [totalPages,setTotalPages] = useState(0)
   const [blockData, setBlockData] = useState([]);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showAddVendor, setShowAddVendor] = useState(false);
   const [currentModalIdx, setCurrentModalIdx] = useState(null);
   const [selectedVendor, setSelectedVendor] = useState(null);
-  const {pageNo,setDisabledNext} = useContext(Utils)
+  const {pageNo,setDisabledNext,pageView} = useContext(Utils)
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -97,13 +97,14 @@ const VendorsManager = () => {
 }
 
   const getVendors = () => {
-    Http.GetAPI(proceess.evn.REACT_APP_GETVENDORSDATA + "?" + `page=${pageNo}`, data, null)
+    Http.GetAPI(process.env.REACT_APP_GETVENDORSDATA + "?" + `page=${pageView}`, data, null)
       .then((res) => {
         setIsLoading(false);
         if (res?.data?.status) {
           if(res.data.data.length>0){
             setData(res?.data?.data);
             setDisabledNext(true)
+            setTotalPages(res.data.total_pages)
           }
           else{
             setDisabledNext(false)
@@ -121,7 +122,7 @@ const VendorsManager = () => {
 
   useEffect(() => {
     getVendors();
-  }, [pageNo]);
+  }, [pageView]);
 
 
    const filtervendor = (e)=>{
@@ -269,7 +270,7 @@ const VendorsManager = () => {
               </Card.Body>
             </Card>
             <div style={{display:"flex",justifyContent:"center",textAlign:"center"}}>
-        <Paginte/>
+        <Paginte pages={totalPages}/>
         </div>
           </Col>
         </Row>

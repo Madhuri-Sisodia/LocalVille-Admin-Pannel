@@ -26,9 +26,9 @@ const Dashboard = () => {
   const [totalActiveUsers, setTotalActiveUsers] = useState(0);
   const [latestStore, setLatestStore] = useState([]);
   const [latestProduct, setLatestProduct] = useState([]);
-   
+   console.log(totalUsers,totalActiveUsers)
   
-
+  console.log(Math.ceil((totalActiveUsers/totalUsers)*100))
 
   useEffect(() => {
     Http.GetAPI(process.env.REACT_APP_GETDASHBOARD + "?" + Math.random(), data)
@@ -275,8 +275,8 @@ const Dashboard = () => {
                   <ChartistGraph
                     data={{
                       labels: [
-                        `${totalActiveUsers}%`,
-                        `${totalUsers - totalActiveUsers}%`,
+                        `${parseInt((totalActiveUsers/totalUsers)*100)}%`,
+                        `${parseInt(((totalUsers - totalActiveUsers)/totalUsers)*100)}%`,
                         `${totalUsers}%`,
                       ],
                       series: [

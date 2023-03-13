@@ -1,7 +1,7 @@
 import React, { useState,useContext } from "react";
 import NotificationAlert from "react-notification-alert";
 import "../../assets/css/admin.css";
-import { Form, Button, ButtonToolbar, Dropdown } from "rsuite";
+import { Form, Button, ButtonToolbar, Dropdown,RadioGroup,Radio } from "rsuite";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import { useEffect } from "react";
@@ -75,13 +75,13 @@ const SubCategory = () => {
       const id = SelectedCategory[0].id
           console.log(id)
     
-
+  console.log(color,size,sizeAttribute)
     var formdata = new FormData();
     formdata.append("category_id", `${id}`);
     formdata.append("subcategory_name", subCategoryName);
-    formdata.append("color", color);
-    formdata.append("size", size);
-    formdata.append("size_att", sizeAttribute);
+    formdata.append("color", (color=="Yes")? 1 : 0);
+    formdata.append("size", (size=="Yes") ? 1 : 0);
+    formdata.append("size_att", (sizeAttribute=="Yes")? 1 : 0);
     Http.PostAPI(process.env.REACT_APP_ADDPRODSUBCATEGORY + "?" + Math.random(), formdata, null)
       .then((res) => {
         console.log("Data", res);
@@ -125,14 +125,14 @@ const SubCategory = () => {
           <Form fluid>
             <Form.Group controlId="name-1" style={{marginBottom:"20px"}}>
               <div className="InnnerContainerCategory" style={{marginTop:"20px",marginBottom:"20px",flexDirection:"column"}}>
-                <Form.ControlLabel style={{ color: "#808080", fontSize: "0.9rem",marginBottom:"10px",PaddingTop:"20px" }}>
+                <Form.ControlLabel style={{ color: "#808080", fontSize: "0.9rem",marginBottom:"10px",PaddingTop:"20px",width:"100%" }}>
                   Category
                 </Form.ControlLabel>
                 <select
                   name="selectCategory"
                   value={selectCategory}
                   onChange={(event) => setSelectCategory(event.target.value)}
-                  style={{height:"30px",borderRadius:"5px",paddingLeft:"5px",paddingRight:"5px",borderColor: "#808020"}}
+                  style={{height:"35px",borderRadius:"5px",paddingLeft:"5px",paddingRight:"5px",borderColor: "gray",width:"100%"}}
                 >
                   <option value="">Select</option>
                   {data.map((category) => (
@@ -152,51 +152,50 @@ const SubCategory = () => {
                 required="setSubCategoryName"
                 onChange={(value) => setSubCategoryName(value)}
               />
-              <div style={{display:"flex",flexDirection:"row"}}>
-                <div style={{width:"50%",paddingLeft:"10px"}}>
-                <h4 style={{fontSize:"1rem"}}>Color</h4>
-                <div className="form-check">
-                  <input className="form-check-input" type="radio" id="flexRadioDefault1" onChnage={()=>setColor(1)}/>
-                  <label className="form-check-label" htmlFor="flexRadioDefault1">
-                    Yes
-                  </label>
+              <div>
+                <div>
+                <div style={{paddingLeft:"10px",marginTop:"20px"}}>
+                <Form.Group>
+              <Form.ControlLabel>Set Color</Form.ControlLabel>
+              <RadioGroup 
+                name="redirect"
+                inline
+                onChange={(e) => setColor(e)}
+                required
+              >
+                <Radio value="Yes">Yes</Radio>
+                <Radio value="No">No</Radio>
+              </RadioGroup>
+            </Form.Group>
                 </div>
-                <div className="form-check">
-                  <input className="form-check-input" type="radio" onChnage={()=>setColor(0)} />
-                  <label className="form-check-label" htmlFor="flexRadioDefault2">
-                    No
-                  </label>
-                </div>
-                </div>
-                <div style={{paddingLeft:"10px"}}>
-                <h4 style={{width:"50%",fontSize:"1rem"}}>Size</h4>
-                <div className="form-check">
-                  <input className="form-check-input" type="radio" id="flexRadioDefault1" onChnage={()=>setSize(1)}/>
-                  <label className="form-check-label" htmlFor="flexRadioDefault1">
-                    Yes
-                  </label>
-                </div>
-                <div className="form-check">
-                  <input className="form-check-input" type="radio" onChnage={()=>setSize(0)}/>
-                  <label className="form-check-label" htmlFor="flexRadioDefault2">
-                    No
-                  </label>
-                </div>
+                <div style={{paddingLeft:"10px",marginTop:"20px"}}>
+                <Form.Group>
+              <Form.ControlLabel>Set Size</Form.ControlLabel>
+              <RadioGroup
+                name="redirect"
+                inline
+                onChange={(e) => setSize(e)}
+                required
+              >
+                <Radio value="Yes">Yes</Radio>
+                <Radio value="No">No</Radio>
+              </RadioGroup>
+            </Form.Group>
               </div>
+              <div style={{paddingLeft:"10px",marginTop:"20px"}}>
+              <Form.Group>
+              <Form.ControlLabel>Size Attribute</Form.ControlLabel>
+              <RadioGroup
+                name="redirect"
+                inline
+                onChange={(e) =>  setSizeAttribute(e)}
+                required
+              >
+                <Radio value="Yes">Yes</Radio>
+                <Radio value="No">No</Radio>
+              </RadioGroup>
+            </Form.Group>
               </div>
-              <div style={{paddingLeft:"10px"}}>
-              <h4 style={{fontSize:"1rem"}}>Size att</h4>
-              <div className="form-check">
-                <input className="form-check-input" type="radio" id="flexRadioDefault1" onChnage={()=>setSizeAttribute(1)}/>
-                <label className="form-check-label" htmlFor="flexRadioDefault1">
-                  Yes
-                </label>
-              </div>
-              <div className="form-check">
-                <input className="form-check-input" type="radio" onChnage={()=>setSizeAttribute(0)}/>
-                <label className="form-check-label" htmlFor="flexRadioDefault2">
-                  No
-                </label>
               </div>
               </div>
             </Form.Group>

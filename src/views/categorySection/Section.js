@@ -61,13 +61,6 @@ console.log(sectionName)
 
   const handleSubmit = () => {
 
-
-        const SelectedSection = data.filter((ele)=>{
-          return(ele.section_name==selectSection)
-        })  
-
-        setCategoriesId(SelectedSection[0].id)
-      
         var formdata = new FormData();
         formdata.append("section_name",sectionName );
 

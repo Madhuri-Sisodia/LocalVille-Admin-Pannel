@@ -2,14 +2,13 @@ import React, { useState, useEffect, useContext } from "react";
 import { MdClose } from "react-icons/md";
 import { Modal, Form, Button } from "react-bootstrap";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
 import "../../assets/css/modal.css";
-import usevendorData from "CommonUtils/CostomeComp";
-import Autocomplete from "react-google-autocomplete";
 import GoogleAutocomplete from "components/googleAutoComplete";
 import GooglePlacesPicker from "components/googlePlacesPicker";
 import { Utils } from "CommonUtils/Utils";
+import 'react-select-search/style.css'
 import axios from "axios";
+
 
     
 
@@ -34,6 +33,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
     openingTime: "",
     closingTime: "",
   });
+
 
  console.log(storeData)
   const [selectedDays, setSelectedDays] = useState([]);
@@ -261,7 +261,9 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
                onChange={(event) => setSelectSection(event.target.value)}
                 style={{height:"35px",borderRadius:"5px",paddingLeft:"5px",paddingRight:"5px",borderColor: "#808020",width:"80%"}}  
                >
-                <option value="">Select</option>
+                <option value="">
+                  Select
+                </option>
                 {vendortData.map((category,index) => (
                   <option key={category.id} value={category.email} style={{fontSize:"14px",paddingBottom:"10px",paddintTop:"10px"}}>
                     <li>

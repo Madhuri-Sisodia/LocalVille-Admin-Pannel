@@ -29,9 +29,11 @@ const Size  = ({setAttributes,attributes})=>{
     console.log(getAttributes)
 
     const increaseIngridents = ()=>{
-        setingridents([...ingridents,""])
+        setingridents([...ingridents,getAttributes])
         setShowAddProduct(true)
    }
+
+   console.log(ingridents)
   
   const deleteIngredent = (e)=>{
        const Result = [...ingridents] 
@@ -256,7 +258,8 @@ const Size  = ({setAttributes,attributes})=>{
                               <i className="fas fa-times"
                               ></i>
                             </Button>
-                 
+                
+
                  </li>
                  </>)
             })

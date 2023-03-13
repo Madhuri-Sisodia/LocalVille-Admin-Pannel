@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { MdClose } from "react-icons/md";
-import { Modal, Form, Button } from "react-bootstrap";
+import { Modal, Form,} from "react-bootstrap";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
+import NotificationAlert from "react-notification-alert";
 import "../../assets/css/modal.css";
 import Size from "components/size";
-import { get } from "jquery";
+
 
 const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
   const [product, setProduct] = useState([]);
@@ -17,14 +18,11 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
   const [getProSubcat,setGetProSubCat] = useState([])
   const [selectProCat,setSelectProCat] = useState("")
   const [selectProSubCat,setSelectProSubCat] = useState("")
-  const [getsize,setGetSize] = useState([])
-  const [color,setColor] = useState([])
   const [bay,setBay] = useState("No")
   const [Pickup,setPickup] = useState("No")
-  const [productPrice,setProductPrice] = useState([]) 
-  const [productDiscountPrice,setProductDiscountPrice] = useState([]) 
   const [attributes,setAttributes] = useState([])
   console.log("att=>",attributes)
+  const notificationAlertRef = React.useRef(null);
 
   const [productData, setProductData] = useState({
     productName: "",
@@ -40,18 +38,6 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
     productImage:""
   });
 
-  console.log(productData.productImage);
-
-
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setImage(file);
-    setProductData((previous) => {
-      return { ...previous, productImage: file };
-    });
-  };
-
   const resetForm = () => {
     setProductData({
       // productImage: "",
@@ -61,7 +47,7 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
       sub_category: "",
       is_buy: "",
       is_pickup: "",
-      in_stock: "",
+      in_stock: 1,
     });
     setImage(null);
   };
@@ -107,7 +93,7 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
       });
     }
   }, [selectProCat]);
-
+  
   const getStore = () => {
     console.log("hello")
     Http.GetAPI(process.env.REACT_APP_GETSTOREDATA + "?" + Math.random(), "", null)
@@ -115,6 +101,7 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
         if (res?.data?.status) {
            if(res.data.data.length>0){
             setGetStoreData(res?.data?.data);
+            console.log("store=>",res.data.data)
            }
            else{
             setDisabledNext(false)
@@ -134,24 +121,34 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
   }, []);
 
 
-
-
   const handleSubmit = (event) => {
     event.preventDefault();
 
     const vendorid = getStoreData.filter((ele)=>{
       return(ele.email==selectSection)
           })
+
+    const Catgoryid = getProcat.filter((ele)=>{
+            return(ele.name==selectProCat)
+                })
+
+ 
+    const subCateoryid = getProSubcat.filter((ele)=>{
+                  return(ele.name==selectProSubCat)
+                      })
+
+
+
     var data = new FormData();
 
-    data.append("vendor_id",vendorid[0].vendor_id)
-    data.append("store_id",vendorid[0].id)
+    data.append("vendor_id",vendorid[0]?.vendor_id)
+    data.append("store_id",vendorid[0]?.id)
     data.append("product_name", productData.productName);
     data.append("product_desc", productData.productDesc);
-    data.append("category",selectProCat);
-    data.append("sub_category",selectProSubCat);
-    data.append("is_buy", bay);
-    data.append("is_pickup", Pickup);
+    data.append("category", Catgoryid[0].id);
+    data.append("sub_category",subCateoryid[0].id);
+    data.append("is_buy", (bay=="Yes")?1:0);
+    data.append("is_pickup", (Pickup=="Yes")?1:0);
     data.append("in_stock", productData.in_stock);
     
      if(productData.productImage){
@@ -166,30 +163,38 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
       data.append(`price[${i}]`,attributes[i].Price)
       data.append(`dis_price[${i}]`,attributes[i].dis_Price)
     }
-
-   
-
    
     Http.PostAPI(process.env.REACT_APP_ADDPRODUCTS, data, null)
       .then((res) => {
-        console.log("resp", res);
         if (res?.data?.status) {
           setProduct(res?.data?.data);
           getProduct();
+          alert("Product Added Sucessfully")
         } else {
           alert("Fields not matched");
         }
       })
       .catch((e) => {
         alert("Something went wrong.");
-        // console.log("Error:", e);
       });
     resetForm();
     setShowAddProduct(false);
-    setGetSize([])
-    setColor([])
-    setProductPrice([])
-    setProductDiscountPrice([])
+    setAttributes([])
+    setProductData({
+      productName: "",
+      productDesc: "",
+      category: "",
+      sub_category: "",
+      is_buy: "",
+      is_pickup: "",
+      Attributes:"",
+      price: "",
+      dis_price: "",
+      in_stock: "",
+      productImage:""
+    })
+    setSelectProSubCat("")
+    setSelectProCat("")
   };
 
   const handleInput = (e) => {
@@ -202,6 +207,9 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
 
   return (
     <>
+    <div className="rna-container">
+        <NotificationAlert ref={notificationAlertRef} />
+      </div>
       <Modal show={showAddProduct} onHide={() => setShowAddProduct(false)}>
         <Modal.Header>
           <Modal.Title className="title">Add Products</Modal.Title>

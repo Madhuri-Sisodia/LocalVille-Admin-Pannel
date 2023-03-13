@@ -16,7 +16,7 @@ const Category = () => {
   const {setCategoriesId} = useContext(Utils)
   
   const notificationAlertRef = React.useRef(null);
-  console.log(data)
+  
 
   const notify = (place) => {
     var color = Math.floor(Math.random() * 5 + 1);
@@ -105,6 +105,7 @@ const Category = () => {
         alert("Something went wrong.");
         console.log("Error:", e);
       });
+      notify("tr");
   }, []);
 
   return (

@@ -7,6 +7,7 @@ import { BiBlock } from "react-icons/bi";
 import { MdClose } from "react-icons/md";
 import UpdateProducts from "./UpdateProducts";
 import AddProduct from "./AddProduct";
+import Paginte from "../../components/Paginate";
 
  console.log("hello")
 
@@ -30,6 +31,7 @@ const Products = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showAddProduct, setShowAddProduct] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [totalPages,setTotalPages] = useState(0)
   const [blockProducts, setBlockProducts] = useState([]);
   const [blockData, setBlockData] = useState([]);
   const [rowData, setRowData] = useState([]);
@@ -62,18 +64,16 @@ const Products = () => {
 }
 
   const getProducts = () => {
-    Http.GetAPI(process.env.REACT_APP_GETPRODUCTS + "?" + Math.random(), data, null)
+    Http.GetAPI(apis.getProducts + "?" + Math.random(), "", null)
       .then((res) => {
-        setIsLoading(false);
         if (res?.data?.status) {
-          // console.log(res?.data?.data,"productdata")
+          setTotalPages(res.data.total_pages)
           setData(res?.data?.data);
         } else {
           alert("Fields not matched");
         }
       })
       .catch((e) => {
-        setIsLoading(false);
         alert("Something went wrong.");
         console.log("Error:", e);
       });
@@ -300,6 +300,9 @@ const Products = () => {
                 </Table>
               </Card.Body>
             </Card>
+            <div style={{display:"flex",justifyContent:"center",textAlign:"center"}}>
+        <Paginte pages={totalPages}/>
+        </div>
           </Col>
         </Row>
         <UpdateProducts
