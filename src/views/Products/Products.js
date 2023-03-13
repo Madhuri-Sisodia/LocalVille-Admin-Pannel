@@ -398,23 +398,23 @@ const Products = () => {
                   <td className="bold-col" style={{ whiteSpace: "nowrap" }}>
                     Category
                   </td>
-                  <td>{rowData.category}</td>
+                  <td>{rowData.category_name}</td>
                 </tr>
                 <tr>
                   <td className="bold-col">SubCategory:</td>
-                  <td>{rowData.sub_category}</td>
+                  <td>{rowData.subcategory_name}</td>
                 </tr>
                 <tr>
                   <td className="bold-col">Is buy:</td>
-                  <td>{rowData.is_buy}</td>
+                  <td>{(rowData.is_buy)?"Yes":"No"}</td>
                 </tr>
                 <tr>
                   <td className="bold-col">Is Pickup:</td>
-                  <td>{rowData.is_pickup}</td>
+                  <td>{(rowData.is_pickup)?"Yes":"No"}</td>
                 </tr>
                 <tr>
                   <td className="bold-col">Verified:</td>
-                  <td>{rowData.is_verified}</td>
+                  <td>{verifiedProduct(rowData.is_verified)}</td>
                 </tr>
                 <tr>
                   <td className="bold-col">Opening Time:</td>

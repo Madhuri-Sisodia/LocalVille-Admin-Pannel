@@ -7,7 +7,7 @@ import "../../assets/css/modal.css";
 import Size from "components/size";
 import { get } from "jquery";
 
-const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct }) => {
+const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct, item }) => {
   const [product, setProduct] = useState([]);
   const [image, setImage] = useState(null);
   const [vendortData,setVendorData] = useState([])
@@ -169,7 +169,6 @@ const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct }) => {
         data.append(`dis_price[${i}]`,attributes[i].dis_Price)
       }
 
-   
     Http.PostAPI(apis.updateProducts, data, null)
       .then((res) => {
         console.log("resp", res);
@@ -192,6 +191,7 @@ const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct }) => {
     setProductDiscountPrice([])
   };
 
+
   const handleInput = (e) => {
     console.log(e.target.value);
     setProductData((previous) => {
@@ -202,6 +202,7 @@ const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct }) => {
 
   return (
     <>
+    {item != null && (
       <Modal show={showUpdateModal} onHide={() => setShowUpdateModal(false)}>
         <Modal.Header>
           <Modal.Title className="title">Add Products</Modal.Title>
@@ -254,10 +255,13 @@ const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct }) => {
                 onChange={(e) => {
                   handleInput(e);
                 }}
+
+                defaultValue={item?.product_name}
                 type="text"
                 required
               ></Form.Control>
             </Form.Group>
+            
 
             <Form.Group>
               <Form.Label className="add-label">Product Description</Form.Label>
@@ -268,6 +272,7 @@ const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct }) => {
                 onChange={(e) => {
                   handleInput(e);
                 }}
+                defaultValue={item?.product_desc}
               ></Form.Control>
             </Form.Group>
 
@@ -369,6 +374,7 @@ const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct }) => {
             </Form.Group>
             <button
               type="submit"
+              
               style={{
                 backgroundColor: "blueviolet",
                 border: "blueviolet",
@@ -378,13 +384,16 @@ const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct }) => {
                 color: "white",
                 marginTop: "20px",
               }}
+          
             >
               Add
             </button>
           </Form>
         </Modal.Body>
       </Modal>
+    )}
     </>
+  
   );
 };
 export default AddProduct;
