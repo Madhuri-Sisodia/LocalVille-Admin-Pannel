@@ -7,6 +7,7 @@ import { Http } from "config/Service";
 import { apis } from "config/WebConstant";
 import MyComponent from "components/React-Quil-text-Editor";
 import { Data } from "@react-google-maps/api";
+import ButtonComponent from "views/ButtonComponent";
 
 const EmailManager = () => {
   const [selectedVendors, setSelectedVendors] = useState([]);
@@ -78,22 +79,10 @@ const EmailManager = () => {
               <Form.ControlLabel>MESSAGE</Form.ControlLabel>
              <MyComponent/>
             </Form.Group>
-            <button
-              type="submit"
-              block
-              style={{
-                backgroundColor: "blueviolet",
-                border: "blueviolet",
-                borderRadius: "3px 3px 3px 3px",
-                width: "100%",
-                padding: "10px",
-                color: "white",
-                marginTop: "20px",
-                fontSize: "0.9rem",
-              }}
-            >
-              Submit
-            </button>
+            <ButtonComponent 
+          block 
+          buttontext="Submit"
+           />
           </Form>
         </div>
       </div>

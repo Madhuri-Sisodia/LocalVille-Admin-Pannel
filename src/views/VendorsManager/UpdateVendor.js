@@ -4,6 +4,7 @@ import { Modal, Form, Button } from "react-bootstrap";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import "../../assets/css/modal.css";
+import ButtonComponent from "views/ButtonComponent";
 
 const UpdateVendor = ({ showUpdateModal, setShowUpdateModal, item,getVendors }) => {
   // console.log("item", item)
@@ -92,27 +93,17 @@ const UpdateVendor = ({ showUpdateModal, setShowUpdateModal, item,getVendors }) 
                 ></Form.Control>
               </Form.Group>
               <br></br>
-              <button
-              type="submit"
-              block
-              onClick={(e) => {
-                e.preventDefault();
-                handleUpdateVendor();
-                setShowUpdateModal(false);
-              }}
-              style={{
-                backgroundColor: "blueviolet",
-                border: "blueviolet",
-                borderRadius: "3px 3px 3px 3px",
-                width: "100%",
-                padding: "5px",
-                color: "white",
-                marginTop: "20px",
-              }}
-            >
-              Update
-            </button>
+            <ButtonComponent
+            buttontext="Update"
+            block
+            onClick={(e) => {
+              e.preventDefault();
+              handleUpdateVendor();
+              setShowUpdateModal(false);
+            }}
+            />
             </Form>
+           
           </Modal.Body>
         </Modal>
       )}

@@ -5,6 +5,7 @@ import NotificationAlert from "react-notification-alert";
 import "../assets/css/admin.css";
 import { Http } from "../config/Service";
 import { apis } from "../config/WebConstant";
+import ButtonComponent from "views/ButtonComponent";
 
 const AdminManager = () => {
   const [name, setName] = useState("");
@@ -157,22 +158,10 @@ const AdminManager = () => {
                 )}
               </Form.Group>
             </div>
-            <button
-              type="submit"
-              block
-              style={{
-                backgroundColor: "blueviolet",
-                border: "blueviolet",
-                borderRadius: "3px 3px 3px 3px",
-                width: "100%",
-                padding: "10px",
-                color: "white",
-                marginTop: "20px",
-                fontSize: "0.9rem",
-              }}
-            >
-              Submit
-            </button>
+            <ButtonComponent 
+          block 
+          buttontext="Submit"
+           />
           </Form>
         </div>
       </div>

@@ -6,6 +6,7 @@ import { apis } from "../../config/WebConstant";
 import NotificationAlert from "react-notification-alert";
 import "../../assets/css/modal.css";
 import Size from "components/size";
+import ButtonComponent from "views/ButtonComponent";
 
 
 const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
@@ -375,20 +376,12 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
               </select>
               </div>
             </Form.Group>
-            <button
-              type="submit"
-              style={{
-                backgroundColor: "blueviolet",
-                border: "blueviolet",
-                borderRadius: "3px 3px 3px 3px",
-                width: "100%",
-                padding: "5px",
-                color: "white",
-                marginTop: "20px",
-              }}
-            >
-              Add
-            </button>
+            
+            <ButtonComponent
+              buttontext="Add"
+          />
+            
+           
           </Form>
         </Modal.Body>
       </Modal>

@@ -6,10 +6,11 @@ import "../../assets/css/modal.css";
 import GoogleAutocomplete from "components/googleAutoComplete";
 import GooglePlacesPicker from "components/googlePlacesPicker";
 import { Utils } from "CommonUtils/Utils";
-import 'react-select-search/style.css'
+// import 'react-select-search/style.css'
 import axios from "axios";
 import { SelectPicker } from 'rsuite';
 import { visitIterationBody } from "typescript";
+import ButtonComponent from "views/ButtonComponent";
 
 
     
@@ -369,21 +370,9 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
               </Form.Group>
             </div>
 
-            <button
-              type="submit"
-              block
-              style={{
-                backgroundColor: "blueviolet",
-                border: "blueviolet",
-                borderRadius: "3px 3px 3px 3px",
-                width: "100%",
-                padding: "5px",
-                color: "white",
-                marginTop: "20px",
-              }}
-            >
-              Add
-            </button>
+            <ButtonComponent
+            buttontext="Add"
+            />
           </Form>
         </Modal.Body>
       </Modal>

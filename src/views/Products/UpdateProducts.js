@@ -6,12 +6,9 @@ import { apis } from "../../config/WebConstant";
 import "../../assets/css/modal.css";
 import Size from "components/size";
 import { get } from "jquery";
+import ButtonComponent from "views/ButtonComponent";
 
-<<<<<<< HEAD
-const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct, item }) => {
-=======
 const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct,item }) => {
->>>>>>> a156a254b157fcd8db7a43aa72a8321f37935972
   const [product, setProduct] = useState([]);
   const [image, setImage] = useState(null);
   const [vendortData,setVendorData] = useState([])
@@ -40,10 +37,10 @@ const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct,item }) =>
     size: false,
     price: "",
     dis_price: "",
-    in_stock: "",
+    in_stock: 1,
     productImage:""
   });
-
+ console.log(productData)
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setImage(file);
@@ -134,7 +131,7 @@ const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct,item }) =>
         console.log("Error:", e);
       });
   };
-
+console.log(getStoreData);
   useEffect(() => {
     getStore();
   }, []);
@@ -144,6 +141,7 @@ const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct,item }) =>
 
   const handleSubmit = (event) => {
     event.preventDefault();
+console.log("useeer",getStoreData)
 
     const vendorid = getStoreData.filter((ele)=>{
       return(ele.email==selectSection)
@@ -156,29 +154,29 @@ const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct,item }) =>
     data.append("product_desc", productData.productDesc);
     data.append("category",selectProCat);
     data.append("sub_category",selectProSubCat);
-    data.append("is_buy", bay);
-    data.append("is_pickup", Pickup);
+    data.append("is_buy", (bay=="Yes")? 1: 0);
+    data.append("is_pickup", (Pickup=="Yes")? 1: 0);
     data.append("in_stock", productData.in_stock);
+    data.append("pid", item.id);
+    console.log("users",item.id);
     
-    if(productData.productImage){
-      for(let i=0;i<4;i++){
-        data.append(`product_images[${i}]`,productData?.productImage[i])
-      }
-    }
+    console.log("userrr",productData.in_stock)
+    
+    // if(productData.productImage){
+    //   for(let i=0;i<4;i++){
+    //     data.append(`product_images[${i}]`,productData?.productImage[i])
+    //   }
+    // }
  
-      for(let i=0;i<attributes.length;i++){
-        data.append(`color[${i}]`,attributes[i].Color)
-        data.append(`size[${i}]`,attributes[i].Size)
-        data.append(`price[${i}]`,attributes[i].Price)
-        data.append(`dis_price[${i}]`,attributes[i].dis_Price)
-      }
+    //   for(let i=0;i<attributes.length;i++){
+    //     data.append(`color[${i}]`,attributes[i].Color)
+    //     data.append(`size[${i}]`,attributes[i].Size)
+    //     data.append(`price[${i}]`,attributes[i].Price)
+    //     data.append(`dis_price[${i}]`,attributes[i].dis_Price)
+    //   }
 
-<<<<<<< HEAD
-    Http.PostAPI(apis.updateProducts, data, null)
-=======
    
     Http.PostAPI(process.env.REACT_APP_UPDATEPRODUCTS, data, null)
->>>>>>> a156a254b157fcd8db7a43aa72a8321f37935972
       .then((res) => {
         console.log("resp", res);
         if (res?.data?.status) {
@@ -193,7 +191,7 @@ const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct,item }) =>
         // console.log("Error:", e);
       });
     resetForm();
-    setShowAddProduct(false);
+    // setShowAddProduct(false);
     setGetSize([])
     setColor([])
     setProductPrice([])
@@ -381,22 +379,11 @@ const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct,item }) =>
               </select>
               </div>
             </Form.Group>
-            <button
-              type="submit"
-              
-              style={{
-                backgroundColor: "blueviolet",
-                border: "blueviolet",
-                borderRadius: "3px 3px 3px 3px",
-                width: "100%",
-                padding: "5px",
-                color: "white",
-                marginTop: "20px",
-              }}
-          
-            >
-              Add
-            </button>
+
+         <ButtonComponent
+         buttontext="Update"
+         />
+
           </Form>
         </Modal.Body>
       </Modal>

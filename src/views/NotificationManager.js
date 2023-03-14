@@ -163,22 +163,10 @@ const NotificationManager = () => {
                 required
               />
             </Form.Group>
-            <button
-              type="submit"
-              block
-              style={{
-                backgroundColor: "blueviolet",
-                border: "blueviolet",
-                borderRadius: "3px 3px 3px 3px",
-                width: "100%",
-                padding: "10px",
-                color: "white",
-                marginTop: "20px",
-                fontSize: "0.9rem",
-              }}
-            >
-              Submit
-            </button>
+            <ButtonComponent 
+          block 
+          buttontext="Submit"
+           />
           </Form>
         </div>
       </div>

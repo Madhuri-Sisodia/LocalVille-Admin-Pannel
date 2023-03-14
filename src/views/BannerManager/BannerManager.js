@@ -17,6 +17,7 @@ import CloseIcon from "@rsuite/icons/Close";
 
 import "../../assets/css/admin.css";
 import BlockBanner from "./BlockBanner";
+import ButtonComponent from "views/ButtonComponent";
 
 const BannerManager = () => {
   // const dummyData = [
@@ -195,22 +196,11 @@ const BannerManager = () => {
               />
             </Form.Group>
 
-            <button
-              type="submit"
-              block
-              style={{
-                backgroundColor: "blueviolet",
-                border: "blueviolet",
-                borderRadius: "3px 3px 3px 3px",
-                width: "100%",
-                padding: "10px",
-                color: "white",
-                marginTop: "20px",
-                fontSize: "0.9rem",
-              }}
-            >
-              Submit
-            </button>
+           <ButtonComponent 
+          block 
+          buttontext="Submit"
+           />
+
 
             <div style={{ marginTop: "80px" }}>
               <Card

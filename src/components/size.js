@@ -6,6 +6,7 @@ import { Http } from "../config/Service";
 import { apis } from "../config/WebConstant";
 import "../assets/css/day.css";
 import {ColorSize} from "../CommonUtils/ColorSize"
+import ButtonComponent from "views/ButtonComponent";
 
 const Size  = ({setAttributes,attributes})=>{
      const [showAddProduct, setShowAddProduct] = useState(false);
@@ -224,21 +225,12 @@ const Size  = ({setAttributes,attributes})=>{
                 }}
               ></Form.Control>
             </Form.Group>
-            <button
-              type="submit"
-              style={{
-                backgroundColor: "blueviolet",
-                border: "blueviolet",
-                borderRadius: "3px 3px 3px 3px",
-                width: "100%",
-                padding: "5px",
-                color: "white",
-                marginTop: "20px",
-              }}
+            <ButtonComponent
+              
+              buttontext="Add"
               onClick={Submit}
-            >
-              Add
-            </button>
+            />
+            
           </Form>
         </Modal.Body>
       </Modal>        
