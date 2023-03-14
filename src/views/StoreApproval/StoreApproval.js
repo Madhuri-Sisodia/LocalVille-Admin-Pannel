@@ -31,7 +31,8 @@ const StoreApproval = () => {
   const [showStoreDetails, setShowStoreDetails] = useState(false);
   const [showRejectStore, setShowRejectStore] = useState(false);
   const [storeApproval, setStoreApproval] = useState(false);
-  const {pageNo,setDisabledNext} = useContext(Utils)
+  const {pageNo,setDisabledNext,pageView} = useContext(Utils)
+  const [totalPages,setTotalPages] = useState(0)
   const [rowData, setRowData] = useState([]);
   const [store, setStore] = useState([]);
   const daysOfWeek = ["M", "T", "W", "T", "F", "S", "S"];
@@ -41,11 +42,12 @@ const StoreApproval = () => {
   };
 
   const getUnverifiedStore = () => {
-    Http.GetAPI(apis.getUnverifiedStore + "?" + `page=${pageNo}`, data, null)
+    Http.GetAPI(process.env.REACT_APP_GETUNVERIFIEDSTORE + "?" + `page=${pageView}`, data, null)
       .then((res) => {
         if (res?.data?.status) {
               if(res.data.data.length>0){
                 setData(res?.data?.data);
+                setTotalPages(res.data.total_pages)
                 setStoreApproval(false);
               }
         } else {
@@ -60,7 +62,7 @@ const StoreApproval = () => {
 
   useEffect(() => {
     getUnverifiedStore();
-  }, [pageNo]);
+  }, [pageView]);
 
   return (
     <>
@@ -179,7 +181,7 @@ const StoreApproval = () => {
               </Card.Body>
             </Card>
             <div style={{display:"flex",justifyContent:"center",textAlign:"center"}}>
-        <Paginte/>
+        <Paginte pages={totalPages}/>
         </div>
           </Col>
         </Row>

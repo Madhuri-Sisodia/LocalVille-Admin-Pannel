@@ -5,7 +5,7 @@ export const Utils = createContext();
 const Context = ({ children }) => {
  const [Categoriesid,setCategoriesId] = useState("")
  const [disalbledNext,setDisabledNext] = useState(true)
- const [pageNo,setPageNo] = useState(1)
+ const [pageNo,setPageNo] = useState(0)
  const [Selectedcoordinates,setSelectedCoordinates] = useState({
   lat: null, 
   lng: null
@@ -13,6 +13,7 @@ const Context = ({ children }) => {
 const [location, setLocation] = useState("");
 const [userEmail,setUserEmail] = useState("")
 const [password,setPassword] = useState("")
+const [pageView,setPageView]  = useState(1)
  
   return (
     <>
@@ -31,7 +32,9 @@ const [password,setPassword] = useState("")
           userEmail,
           setUserEmail,
           password,
-          setPassword
+          setPassword,
+          pageView,
+          setPageView
         }}
       >
         {children}

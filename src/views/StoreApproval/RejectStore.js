@@ -29,7 +29,7 @@ const RejectStore = ({
     data.append("store_id", store.id);
     data.append("verified_status", 2);
     data.append("ReajectReason",RejectReason)
-    Http.PostAPI(apis.updateVerifiedStore, data, null)
+    Http.PostAPI(process.env.REACT_APP_UPDATEVERIFIEDSTORE, data, null)
       .then((res) => {
         console.log("resp", res);
         if (res?.data?.status) {

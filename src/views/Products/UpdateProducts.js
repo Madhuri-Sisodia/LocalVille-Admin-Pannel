@@ -7,7 +7,11 @@ import "../../assets/css/modal.css";
 import Size from "components/size";
 import { get } from "jquery";
 
+<<<<<<< HEAD
 const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct, item }) => {
+=======
+const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct,item }) => {
+>>>>>>> a156a254b157fcd8db7a43aa72a8321f37935972
   const [product, setProduct] = useState([]);
   const [image, setImage] = useState(null);
   const [vendortData,setVendorData] = useState([])
@@ -64,7 +68,7 @@ const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct, item }) =
    
 
   useEffect(() => {
-    Http.GetAPI(apis.getProductCategory ,"", null)
+    Http.GetAPI(process.env.REACT_APP_GETPRODUCTCATEGORY,"", null)
       .then((res) => {
         if (res?.data?.status) {
           setGetProCat(res?.data?.data);
@@ -89,7 +93,7 @@ const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct, item }) =
             console.log(vendorid)
 
       
-      Http.GetAPI(apis.getProdSubCategory + "?" + `category_id=${vendorid[0].id}`, "", null)
+      Http.GetAPI(process.env.REACT_APP_GETPRODSUBCATEGORY + "?" + `category_id=${vendorid[0].id}`, "", null)
       .then((res) => {
         if (res?.data?.status) {
           setGetProSubCat(res?.data?.data);
@@ -112,7 +116,7 @@ const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct, item }) =
 
   const getStore = () => {
     console.log("hello")
-    Http.GetAPI(apis.getStoreData + "?" + Math.random(), "", null)
+    Http.GetAPI(process.env.REACT_APP_GETSTOREDATA + "?" + Math.random(), "", null)
       .then((res) => {
         if (res?.data?.status) {
            if(res.data.data.length>0){
@@ -169,7 +173,12 @@ const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct, item }) =
         data.append(`dis_price[${i}]`,attributes[i].dis_Price)
       }
 
+<<<<<<< HEAD
     Http.PostAPI(apis.updateProducts, data, null)
+=======
+   
+    Http.PostAPI(process.env.REACT_APP_UPDATEPRODUCTS, data, null)
+>>>>>>> a156a254b157fcd8db7a43aa72a8321f37935972
       .then((res) => {
         console.log("resp", res);
         if (res?.data?.status) {

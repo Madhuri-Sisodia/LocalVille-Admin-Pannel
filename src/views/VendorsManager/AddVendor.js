@@ -69,7 +69,7 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
 
       console.log("dddd", data);
 
-      Http.PostAPI(apis.addVendors, data)
+      Http.PostAPI(process.env.REACT_APP_ADDVENDORS, data)
         .then((res) => {
           console.log("resp", res);
           if (res?.data?.status) {

@@ -26,25 +26,13 @@ const Dashboard = () => {
   const [totalActiveUsers, setTotalActiveUsers] = useState(0);
   const [latestStore, setLatestStore] = useState([]);
   const [latestProduct, setLatestProduct] = useState([]);
-   
-  useEffect(()=>{
-    fetch("https://jsonplaceholder.typicode.com/posts", {
-     
-    // Adding method type
-    method: "GET",
-      
-    // Adding headers to the request
-    headers: {
-        "Content-type": "application/json; charset=UTF-8",
-        "Authorization":sessionStorage.getItem("loggedIn")
-    }
-})
-//getResult()
-  },[])
-
+   console.log(totalUsers,totalActiveUsers)
+  
+  console.log(Math.ceil((totalActiveUsers/totalUsers)*100))
 
   useEffect(() => {
-    Http.GetAPI(apis.getDashboard + "?" + Math.random(), data)
+    const CallApi = ()=>{
+      Http.GetAPI(process.env.REACT_APP_GETDASHBOARD + "?" + Math.random(), data)
       .then((res) => {
         console.log(
           "res",
@@ -70,6 +58,8 @@ const Dashboard = () => {
         alert("Something went wrong.");
         console.log("Error:", e);
       });
+    }
+    CallApi()
   }, []);
 
   return (
@@ -288,14 +278,12 @@ const Dashboard = () => {
                   <ChartistGraph
                     data={{
                       labels: [
-                        `${totalActiveUsers}%`,
-                        `${totalUsers - totalActiveUsers}%`,
-                        `${totalUsers}%`,
+                        `${parseInt((totalActiveUsers/totalUsers)*100)}%`,
+                        `${parseInt(((totalUsers - totalActiveUsers)/totalUsers)*100)}%`,
                       ],
                       series: [
                         totalActiveUsers,
                         totalUsers - totalActiveUsers,
-                        totalUsers,
                       ],
                     }}
                     type="Pie"

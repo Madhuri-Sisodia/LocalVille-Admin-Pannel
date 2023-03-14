@@ -26,13 +26,11 @@ const Size  = ({setAttributes,attributes})=>{
       
     })
 
-    console.log(getAttributes)
-
     const increaseIngridents = ()=>{
-        setingridents([...ingridents,""])
+        setingridents([...ingridents,getAttributes])
         setShowAddProduct(true)
    }
-  
+
   const deleteIngredent = (e)=>{
        const Result = [...ingridents] 
        Result.splice(e.target.id,1)
@@ -243,9 +241,13 @@ const Size  = ({setAttributes,attributes})=>{
             </button>
           </Form>
         </Modal.Body>
-      </Modal>
-
-                 
+      </Modal>        
+       <div style={{display:"flex",flexDirection:"row"}}>
+       <p>Size : {attributes[index]?.Size.name}</p>
+       <p>Color : {attributes[index]?.Color.name}</p>
+       <p>Price : {attributes[index]?.Price}</p>
+       <p>Dis_Price : {attributes[index]?.dis_Price}</p>
+       </div>
                         <Button
                               id={index} 
                               className="btn-simple btn-link p-1"
@@ -256,7 +258,8 @@ const Size  = ({setAttributes,attributes})=>{
                               <i className="fas fa-times"
                               ></i>
                             </Button>
-                 
+                
+
                  </li>
                  </>)
             })

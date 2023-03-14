@@ -16,7 +16,7 @@ const VerifiedStore = ({
     var data = new FormData();
     data.append("store_id", store.id);
     data.append("verified_status", 1);
-    Http.PostAPI(apis.updateVerifiedStore, data, null)
+    Http.PostAPI(process.env.REACT_APP_GETUNVERIFIEDSTORE, data, null)
       .then((res) => {
         console.log("resp", res);
         if (res?.data?.status) {

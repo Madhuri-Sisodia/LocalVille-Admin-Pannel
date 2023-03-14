@@ -77,11 +77,12 @@ const BannerManager = () => {
 
 
   const getBanner = () => {
-    Http.GetAPI(apis.getBanner + "?" + Math.random(), data)
+    Http.GetAPI(process.env.REACT_APP_GETBANNER + "?" + Math.random(), data)
       .then((res) => {
         setIsLoading(false);
         if (res?.data?.status) {
           setData(res?.data?.data);
+          console.log(res.data.data)
         } else {
           alert("Fields not matched");
         }
@@ -96,23 +97,7 @@ const BannerManager = () => {
   useEffect(() => {
     getBanner();
   }, []);
-  // -------------------------------------------Base64--------------------
-  // var base64String = "";
-  // function Uploaded() {
-  //     var file = document.querySelector(
-  //         'input[type=file]')['files'][0];
-  //     var reader = new FileReader();
-  //     reader.onload = function () {
-  //         base64String = reader.result.replace("data:", "")
-  //             .replace(/^.+,/, "");
-  //         let imageBase64Stringsep = base64String;
-  //         console.log("string1", base64String);
-
-  //     }
-  //     reader.readAsDataURL(file);
-
-  //}
-  // *********************************************************************
+  
   const resetForm = () => {
     setFormData({
       image: "",
@@ -123,16 +108,23 @@ const BannerManager = () => {
   };
 
   const handleSubmit = () => {
-   
+    let redirectImg
+    console.log(formData.redirect=="Yes")
+    if(formData.redirect=="Yes"){
+            redirectImg = "1"
+    }
+    else{
+      redirectImg = "0"
+    }
 
+    console.log(redirectImg)
     var data = new FormData();
     data.append("banner_image", imageUrl);
-     console.log("images", imageUrl);
-    data.append("is_redirect", formData.redirect);
+    data.append("is_redirect", redirectImg);
     data.append("url", formData.url);
     data.append("active", 1);
 
-    Http.PostAPI(apis.addBanner, data)
+    Http.PostAPI(process.env.REACT_APP_ADDBANNER, data)
       .then((res) => {
         console.log("resp", res);
         if (res?.data?.status) {
@@ -152,9 +144,14 @@ const BannerManager = () => {
 
   
 
-  const handleFieldChange = (value, name) => {
-    setFormData({ ...formData, [name]: value });
+  const handleFieldChange = (e,name) => {
+    setFormData((previous)=>{
+      return {...previous,[name]:e}
+    });
+   
   };
+  
+  console.log(formData)
 
   return (
     <>
@@ -180,7 +177,7 @@ const BannerManager = () => {
               <RadioGroup
                 name="redirect"
                 inline
-                onChange={(value) => handleFieldChange(value, "redirect")}
+                onChange={(e) => handleFieldChange(e,'redirect')}
                 required
               >
                 <Radio value="Yes">Yes</Radio>
@@ -193,7 +190,7 @@ const BannerManager = () => {
               <Form.Control
                 name="url"
                 type="url"
-                onChange={(value) => handleFieldChange(value, "url")}
+                onChange={(e) => handleFieldChange(e,'url')}
                 required
               />
             </Form.Group>
@@ -258,7 +255,8 @@ const BannerManager = () => {
                             />
                           </td>
                           <td style={{ textAlign: "center" }}>
-                            {item.is_redirect == "1" ? "Yes" : "No"}
+                            {console.log(item.is_redirect)}
+                            {(item.is_redirect == 1) ? "Yes" : "No"}
                           </td>
                           <td>{item.url}</td>
                           <td>

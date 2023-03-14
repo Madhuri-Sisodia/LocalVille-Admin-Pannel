@@ -2,7 +2,7 @@ import { useState,useEffect } from "react";
 import { Form} from "rsuite";
 import ErrorMessage from "customComponents/ErrorMessage";
 import "../../assets/css/admin.css";
-import MultipleSelect from "components/MultipleSelect";
+import MultipleSelect from "../../components/multipleSelect";
 import { Http } from "config/Service";
 import { apis } from "config/WebConstant";
 import MyComponent from "components/React-Quil-text-Editor";
@@ -17,7 +17,7 @@ const EmailManager = () => {
     
 
   const getVendors = () => {
-    Http.GetAPI(apis.getVendorsData + "?" + Math.random(), data, null)
+    Http.GetAPI(process.env.REACT_APP_GETVENDORSDATA + "?" + Math.random(), data, null)
       .then((res) => {
         if (res?.data?.status) {
 

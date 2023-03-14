@@ -16,7 +16,7 @@ const Category = () => {
   const {setCategoriesId} = useContext(Utils)
   
   const notificationAlertRef = React.useRef(null);
-  console.log(data)
+  
 
   const notify = (place) => {
     var color = Math.floor(Math.random() * 5 + 1);
@@ -73,7 +73,7 @@ const Category = () => {
     formdata.append("category_name", categoryName);
   
     console.log("formdata=>",formdata)
-    Http.PostAPI(apis.addPrdouctCategory, formdata, null)
+    Http.PostAPI(process.env.REACT_APP_ADDPRODUCTCATEGORY, formdata, null)
       .then((res) => {
         console.log("Data", res);
         if (res?.data?.status) {
@@ -92,7 +92,7 @@ const Category = () => {
   };
 
   useEffect(() => {
-    Http.GetAPI(apis.getCategory + "?" + Math.random(),data, null)
+    Http.GetAPI(process.env.REACT_APP_GETCTEGORYSECTION + "?" + Math.random(),data, null)
       .then((res) => {
         console.log(res)
         if (res?.data?.status) {
@@ -106,22 +106,6 @@ const Category = () => {
         console.log("Error:", e);
       });
   }, []);
-
-  // useEffect(() => {
-  //   Http.GetAPI(apis.getCategory + "?" + Math.random(), data, null)
-  //     .then((res) => {
-  //       if (res?.data?.status) {
-  //         setData(res?.data?.data);
-  //       } else {
-  //         alert("Fields not matched");
-  //       }
-  //     })
-  //     .catch((e) => {
-  //       alert("Something went wrong.");
-  //       console.log("Error:", e);
-  //     });
-  // }, []);
-
 
   return (
     <>

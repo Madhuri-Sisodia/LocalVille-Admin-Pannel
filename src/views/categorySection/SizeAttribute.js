@@ -71,7 +71,7 @@ console.log(sizeAttributeName)
         var formdata = new FormData();
         formdata.append("sizeAttribute_name",sizeAttributeName );
 
-        Http.PostAPI(apis.addSizeAttribute, formdata, null)
+        Http.PostAPI(process.env.REACT_APP_ADDSIZEATTRIBUTE, formdata, null)
         .then((res) => {
           console.log("Data", res);
           if (res?.data?.status) {

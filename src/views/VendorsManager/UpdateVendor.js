@@ -27,7 +27,7 @@ const UpdateVendor = ({ showUpdateModal, setShowUpdateModal, item,getVendors }) 
 
     console.log("updateVendors", data);
 
-    Http.PostAPI(apis.updateVendors, data, null)
+    Http.PostAPI(process.env.REACT_APP_UPDATEVENDORS, data, null)
       .then((res) => {
         console.log("data", res);
         if (res?.data?.status) {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect,useContext } from "react";
-import { Input, Whisper, Tooltip, InputGroup } from "rsuite";
+import { Input, Whisper, Tooltip, InputGroup,SelectPicker } from "rsuite";
 import SearchIcon from "@rsuite/icons/Search";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
@@ -117,12 +117,12 @@ const StoreManager = () => {
   const [blockStore, setBlockStore] = useState([]);
   const [showUpdateStore, setShowUpdateStore] = useState(false);
   const [selectedStore, setSelectedStore] = useState(null);
-
   const [storeAdded,setAddStored] = useState(false)
   const [days, setDays] = useState([]);
-  const {pageNo,setDisabledNext} = useContext(Utils)
+  const {pageNo,setDisabledNext,pageView} = useContext(Utils)
   const [totalPages,setTotalPages] = useState(0)
   let parseDays;
+  let VendorData;
 
   const Debounce = (fun)=>{
     let timer;
@@ -142,7 +142,7 @@ const StoreManager = () => {
   };
 
   const getStore = () => {
-    Http.GetAPI(apis.getStoreData + "?" + Math.random(), data)
+    Http.GetAPI(process.env.REACT_APP_GETSTOREDATA + "?" + `page=${pageView}`, data)
       .then((res) => {
         if (res?.data?.status) {
            if(res.data.data.length>0){
@@ -165,14 +165,14 @@ const StoreManager = () => {
   console.log("data", data);
   useEffect(() => {
     getStore();
-  }, [pageNo]);
+  }, [pageView]);
 
 
   const handleBlockStore = (id) => {
     var data = new FormData();
     data.append("id", id);
     console.log("usersss", data);
-    Http.PostAPI(apis.blockStore, data, null)
+    Http.PostAPI(process.env.REACT_APP_BLOCKSTORE, data, null)
       .then((res) => {
         console.log("user", res);
         if (res?.data?.status) {
@@ -190,7 +190,7 @@ const StoreManager = () => {
 
   const filtervendor = (e)=>{
 
-    Http.GetAPI(apis.searchstore + "?" +`search=${e}`, "", null)
+    Http.GetAPI(process.env.REACT_APP_SEARCHSTORE + "?" +`search=${e}`, "", null)
     .then((res) => {
       if (res?.data?.status) {
         if(res.data.data.length>0){

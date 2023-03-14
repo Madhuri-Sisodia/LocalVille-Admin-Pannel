@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import SearchIcon from "@rsuite/icons/Search";
 import { Input, InputGroup } from "rsuite";
 import { Http } from "../../config/Service";
@@ -7,8 +7,9 @@ import { BiBlock } from "react-icons/bi";
 import { MdClose } from "react-icons/md";
 import UpdateProducts from "./UpdateProducts";
 import AddProduct from "./AddProduct";
-
- console.log("hello")
+import Paginte from "../../components/Paginate";
+import {Utils} from "../../CommonUtils/Utils"
+ 
 
 import {
   Modal,
@@ -30,13 +31,17 @@ const Products = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showAddProduct, setShowAddProduct] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [totalPages,setTotalPages] = useState(0)
   const [blockProducts, setBlockProducts] = useState([]);
   const [blockData, setBlockData] = useState([]);
   const [rowData, setRowData] = useState([]);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState(null);
   const [showUpdateProduct, setShowUpdateProduct] = useState(false);  
-  
+  const {pageNo,setDisabledNext,pageView} = useContext(Utils)
+
+
+
   const verifiedProduct=(verify)=>{
         if(verify==2){
           return "Rejected"
@@ -62,18 +67,16 @@ const Products = () => {
 }
 
   const getProducts = () => {
-    Http.GetAPI(apis.getProducts + "?" + Math.random(), data, null)
+    Http.GetAPI(process.env.REACT_APP_GETPRODUCTS + "?" + `page=${pageView}`, "", null)
       .then((res) => {
-        setIsLoading(false);
         if (res?.data?.status) {
-          // console.log(res?.data?.data,"productdata")
+          setTotalPages(res.data.total_pages)
           setData(res?.data?.data);
         } else {
           alert("Fields not matched");
         }
       })
       .catch((e) => {
-        setIsLoading(false);
         alert("Something went wrong.");
         console.log("Error:", e);
       });
@@ -81,14 +84,13 @@ const Products = () => {
   };
   useEffect(() => {
     getProducts();
-  }, []);
-  // console.log(blockData);
-  const handleBlockProducts = (e) => {
+  }, [pageView]);
 
+  const handleBlockProducts = (e) => {
     var data = new FormData();
     data.append("product_id", blockData);
     console.log("usersss", data);
-    Http.PostAPI(apis.blockProducts, data, null)
+    Http.PostAPI(process.env.REACT_APP_BLOCKPRODUCTS, data, null)
       .then((res) => {
         console.log("user", res);
         if (res?.data?.status) {
@@ -106,17 +108,17 @@ const Products = () => {
 
      
   const filtervendor = (e)=>{
-    Http.GetAPI(apis.searchproduct + "?" +`search=${e}`,"", null)
+    Http.GetAPI(process.env.REACT_APP_SEARCHPRODUCT + "?" +`search=${e}`,"", null)
     .then((res) => {
       if (res?.data?.status) {
           setData(res?.data?.data);
       } else {
-        alert("Fields not matched");
+        alert("Not in Store");
       }
     })
     .catch((e) => {
       setIsLoading(false);
-      alert("Something went wrong.");
+      alert("Something went wrong");
       console.log("Error:", e);
     });
    }
@@ -300,6 +302,9 @@ const Products = () => {
                 </Table>
               </Card.Body>
             </Card>
+            <div style={{display:"flex",justifyContent:"center",textAlign:"center"}}>
+        <Paginte pages={totalPages}/>
+        </div>
           </Col>
         </Row>
         <UpdateProducts
