@@ -60,23 +60,17 @@ const AdminManager = () => {
   };
 
   const handleSubmit = (e) => {
-    // e.preventDefault();
-    // console.log("name", name);
-    // console.log("email", email);
-    // console.log("password", password);
-    // console.log("repassword", rePassword);
-
     if (validate()) {
       var data = new FormData();
       data.append("name", name);
       data.append("email", email);
       data.append("password", password);
 
-      console.log("usersss", data);
+     
       Http.PostAPI(process.env.REACT_APP_ADDADMINDATA, data, null)
         .then((res) => {
-          console.log("user", res);
-          if (res?.data?.status) {
+          console.log("user", res.data.status);
+          if (res?.data?.status){
             setUser(res?.data?.data);
           } else {
             alert("Fields not matched");

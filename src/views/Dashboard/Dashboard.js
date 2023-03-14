@@ -31,7 +31,8 @@ const Dashboard = () => {
   console.log(Math.ceil((totalActiveUsers/totalUsers)*100))
 
   useEffect(() => {
-    Http.GetAPI(process.env.REACT_APP_GETDASHBOARD + "?" + Math.random(), data)
+    const CallApi = ()=>{
+      Http.GetAPI(process.env.REACT_APP_GETDASHBOARD + "?" + Math.random(), data)
       .then((res) => {
         console.log(
           "res",
@@ -57,6 +58,8 @@ const Dashboard = () => {
         alert("Something went wrong.");
         console.log("Error:", e);
       });
+    }
+    CallApi()
   }, []);
 
   return (
@@ -277,12 +280,10 @@ const Dashboard = () => {
                       labels: [
                         `${parseInt((totalActiveUsers/totalUsers)*100)}%`,
                         `${parseInt(((totalUsers - totalActiveUsers)/totalUsers)*100)}%`,
-                        `${totalUsers}%`,
                       ],
                       series: [
                         totalActiveUsers,
                         totalUsers - totalActiveUsers,
-                        totalUsers,
                       ],
                     }}
                     type="Pie"

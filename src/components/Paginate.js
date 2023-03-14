@@ -3,28 +3,44 @@ import { Utils } from "CommonUtils/Utils";
 import { useEffect } from "react";
 
 const Paginte = ({pages})=>{
-console.log("pages=>",pages)
+
   const {setPageNo,pageNo,disalbledNext,setPageView} = useContext(Utils)
   const [PaginationArrya,setPaginationArrya] = useState([])
   const [finalArray,setFinalArray] = useState([])
      
-   const NextPAge=()=>{   
-    setPaginationArrya(finalArray[pageNo-1])
+   const NextPAge=()=>{ 
+    let len = finalArray.length
+    if(pageNo==len){
+      const button = document.getElementById("next")
+      button.setAttribute("disabled","")
+    }
+    else{
+      const button = document.getElementById("next")
+        button.disabled = false
+    }
+    
     setPageNo(pageNo+1) 
+    console.log("nex=>",pageNo)
+    setPaginationArrya(finalArray[pageNo])
+    console.log(PaginationArrya)
+    setPageView(finalArray[pageNo][0])
   }
 
   
   useEffect(()=>{
     if(pages){
       setFinalArray(abc())
-      console.log("abc=>",abc())
     }
   },[pages])
 
    useEffect(()=>{
      if(finalArray.length>=1){
-      setPaginationArrya(finalArray[0])
-     }
+      setPaginationArrya(finalArray[0])}
+      let len = finalArray.length
+      if(pageNo==len){
+        const button = document.getElementById("next")
+        button.setAttribute("disabled","")
+      }
    },[finalArray])
 
   function abc(){
@@ -44,7 +60,6 @@ console.log("pages=>",pages)
          i++
      }
      finalArray.push(arr2)
-     
     }
   }
   else{
@@ -64,14 +79,13 @@ console.log("pages=>",pages)
 
    
   const PreviousPAge = ()=>{
-       if(pageNo>1){
-        setPaginationArrya(finalArray[pageNo-2])  
         setPageNo(pageNo-1)
-       }    
+        console.log("hello=>",pageNo)
+        setPaginationArrya(finalArray[pageNo])  
+        setPageView(finalArray[pageNo][4]) 
   }
 
    useEffect(()=>{
-    console.log(disalbledNext)
        if(!disalbledNext){
         const button = document.getElementById("next")
         button.setAttribute("disabled","")
@@ -93,9 +107,10 @@ console.log("pages=>",pages)
     {
       PaginationArrya?.map((ele,index)=>(
         <li class="page-item"
-         id={index+1}
+         id={index}
          onClick={()=>{
-          setPageView(index+1) }}
+          setPageView(ele) 
+        }}
         >
         <a class="page-link" href="#"
         >

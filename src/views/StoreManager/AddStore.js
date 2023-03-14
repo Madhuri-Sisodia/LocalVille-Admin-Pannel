@@ -8,6 +8,8 @@ import GooglePlacesPicker from "components/googlePlacesPicker";
 import { Utils } from "CommonUtils/Utils";
 import 'react-select-search/style.css'
 import axios from "axios";
+import { SelectPicker } from 'rsuite';
+import { visitIterationBody } from "typescript";
 
 
     
@@ -19,6 +21,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
   const [vendortData,setVendorData] = useState([])
   const [storeImage,setStoreImage] = useState([])
   const {location} = useContext(Utils)
+  const [Data,setData] = useState([])
   const [storeData, setStoreData] = useState({
     storeName: "",
     storeDesc: "",
@@ -33,9 +36,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
     openingTime: "",
     closingTime: "",
   });
-
-
- console.log(storeData)
+ 
   const [selectedDays, setSelectedDays] = useState([]);
   console.log(selectedDays)
   const toggleDaySelection = (index) => {
@@ -122,7 +123,6 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
     data.append("opening_time", storeData.openingTime);
     data.append("closing_time", storeData.closingTime);
     console.log("updateStore", data);
-
     Http.PostAPI(process.env.REACT_APP_ADDSTORE, data, null)
       .then((res) => {
         console.log("resp", res);
@@ -155,7 +155,6 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
       Http.GetAPI(process.env.REACT_APP_GETVENDORSDATA + "?" + Math.random(), {page:3}, null)
     .then((res) => { 
       if (res?.data?.status) {
-        console.log("vendorData=>",res.data.data)
         setVendorData(res.data.data)
       } else {
         alert("Fields not matched");
@@ -169,7 +168,16 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
   }
   getVendorsData()
   },[])
- 
+  
+  useEffect(()=>{
+    if(vendortData){
+      console.log("hello")
+       const Result =  vendortData.map((ele,index)=>{
+          return { label: `${index+1})  ${ele.name} , ${ele.email}`, value: ele.email}
+        })  
+        setData(Result)   
+    }
+  },[vendortData])
 
   return (
     <>
@@ -187,61 +195,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
         </Modal.Header>
         <Modal.Body className="add-body">
           <Form onSubmit={handleSubmit}>
-            {/* <Form.Group>
-              <Form.Label className="add-label">Store Image</Form.Label>
-              <Form.Control
-                type="file"
-                accept=".png, .jpg, .jpeg"
-                onChange={handleImageChange}
-                required
-              />
-            </Form.Group> */}
-
-            {/* <Form.Group >
-                  <Form.Label className="add-label">Longitude</Form.Label>
-                  <Form.Control
-                   
-                    
-                    name="storeId"
-                    onChange={(e) => {
-                      handleInput(e);
-                    }}
-                    type="number"
-                     required
-                  ></Form.Control>
-                </Form.Group>
-              
-
-         
-                <Form.Group >
-                  <Form.Label className="add-label">Latitude</Form.Label>
-                  <Form.Control
-                    
-                    
-                    name="storeId"
-                    onChange={(e) => {
-                      handleInput(e);
-                    }}
-                    type="number"
-                     required
-                  ></Form.Control>
-                </Form.Group>
-               */}
-
             <Form.Group>
-          
-
-{/* <Autocomplete
-  apiKey={"AIzaSyB-kdr28fp0OftydizXQjTMGUTUbrdgzVE"}
-  style={{ width: "90%" }}
-  onPlaceSelected={(place) => {
-    console.log(place);
-  }}
-  options={{
-    types: ["(regions)"],
-    componentRestrictions: { country: "in" },
-  }}
-/>; */}
           <Form.Group>
               <Form.Label className="add-label">Store Address</Form.Label>
               <div style={{marginBottom:"20px"}}>     
@@ -251,11 +205,11 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
           <GooglePlacesPicker/>
           </div>
             </Form.Group>
-
             <Form.Label className="add-label">Vendor Name</Form.Label>
-            
             <div style={{width:"50%",marginTop:"5px"}}>
               <select
+              class="selectpicker" 
+              data-live-search="true"
                 name="selectSection"
                 value={selectSection}
                onChange={(event) => setSelectSection(event.target.value)}
@@ -267,7 +221,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
                 {vendortData.map((category,index) => (
                   <option key={category.id} value={category.email} style={{fontSize:"14px",paddingBottom:"10px",paddintTop:"10px"}}>
                     <li>
-                    {` ${index+1} ${"   "} Name:${category.name},${"        "} \n Email-id:${category.email}`} 
+                    {` ${index+1}) ${"   "} Name:${category.name},${"        "} \n Email-id:${category.email}`} 
                     </li>
                   </option>
                 ))}

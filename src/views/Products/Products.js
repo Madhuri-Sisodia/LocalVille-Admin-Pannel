@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import SearchIcon from "@rsuite/icons/Search";
 import { Input, InputGroup } from "rsuite";
 import { Http } from "../../config/Service";
@@ -8,8 +8,8 @@ import { MdClose } from "react-icons/md";
 import UpdateProducts from "./UpdateProducts";
 import AddProduct from "./AddProduct";
 import Paginte from "../../components/Paginate";
-
- console.log("hello")
+import {Utils} from "../../CommonUtils/Utils"
+ 
 
 import {
   Modal,
@@ -38,7 +38,10 @@ const Products = () => {
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState(null);
   const [showUpdateProduct, setShowUpdateProduct] = useState(false);  
-  
+  const {pageNo,setDisabledNext,pageView} = useContext(Utils)
+
+
+
   const verifiedProduct=(verify)=>{
         if(verify==2){
           return "Rejected"
@@ -64,7 +67,7 @@ const Products = () => {
 }
 
   const getProducts = () => {
-    Http.GetAPI(apis.getProducts + "?" + Math.random(), "", null)
+    Http.GetAPI(process.env.REACT_APP_GETPRODUCTS + "?" + `page=${pageView}`, "", null)
       .then((res) => {
         if (res?.data?.status) {
           setTotalPages(res.data.total_pages)
@@ -81,10 +84,9 @@ const Products = () => {
   };
   useEffect(() => {
     getProducts();
-  }, []);
-  // console.log(blockData);
-  const handleBlockProducts = (e) => {
+  }, [pageView]);
 
+  const handleBlockProducts = (e) => {
     var data = new FormData();
     data.append("product_id", blockData);
     console.log("usersss", data);
@@ -111,12 +113,12 @@ const Products = () => {
       if (res?.data?.status) {
           setData(res?.data?.data);
       } else {
-        alert("Fields not matched");
+        alert("Not in Store");
       }
     })
     .catch((e) => {
       setIsLoading(false);
-      alert("Something went wrong.");
+      alert("Something went wrong");
       console.log("Error:", e);
     });
    }

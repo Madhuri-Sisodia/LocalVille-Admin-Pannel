@@ -5,7 +5,6 @@ import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import Paginte from "components/Paginate";
 import { Utils } from "CommonUtils/Utils";
-
 import {
   Modal,
   Form,
@@ -22,6 +21,7 @@ import {
 import VerifyProduct from "./VerifyProduct";
 import ViewProduct from "./ViewProduct";
 import RejectProduct from "./RejectProduct";
+import "../../assets/css/TableCss.css"
 
 const ProductApproval = () => {
   const [data, setData] = useState([]);
@@ -29,12 +29,12 @@ const ProductApproval = () => {
   const [showProductDetails, setShowProductDetails] = useState(false);
   const [showRejectProduct, setShowRejectProduct] = useState(false);
   const [totalPages,setTotalPages] = useState(0)
-  const {pageNo,setDisabledNext} = useContext(Utils)
+  const {pageNo,setDisabledNext,pageView} = useContext(Utils)
   const [rowData, setRowData] = useState([]);
   const [product, setProduct] = useState([]);
 
   const getUnverifiedProduct = () => {
-    Http.GetAPI(apis.getUnverifiedProducts + "?" +`page=${pageNo}`, "", null)
+    Http.GetAPI(apis.getUnverifiedProducts + "?" +`page=${pageView}`, "", null)
       .then((res) => {
         if (res?.data?.status) {
           if(res.data.data.length>0){
@@ -53,7 +53,7 @@ const ProductApproval = () => {
 
   useEffect(() => {
     getUnverifiedProduct();
-  }, [pageNo]);
+  }, [pageView]);
 
   return (
     <>
@@ -77,10 +77,10 @@ const ProductApproval = () => {
               <Card.Body className="table-full-width table-responsive px-0">
                 <Table className="table-hover table-striped">
                   <thead>
-                    <tr>
+                    <tr style={{dislay:"flex",justifyContent:"center"}}>
                       <th className="border-0">ID</th>
-                      <th className="border-0" >Product Image</th>
-                      <th className="border-0" >Product Name</th>
+                      <th className="border-0">Product Image</th>
+                      <th className="border-0">Product Name</th>
                       <th className="border-0 ">Action</th>
                     </tr>
                   </thead>

@@ -105,7 +105,6 @@ const Category = () => {
         alert("Something went wrong.");
         console.log("Error:", e);
       });
-      notify("tr");
   }, []);
 
   return (

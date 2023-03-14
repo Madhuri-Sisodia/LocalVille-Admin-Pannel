@@ -1,17 +1,20 @@
 import axios from "axios";//import { base_url, prod_url } from "./WebConstant";
-const UserToken = JSON.parse(sessionStorage.getItem("loggedIn"))
+
 const base_url = process.env.REACT_APP_BASEURL
 console.log(process.env.REACT_APP_BASEURL)
 
 export var Http = {
-  GetAPI: (url, data) => {
+
+  
+  GetAPI:async(url, data) => {
+    const UserToken = await JSON.parse(sessionStorage.getItem("loggedIn")) 
     let header = {
       "Content-Type": "multipart/form-data",
       "Accept":'application/json',
       "Authorization":UserToken
   }
-  console.log(header)
-    return axios({
+
+ return axios({
         method: 'GET',
         url: base_url + url,
         params: {data},

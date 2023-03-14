@@ -23,54 +23,6 @@ import {
 } from "react-bootstrap";
 import BlockVendor from "./BlockVendor";
 
-// const data = [
-//   {
-//     id: 1,
-//     vendorImage: "https://i.pravatar.cc/50",
-//     vendorName: "Vendor 1",
-//     email: "vendor1@email.com",
-//     phone: "555-555-5555",
-//     status: "active",
-//     loginCount: 0,
-//   },
-//   {
-//     id: 2,
-//     vendorImage: "https://i.pravatar.cc/50",
-//     vendorName: "Vendor 2",
-//     email: "vendor2@email.com",
-//     phone: "555-555-5556",
-//     status: "block",
-//     loginCount: 5,
-//   },
-//   {
-//     id: 3,
-//     vendorImage: "https://i.pravatar.cc/50",
-//     vendorName: "Vendor 3",
-//     email: "vendor3@email.com",
-//     phone: "555-555-5557",
-//     status: "active",
-//     loginCount: 2,
-//   },
-//   {
-//     id: 4,
-//     vendorImage: "https://i.pravatar.cc/50",
-//     vendorName: "Vendor 3",
-//     email: "vendor3@email.com",
-//     phone: "555-555-5557",
-//     status: "active",
-//     loginCount: 2,
-//   },
-//   {
-//     id: 5,
-//     vendorImage: "https://i.pravatar.cc/50",
-//     vendorName: "Vendor 3",
-//     email: "vendor3@email.com",
-//     phone: "555-555-5557",
-//     status: "block",
-//     loginCount: 2,
-//   },
-// ];
-
 const VendorsManager = () => {
   const [showModal, setShowModal] = useState(false);
   const [data, setData] = useState([]);
