@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Button, ButtonToolbar, SelectPicker, Checkbox } from "rsuite";
 import ErrorMessage from "customComponents/ErrorMessage";
 import "../assets/css/admin.css";
-import MultipleSelect from "../components/multipleSelect";
+import MultipleSelect from "../components/MultipleSelect";
 import NotificationAlert from "react-notification-alert";
 import { Http } from "config/Service";
 import { apis } from "config/WebConstant";
