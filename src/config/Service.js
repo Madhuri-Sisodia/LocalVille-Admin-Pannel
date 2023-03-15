@@ -4,11 +4,12 @@ const base_url = process.env.REACT_APP_BASEURL
 console.log(process.env.REACT_APP_BASEURL)
 
 export var Http = {
-  GetAPI: (url, data) => {
+  GetAPI: async (url, data) => {
+    const UserToken = await JSON.parse(sessionStorage.getItem("loggedIn"))
     let header = {
       "Content-Type": "multipart/form-data",
       "Accept":'application/json',
-      "Authorization":UserToken
+      "Authorization": UserToken
   }
   console.log(header)
     return axios({
