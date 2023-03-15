@@ -10,7 +10,7 @@ import AdminManager from "views/AdminManager";
 import Category from "views/categorySection/index.js";
 import StoreManager from "views/StoreManager/StoreManager";
 import VendorsManager from "views/VendorsManager/VendorsManager";
-import Products from "views/Products/Products";
+import ProductManager from "views/ProductManager/ProductManager";
 import ProductApproval from "views/ProductApproval/ProductApproval";
 import StoreApproval from "views/StoreApproval/StoreApproval";
 import NotificationManager from "views/NotificationManager";
@@ -74,10 +74,10 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    path: "/products",
-    name: "Products",
+    path: "/product",
+    name: "Product Manager",
     icon: "nc-icon nc-circle-09",
-    component: Products,
+    component: ProductManager,
     layout: "/admin"
   },
 
