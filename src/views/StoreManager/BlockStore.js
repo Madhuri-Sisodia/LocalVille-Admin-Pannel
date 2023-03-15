@@ -61,15 +61,15 @@ const BlockStore = ({ showModal, setShowModal, blockData, getStore }) => {
         </Modal.Header>
         <Modal.Body className="text-center">
           <p>Are you sure you want to block this store?</p>
-          {/* <Form.Control
+          <Form.Control
             componentClass="textarea"
             rows={3}
-            style={{ fontSize: "0.9rem" }}
+            style={{ fontSize: "0.9rem", height: "70px" }}
             placeholder="Enter Reason"
             maxLength={200}
             value={blockReason}
             onChange={(event) => setBlockReason(event.target.value)}
-          /> */}
+          />
         </Modal.Body>
         <div className="modal-footer">
           <Button

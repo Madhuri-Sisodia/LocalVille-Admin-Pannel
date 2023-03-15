@@ -7,8 +7,9 @@ import "../../assets/css/modal.css";
 import Size from "components/size";
 import { get } from "jquery";
 import ButtonComponent from "views/ButtonComponent";
+import UpdateAttributes from "components/updateAttributes";
 
-const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct,item }) => {
+const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProducts,item }) => {
   const [product, setProduct] = useState([]);
   const [image, setImage] = useState(null);
   const [vendortData,setVendorData] = useState([])
@@ -27,11 +28,11 @@ const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct,item }) =>
   const [attributes,setAttributes] = useState([])
    
   const [productData, setProductData] = useState({
-    productName: "",
-    productDesc: "",
+    productName:"",
+    productDesc:"",
     category: "",
     sub_category: "",
-    is_buy: "",
+    is_buy:"",
     is_pickup: "",
     color: false,
     size: false,
@@ -40,14 +41,7 @@ const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct,item }) =>
     in_stock: 1,
     productImage:""
   });
- console.log(productData)
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setImage(file);
-    setProductData((previous) => {
-      return { ...previous, productImage: file };
-    });
-  };
+ 
 
   const resetForm = () => {
     setProductData({
@@ -64,140 +58,74 @@ const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProduct,item }) =>
   };
    
 
-  useEffect(() => {
-    Http.GetAPI(process.env.REACT_APP_GETPRODUCTCATEGORY,"", null)
-      .then((res) => {
-        if (res?.data?.status) {
-          setGetProCat(res?.data?.data);
-        } else {
-          alert("Fields not matched");
-        }
-      })
-      .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
-      });
-  }, []);
-
-
-  useEffect(() => {
-    if(selectProCat){
-     console.log()
-      const vendorid = getProcat.filter((ele)=>{
-        return(ele.name==selectProCat)
-            })
-
-            console.log(vendorid)
-
+const updateImage = ()=>{
       
-      Http.GetAPI(process.env.REACT_APP_GETPRODSUBCATEGORY + "?" + `category_id=${vendorid[0].id}`, "", null)
-      .then((res) => {
-        if (res?.data?.status) {
-          setGetProSubCat(res?.data?.data);
-        } else {
-          alert("Fields not matched");
-        }
-      })
-      .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
-      });
-    }
-  }, [selectProCat]);
-  
+  const data = new FormData()
 
-
-
-
-
-
-  const getStore = () => {
-    console.log("hello")
-    Http.GetAPI(process.env.REACT_APP_GETSTOREDATA + "?" + Math.random(), "", null)
-      .then((res) => {
-        if (res?.data?.status) {
-           if(res.data.data.length>0){
-            setGetStoreData(res?.data?.data);
-           }
-           else{
-            setDisabledNext(false)
-           }
-        } else {
-          alert("Fields not matched");
-        }
-      })
-      .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
-      });
-  };
-console.log(getStoreData);
-  useEffect(() => {
-    getStore();
-  }, []);
-
-
-
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-console.log("useeer",getStoreData)
-
-    const vendorid = getStoreData.filter((ele)=>{
-      return(ele.email==selectSection)
-          })
-    var data = new FormData();
-
-    data.append("vendor_id",vendorid[0].vendor_id)
-    data.append("store_id",vendorid[0].id)
-    data.append("product_name", productData.productName);
-    data.append("product_desc", productData.productDesc);
-    data.append("category",selectProCat);
-    data.append("sub_category",selectProSubCat);
-    data.append("is_buy", (bay=="Yes")? 1: 0);
-    data.append("is_pickup", (Pickup=="Yes")? 1: 0);
-    data.append("in_stock", productData.in_stock);
-    data.append("pid", item.id);
-    console.log("users",item.id);
-    
-    console.log("userrr",productData.in_stock)
-    
     // if(productData.productImage){
     //   for(let i=0;i<4;i++){
     //     data.append(`product_images[${i}]`,productData?.productImage[i])
     //   }
     // }
- 
-    //   for(let i=0;i<attributes.length;i++){
-    //     data.append(`color[${i}]`,attributes[i].Color)
-    //     data.append(`size[${i}]`,attributes[i].Size)
-    //     data.append(`price[${i}]`,attributes[i].Price)
-    //     data.append(`dis_price[${i}]`,attributes[i].dis_Price)
-    //   }
+    data.append("product_image", productData?.productImage[0])
+    data.append("product_name", (productData?.productName)?productData.productName:item.product_name)
+    data.append("product_id", item.id);
+    Http.PostAPI(process.env.REACT_APP_UPDATEPRODUCTIMAGE, data, null)
+    .then((res) => {
+      console.log("resp", res);
+      if (res?.data?.status) {
+        console.log("hello")
+        setProduct(res?.data?.data);
+      } else {
+        alert("Fields not matched");
+      }
+    })
+    .catch((e) => {
+      //alert("Something went wrong.");
+      // console.log("Error:", e);
+    });
+}
+  console.log(item)
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    updateImage()
    
+      
+    var data = new FormData();
+    data.append("pid", item.id);
+    data.append("product_name", (productData?.productName)?productData.productName:item.product_name);
+    data.append("product_desc", (productData?.productDesc)?productData.productDesc:item.product_desc);
+    data.append("is_buy", bay?((bay=="Yes")? 1: 0):item?.is_buy);
+    data.append("is_pickup",Pickup?((Pickup=="Yes")? 1: 0):item?.is_pickup);
+  
     Http.PostAPI(process.env.REACT_APP_UPDATEPRODUCTS, data, null)
       .then((res) => {
         console.log("resp", res);
         if (res?.data?.status) {
+          console.log("hello")
           setProduct(res?.data?.data);
-          getProduct();
+          getProducts();
         } else {
           alert("Fields not matched");
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
+        //alert("Something went wrong.");
         // console.log("Error:", e);
       });
+
+      
     resetForm();
-    // setShowAddProduct(false);
+    setShowUpdateModal(false);
     setGetSize([])
     setColor([])
     setProductPrice([])
     setProductDiscountPrice([])
   };
 
+
+  
 
   const handleInput = (e) => {
     console.log(e.target.value);
@@ -237,25 +165,6 @@ console.log("useeer",getStoreData)
                 type="file"
               ></Form.Control>
 
-            <Form.Label className="add-label">Select Vendor</Form.Label>
-            <div style={{width:"50%",marginTop:"5px",marginBottom:"15px"}}>
-              <select
-                name="selectSection"
-                value={selectSection}
-               onChange={(event) => setSelectSection(event.target.value)}
-                style={{height:"35px",borderRadius:"5px",paddingLeft:"5px",paddingRight:"5px",borderColor: "#808020",width:"80%"}}  
-               >
-                <option value="">Select</option>
-                {getStoreData.map((category,index) => (
-                  <option key={category.id} value={category.email} style={{fontSize:"14px",paddingBottom:"10px",paddintTop:"10px"}}>
-                    <li>
-                    {` ${index+1} ${"   "} Name:${category.store_name},${"        "} \n vendorName:${category.name}`} 
-                    </li>
-                  </option>
-                ))}
-              </select>
-              </div>
-
               <Form.Label className="add-label">Product Name</Form.Label>
               <Form.Control
                 name="productName"
@@ -284,48 +193,6 @@ console.log("useeer",getStoreData)
             </Form.Group>
 
             <Form.Group>
-              <Form.Label className="add-label">Category</Form.Label>
-              <div style={{width:"50%",marginTop:"5px",marginBottom:"15px"}}>
-              <select
-                name="selectSection"
-                value={selectProCat}
-               onChange={(event) => setSelectProCat(event.target.value)}
-                style={{height:"35px",borderRadius:"5px",paddingLeft:"5px",paddingRight:"5px",borderColor: "#808020",width:"80%"}}  
-               >
-                <option value="">Select</option>
-                {getProcat.map((category,index) => (
-                  <option key={category.id} value={category.email} style={{fontSize:"14px",paddingBottom:"10px",paddintTop:"10px"}}>
-                    <li>
-                    {`${category.name}`} 
-                    </li>
-                  </option>
-                ))}
-              </select>
-              </div>
-            </Form.Group>
-
-            <Form.Group>
-              <Form.Label className="add-label">SubCategory</Form.Label>
-              <div style={{width:"50%",marginTop:"5px",marginBottom:"15px"}}>
-              <select
-                name="selectSection"
-                value={selectProSubCat}
-               onChange={(event) => setSelectProSubCat(event.target.value)}
-                style={{height:"35px",borderRadius:"5px",paddingLeft:"5px",paddingRight:"5px",borderColor: "#808020",width:"80%"}}  
-               >
-                <option value="">Select</option>
-                {getProSubcat.map((category,index) => (
-                  <option key={category.id} value={category.email} style={{fontSize:"14px",paddingBottom:"10px",paddintTop:"10px"}}>
-                    <li>
-                    {`${category.name}`} 
-                    </li>
-                  </option>
-                ))}
-              </select>
-              </div>
-            </Form.Group>
-
-            <Form.Group>
               <Form.Label className="add-label">Buy</Form.Label>
               <div style={{width:"50%",marginTop:"5px",marginBottom:"15px"}}>
               <select
@@ -334,7 +201,6 @@ console.log("useeer",getStoreData)
                onChange={(event) => setBay(event.target.value)}
                 style={{height:"35px",borderRadius:"5px",paddingLeft:"5px",paddingRight:"5px",borderColor: "#808020",width:"80%"}}  
                >
-                <option value="">Select</option>  
                   <option  style={{fontSize:"14px",paddingBottom:"10px",paddintTop:"10px"}}>
                     <li>
                      Yes
@@ -350,11 +216,14 @@ console.log("useeer",getStoreData)
             </Form.Group>
 
             <Form.Group>
-              <Form.Label className="add-label">Add Attributes</Form.Label>
-               <Size 
-               setAttributes={setAttributes}
-               attributes={attributes}
+              <Form.Label className="add-label">Update Attributes</Form.Label>
+               {
+                item?.attributes?.map((ele,index)=>(
+               <UpdateAttributes ele={ele} index={index}
+               getProducts= {getProducts}
                />
+                ))
+               }
             </Form.Group>
             <Form.Group>
               <Form.Label className="add-label">Pickup</Form.Label>
@@ -365,7 +234,6 @@ console.log("useeer",getStoreData)
                onChange={(event) => setPickup(event.target.value)}
                 style={{height:"35px",borderRadius:"5px",paddingLeft:"5px",paddingRight:"5px",borderColor: "#808020",width:"80%"}}  
                >
-                <option value="">Select</option>  
                   <option  style={{fontSize:"14px",paddingBottom:"10px",paddintTop:"10px"}}>
                     <li>
                      Yes

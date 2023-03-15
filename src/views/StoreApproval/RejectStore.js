@@ -23,7 +23,7 @@ const RejectStore = ({
   getUnverifiedStore
 }) => {
   const [updateStore, setUpdateStore] = useState([]);
-  const [RejectReason,setRejectReson] = useState("")
+  const [blockReason, setBlockReason] = useState("");
   const handleRejectStore = (store) => {
     var data = new FormData();
     data.append("store_id", store.id);
@@ -59,12 +59,15 @@ const RejectStore = ({
         </Modal.Header>
         <Modal.Body className="text-center">
           <p>Are you sure you want to reject this store?</p>
-          <div class="form-group">
-    <textarea class="form-control" id="exampleFormControlTextarea1" rows="2"
-     placeholder="Enter Reasons"
-     onChange={(e)=>{setRejectReson(e.target.value)}}
-    ></textarea>
-  </div>
+          <Form.Control
+            componentClass="textarea"
+            rows={3}
+            style={{ fontSize: "0.9rem", height: "70px" }}
+            placeholder="Enter Reason"
+            maxLength={200}
+            value={blockReason}
+            onChange={(event) => setBlockReason(event.target.value)}
+          />
         </Modal.Body>
         <div className="modal-footer">
           <Button

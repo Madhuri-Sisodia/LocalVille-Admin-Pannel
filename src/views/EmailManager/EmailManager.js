@@ -2,12 +2,13 @@ import { useState,useEffect } from "react";
 import { Form} from "rsuite";
 import ErrorMessage from "customComponents/ErrorMessage";
 import "../../assets/css/admin.css";
-import MultipleSelect from "../../components/multipleSelect";
+import MultipleSelect from "components/multipleSelect";
 import { Http } from "config/Service";
 import { apis } from "config/WebConstant";
 import MyComponent from "components/React-Quil-text-Editor";
 import { Data } from "@react-google-maps/api";
 import ButtonComponent from "views/ButtonComponent";
+
 
 const EmailManager = () => {
   const [selectedVendors, setSelectedVendors] = useState([]);

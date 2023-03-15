@@ -11,6 +11,7 @@ import axios from "axios";
 import { SelectPicker } from 'rsuite';
 import { visitIterationBody } from "typescript";
 import ButtonComponent from "views/ButtonComponent";
+import ReactSelect from "CommonUtils/React-Select";
 
 
     
@@ -22,6 +23,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
   const [vendortData,setVendorData] = useState([])
   const [storeImage,setStoreImage] = useState([])
   const {location} = useContext(Utils)
+  console.log("location=>",location)
   const [Data,setData] = useState([])
   const [storeData, setStoreData] = useState({
     storeName: "",
@@ -38,6 +40,8 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
     closingTime: "",
   });
  
+  console.log("select",selectSection.value)
+   
   const [selectedDays, setSelectedDays] = useState([]);
   console.log(selectedDays)
   const toggleDaySelection = (index) => {
@@ -102,7 +106,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
     event.preventDefault();
   
    const vendorid = vendortData.filter((ele)=>{
-            return(ele.email==selectSection)
+            return(ele.email==selectSection?.value)
    })
    
     const id = vendorid[0].id
@@ -113,8 +117,8 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
      data.append("long",location.lng)
     data.append("store_name", storeData.storeName);
     data.append("store_desc", storeData.storeDesc);
-    data.append("lat", storeData.latitude);
-    data.append("long", storeData.longitude);
+    data.append("lat", location.lat);
+    data.append("long", location.lng);
     data.append("address", storeData.address);
     data.append("pincode", storeData.pincode);
     data.append("city", storeData.city);
@@ -206,27 +210,12 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
           <GooglePlacesPicker/>
           </div>
             </Form.Group>
+           
             <Form.Label className="add-label">Vendor Name</Form.Label>
-            <div style={{width:"50%",marginTop:"5px"}}>
-              <select
-              class="selectpicker" 
-              data-live-search="true"
-                name="selectSection"
-                value={selectSection}
-               onChange={(event) => setSelectSection(event.target.value)}
-                style={{height:"35px",borderRadius:"5px",paddingLeft:"5px",paddingRight:"5px",borderColor: "#808020",width:"80%"}}  
-               >
-                <option value="">
-                  Select
-                </option>
-                {vendortData.map((category,index) => (
-                  <option key={category.id} value={category.email} style={{fontSize:"14px",paddingBottom:"10px",paddintTop:"10px"}}>
-                    <li>
-                    {` ${index+1}) ${"   "} Name:${category.name},${"        "} \n Email-id:${category.email}`} 
-                    </li>
-                  </option>
-                ))}
-              </select>
+            <div style={{width:"100%",marginTop:"5px"}}>
+            <ReactSelect data={vendortData}
+             setSelectSection={setSelectSection}
+            />
               </div>
             </Form.Group>
 

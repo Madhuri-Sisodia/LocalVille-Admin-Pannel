@@ -9,21 +9,21 @@ const Paginte = ({pages})=>{
   const [finalArray,setFinalArray] = useState([])
      
    const NextPAge=()=>{ 
+    console.log(pageNo)
     let len = finalArray.length
-    if(pageNo==len){
+    if(pageNo>=len){
       const button = document.getElementById("next")
       button.setAttribute("disabled","")
+      const butto1 = document.getElementById("next")
+      butto1.setAttribute("disabled","")
     }
     else{
-      const button = document.getElementById("next")
+      const button = document.getElementById("previous")
         button.disabled = false
+        setPageNo(pageNo+1) 
+        setPaginationArrya(finalArray[pageNo])
+        setPageView(finalArray[pageNo][0])
     }
-    
-    setPageNo(pageNo+1) 
-    console.log("nex=>",pageNo)
-    setPaginationArrya(finalArray[pageNo])
-    console.log(PaginationArrya)
-    setPageView(finalArray[pageNo][0])
   }
 
   
@@ -36,11 +36,6 @@ const Paginte = ({pages})=>{
    useEffect(()=>{
      if(finalArray.length>=1){
       setPaginationArrya(finalArray[0])}
-      let len = finalArray.length
-      if(pageNo==len){
-        const button = document.getElementById("next")
-        button.setAttribute("disabled","")
-      }
    },[finalArray])
 
   function abc(){
@@ -79,30 +74,30 @@ const Paginte = ({pages})=>{
 
    
   const PreviousPAge = ()=>{
-        setPageNo(pageNo-1)
-        console.log("hello=>",pageNo)
-        setPaginationArrya(finalArray[pageNo])  
-        setPageView(finalArray[pageNo][4]) 
+    console.log(pageNo)
+     if((pageNo-1)==0){
+      const button = document.getElementById("next")
+      button.setAttribute("disabled","")
+      const button1 = document.getElementById("next")
+      button1.disabled = false
+     }
+     else{
+      const button = document.getElementById("next")
+      button.disabled = false
+      console.log(pageNo)
+      setPageNo(pageNo-1)
+      setPaginationArrya(finalArray[pageNo-2])  
+      setPageView(finalArray[pageNo-2][0]) 
+     }
+       
   }
-
-   useEffect(()=>{
-       if(!disalbledNext){
-        const button = document.getElementById("next")
-        button.setAttribute("disabled","")
-       }
-       else{
-        const button = document.getElementById("next")
-        button.disabled = false
-       }
-
-   },[disalbledNext])
 
     return(
         <>
         <nav aria-label="...">
   <ul class="pagination">
     <li class="page-item">
-      <span class="page-link" onClick={PreviousPAge}>Previous</span>
+      <button class="page-link" id="previous" onClick={PreviousPAge}>Previous</button>
     </li>
     {
       PaginationArrya?.map((ele,index)=>(

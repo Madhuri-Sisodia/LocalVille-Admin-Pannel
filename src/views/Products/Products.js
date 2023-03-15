@@ -8,8 +8,9 @@ import { MdClose } from "react-icons/md";
 import UpdateProducts from "./UpdateProducts";
 import AddProduct from "./AddProduct";
 import Paginte from "../../components/Paginate";
-import {Utils} from "../../CommonUtils/Utils"
- 
+import { Utils } from "CommonUtils/Utils";
+
+console.log("hello");
 
 import {
   Modal,
@@ -31,46 +32,43 @@ const Products = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showAddProduct, setShowAddProduct] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
-  const [totalPages,setTotalPages] = useState(0)
+  const [totalPages, setTotalPages] = useState(0);
   const [blockProducts, setBlockProducts] = useState([]);
   const [blockData, setBlockData] = useState([]);
   const [rowData, setRowData] = useState([]);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState(null);
-  const [showUpdateProduct, setShowUpdateProduct] = useState(false);  
+  const [showUpdateProduct, setShowUpdateProduct] = useState(false);
   const {pageNo,setDisabledNext,pageView} = useContext(Utils)
 
-
-
-  const verifiedProduct=(verify)=>{
-        if(verify==2){
-          return "Rejected"
-        }
-        else if(verify==1){
-          return "Verified"
-        }
-        else{
-          return "Pending"
-        }
-  }
-
-  const Debounce = (fun)=>{
-    let timer;
-    return (...arg)=>{
-        if(timer){
-            clearTimeout(timer)
-        }
-        timer = setTimeout(()=>{
-            fun.call(this,arg)
-        },500)
+  const verifiedProduct = (verify) => {
+    if (verify == 2) {
+      return "Rejected";
+    } else if (verify == 1) {
+      return "Verified";
+    } else {
+      return "Pending";
     }
-}
+  };
+
+  const Debounce = (fun) => {
+    let timer;
+    return (...arg) => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+      timer = setTimeout(() => {
+        fun.call(this, arg);
+      }, 500);
+    };
+  };
 
   const getProducts = () => {
+    console.log("helloget")
     Http.GetAPI(process.env.REACT_APP_GETPRODUCTS + "?" + `page=${pageView}`, "", null)
       .then((res) => {
         if (res?.data?.status) {
-          setTotalPages(res.data.total_pages)
+          setTotalPages(res.data.total_pages);
           setData(res?.data?.data);
         } else {
           alert("Fields not matched");
@@ -80,12 +78,12 @@ const Products = () => {
         alert("Something went wrong.");
         console.log("Error:", e);
       });
-
   };
+
   useEffect(() => {
     getProducts();
   }, [pageView]);
-
+  // console.log(blockData);
   const handleBlockProducts = (e) => {
     var data = new FormData();
     data.append("product_id", blockData);
@@ -106,24 +104,27 @@ const Products = () => {
       });
   };
 
-     
-  const filtervendor = (e)=>{
-    Http.GetAPI(process.env.REACT_APP_SEARCHPRODUCT + "?" +`search=${e}`,"", null)
-    .then((res) => {
-      if (res?.data?.status) {
+  const filtervendor = (e) => {
+    Http.GetAPI(
+      process.env.REACT_APP_SEARCHPRODUCT + "?" + `search=${e}`,
+      "",
+      null
+    )
+      .then((res) => {
+        if (res?.data?.status) {
           setData(res?.data?.data);
-      } else {
-        alert("Not in Store");
-      }
-    })
-    .catch((e) => {
-      setIsLoading(false);
-      alert("Something went wrong");
-      console.log("Error:", e);
-    });
-   }
+        } else {
+          alert("Fields not matched");
+        }
+      })
+      .catch((e) => {
+        setIsLoading(false);
+        alert("Something went wrong.");
+        console.log("Error:", e);
+      });
+  };
 
-   const search =  Debounce(filtervendor)
+  const search = Debounce(filtervendor);
 
   return (
     <>
@@ -149,7 +150,12 @@ const Products = () => {
                 <p className="card-category">product details and action</p>
                 <br></br>
                 <InputGroup style={{ width: "250px" }}>
-                  <Input placeholder="Search" onChange={(e)=>{search(e)}} />
+                  <Input
+                    placeholder="Search"
+                    onChange={(e) => {
+                      search(e);
+                    }}
+                  />
                   <InputGroup.Button>
                     <SearchIcon />
                   </InputGroup.Button>
@@ -186,7 +192,7 @@ const Products = () => {
                       <th className="border-0">Color</th>
                       <th className="border-0">Size</th>
                       <th className="border-0">Price</th>
-                      <th className="border-0">Discounted Price</th>                    
+                      <th className="border-0">Discounted Price</th>
                       <th className="border-0">Action</th>
                     </tr>
                   </thead>
@@ -221,8 +227,8 @@ const Products = () => {
                         </td>
                         <td>{item.category_name}</td>
                         <td>{item.subcategory_name}</td>
-                        <td>{(item.is_buy==1)?"Yes":"No"}</td>
-                        <td>{(item.is_pickup==1)?"Yes":"No"}</td>
+                        <td>{item.is_buy == 1 ? "Yes" : "No"}</td>
+                        <td>{item.is_pickup == 1 ? "Yes" : "No"}</td>
                         <td>{item.total_clicks}</td>
                         <td>{verifiedProduct(item.is_verified)}</td>
                         <td>
@@ -243,8 +249,8 @@ const Products = () => {
                         </td>
                         <td>{item.category_name}</td>
                         <td>{item.subcategory_name}</td>
-                        <td>{(item.is_color==1)?"Yes":"No"}</td>
-                        <td>{(item.is_size==1)?"Yes":"No"}</td>
+                        <td>{item.is_color == 1 ? "Yes" : "No"}</td>
+                        <td>{item.is_size == 1 ? "Yes" : "No"}</td>
                         <td>{item.price}</td>
                         <td>{item.discount_price}</td>
 
@@ -289,10 +295,7 @@ const Products = () => {
                                 console.log(e.target.id);
                               }}
                             >
-                              <i className="fas fa-times"
-                                id={item.id}
-
-                              ></i>
+                              <i className="fas fa-times" id={item.id}></i>
                             </Button>
                           </div>
                         </td>
@@ -302,9 +305,15 @@ const Products = () => {
                 </Table>
               </Card.Body>
             </Card>
-            <div style={{display:"flex",justifyContent:"center",textAlign:"center"}}>
-        <Paginte pages={totalPages}/>
-        </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                textAlign: "center",
+              }}
+            >
+              <Paginte pages={totalPages} />
+            </div>
           </Col>
         </Row>
         <UpdateProducts
@@ -359,7 +368,10 @@ const Products = () => {
           </div>
         </Modal>
 
-        <Modal show={showDetailsModal} onHide={() => setShowDetailsModal(false)}>
+        <Modal
+          show={showDetailsModal}
+          onHide={() => setShowDetailsModal(false)}
+        >
           <Modal.Header style={{ borderBottom: "1px solid gray" }}>
             <Modal.Title className="title">View Product Details</Modal.Title>
             <MdClose
@@ -411,38 +423,42 @@ const Products = () => {
                 </tr>
                 <tr>
                   <td className="bold-col">Is buy:</td>
-                  <td>{(rowData.is_buy)?"Yes":"No"}</td>
+                  <td>{rowData.is_buy == "1" ? "Yes" : "No"}</td>
                 </tr>
                 <tr>
                   <td className="bold-col">Is Pickup:</td>
-                  <td>{(rowData.is_pickup)?"Yes":"No"}</td>
+                  <td>{rowData.is_pickup == "1" ? "Yes" : "No"}</td>
                 </tr>
-                <tr>
-                  <td className="bold-col">Verified:</td>
-                  <td>{verifiedProduct(rowData.is_verified)}</td>
-                </tr>
-                <tr>
-                  <td className="bold-col">Opening Time:</td>
-                  <td>{rowData.opening_time}</td>
-                </tr>
-
-                <tr>
-                  <td className="bold-col">Closing Time:</td>
-                  <td>{rowData.closing_time}</td>
-                </tr>
-
                 <tr>
                   <td className="bold-col">Total Clicks:</td>
                   <td>{rowData.total_clicks}</td>
                 </tr>
                 <tr>
-                  <td className="bold-col">Product Created:</td>
-                  <td>{rowData.category_name}</td>
+                  <td className="bold-col">Product Status:</td>
+                  <td
+                    style={{
+                      backgroundColor:
+                        rowData.is_verified == "1"
+                          ? "green"
+                          : rowData.is_verified == "0"
+                          ? "orange"
+                          : "red",
+                      border: "none",
+                      fontSize: "0.75rem",
+                      color: "white",
+                      padding: "0px 7px",
+                      borderRadius: "17px",
+                      display: "inline-block",
+                    }}
+                  >
+                    {rowData.is_verified == "1"
+                      ? "verified"
+                      : rowData.is_verified == "0"
+                      ? "pending"
+                      : "rejected"}
+                  </td>
                 </tr>
-                <tr>
-                  <td className="bold-col">Product Updated:</td>
-                  <td>{rowData.subcategory_name}</td>
-                </tr>
+
                 <tr>
                   <td className="bold-col">Status:</td>
 
@@ -462,6 +478,18 @@ const Products = () => {
                 </tr>
               </tbody>
             </Table>
+            {rowData.images && rowData.images.length > 0 && (
+              <div>
+                <img
+                  src={rowData.images[0].images}
+                  alt="image"
+                  style={{
+                    width: "70px",
+                    height: "70px",
+                  }}
+                />
+              </div>
+            )}
           </Modal.Body>
           <Modal.Footer></Modal.Footer>
         </Modal>

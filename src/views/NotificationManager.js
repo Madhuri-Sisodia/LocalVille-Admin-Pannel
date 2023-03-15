@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Form, Button, ButtonToolbar, SelectPicker, Checkbox } from "rsuite";
 import ErrorMessage from "customComponents/ErrorMessage";
 import "../assets/css/admin.css";
-import MultipleSelect from "../components/multipleSelect";
 import NotificationAlert from "react-notification-alert";
 import { Http } from "config/Service";
 import { apis } from "config/WebConstant";
 import ButtonComponent from "./ButtonComponent";
+import MultipleSelect from "components/multipleSelect";
 
 const NotificationManager = () => {
   const [selectedVendors, setSelectedVendors] = useState([]);
