@@ -15,7 +15,7 @@ const MultipleSelect = ({data,selectedVendors,setSelectedVendors}) => {
        options.push( { label:`${ele.name},  ${ele.email}`, value:ele.email })
     })
     
-  
+  const [selected, setSelected] = useState([]);
 
   return (
     <div style={{marginTop:"20px"}}>
