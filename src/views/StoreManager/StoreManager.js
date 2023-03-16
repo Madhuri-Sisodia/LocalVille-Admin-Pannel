@@ -30,6 +30,7 @@ import {
 } from "react-bootstrap";
 import ViewProduct from "views/ProductApproval/ViewProduct";
 import ViewStore from "./ViewStore";
+import BlockStore from "./BlockStore";
 const daysOfWeek = ["M", "T", "W", "T", "F", "S", "S"];
 
 // const data = [
@@ -169,26 +170,6 @@ const StoreManager = () => {
     getStore();
   }, [pageView]);
 
-  const handleBlockStore = (id) => {
-    var data = new FormData();
-    data.append("id", id);
-    console.log("usersss", data);
-    Http.PostAPI(process.env.REACT_APP_BLOCKSTORE, data, null)
-      .then((res) => {
-        console.log("user", res);
-        if (res?.data?.status) {
-          setBlockStore(res?.data?.data);
-          getStore();
-        } else {
-          alert("Fields not matched");
-        }
-      })
-      .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
-      });
-  };
-
   const filtervendor = (e) => {
     Http.GetAPI(
       process.env.REACT_APP_SEARCHSTORE + "?" + `search=${e}`,
@@ -215,9 +196,6 @@ const StoreManager = () => {
   };
 
   const search = Debounce(filtervendor);
-
-
-  
 
   return (
     <>
@@ -466,52 +444,16 @@ const StoreManager = () => {
         getStore={getStore}
       />
       <ViewStore
-          showDetailsModal={showDetailsModal}
-          setShowDetailsModal={setShowDetailsModal}
-          rowData={rowData}
-        />
-
-      <Modal
-        className="modal-mini modal-primary"
-        show={showModal}
-        onHide={() => setShowModal(false)}
-      >
-        <Modal.Header className="justify-content-center">
-          <div className="modal-profile">
-            <BiBlock
-              style={{
-                fontSize: "30px",
-                color: "gray",
-              }}
-            />
-          </div>
-        </Modal.Header>
-        <Modal.Body className="text-center">
-          <p>Are you sure you want to block this store?</p>
-        </Modal.Body>
-        <div className="modal-footer">
-          <Button
-            className="btn-simple"
-            variant="danger"
-            onClick={() => {
-              handleBlockStore(blockData);
-              setShowModal(false);
-            }}
-          >
-            Block
-          </Button>
-          <Button
-            className="btn-simple"
-            type="button"
-            variant="secondary"
-            onClick={() => setShowModal(false)}
-          >
-            Close
-          </Button>
-        </div>
-      </Modal>
-
-      
+        showDetailsModal={showDetailsModal}
+        setShowDetailsModal={setShowDetailsModal}
+        rowData={rowData}
+      />
+      <BlockStore
+        showModal={showModal}
+        setShowModal={setShowModal}
+        blockData={blockData}
+        getStore={getStore}
+      />
     </>
   );
 };

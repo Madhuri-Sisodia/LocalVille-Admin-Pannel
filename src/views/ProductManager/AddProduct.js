@@ -238,6 +238,7 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
                    })  
                   }}
                 type="file"
+                required
               ></Form.Control>
 
             <Form.Label className="add-label">Select Vendor</Form.Label>
