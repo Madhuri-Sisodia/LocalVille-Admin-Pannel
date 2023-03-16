@@ -161,6 +161,22 @@ const ProductDetailModel = ({
               </tr>
             </tbody>
           </Table>
+          {rowData.p_images && rowData.p_images.length > 0 && (
+            <div>
+              {rowData.p_images.map((image, index) => (
+                <img
+                  key={index}
+                  src={image?.[index]}
+                  alt="image"
+                  style={{
+                    width: "70px",
+                    height: "70px",
+                    marginRight: "10px",
+                  }}
+                />
+              ))}
+            </div>
+          )}
         </Modal.Body>
         <Modal.Footer></Modal.Footer>
       </Modal>

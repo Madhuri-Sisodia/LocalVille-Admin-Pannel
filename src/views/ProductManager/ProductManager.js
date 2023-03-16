@@ -10,10 +10,12 @@ import AddProduct from "./AddProduct";
 import Paginte from "../../components/Paginate";
 import { Utils } from "CommonUtils/Utils";
 
+
 console.log("hello");
 
 import {
   Modal,
+  Form,
   CloseButton,
   Badge,
   Button,
@@ -41,7 +43,7 @@ const Products = () => {
   const [selectedProducts, setSelectedProducts] = useState(null);
   const [showUpdateProduct, setShowUpdateProduct] = useState(false);
   const { pageNo, setDisabledNext, pageView } = useContext(Utils);
-   const [blockReason, setBlockReason] = useState("");
+  const [blockReason, setBlockReason] = useState("");
 
   console.log("row", rowData);
 
@@ -344,25 +346,25 @@ const Products = () => {
           <Modal.Header className="justify-content-center">
             <div className="modal-profile">
               <BiBlock
-               style={{
-                fontSize: "30px",
-                marginBottom: "14px",
-                color: "gray",
-              }}
+                style={{
+                  fontSize: "30px",
+                  marginBottom: "14px",
+                  color: "gray",
+                }}
               />
             </div>
           </Modal.Header>
           <Modal.Body className="text-center">
             <p>Are you sure you want to block this Product?</p>
             <Form.Control
-            componentClass="textarea"
-            rows={3}
-            style={{ fontSize: "0.9rem", height: "70px" }}
-            placeholder="Enter Reason"
-            maxLength={200}
-            value={blockReason}
-            onChange={(event) => setBlockReason(event.target.value)}
-          />
+              componentClass="textarea"
+              rows={3}
+              style={{ fontSize: "0.9rem", height: "70px" }}
+              placeholder="Enter Reason"
+              maxLength={200}
+              value={blockReason}
+              onChange={(event) => setBlockReason(event.target.value)}
+            />
           </Modal.Body>
           <div className="modal-footer">
             <Button
