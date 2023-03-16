@@ -42,7 +42,7 @@ const Products = () => {
   const [showUpdateProduct, setShowUpdateProduct] = useState(false);
   const { pageNo, setDisabledNext, pageView } = useContext(Utils);
 
-  console.log("row",rowData);
+  console.log("row", rowData);
 
   const verifiedProduct = (verify) => {
     if (verify == 2) {
@@ -278,7 +278,7 @@ const Products = () => {
                               }}
                             >
                               <i className="fa fa-eye"></i>
-                              {console.log("aaa",rowData)}
+                              {/* {console.log("aaa",rowData)} */}
                             </Button>
                             <Button
                               className="btn-simple btn-link p-1"
@@ -496,85 +496,100 @@ const Products = () => {
               Attributes
             </div>
             <Table striped bordered className="table">
+              {/* {console.log("aa",rowData)} */}
+
               <tbody>
-                
-                  <tr>
-                    <td className="bold-col">ID:</td>
-                    <td> {rowData?.attributes?.[0]?.id}</td>
-                  </tr>
-               
-                <tr>
-                  <td className="bold-col">Product ID:</td>
-                  <td>{rowData?.attributes?.[0]?.pid}</td>
-                </tr>
-                
-                <tr>
-                  <td className="bold-col">Quantity:</td>
-                  <td>{rowData?.attributes?.[0]?.qty}</td>
-                </tr>
-                <tr>
-                  <td className="bold-col">Sku:</td>
-                  <td>{rowData?.attributes?.[0]?.sku}</td>
-                </tr>
-                <tr>
-                  <td className="bold-col">Color:</td>
-                  <td>{rowData?.attributes?.[0]?.color}</td>
-                </tr>
-                <tr>
-                  <td className="bold-col">Size:</td>
-                  <td>{rowData?.attributes?.[0]?.size}</td>
-                </tr>
-                <tr>
-                  <td className="bold-col">Price:</td>
-                  <td>{rowData?.attributes?.[0]?.price}</td>
-                </tr>
-                <tr>
-                  <td className="bold-col">DiscountPrice:</td>
-                  <td>{rowData?.attributes?.[0]?.discount_price}</td>
-                </tr>
-                <tr>
-                  <td className="bold-col">Stock:</td>
-                  <td>{rowData?.attributes?.[0]?.in_stock}</td>
-                </tr>
-                <tr>
-                  <td className="bold-col">Created At:</td>
-                  <td>{rowData?.attributes?.[0]?.created_at}</td>
-                </tr>
-                <tr>
-                  <td className="bold-col">Modified At:</td>
-                  <td>{rowData?.attributes?.[0]?.modified_at}</td>
-                </tr>
+                {rowData?.attributes?.map((attr, index) => (
+                  <React.Fragment key={index}>
+                    <tr>
+                      <td className="bold-col">ID:</td>
+                      <td>{attr.id}</td>
+                    </tr>
 
-                <tr>
-                  <td className="bold-col"> Status:</td>
+                    <tr>
+                      <td className="bold-col">Product ID:</td>
+                      <td>{attr.pid}</td>
+                    </tr>
 
-                  <td
-                    style={{
-                      backgroundColor: rowData?.attributes?.[0]?.active == "1" ? "green" : "red",
-                      border: "none",
-                      fontSize: "0.75rem",
-                      color: "white",
-                      padding: "0px 7px",
-                      borderRadius: "17px",
-                      display: "inline-block",
-                    }}
-                  >
-                    {rowData?.attributes?.[0]?.active == "1" ? "active" : "block"}
-                  </td>
-                </tr>
-                
+                    <tr>
+                      <td className="bold-col">Quantity:</td>
+                      <td>{attr.qty}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col">Sku:</td>
+                      <td>{attr.sku?.[index]}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col">Color:</td>
+                      <td>{attr.color?.[index]?.name}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col">Size:</td>
+                      <td>{attr.size?.[index]?.name}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col">Price:</td>
+                      <td>{attr.price}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col">DiscountPrice:</td>
+                      <td>{attr.discount_price}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col">Stock:</td>
+                      <td>{attr.in_stock}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col">Created At:</td>
+                      <td>{attr.created_at}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col">Modified At:</td>
+                      <td>{attr.modified_at}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col"> Status:</td>
+                      <td
+                        style={{
+                          backgroundColor: attr.active == "1" ? "green" : "red",
+                          border: "none",
+                          fontSize: "0.75rem",
+                          color: "white",
+                          padding: "0px 7px",
+                          borderRadius: "17px",
+                          display: "inline-block",
+                        }}
+                      >
+                        {attr.active == "1" ? "active" : "block"}
+                      </td>
+                    </tr>
+                  </React.Fragment>
+                ))}
               </tbody>
             </Table>
             {rowData.images && rowData.images.length > 0 && (
               <div>
-                <img
-                  src={rowData.images[0].images}
-                  alt="image"
-                  style={{
-                    width: "70px",
-                    height: "70px",
-                  }}
-                />
+                {rowData.images.map((image, index) => (
+                  <img
+                    key={index}
+                    src={image.images?.[index]}
+                    alt="image"
+                    style={{
+                      width: "70px",
+                      height: "70px",
+                      marginRight: "10px",
+                    }}
+                  />
+                ))}
               </div>
             )}
           </Modal.Body>
