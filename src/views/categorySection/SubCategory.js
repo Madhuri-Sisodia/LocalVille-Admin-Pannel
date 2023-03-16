@@ -1,4 +1,4 @@
-import React, { useState,useContext } from "react";
+import React, { useState, useContext } from "react";
 import NotificationAlert from "react-notification-alert";
 import "../../assets/css/admin.css";
 import { Form, Button, ButtonToolbar, Dropdown,RadioGroup,Radio } from "rsuite";
@@ -16,42 +16,40 @@ const SubCategory = () => {
   const [sizeAttribute, setSizeAttribute] = useState(1);
   const [data, setData] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
-  const {Categoriesid} = useContext(Utils)
+  const { Categoriesid } = useContext(Utils);
   const notificationAlertRef = React.useRef(null);
-
+  const [status, setStatus] = useState();
+  const [notifyMessage, setnotifyMessage] = useState();
   const notify = (place) => {
-    var color = Math.floor(Math.random() * 5 + 1);
-    var type;
-    switch (color) {
-      case 1:
-        type = "primary";
-        break;
-      case 2:
-        type = "success";
-        break;
-      case 3:
-        type = "danger";
-        break;
-      case 4:
-        type = "warning";
-        break;
-      case 5:
-        type = "info";
-        break;
-      default:
-        break;
-    }
     var options = {};
     options = {
       place: place,
       message: (
         <div>
           <div>
-            <b>Sub Categories Successfully Added..!!</b>
+            <b>{notifyMessage}</b>
           </div>
         </div>
       ),
-      type: type,
+      type: status ? "success" : "danger",
+      icon: "nc-icon nc-bell-55",
+      autoDismiss: 7,
+    };
+
+    notificationAlertRef.current.notificationAlert(options);
+  };
+  const notifySecond = (place) => {
+    var options = {};
+    options = {
+      place: place,
+      message: (
+        <div>
+          <div>
+            <b>Something went wrong.</b>
+          </div>
+        </div>
+      ),
+      type: status ? "success" : "danger",
       icon: "nc-icon nc-bell-55",
       autoDismiss: 7,
     };
@@ -85,17 +83,24 @@ const SubCategory = () => {
     Http.PostAPI(process.env.REACT_APP_ADDPRODSUBCATEGORY + "?" + Math.random(), formdata, null)
       .then((res) => {
         console.log("Data", res);
+        setStatus(res?.data?.status);
+        setnotifyMessage(res?.data?.message);
+        console.warn(res?.data?.message);
         if (res?.data?.status) {
           setSubCategory(res?.data?.data);
-          alert("Sub-category added successfully");
+          notify("tr");
+          // alert("Sub-category added successfully");
         } else {
-          alert("Sub-category already exists");
+          notify("tr");
+          // alert("Sub-category already exists");
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
+        notifySecond("tr");
+        // alert("Something went wrong.");
         console.log("Error:", e);
       });
+
     setSubCategoryName("");
     setSelectCategory("");
   };
@@ -103,14 +108,17 @@ const SubCategory = () => {
   useEffect(() => {
     Http.GetAPI(process.env.REACT_APP_GETPRODUCTCATEGORY + "?" + `category_id=${Categoriesid}`, data, null)
       .then((res) => {
+        setStatus(res?.data?.status);
+        setnotifyMessage(res?.data?.message);
         if (res?.data?.status) {
           setData(res?.data?.data);
         } else {
-          alert("Fields not matched");
+          notify("tr");
+          // alert("Fields not matched");
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
+        notifySecond("tr");
         console.log("Error:", e);
       });
   }, []);
@@ -142,7 +150,13 @@ const SubCategory = () => {
                   ))}
                 </select>
               </div>
-              <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem",marginTop:"20px" }}>
+              <Form.ControlLabel
+                style={{
+                  color: "#808080",
+                  fontSize: "1rem",
+                  marginTop: "20px",
+                }}
+              >
                 Sub-Category Name
               </Form.ControlLabel>
               <Form.Control
@@ -205,7 +219,8 @@ const SubCategory = () => {
                   appearance="primary"
                   type="submit"
                   style={{ marginTop: "3rem", marginBottom: "0.5rem" }}
-                  block onClick={handleSubmit}
+                  block
+                  onClick={handleSubmit}
                 >
                   Submit
                 </Button>

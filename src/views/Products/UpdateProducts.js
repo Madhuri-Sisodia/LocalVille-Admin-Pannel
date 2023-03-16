@@ -26,6 +26,7 @@ const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProducts,item }) =
   const [productPrice,setProductPrice] = useState([]) 
   const [productDiscountPrice,setProductDiscountPrice] = useState([]) 
   const [attributes,setAttributes] = useState([])
+  const [isAddProdcut,setIsAddProduct] = useState(false)
    
   const [productData, setProductData] = useState({
     productName:"",
@@ -57,17 +58,16 @@ const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProducts,item }) =
     setImage(null);
   };
    
+  useEffect(()=>{
+    if(item){
+      setAttributes(item?.attributes)
+    }
+  },[item])
 
 const updateImage = ()=>{
       
   const data = new FormData()
-
-    // if(productData.productImage){
-    //   for(let i=0;i<4;i++){
-    //     data.append(`product_images[${i}]`,productData?.productImage[i])
-    //   }
-    // }
-    data.append("product_image", productData?.productImage[0])
+    data.append("product_image", productData?.productImage?.[0])
     data.append("product_name", (productData?.productName)?productData.productName:item.product_name)
     data.append("product_id", item.id);
     Http.PostAPI(process.env.REACT_APP_UPDATEPRODUCTIMAGE, data, null)
@@ -85,13 +85,11 @@ const updateImage = ()=>{
       // console.log("Error:", e);
     });
 }
-  console.log(item)
+  
 
   const handleSubmit = (event) => {
     event.preventDefault();
     updateImage()
-   
-      
     var data = new FormData();
     data.append("pid", item.id);
     data.append("product_name", (productData?.productName)?productData.productName:item.product_name);
@@ -140,7 +138,7 @@ const updateImage = ()=>{
     {item != null && (
       <Modal show={showUpdateModal} onHide={() => setShowUpdateModal(false)}>
         <Modal.Header>
-          <Modal.Title className="title">Add Products</Modal.Title>
+          <Modal.Title className="title">Update Products</Modal.Title>
           <MdClose
             className="close-icon"
             onClick={() => {
@@ -150,7 +148,7 @@ const updateImage = ()=>{
           />
         </Modal.Header>
         <Modal.Body className="add-body">
-          <Form onSubmit={handleSubmit}>
+          <Form>
             <Form.Group>
             <Form.Label className="add-label">Product Image</Form.Label>
               <Form.Control
@@ -191,6 +189,27 @@ const updateImage = ()=>{
                 defaultValue={item?.product_desc}
               ></Form.Control>
             </Form.Group>
+    
+            <Form.Group>
+              <Form.Label className="add-label">Update Attributes</Form.Label>
+               {
+                item?.attributes?.map((ele,index)=>(
+               <UpdateAttributes ele={ele} index={index}
+               getProducts= {getProducts}
+               />
+                ))
+               }
+            </Form.Group>
+
+            <div>
+             <Size 
+               setAttributes={setAttributes}
+               attributes={attributes}
+               isAddProdcut = {false}
+               len = {item.attributes.length}
+               id={item.id}
+               />
+             </div>
 
             <Form.Group>
               <Form.Label className="add-label">Buy</Form.Label>
@@ -215,16 +234,7 @@ const updateImage = ()=>{
               </div>
             </Form.Group>
 
-            <Form.Group>
-              <Form.Label className="add-label">Update Attributes</Form.Label>
-               {
-                item?.attributes?.map((ele,index)=>(
-               <UpdateAttributes ele={ele} index={index}
-               getProducts= {getProducts}
-               />
-                ))
-               }
-            </Form.Group>
+          
             <Form.Group>
               <Form.Label className="add-label">Pickup</Form.Label>
               <div style={{width:"50%",marginTop:"5px",marginBottom:"15px"}}>
@@ -248,6 +258,11 @@ const updateImage = ()=>{
               </div>
             </Form.Group>
 
+           <button
+          onClick={handleSubmit} 
+           >
+           submit
+           </button>
          <ButtonComponent
          buttontext="Update"
          />

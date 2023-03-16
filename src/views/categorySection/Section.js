@@ -81,9 +81,6 @@ console.log(sectionName)
         setSectionName("");
   };
 
-
-
- 
   return (
     <>
       <div className="rna-container">

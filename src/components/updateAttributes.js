@@ -8,7 +8,7 @@ import "../assets/css/day.css";
 import {ColorSize} from "../CommonUtils/ColorSize"
 import ButtonComponent from "views/ButtonComponent";
 
-const UpdateAttributes = ({getProducts, setAttributes, attributes,updateAttributes,ele,index }) => {
+const UpdateAttributes = ({getProducts, setAttributes, attributes,updateAttributes,ele,index, }) => {
   const [showAddProduct, setShowAddProduct] = useState(false);
   const [product, setProduct] = useState([]);
   const [ingridents, setingridents] = useState([]);
@@ -28,15 +28,6 @@ const UpdateAttributes = ({getProducts, setAttributes, attributes,updateAttribut
     attr_id:"",
     sku:"",
   });
-
-  console.log("getAttribute", getAttributes);
-
-  const increaseIngridents = () => {
-    setingridents([...ingridents, getAttributes]);
-    setShowAddProduct(true);
-  };
-
-  console.log(ele)
 
   useEffect(() => {
     function ColorSize() {
@@ -146,6 +137,30 @@ const UpdateAttributes = ({getProducts, setAttributes, attributes,updateAttribut
 
       }
   },[isAdded])
+
+
+  const deleteAttribute = ()=>{
+
+    const data = new FormData()
+    data.append(`product_id`,ele.pid)
+    data.append(`attr_id`,ele.id)
+
+  Http.PostAPI(process.env.REACT_APP_DELETEATTRIBUTE , data, null)
+  .then((res) => {
+    console.log("resp", res);
+    if (res?.data?.status) {
+       alert(res?.data?.message)
+      setProduct(res?.data?.data);
+      getProducts();
+    } else {
+      alert("Fields not matched");
+    }
+  })
+  .catch((e) => {
+    //alert("Something went wrong.");
+    // console.log("Error:", e);
+  });
+  }
 
 
   return (
@@ -359,6 +374,15 @@ const UpdateAttributes = ({getProducts, setAttributes, attributes,updateAttribut
       >
         <i className="fa fa-edit"></i>
       </Button>
+      <Button
+                  id={index}
+                  className="btn-simple btn-link p-1"
+                  type="button"
+                  variant="danger"
+                  onClick={deleteAttribute}
+                >
+                  <i className="fas fa-times"></i>
+                </Button>
            </div>
     </div>
    </>

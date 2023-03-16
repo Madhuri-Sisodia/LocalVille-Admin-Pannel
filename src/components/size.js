@@ -1,5 +1,5 @@
 import UpdateProduct from "./updateProduct";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useCallback } from "react";
 import { MdClose } from "react-icons/md";
 import { Modal, Form, Button } from "react-bootstrap";
 import { Http } from "../config/Service";
@@ -8,7 +8,8 @@ import "../assets/css/day.css";
 import {ColorSize} from "../CommonUtils/ColorSize"
 import ButtonComponent from "views/ButtonComponent";
 
-const Size = ({ setAttributes, attributes }) => {
+
+const Size = ({ setAttributes, attributes,isAddProduct,len,id }) => {
   const [showAddProduct, setShowAddProduct] = useState(false);
   const [ingridents, setingridents] = useState([]);
   const [sizeData, setSizeData] = useState([]);
@@ -18,21 +19,25 @@ const Size = ({ setAttributes, attributes }) => {
   const [discountPrice, setDiscountPrice] = useState("");
   const [NewPrice, setNewPrice] = useState("");
   const [isAdded, setIsAdded] = useState(false);
+  const [sku,setSku] = useState("")
+  const [attIndex,setAttIndex] = useState(0)
+  const [increse,setIncrese] = useState(false)
   const [getAttributes, setGetAttributes] = useState({
     Size: "",
     Color: "",
     Price: "",
     dis_Price: "",
+    sku:""
   });
 
-  console.log("getAttribute", getAttributes);
-
-  const increaseIngridents = () => {
-    setingridents([...ingridents, getAttributes]);
+  const increaseIngridents = (e) => {
+    e.preventDefault()
+    setingridents([...ingridents, ""]);
     setShowAddProduct(true);
   };
 
-  console.log(ingridents);
+ console.log(isAddProduct,attributes)
+ 
 
   const deleteIngredent = (e) => {
     const Result = [...ingridents];
@@ -85,50 +90,97 @@ const Size = ({ setAttributes, attributes }) => {
     ColorSize();
   }, []);
 
-  const Submit = (event) => {
+  const SubmitAttribute = (event) => {
     event.preventDefault();
-    sizeData.filter((ele) => {
-      if (ele.name == getSelectedSize) {
-        console.log(ele.name);
-        setGetAttributes((previous) => {
-          return { ...previous, Size: ele };
-        });
-      }
-    });
+     if(parseInt(NewPrice)<parseInt(discountPrice)){
+         alert("Price must be higher than discount price")
+     }
+     else{
+      sizeData.filter((ele) => {
+        if (ele.name == getSelectedSize) {
+          console.log(ele.name);
+          setGetAttributes((previous) => {
+            return { ...previous, Size: ele };
+          });
+        }
+      });
+  
+      setGetAttributes((previous) => {
+        return { ...previous, Price: NewPrice };
+      });
+  
+      setGetAttributes((previous) => {
+        return { ...previous, dis_Price: discountPrice };
+      });
+  
+      setGetAttributes((previous) => {
+        return { ...previous, sku:sku};
+      });
+  
+      colorData.filter((ele) => {
+        if (ele.name == getSelectedColor) {
+          setGetAttributes((previous) => {
+            return { ...previous, Color: ele };
+          });
+        }
+      });
 
-    setGetAttributes((previous) => {
-      return { ...previous, Price: NewPrice };
-    });
-
-    setGetAttributes((previous) => {
-      return { ...previous, dis_Price: discountPrice };
-    });
-
-    colorData.filter((ele) => {
-      if (ele.name == getSelectedColor) {
-        setGetAttributes((previous) => {
-          return { ...previous, Color: ele };
-        });
-      }
-    });
-    setIsAdded(true);
-    setShowAddProduct(false);
+      setIsAdded(true);
+      setShowAddProduct(false);
+     }
+   
   };
+
+ console.log(isAdded)
 
   useEffect(() => {
     if (isAdded) {
-      setAttributes((previous) => {
-        return [...previous, getAttributes];
+      if(len){
+        console.log("succes",attIndex)
+        const data = new FormData()
+        const idx = attIndex;
+      
+        data.append(`color[${idx}]`,getAttributes?.Color?.id)
+        data.append(`size[${idx}]`,getAttributes?.Size?.id)
+        data.append(`price[${idx}]`,getAttributes?.Price)
+        data.append(`dis_price[${idx}]`,getAttributes?.dis_Price)
+        data.append(`sku[${idx}]`,getAttributes?.sku)
+        data.append(`product_id`,id)
+        
+      Http.PostAPI(process.env.REACT_APP_ADDATRIBUTE, data, null)
+      .then((res) => {
+        console.log("hello2")
+        if (res?.data?.status) {
+          console.log("status")
+          setAttributes((previous) => {
+            return [...previous, getAttributes];
+          })
+          setIsAdded(false)
+        } else {
+          alert("Fields not matched");
+        }
+      })
+      .catch((e) => {
+        alert("Something went wrong.");
+        console.log("Error:", e);
       });
-      setIsAdded(false);
+      }
+      else{
+        console.log("hello222")
+        console.log(getAttributes)
+        setAttributes((previous) => {
+          return [...previous, getAttributes];
+        });
+        setIsAdded(false);
+      }
     }
   }, [isAdded]);
+ 
+  
 
   return (
     <>
       <div style={{ margin: "0px" }}>
-      
-
         {ingridents.map((ele, index) => {
           return (
             <>
@@ -255,10 +307,11 @@ const Size = ({ setAttributes, attributes }) => {
                     <Form.Group>
                       <Form.Label className="add-label">Price</Form.Label>
                       <Form.Control
-                        required
+                        required = {true}
                         type="text"
                         name="price"
                         onChange={(e) => {
+                          setAttIndex((parseInt(index)+parseInt(len)))
                           setNewPrice(e.target.value);
                         }}
                       ></Form.Control>
@@ -276,6 +329,19 @@ const Size = ({ setAttributes, attributes }) => {
                         }}
                       ></Form.Control>
                     </Form.Group>
+                    <Form.Group>
+                      <Form.Label className="add-label">
+                       Sku
+                      </Form.Label>
+                      <Form.Control
+                        required
+                        type="text"
+                        name="dis_price"
+                        onChange={(e) => {
+                          setSku(e.target.value);
+                        }}
+                      ></Form.Control>
+                    </Form.Group>
                     <button
                       type="submit"
                       style={{
@@ -287,7 +353,7 @@ const Size = ({ setAttributes, attributes }) => {
                         color: "white",
                         marginTop: "20px",
                       }}
-                      onClick={Submit}
+                      onClick={SubmitAttribute}
                     >
                       Add
                     </button>
@@ -303,16 +369,29 @@ const Size = ({ setAttributes, attributes }) => {
                 }}
               >
                 <p style={{ margin: "7px" }}>
-                  Size : {attributes[index]?.Size.name}
+                  Size : {len? (attributes[attIndex]?.Size?.name) : 
+                  attributes[index]?.Size?.name
+                  }
                 </p>
                 <p style={{ margin: "7px" }}>
-                  Color : {attributes[index]?.Color.name}
+                  Color : {len ? (attributes[attIndex]?.Color?.name):
+                  attributes[index]?.Color?.name
+                  }
                 </p>
                 <p style={{ margin: "7px" }}>
-                  Price : {attributes[index]?.Price}
+                  Price : {len ? (attributes[attIndex]?.Price):
+                  attributes[index]?.Price
+                  }
                 </p>
                 <p style={{ margin: "7px" }}>
-                  Dis_Price : {attributes[index]?.dis_Price}
+                  DiscountPrice : { len ? (attributes[attIndex]?.dis_Price):
+                  attributes[index]?.dis_Price
+                  }
+                </p>
+                <p style={{ margin: "7px" }}>
+                  sku : {len ? (attributes[attIndex]?.sku) : 
+                  attributes[index]?.sku
+                  }
                 </p>
                 <Button
                   id={index}
@@ -329,7 +408,9 @@ const Size = ({ setAttributes, attributes }) => {
         })}
 
         <button
-          onClick={increaseIngridents}
+          onClick={
+            increaseIngridents
+          }
           style={{ color: "black", fontSize: "12px", marginTop: "20px" }}
         >
           Add Attributes

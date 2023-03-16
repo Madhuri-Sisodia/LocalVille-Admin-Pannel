@@ -5,6 +5,7 @@ import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import "../../assets/css/modal.css";
 import ButtonComponent from "views/ButtonComponent";
+import ReactSelect from "CommonUtils/React-Select";
 
 const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
   const [vendors, setVendors] = useState([]);

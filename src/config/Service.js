@@ -25,17 +25,26 @@ export var Http = {
         alert('Something went wrong!');
         return e;
     })
-},//Authorization
+      .then((e) => {
+        // console.log("getData", e);
+        return e;
+      })
+      .catch((e) => {
+        console.log("error", e);
+        alert("Something went wrong!");
+        return e;
+      });
+  }, //Authorization
   PostAPI: (url, body) => {
-    console.log("Api",base_url + url);
-    console.log(body)
+    console.log("Api", base_url + url);
+    console.log(body);
     var headers = {
       "Content-Type": "multipart/form-data",
-      "Accept":'application/json',
-      "Authorization":JSON.parse(sessionStorage.getItem("loggedIn"))
-  };
-       
-  console.log('body', body)
+      Accept: "application/json",
+      Authorization: JSON.parse(sessionStorage.getItem("loggedIn")),
+    };
+
+    console.log("body", body);
     return axios({
       method: "POST",
       url: base_url + url,
@@ -51,7 +60,7 @@ export var Http = {
             "Your account is logged in another device, Please login again."
           );
           sessionStorage.clear();
-           history.push("/login");
+          history.push("/login");
         } else {
           ("Something went wrong!");
         }
