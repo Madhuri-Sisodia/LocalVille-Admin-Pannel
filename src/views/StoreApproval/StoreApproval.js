@@ -31,7 +31,7 @@ const StoreApproval = () => {
   const [showStoreDetails, setShowStoreDetails] = useState(false);
   const [showRejectStore, setShowRejectStore] = useState(false);
   const [storeApproval, setStoreApproval] = useState(false);
-  const {pageNo,setDisabledNext} = useContext(Utils)
+  const {pageNo,setDisabledNext,pageView} = useContext(Utils)
   const [totalPages,setTotalPages] = useState(0)
   const [rowData, setRowData] = useState([]);
   const [store, setStore] = useState([]);
@@ -42,7 +42,7 @@ const StoreApproval = () => {
   };
 
   const getUnverifiedStore = () => {
-    Http.GetAPI(process.env.REACT_APP_GETUNVERIFIEDSTORE + "?" + `page=${pageNo}`, data, null)
+    Http.GetAPI(process.env.REACT_APP_GETUNVERIFIEDSTORE + "?" + `page=${pageView}`, data, null)
       .then((res) => {
         if (res?.data?.status) {
               if(res.data.data.length>0){
@@ -62,7 +62,7 @@ const StoreApproval = () => {
 
   useEffect(() => {
     getUnverifiedStore();
-  }, [pageNo]);
+  }, [pageView]);
 
   return (
     <>

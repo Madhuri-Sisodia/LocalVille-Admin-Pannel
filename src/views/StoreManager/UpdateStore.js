@@ -9,6 +9,7 @@ import GooglePlacesPicker from "components/googlePlacesPicker";
 import axios from "axios";
 
 import "../../assets/css/modal.css";
+import ButtonComponent from "views/ButtonComponent";
 
 const UpdateStore = ({
   showUpdateStore,
@@ -377,27 +378,17 @@ const UpdateStore = ({
                 ></Form.Control>
               </Form.Group>
 
-              <button
-                type="submit"
-                block
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleUpdateStore();
-                  setShowUpdateStore(false);
-                }}
-                style={{
-                  backgroundColor: "blueviolet",
-                  border: "blueviolet",
-                  borderRadius: "3px 3px 3px 3px",
-                  width: "100%",
-                  padding: "5px",
-                  color: "white",
-                  marginTop: "20px",
-                }}
-              >
-                Update
-              </button>
+            <ButtonComponent
+            buttontext="Update"
+             block
+             onClick={(e) => {
+               e.preventDefault();
+               handleUpdateStore();
+               setShowUpdateStore(false);
+             }}
+            />
             </Form>
+           
           </Modal.Body>
         </Modal>
       )}

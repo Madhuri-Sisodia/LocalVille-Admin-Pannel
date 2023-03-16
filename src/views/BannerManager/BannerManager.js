@@ -17,6 +17,7 @@ import CloseIcon from "@rsuite/icons/Close";
 
 import "../../assets/css/admin.css";
 import BlockBanner from "./BlockBanner";
+import ButtonComponent from "views/ButtonComponent";
 
 const BannerManager = () => {
   // const dummyData = [
@@ -53,7 +54,8 @@ const BannerManager = () => {
   const [showModal, setShowModal] = useState(false);
   const [blockData, setBlockData] = useState([]);
   const [addBanner, setAddBanner] = useState([]);
-
+  const [status, setStatus] = useState();
+  const [notifymessage, setNotifymessage] = useState();
   const notificationAlertRef = React.useRef(null);
 
   const notify = (place) => {
@@ -63,11 +65,11 @@ const BannerManager = () => {
       message: (
         <div>
           <div>
-            <b>Banner Details Successfully Added..!!</b>
+            <b>{notifymessage}</b>
           </div>
         </div>
       ),
-      type: "success",
+      type: status ? "success" : "danger",
       icon: "nc-icon nc-bell-55",
       autoDismiss: 7,
     };
@@ -75,6 +77,24 @@ const BannerManager = () => {
     notificationAlertRef.current.notificationAlert(options);
   };
 
+  const notifySecond = (place) => {
+    var options = {};
+    options = {
+      place: place,
+      message: (
+        <div>
+          <div>
+            <b>Something went wrong..!!</b>
+          </div>
+        </div>
+      ),
+      type: status ? "success" : "danger",
+      icon: "nc-icon nc-bell-55",
+      autoDismiss: 7,
+    };
+
+    notificationAlertRef.current.notificationAlert(options);
+  };
 
   const getBanner = () => {
     Http.GetAPI(process.env.REACT_APP_GETBANNER + "?" + Math.random(), data)
@@ -84,12 +104,14 @@ const BannerManager = () => {
           setData(res?.data?.data);
           console.log(res.data.data)
         } else {
-          alert("Fields not matched");
+          // alert("Fields not matched");
+          notify("tr");
         }
       })
       .catch((e) => {
         setIsLoading(false);
-        alert("Something went wrong.");
+        notifySecond("tr");
+        // alert("Something went wrong.");
         console.log("Error:", e);
       });
   };
@@ -127,19 +149,23 @@ const BannerManager = () => {
     Http.PostAPI(process.env.REACT_APP_ADDBANNER, data)
       .then((res) => {
         console.log("resp", res);
+        setStatus(res?.data?.status);
+        setNotifymessage(res?.data?.message);
+        console.warn(res?.data?.message);
         if (res?.data?.status) {
           setAddBanner(res?.data?.data);
           getBanner();
         } else {
-          alert("Fields not matched");
+          notify("tr");
+          // alert("Fields not matched");
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
+        notifySecond("tr");
+        // alert("Something went wrong.");
         console.log("Error:", e);
       });
     resetForm();
-    notify("tr");
   };
 
   
@@ -155,7 +181,7 @@ const BannerManager = () => {
 
   return (
     <>
-     <div className="rna-container">
+      <div className="rna-container">
         <NotificationAlert ref={notificationAlertRef} />
       </div>
       <div className="MainContainer">
@@ -195,22 +221,11 @@ const BannerManager = () => {
               />
             </Form.Group>
 
-            <button
-              type="submit"
-              block
-              style={{
-                backgroundColor: "blueviolet",
-                border: "blueviolet",
-                borderRadius: "3px 3px 3px 3px",
-                width: "100%",
-                padding: "10px",
-                color: "white",
-                marginTop: "20px",
-                fontSize: "0.9rem",
-              }}
-            >
-              Submit
-            </button>
+           <ButtonComponent 
+          block 
+          buttontext="Submit"
+           />
+
 
             <div style={{ marginTop: "80px" }}>
               <Card

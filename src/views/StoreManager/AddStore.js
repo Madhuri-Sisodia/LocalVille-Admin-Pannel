@@ -6,8 +6,12 @@ import "../../assets/css/modal.css";
 import GoogleAutocomplete from "components/googleAutoComplete";
 import GooglePlacesPicker from "components/googlePlacesPicker";
 import { Utils } from "CommonUtils/Utils";
-import 'react-select-search/style.css'
+// import 'react-select-search/style.css'
 import axios from "axios";
+import { SelectPicker } from 'rsuite';
+import { visitIterationBody } from "typescript";
+import ButtonComponent from "views/ButtonComponent";
+import ReactSelect from "CommonUtils/React-Select";
 
 
     
@@ -19,6 +23,8 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
   const [vendortData,setVendorData] = useState([])
   const [storeImage,setStoreImage] = useState([])
   const {location} = useContext(Utils)
+  console.log("location=>",location)
+  const [Data,setData] = useState([])
   const [storeData, setStoreData] = useState({
     storeName: "",
     storeDesc: "",
@@ -33,9 +39,9 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
     openingTime: "",
     closingTime: "",
   });
-
-
- console.log(storeData)
+ 
+  console.log("select",selectSection.value)
+   
   const [selectedDays, setSelectedDays] = useState([]);
   console.log(selectedDays)
   const toggleDaySelection = (index) => {
@@ -100,7 +106,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
     event.preventDefault();
   
    const vendorid = vendortData.filter((ele)=>{
-            return(ele.email==selectSection)
+            return(ele.email==selectSection?.value)
    })
    
     const id = vendorid[0].id
@@ -111,8 +117,8 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
      data.append("long",location.lng)
     data.append("store_name", storeData.storeName);
     data.append("store_desc", storeData.storeDesc);
-    data.append("lat", storeData.latitude);
-    data.append("long", storeData.longitude);
+    data.append("lat", location.lat);
+    data.append("long", location.lng);
     data.append("address", storeData.address);
     data.append("pincode", storeData.pincode);
     data.append("city", storeData.city);
@@ -122,7 +128,6 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
     data.append("opening_time", storeData.openingTime);
     data.append("closing_time", storeData.closingTime);
     console.log("updateStore", data);
-
     Http.PostAPI(process.env.REACT_APP_ADDSTORE, data, null)
       .then((res) => {
         console.log("resp", res);
@@ -155,7 +160,6 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
       Http.GetAPI(process.env.REACT_APP_GETVENDORSDATA + "?" + Math.random(), {page:3}, null)
     .then((res) => { 
       if (res?.data?.status) {
-        console.log("vendorData=>",res.data.data)
         setVendorData(res.data.data)
       } else {
         alert("Fields not matched");
@@ -169,7 +173,16 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
   }
   getVendorsData()
   },[])
- 
+  
+  useEffect(()=>{
+    if(vendortData){
+      console.log("hello")
+       const Result =  vendortData.map((ele,index)=>{
+          return { label: `${index+1})  ${ele.name} , ${ele.email}`, value: ele.email}
+        })  
+        setData(Result)   
+    }
+  },[vendortData])
 
   return (
     <>
@@ -187,61 +200,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
         </Modal.Header>
         <Modal.Body className="add-body">
           <Form onSubmit={handleSubmit}>
-            {/* <Form.Group>
-              <Form.Label className="add-label">Store Image</Form.Label>
-              <Form.Control
-                type="file"
-                accept=".png, .jpg, .jpeg"
-                onChange={handleImageChange}
-                required
-              />
-            </Form.Group> */}
-
-            {/* <Form.Group >
-                  <Form.Label className="add-label">Longitude</Form.Label>
-                  <Form.Control
-                   
-                    
-                    name="storeId"
-                    onChange={(e) => {
-                      handleInput(e);
-                    }}
-                    type="number"
-                     required
-                  ></Form.Control>
-                </Form.Group>
-              
-
-         
-                <Form.Group >
-                  <Form.Label className="add-label">Latitude</Form.Label>
-                  <Form.Control
-                    
-                    
-                    name="storeId"
-                    onChange={(e) => {
-                      handleInput(e);
-                    }}
-                    type="number"
-                     required
-                  ></Form.Control>
-                </Form.Group>
-               */}
-
             <Form.Group>
-          
-
-{/* <Autocomplete
-  apiKey={"AIzaSyB-kdr28fp0OftydizXQjTMGUTUbrdgzVE"}
-  style={{ width: "90%" }}
-  onPlaceSelected={(place) => {
-    console.log(place);
-  }}
-  options={{
-    types: ["(regions)"],
-    componentRestrictions: { country: "in" },
-  }}
-/>; */}
           <Form.Group>
               <Form.Label className="add-label">Store Address</Form.Label>
               <div style={{marginBottom:"20px"}}>     
@@ -251,27 +210,12 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
           <GooglePlacesPicker/>
           </div>
             </Form.Group>
-
+           
             <Form.Label className="add-label">Vendor Name</Form.Label>
-            
-            <div style={{width:"50%",marginTop:"5px"}}>
-              <select
-                name="selectSection"
-                value={selectSection}
-               onChange={(event) => setSelectSection(event.target.value)}
-                style={{height:"35px",borderRadius:"5px",paddingLeft:"5px",paddingRight:"5px",borderColor: "#808020",width:"80%"}}  
-               >
-                <option value="">
-                  Select
-                </option>
-                {vendortData.map((category,index) => (
-                  <option key={category.id} value={category.email} style={{fontSize:"14px",paddingBottom:"10px",paddintTop:"10px"}}>
-                    <li>
-                    {` ${index+1} ${"   "} Name:${category.name},${"        "} \n Email-id:${category.email}`} 
-                    </li>
-                  </option>
-                ))}
-              </select>
+            <div style={{width:"100%",marginTop:"5px"}}>
+            <ReactSelect data={vendortData}
+             setSelectSection={setSelectSection}
+            />
               </div>
             </Form.Group>
 
@@ -415,21 +359,9 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
               </Form.Group>
             </div>
 
-            <button
-              type="submit"
-              block
-              style={{
-                backgroundColor: "blueviolet",
-                border: "blueviolet",
-                borderRadius: "3px 3px 3px 3px",
-                width: "100%",
-                padding: "5px",
-                color: "white",
-                marginTop: "20px",
-              }}
-            >
-              Add
-            </button>
+            <ButtonComponent
+            buttontext="Add"
+            />
           </Form>
         </Modal.Body>
       </Modal>

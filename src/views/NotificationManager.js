@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Form, Button, ButtonToolbar, SelectPicker, Checkbox } from "rsuite";
 import ErrorMessage from "customComponents/ErrorMessage";
 import "../assets/css/admin.css";
-import MultipleSelect from "../components/MultipleSelect";
 import NotificationAlert from "react-notification-alert";
 import { Http } from "config/Service";
 import { apis } from "config/WebConstant";
+import ButtonComponent from "./ButtonComponent";
+import MultipleSelect from "components/MultipleSelect";
+
 const NotificationManager = () => {
   const [selectedVendors, setSelectedVendors] = useState([]);
   const [image, setImage] = useState("");
@@ -163,22 +165,10 @@ const NotificationManager = () => {
                 required
               />
             </Form.Group>
-            <button
-              type="submit"
-              block
-              style={{
-                backgroundColor: "blueviolet",
-                border: "blueviolet",
-                borderRadius: "3px 3px 3px 3px",
-                width: "100%",
-                padding: "10px",
-                color: "white",
-                marginTop: "20px",
-                fontSize: "0.9rem",
-              }}
-            >
-              Submit
-            </button>
+            <ButtonComponent 
+          block 
+          buttontext="Submit"
+           />
           </Form>
         </div>
       </div>

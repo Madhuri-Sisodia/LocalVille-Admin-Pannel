@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import SearchIcon from "@rsuite/icons/Search";
 import { Input, InputGroup } from "rsuite";
 import { Http } from "../../config/Service";
@@ -8,6 +8,7 @@ import { MdClose } from "react-icons/md";
 import UpdateProducts from "./UpdateProducts";
 import AddProduct from "./AddProduct";
 import Paginte from "../../components/Paginate";
+import { Utils } from "CommonUtils/Utils";
 
 console.log("hello");
 
@@ -38,6 +39,7 @@ const Products = () => {
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState(null);
   const [showUpdateProduct, setShowUpdateProduct] = useState(false);
+  const {pageNo,setDisabledNext,pageView} = useContext(Utils)
 
   const verifiedProduct = (verify) => {
     if (verify == 2) {
@@ -62,7 +64,8 @@ const Products = () => {
   };
 
   const getProducts = () => {
-    Http.GetAPI(apis.getProducts + "?" + Math.random(), "", null)
+    console.log("helloget")
+    Http.GetAPI(process.env.REACT_APP_GETPRODUCTS + "?" + `page=${pageView}`, "", null)
       .then((res) => {
         if (res?.data?.status) {
           setTotalPages(res.data.total_pages);
@@ -76,9 +79,10 @@ const Products = () => {
         console.log("Error:", e);
       });
   };
+
   useEffect(() => {
     getProducts();
-  }, []);
+  }, [pageView]);
   // console.log(blockData);
   const handleBlockProducts = (e) => {
     var data = new FormData();

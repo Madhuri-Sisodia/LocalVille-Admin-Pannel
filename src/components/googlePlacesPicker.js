@@ -11,11 +11,11 @@ import { useEffect } from 'react';
 const GooglePlacesPicker = () => {
   let DefaultLocation={ lat: 10, lng: 106}
   const DefaultZoom = 15;
-  const {Selectedcoordinates} = useContext(Utils)
+  const {Selectedcoordinates,setLocation,location} = useContext(Utils)
   const [defaultLocation, setDefaultLocation] = useState(DefaultLocation);
    //console.log(Selectedcoordinates)
-  const [location, setLocation] = useState(defaultLocation);
-    
+  //const [location, setLocation] = useState(defaultLocation);
+    // setLocation(Selectedcoordinates)
     
   useEffect(()=>{
     if(Selectedcoordinates.lat){

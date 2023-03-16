@@ -1,7 +1,6 @@
 /* ----------------------------------admin Manager section css */
 .MainContainer{
     font-size: 0.8rem;
-    height: 130vh;
     padding: 1rem;
 }
 .Container{
@@ -54,11 +53,23 @@
 }
 .Categorycards{
     background: linear-gradient(to right, #8f69d6, #e5e5ea);
-    font-color:#e5e5ea;
+
 }
 .rs-panel-header {
     color: darkblue;
 }
+/* -------------------------------Button Component---------------------------- */ 
+button.buttonComponent {
+background-color: "blueviolet";
+border: "blueviolet";
+border-radius: "3px 3px 3px 3px";
+width: "100%";
+padding: "5px";
+color: "white";
+margin-top: "20px";
+}
+
+
 /* --------------------------------responsive------------------------------- */
 
 

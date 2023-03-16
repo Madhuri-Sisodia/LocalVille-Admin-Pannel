@@ -6,9 +6,11 @@ import { apis } from "../../config/WebConstant";
 import NotificationAlert from "react-notification-alert";
 import "../../assets/css/modal.css";
 import Size from "components/size";
+import ButtonComponent from "views/ButtonComponent";
+import ReactSelect from "CommonUtils/React-Select";
 
 
-const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
+const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
   const [product, setProduct] = useState([]);
   const [image, setImage] = useState(null);
   const [vendortData,setVendorData] = useState([])
@@ -21,7 +23,7 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
   const [bay,setBay] = useState("No")
   const [Pickup,setPickup] = useState("No")
   const [attributes,setAttributes] = useState([])
-  console.log("att=>",attributes)
+  const [isAddProdcut,setIsAddProduct] = useState("true")
   const notificationAlertRef = React.useRef(null);
 
   const [productData, setProductData] = useState({
@@ -71,14 +73,12 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
 
   useEffect(() => {
     if(selectProCat){
-     console.log()
       const vendorid = getProcat.filter((ele)=>{
         return(ele.name==selectProCat)
             })
 
             console.log(vendorid)
 
-      
       Http.GetAPI(process.env.REACT_APP_GETPRODSUBCATEGORY + "?" + `category_id=${vendorid[0].id}`, "", null)
       .then((res) => {
         if (res?.data?.status) {
@@ -125,8 +125,10 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
     event.preventDefault();
 
     const vendorid = getStoreData.filter((ele)=>{
-      return(ele.email==selectSection)
+      return(ele.email==selectSection.value)
           })
+       
+          console.log(selectSection,vendorid)
 
     const Catgoryid = getProcat.filter((ele)=>{
             return(ele.name==selectProCat)
@@ -162,13 +164,14 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
       data.append(`size[${i}]`,attributes[i].Size.id)
       data.append(`price[${i}]`,attributes[i].Price)
       data.append(`dis_price[${i}]`,attributes[i].dis_Price)
+      data.append(`sku[${i}]`,attributes[i].sku)
     }
    
     Http.PostAPI(process.env.REACT_APP_ADDPRODUCTS, data, null)
       .then((res) => {
         if (res?.data?.status) {
           setProduct(res?.data?.data);
-          getProduct();
+          getProducts();
           alert("Product Added Sucessfully")
         } else {
           alert("Fields not matched");
@@ -238,23 +241,12 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
               ></Form.Control>
 
             <Form.Label className="add-label">Select Vendor</Form.Label>
-            <div style={{width:"50%",marginTop:"5px",marginBottom:"15px"}}>
-              <select
-                name="selectSection"
-                value={selectSection}
-               onChange={(event) => setSelectSection(event.target.value)}
-                style={{height:"35px",borderRadius:"5px",paddingLeft:"5px",paddingRight:"5px",borderColor: "#808020",width:"80%"}}  
-               >
-                <option value="">Select</option>
-                {getStoreData.map((category,index) => (
-                  <option key={category.id} value={category.email} style={{fontSize:"14px",paddingBottom:"10px",paddintTop:"10px"}}>
-                    <li>
-                    {` ${index+1} ${"   "} Name:${category.store_name},${"        "} \n vendorName:${category.name}`} 
-                    </li>
-                  </option>
-                ))}
-              </select>
+            <div style={{width:"100%",marginTop:"5px"}}>
+            <ReactSelect data={getStoreData}
+             setSelectSection={setSelectSection}
+            />
               </div>
+
 
               <Form.Label className="add-label">Product Name</Form.Label>
               <Form.Control
@@ -277,6 +269,15 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
                   handleInput(e);
                 }}
               ></Form.Control>
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label className="add-label">Add Attributes</Form.Label>
+               <Size 
+               setAttributes={setAttributes}
+               isAddProduct = {[]}
+               attributes={attributes}
+               />
             </Form.Group>
 
             <Form.Group>
@@ -345,13 +346,7 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
               </div>
             </Form.Group>
 
-            <Form.Group>
-              <Form.Label className="add-label">Add Attributes</Form.Label>
-               <Size 
-               setAttributes={setAttributes}
-               attributes={attributes}
-               />
-            </Form.Group>
+           
             <Form.Group>
               <Form.Label className="add-label">Pickup</Form.Label>
               <div style={{width:"50%",marginTop:"5px",marginBottom:"15px"}}>
@@ -375,20 +370,12 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProduct }) => {
               </select>
               </div>
             </Form.Group>
-            <button
-              type="submit"
-              style={{
-                backgroundColor: "blueviolet",
-                border: "blueviolet",
-                borderRadius: "3px 3px 3px 3px",
-                width: "100%",
-                padding: "5px",
-                color: "white",
-                marginTop: "20px",
-              }}
-            >
-              Add
-            </button>
+            
+            <ButtonComponent
+              buttontext="Add"
+          />
+            
+           
           </Form>
         </Modal.Body>
       </Modal>

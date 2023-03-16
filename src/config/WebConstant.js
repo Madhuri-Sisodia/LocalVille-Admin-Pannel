@@ -39,5 +39,6 @@ export const apis = {
     getBanner:"get_store_banner.php",
     blockBanner:"block_store_banner.php",
     addBanner:"add_store_banner.php",
-    addNotificationManager:"send_notification_vendors.php"
+    addNotificationManager:"send_notification_vendors.php",
+    updateProductImage:"update_product_img.php"
 }

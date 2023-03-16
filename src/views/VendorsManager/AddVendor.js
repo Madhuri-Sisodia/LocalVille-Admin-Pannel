@@ -4,6 +4,8 @@ import { Modal, Form, Button } from "react-bootstrap";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import "../../assets/css/modal.css";
+import ButtonComponent from "views/ButtonComponent";
+import ReactSelect from "CommonUtils/React-Select";
 
 const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
   const [vendors, setVendors] = useState([]);
@@ -171,21 +173,9 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
               )}
             </Form.Group>
 
-            <button
-              type="submit"
-              block
-              style={{
-                backgroundColor: "blueviolet",
-                border: "blueviolet",
-                borderRadius: "3px 3px 3px 3px",
-                width: "100%",
-                padding: "5px",
-                color: "white",
-                marginTop: "20px",
-              }}
-            >
-              Add
-            </button>
+           <ButtonComponent
+           buttontext="Add"
+           />
           </Form>
         </Modal.Body>
       </Modal>
