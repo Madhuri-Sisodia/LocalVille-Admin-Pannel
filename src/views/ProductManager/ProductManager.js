@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import SearchIcon from "@rsuite/icons/Search";
 import { Input, InputGroup } from "rsuite";
 import { Http } from "../../config/Service";
@@ -25,6 +25,7 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
+import index from "views/categorySection";
 
 const Products = () => {
   const [showModal, setShowModal] = useState(false);
@@ -39,7 +40,9 @@ const Products = () => {
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState(null);
   const [showUpdateProduct, setShowUpdateProduct] = useState(false);
-  const {pageNo,setDisabledNext,pageView} = useContext(Utils)
+  const { pageNo, setDisabledNext, pageView } = useContext(Utils);
+
+  console.log("row",rowData);
 
   const verifiedProduct = (verify) => {
     if (verify == 2) {
@@ -64,8 +67,12 @@ const Products = () => {
   };
 
   const getProducts = () => {
-    console.log("helloget")
-    Http.GetAPI(process.env.REACT_APP_GETPRODUCTS + "?" + `page=${pageView}`, "", null)
+    console.log("helloget");
+    Http.GetAPI(
+      process.env.REACT_APP_GETPRODUCTS + "?" + `page=${pageView}`,
+      "",
+      null
+    )
       .then((res) => {
         if (res?.data?.status) {
           setTotalPages(res.data.total_pages);
@@ -271,6 +278,7 @@ const Products = () => {
                               }}
                             >
                               <i className="fa fa-eye"></i>
+                              {console.log("aaa",rowData)}
                             </Button>
                             <Button
                               className="btn-simple btn-link p-1"
@@ -476,6 +484,85 @@ const Products = () => {
                     {rowData.active == "1" ? "active" : "block"}
                   </td>
                 </tr>
+              </tbody>
+            </Table>
+            <div
+              style={{
+                fontSize: "0.9rem",
+                fontWeight: "bold",
+                marginTop: "33px",
+              }}
+            >
+              Attributes
+            </div>
+            <Table striped bordered className="table">
+              <tbody>
+                
+                  <tr>
+                    <td className="bold-col">ID:</td>
+                    <td> {rowData?.attributes?.[0]?.id}</td>
+                  </tr>
+               
+                <tr>
+                  <td className="bold-col">Product ID:</td>
+                  <td>{rowData?.attributes?.[0]?.pid}</td>
+                </tr>
+                
+                <tr>
+                  <td className="bold-col">Quantity:</td>
+                  <td>{rowData?.attributes?.[0]?.qty}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Sku:</td>
+                  <td>{rowData?.attributes?.[0]?.sku}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Color:</td>
+                  <td>{rowData?.attributes?.[0]?.color}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Size:</td>
+                  <td>{rowData?.attributes?.[0]?.size}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Price:</td>
+                  <td>{rowData?.attributes?.[0]?.price}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">DiscountPrice:</td>
+                  <td>{rowData?.attributes?.[0]?.discount_price}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Stock:</td>
+                  <td>{rowData?.attributes?.[0]?.in_stock}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Created At:</td>
+                  <td>{rowData?.attributes?.[0]?.created_at}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Modified At:</td>
+                  <td>{rowData?.attributes?.[0]?.modified_at}</td>
+                </tr>
+
+                <tr>
+                  <td className="bold-col"> Status:</td>
+
+                  <td
+                    style={{
+                      backgroundColor: rowData?.attributes?.[0]?.active == "1" ? "green" : "red",
+                      border: "none",
+                      fontSize: "0.75rem",
+                      color: "white",
+                      padding: "0px 7px",
+                      borderRadius: "17px",
+                      display: "inline-block",
+                    }}
+                  >
+                    {rowData?.attributes?.[0]?.active == "1" ? "active" : "block"}
+                  </td>
+                </tr>
+                
               </tbody>
             </Table>
             {rowData.images && rowData.images.length > 0 && (

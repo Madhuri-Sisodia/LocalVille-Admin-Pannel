@@ -6,7 +6,7 @@ import NotificationAlert from "react-notification-alert";
 import { Http } from "config/Service";
 import { apis } from "config/WebConstant";
 import ButtonComponent from "./ButtonComponent";
-import MultipleSelect from "components/MultipleSelect";
+import MultipleSelect from "components/multipleSelect";
 
 const NotificationManager = () => {
   const [selectedVendors, setSelectedVendors] = useState([]);

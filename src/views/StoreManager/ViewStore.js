@@ -46,9 +46,10 @@ const ViewStore = ({ showDetailsModal, setShowDetailsModal, rowData }) => {
           />
         </Modal.Header>
         <Modal.Body className="body">
-        <div style={{fontSize:"0.9rem",fontWeight:"bold"}}>Store Details</div>
+          <div style={{ fontSize: "0.9rem", fontWeight: "bold" }}>
+            Store Details
+          </div>
           <Table striped bordered className="table">
-           
             <tbody>
               <tr>
                 <td className="bold-col"> Store Id:</td>
@@ -103,7 +104,7 @@ const ViewStore = ({ showDetailsModal, setShowDetailsModal, rowData }) => {
               <tr>
                 <td className="bold-col">Opening Days:</td>
                 <td>
-                  {days.map((day,index) => (
+                  {days.map((day, index) => (
                     <div key={day} className="day-circle">
                       {daysOfWeek[index - 1] || day}
                     </div>
@@ -152,9 +153,16 @@ const ViewStore = ({ showDetailsModal, setShowDetailsModal, rowData }) => {
             </tbody>
           </Table>
           
-          <div style={{fontSize:"0.9rem",fontWeight:"bold",marginTop:"33px"}}>Vendor Details</div>
+          <div
+            style={{
+              fontSize: "0.9rem",
+              fontWeight: "bold",
+              marginTop: "33px",
+            }}
+          >
+            Vendor Details
+          </div>
           <Table striped bordered className="table">
-          
             <tbody>
               <tr>
                 <td className="bold-col">Vendor Id:</td>
