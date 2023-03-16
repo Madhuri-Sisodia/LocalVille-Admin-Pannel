@@ -62,7 +62,7 @@ const RejectProduct = ({
           <Form.Control
             componentClass="textarea"
             rows={3}
-            style={{ fontSize: "0.9rem" }}
+            style={{ fontSize: "0.9rem", height: "70px" }}
             placeholder="Enter Reason"
             maxLength={200}
             value={rejectReason}

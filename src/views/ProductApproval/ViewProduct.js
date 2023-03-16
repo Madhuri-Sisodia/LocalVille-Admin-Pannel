@@ -73,11 +73,11 @@ const ViewProduct = ({
               </tr>
               <tr>
                 <td className="bold-col">Buy:</td>
-                <td>{rowData.is_buy  == "1" ? "Yes" : "No"}</td>
+                <td>{rowData.is_buy == "1" ? "Yes" : "No"}</td>
               </tr>
               <tr>
                 <td className="bold-col">Pick Up:</td>
-                <td>{rowData.is_pickup  == "1" ? "Yes" : "No"}</td>
+                <td>{rowData.is_pickup == "1" ? "Yes" : "No"}</td>
               </tr>
               <tr>
                 <td className="bold-col">Total Clicks:</td>
@@ -162,15 +162,18 @@ const ViewProduct = ({
           </Table>
           {rowData.images && rowData.images.length > 0 && (
             <div>
-              <img
-                src={rowData.images[0].images}
-                alt="image"
-                style={{
-                  width: "70px",
-                  height: "70px",
-                }}
-              />
-              
+              {rowData.images.map((image, index) => (
+                <img
+                  key={index}
+                  src={image.images?.[index]}
+                  alt="image"
+                  style={{
+                    width: "70px",
+                    height: "70px",
+                    marginRight: "10px",
+                  }}
+                />
+              ))}
             </div>
           )}
         </Modal.Body>
