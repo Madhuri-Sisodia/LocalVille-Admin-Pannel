@@ -25,12 +25,12 @@ const EmailManager = () => {
 
           setData(res?.data?.data);
         } else {
-          alert("Fields not matched");
+          // alert("Fields not matched");
         }
       })
       .catch((e) => {
         setIsLoading(false);
-        alert("Something went wrong.");
+        // alert("Something went wrong.");
         console.log("Error:", e);
       });
   };

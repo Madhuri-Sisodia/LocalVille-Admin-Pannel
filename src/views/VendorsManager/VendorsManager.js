@@ -83,20 +83,23 @@ const VendorsManager = () => {
     .then((res) => {
       setIsLoading(false);
       if (res?.data?.status) {
-        if(res.data.data.length>0){
-          setData(res?.data?.data);
+        setData(res?.data?.data);
           setDisabledNext(true)
-        }
-        else{
-          setDisabledNext(false)
-        }
+          console.log("userr", res.data.data)
+        // if(res.data.data.length>0){
+        //   setData(res?.data?.data);
+        //   setDisabledNext(true)
+        // }
+        // else{
+        //   setDisabledNext(false)
+        // }
       } else {
-        alert("Fields not matched");
+        // alert("Fields not matched");
       }
     })
     .catch((e) => {
       setIsLoading(false);
-      alert("Something went wrong.");
+      // alert("Something went wrong.");
       console.log("Error:", e);
     });
    }

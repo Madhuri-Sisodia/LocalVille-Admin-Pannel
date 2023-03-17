@@ -411,7 +411,7 @@ const Size = ({ setAttributes, attributes,isAddProduct,len,id }) => {
           onClick={
             increaseIngridents
           }
-          style={{ color: "black", fontSize: "12px", marginTop: "20px" }}
+          style={{ color: "White", fontSize: "12px", marginTop: "20px", backgroundColor:"blueviolet", fontWeight:"500" }}
         >
           Add Attributes
         </button>

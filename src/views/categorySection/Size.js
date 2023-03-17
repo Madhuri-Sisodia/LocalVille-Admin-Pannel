@@ -131,6 +131,7 @@ const Size = () => {
                 }}
               >
                 <Form.ControlLabel
+                
                   style={{
                     color: "#808080",
                     fontSize: "0.9rem",
@@ -144,6 +145,7 @@ const Size = () => {
                   <select
                     name="selectSizeAttribute"
                     value={selectSizeAttribute}
+                    required
                     onChange={(event) =>
                       setSelectSizeAttribute(event.target.value)
                     }

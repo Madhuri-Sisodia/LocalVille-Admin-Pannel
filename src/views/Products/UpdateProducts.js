@@ -27,6 +27,9 @@ const AddProduct = ({ showUpdateModal, setShowUpdateModal, getProducts,item }) =
   const [productDiscountPrice,setProductDiscountPrice] = useState([]) 
   const [attributes,setAttributes] = useState([])
   const [isAddProdcut,setIsAddProduct] = useState(false)
+  const [updatedAtt, setUPdatedAtt] = useState([])
+
+  console.log("attribute",updatedAtt)
    
   const [productData, setProductData] = useState({
     productName:"",
@@ -90,6 +93,7 @@ const updateImage = ()=>{
   const handleSubmit = (event) => {
     event.preventDefault();
     updateImage()
+    console.log("users1111")
     var data = new FormData();
     data.append("pid", item.id);
     data.append("product_name", (productData?.productName)?productData.productName:item.product_name);
@@ -99,6 +103,7 @@ const updateImage = ()=>{
   
     Http.PostAPI(process.env.REACT_APP_UPDATEPRODUCTS, data, null)
       .then((res) => {
+        console.log("checkkkk")
         console.log("resp", res);
         if (res?.data?.status) {
           console.log("hello")
@@ -133,6 +138,8 @@ const updateImage = ()=>{
   };
 
 
+
+
   return (
     <>
     {item != null && (
@@ -148,7 +155,7 @@ const updateImage = ()=>{
           />
         </Modal.Header>
         <Modal.Body className="add-body">
-          <Form>
+          <Form onSubmit={handleSubmit}>
             <Form.Group>
             <Form.Label className="add-label">Product Image</Form.Label>
               <Form.Control
@@ -258,11 +265,11 @@ const updateImage = ()=>{
               </div>
             </Form.Group>
 
-           <button
+           {/* <button
           onClick={handleSubmit} 
            >
            submit
-           </button>
+           </button> */}
          <ButtonComponent
          buttontext="Update"
          />

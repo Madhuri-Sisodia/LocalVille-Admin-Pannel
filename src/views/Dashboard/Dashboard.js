@@ -268,7 +268,7 @@ const Dashboard = () => {
             <Card>
               <Card.Header>
                 <Card.Title as="h4">Users Statistics</Card.Title>
-                <p className="card-category">Last Campaign Performance</p>
+                {/* <p className="card-category">Last Campaign Performance</p> */}
               </Card.Header>
               <Card.Body>
                 <div
@@ -280,10 +280,12 @@ const Dashboard = () => {
                       labels: [
                         `${parseInt((totalActiveUsers/totalUsers)*100)}%`,
                         `${parseInt(((totalUsers - totalActiveUsers)/totalUsers)*100)}%`,
+                        
                       ],
                       series: [
                         totalActiveUsers,
                         totalUsers - totalActiveUsers,
+                        
                       ],
                     }}
                     type="Pie"
@@ -298,7 +300,7 @@ const Dashboard = () => {
                 <hr></hr>
                 <div className="stats">
                   <i className="far fa-clock"></i>
-                  Campaign sent 2 days ago
+                  {/* Campaign sent 2 days ago */}
                 </div>
               </Card.Body>
             </Card>

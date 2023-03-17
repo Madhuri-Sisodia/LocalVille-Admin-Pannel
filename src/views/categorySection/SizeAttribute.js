@@ -103,7 +103,7 @@ console.log(sizeAttributeName)
             <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
                 Add Size Attribute
               </Form.ControlLabel>
-              <input type="text" onChange={(e)=>{ setSizeAttributeName(e.target.value)}} style={{width:"100%",height:"30px",borderRadius:"5px",padding:"10px",marginTop:"20px"}}/>
+              <input type="text" required placeholder="Enter Size attribute" onChange={(e)=>{ setSizeAttributeName(e.target.value)}} style={{width:"100%",height:"30px",borderRadius:"5px",padding:"10px",marginTop:"20px"}}/>
                {/* <select
                 name="selectSection"
                 value={selectSection}

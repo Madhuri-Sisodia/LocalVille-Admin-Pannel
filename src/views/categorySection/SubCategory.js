@@ -138,6 +138,7 @@ const SubCategory = () => {
                 </Form.ControlLabel>
                 <select
                   name="selectCategory"
+                 
                   value={selectCategory}
                   onChange={(event) => setSelectCategory(event.target.value)}
                   style={{height:"35px",borderRadius:"5px",paddingLeft:"5px",paddingRight:"5px",borderColor: "gray",width:"100%"}}
@@ -156,6 +157,7 @@ const SubCategory = () => {
                   fontSize: "1rem",
                   marginTop: "20px",
                 }}
+
               >
                 Sub-Category Name
               </Form.ControlLabel>

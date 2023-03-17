@@ -104,12 +104,12 @@ console.log(colorName)
             <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
                 Add Color
               </Form.ControlLabel>
-              <input placeholder="Enter color" type="text" onChange={(e)=>{ setcolorName(e.target.value)}} style={{width:"100%",height:"30px",borderRadius:"5px",padding:"10px",marginTop:"20px"}}/>
+              <input placeholder="Enter color" required type="text" onChange={(e)=>{ setcolorName(e.target.value)}} style={{width:"100%",height:"30px",borderRadius:"5px",padding:"10px",marginTop:"20px"}}/>
                <br/>
                 <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem",marginTop:"20px" }}>
                 Select Color
                 </Form.ControlLabel>
-              <input placeholder="Enter color code" type="color" onChange={(e)=>{ setColorCode(e.target.value)}} style={{width:"100px",height:"100px",borderRadius:"5px",padding:"10px",marginTop:"20px"}}/>
+              <input required placeholder="Enter color code"  type="color" onChange={(e)=>{ setColorCode(e.target.value)}} style={{width:"100px",height:"100px",borderRadius:"5px",padding:"10px",marginTop:"20px"}}/>
                {/* <select
                 name="selectSection"
                 value={selectSection}

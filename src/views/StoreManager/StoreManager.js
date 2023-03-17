@@ -154,11 +154,11 @@ const StoreManager = () => {
             setDisabledNext(false)
            }
         } else {
-          alert("Fields not matched");
+          // alert("Fields not matched");
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
+        // alert("Something went wrong.");
         console.log("Error:", e);
       });
   };
@@ -179,11 +179,11 @@ const StoreManager = () => {
           setBlockStore(res?.data?.data);
           getStore();
         } else {
-          alert("Fields not matched");
+          // alert("Fields not matched");
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
+        // alert("Something went wrong.");
         console.log("Error:", e);
       });
   };
@@ -201,12 +201,12 @@ const StoreManager = () => {
           setDisabledNext(false)
         }
       } else {
-        alert("Fields not matched");
+        // alert("Fields not matched");
       }
     })
     .catch((e) => {
       setIsLoading(false);
-      alert("Something went wrong.");
+      // alert("Something went wrong.");
       console.log("Error:", e);
     });
    }

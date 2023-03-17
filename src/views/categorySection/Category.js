@@ -141,6 +141,7 @@ const Category = () => {
                   <select
                     name="selectSection"
                     value={selectSection}
+                    required
                     onChange={(event) => setSelectSection(event.target.value)}
                     style={{
                       height: "30px",
