@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { MdClose } from "react-icons/md";
 import {
   Modal,
@@ -14,21 +14,21 @@ import {
   Col,
 } from "react-bootstrap";
 const ViewProduct = ({
-  showProductDetails,
-  setShowProductDetails,
+  showProductDetail,
+  setShowProductDetail,
   rowData,
 }) => {
   return (
     <>
       <Modal
-        show={showProductDetails}
-        onHide={() => setShowProductDetails(false)}
+        show={showProductDetail}
+        onHide={() => setShowProductDetail(false)}
       >
         <Modal.Header style={{ borderBottom: "1px solid gray" }}>
-          <Modal.Title className="title">View Product Details</Modal.Title>
+          <Modal.Title className="title">Product Detail</Modal.Title>
           <MdClose
             className="close-icon"
-            onClick={() => setShowProductDetails(false)}
+            onClick={() => setShowProductDetail(false)}
           />
         </Modal.Header>
 
@@ -36,11 +36,15 @@ const ViewProduct = ({
           <Table striped bordered className="table">
             <tbody>
               <tr>
-                <td className="bold-col">ID:</td>
+                <td className="bold-col">Uploader Vendor Id:</td>
+                <td>{rowData.uploader_vendor_id}</td>
+              </tr>
+              <tr>
+                <td className="bold-col">Product Id:</td>
                 <td>{rowData.id}</td>
               </tr>
               <tr>
-                <td className="bold-col">Theme Image:</td>
+                <td className="bold-col">Product Image:</td>
                 <td>
                   <img
                     src={rowData.theme_img}
@@ -65,11 +69,11 @@ const ViewProduct = ({
               </tr>
               <tr>
                 <td className="bold-col">Category:</td>
-                <td>{rowData.category == "1" ? "Yes" : "No"}</td>
+                <td>{rowData.category_name}</td>
               </tr>
               <tr>
                 <td className="bold-col">Sub Category:</td>
-                <td>{rowData.sub_category == "1" ? "Yes" : "No"}</td>
+                <td>{rowData.subcategory_name}</td>
               </tr>
               <tr>
                 <td className="bold-col">Buy:</td>
@@ -84,7 +88,7 @@ const ViewProduct = ({
                 <td>{rowData.total_clicks}</td>
               </tr>
               <tr>
-                <td className="bold-col">Approved Status:</td>
+                <td className="bold-col">Product Status:</td>
                 <td
                   style={{
                     backgroundColor:
@@ -109,7 +113,8 @@ const ViewProduct = ({
                 </td>
               </tr>
               <tr>
-                <td className="bold-col"> Product Status:</td>
+                <td className="bold-col"> Status:</td>
+
                 <td
                   style={{
                     backgroundColor: rowData.active == "1" ? "green" : "red",
@@ -124,40 +129,96 @@ const ViewProduct = ({
                   {rowData.active == "1" ? "active" : "block"}
                 </td>
               </tr>
-              <tr>
-                <td className="bold-col">Created At:</td>
-                <td>{rowData.created_at}</td>
-              </tr>
-              <tr>
-                <td className="bold-col">Modified At:</td>
-                <td>{rowData.modified_at}</td>
-              </tr>
+             
+              
+            </tbody>
+          </Table>
+          <div
+            style={{
+              fontSize: "0.9rem",
+              fontWeight: "bold",
+              marginTop: "33px",
+            }}
+          >
+            Attributes
+          </div>
+          <Table striped bordered className="table">
+            <tbody>
+              {rowData?.attributes?.map((attr, index) => (
+                <React.Fragment key={index}>
+                  <tr>
+                    <td className="bold-col">ID:</td>
+                    <td>{attr.id}</td>
+                  </tr>
 
-              <tr>
-                <td className="bold-col">Category Name:</td>
-                <td>{rowData.category_name}</td>
-              </tr>
-              <tr>
-                <td className="bold-col">Sub Category Name:</td>
-                <td>{rowData.subcategory_name}</td>
-              </tr>
-              <tr>
-                <td className="bold-col">Color:</td>
-                <td>{rowData.is_color == "1" ? "Yes" : "No"}</td>
-              </tr>
-              <tr>
-                <td className="bold-col">Size:</td>
-                <td>{rowData.is_size == "1" ? "Yes" : "No"}</td>
-              </tr>
+                  <tr>
+                    <td className="bold-col">Product ID:</td>
+                    <td>{attr.pid}</td>
+                  </tr>
 
-              <tr>
-                <td className="bold-col">Price:</td>
-                <td>{rowData.price}</td>
-              </tr>
-              <tr>
-                <td className="bold-col">Discount Price:</td>
-                <td>{rowData.discount_price}</td>
-              </tr>
+                  <tr>
+                    <td className="bold-col">Quantity:</td>
+                    <td>{attr.qty}</td>
+                  </tr>
+
+                  <tr>
+                    <td className="bold-col">Sku:</td>
+                    <td>{attr.sku?.[index]}</td>
+                  </tr>
+
+                  <tr>
+                    <td className="bold-col">Color:</td>
+                    <td>{attr.color?.[index]?.name}</td>
+                  </tr>
+
+                  <tr>
+                    <td className="bold-col">Size:</td>
+                    <td>{attr.size?.[index]?.name}</td>
+                  </tr>
+
+                  <tr>
+                    <td className="bold-col">Price:</td>
+                    <td>{attr.price}</td>
+                  </tr>
+
+                  <tr>
+                    <td className="bold-col">DiscountPrice:</td>
+                    <td>{attr.discount_price}</td>
+                  </tr>
+
+                  <tr>
+                    <td className="bold-col">Stock:</td>
+                    <td>{attr.in_stock}</td>
+                  </tr>
+
+                  <tr>
+                    <td className="bold-col">Created At:</td>
+                    <td>{attr.created_at}</td>
+                  </tr>
+
+                  <tr>
+                    <td className="bold-col">Modified At:</td>
+                    <td>{attr.modified_at}</td>
+                  </tr>
+
+                  <tr>
+                    <td className="bold-col"> Status:</td>
+                    <td
+                      style={{
+                        backgroundColor: attr.active == "1" ? "green" : "red",
+                        border: "none",
+                        fontSize: "0.75rem",
+                        color: "white",
+                        padding: "0px 7px",
+                        borderRadius: "17px",
+                        display: "inline-block",
+                      }}
+                    >
+                      {attr.active == "1" ? "active" : "block"}
+                    </td>
+                  </tr>
+                </React.Fragment>
+              ))}
             </tbody>
           </Table>
           {rowData.images && rowData.images.length > 0 && (

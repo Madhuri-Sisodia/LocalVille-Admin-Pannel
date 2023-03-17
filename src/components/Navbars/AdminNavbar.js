@@ -140,7 +140,7 @@ function Header() {
                 onClick={(e) => e.preventDefault()}
               >
                 <img
-                  src="https://lh3.googleusercontent.com/a/AGNmyxY2XOekjU6eL7CZhEQvn6jqkFeWgjpTkpwO3oTD=s96-c"
+                  src="https://lh3.googleusercontent.com/a/AEdFTp4yuL037npPJXKU1oM2ITR0nKPUnkfpYb8rEh43Ug=s96-c"
                   alt="Image"
                   style={{
                     height: "50px",

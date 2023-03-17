@@ -26,7 +26,7 @@ import "../../assets/css/TableCss.css"
 const ProductApproval = () => {
   const [data, setData] = useState([]);
   const [showVerifiedProduct, setShowVerifiedProduct] = useState(false);
-  const [showProductDetails, setShowProductDetails] = useState(false);
+  const [showProductDetail, setShowProductDetail] = useState(false);
   const [showRejectProduct, setShowRejectProduct] = useState(false);
   const [totalPages,setTotalPages] = useState(0)
   const {pageNo,setDisabledNext,pageView} = useContext(Utils)
@@ -107,7 +107,7 @@ const ProductApproval = () => {
                             type="button"
                             variant="primary"
                             onClick={() => {
-                              setShowProductDetails(true);
+                              setShowProductDetail(true);
                               setRowData(item);
                             }}
                           >
@@ -157,8 +157,8 @@ const ProductApproval = () => {
         />
 
         <ViewProduct
-          showProductDetails={showProductDetails}
-          setShowProductDetails={setShowProductDetails}
+          showProductDetail={showProductDetail}
+          setShowProductDetail={setShowProductDetail}
           rowData={rowData}
         />
         <RejectProduct
