@@ -97,6 +97,7 @@ const Products = () => {
   const handleBlockProducts = (e) => {
     var data = new FormData();
     data.append("product_id", blockData);
+    data.append("reason", blockReason);
     console.log("usersss", data);
     Http.PostAPI(process.env.REACT_APP_BLOCKPRODUCTS, data, null)
       .then((res) => {
@@ -509,7 +510,7 @@ const Products = () => {
               Attributes
             </div>
             <Table striped bordered className="table">
-              {/* {console.log("aa",rowData)} */}
+            
 
               <tbody>
                 {rowData?.attributes?.map((attr, index) => (

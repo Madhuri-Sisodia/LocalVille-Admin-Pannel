@@ -23,6 +23,7 @@ const BlockStore = ({ showModal, setShowModal, blockData, getStore }) => {
 
   const handleBlockStore = (id) => {
     var data = new FormData();
+    data.append("reason", blockReason);
     data.append("id", id);
     console.log("usersss", data);
     Http.PostAPI(apis.blockStore, data, null)

@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import { MdClose } from "react-icons/md";
 import { Modal, Form, Button } from "react-bootstrap";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
 import "../../assets/css/modal.css";
 import ButtonComponent from "views/ButtonComponent";
-import ReactSelect from "CommonUtils/React-Select";
+
 
 const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
   const [vendors, setVendors] = useState([]);
@@ -64,7 +63,7 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
       console.log(vendorData);
 
       var data = new FormData();
-      data.append("image", image);
+      data.append("user_image", image);
       data.append("name", vendorData.vendorName);
       data.append("email", vendorData.email);
       data.append("phonenumber", vendorData.phone);

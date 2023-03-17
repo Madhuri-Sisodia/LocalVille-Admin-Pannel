@@ -47,8 +47,8 @@ const ViewStore = ({ showDetailsModal, setShowDetailsModal, rowData }) => {
           <Table striped bordered className="table">
             <tbody>
               <tr>
-                <td className="bold-col">Vendor ID:</td>
-                <td>{rowData.vendor_id}</td>
+                <td className="bold-col">Store Id:</td>
+                <td>{rowData.id}</td>
               </tr>
               <tr>
                 <td className="bold-col">Store Image:</td>
