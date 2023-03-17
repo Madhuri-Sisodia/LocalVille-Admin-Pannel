@@ -4,7 +4,21 @@ import React, { useState } from "react";
 const CustomNavbar = ({ onSelect, activeKey, ...props }) => {
   return (
     <Navbar {...props}>
-      <Navbar.Brand style={{ color: "white",position:"fixed" }}>LOCALVILLE</Navbar.Brand>
+      <Navbar.Brand style={{ color: "white",position:"fixed" }}>
+        <img
+        src={require('./../../assets/img/logoWhite.png')}
+        style={{
+          height:40,
+          width:40
+        }}
+        />
+        <span style={{
+          fontSize:20,
+          marginLeft:10
+        }}>
+        <b>LOCALVILLE</b> ADMIN
+        </span>
+      </Navbar.Brand>
       <Nav onSelect={onSelect} activeKey={activeKey}></Nav>
     </Navbar>
   );

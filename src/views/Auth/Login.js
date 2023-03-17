@@ -1,6 +1,6 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import ErrorMessage from "customComponents/ErrorMessage";
-import { useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { Form, Button } from "rsuite";
 import logoWhite from "assets/img/logoWhite.png";
 import "../../assets/css/login.css";
@@ -9,6 +9,7 @@ import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import User from "views/UserProfile";
 import { Utils } from "CommonUtils/Utils";
+import { Player, Controls } from '@lottiefiles/react-lottie-player';
 
 const Login = () => {
   const history = useHistory();
@@ -16,7 +17,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState([]);
   const [errors, setErrors] = useState({});
- 
+
 
   const validate = () => {
     let tempErrors = {};
@@ -38,23 +39,23 @@ const Login = () => {
   };
 
   const handleSubmit = (e) => {
-      e.preventDefault();
-     if (validate()) {
-     console.log("Email", email);
+    e.preventDefault();
+    if (validate()) {
+      console.log("Email", email);
       console.log("Password", password);
-       const loginData = { email, password };
-       var data = new FormData();
-       data.append("email", email);
-       data.append("password", password);
+      const loginData = { email, password };
+      var data = new FormData();
+      data.append("email", email);
+      data.append("password", password);
 
-       console.log("usersss", data);
-       Http.PostAPI(process.env.REACT_APP_LOGINADMINDATA, data, null)
-         .then((res) => {
+      console.log("usersss", data);
+      Http.PostAPI(process.env.REACT_APP_LOGINADMINDATA, data, null)
+        .then((res) => {
           if (res?.data?.status) {
-             setUser(res?.data?.data);
+            setUser(res?.data?.data);
             sessionStorage.setItem("loggedIn", JSON.stringify(res.data.data.token));
-            sessionStorage.setItem("name",res.data.data.name)
-              
+            sessionStorage.setItem("name", res.data.data.name)
+
             history.push("/admin/dashboard");
           } else {
             alert("Fields not matched");
@@ -74,8 +75,15 @@ const Login = () => {
       <LoginNavbar />
       <div className="LoginContainer">
         <div className="FirstSection">
-          <img src={logoWhite} className="adminLogo" />
-          <p className="textArea">LOCALVILLE VENDOR</p>
+          {/* <img src={logoWhite} className="adminLogo" /> */}
+          <Player
+            autoplay
+            loop
+            src={require('./../../assets/animations/login_admin2.json')}
+            style={{ height: '550px', width: '550px' }}
+          >
+          </Player>
+          {/* <p className="textArea" style={{marginTop:-30}}>LOCALVILLE ADMIN</p> */}
         </div>
         <div className="SecondSection">
           <Form style={{ textAlign: "left" }} >
