@@ -9,6 +9,8 @@ import UpdateProducts from "./UpdateProducts";
 import AddProduct from "./AddProduct";
 import Paginte from "../../components/Paginate";
 import { Utils } from "CommonUtils/Utils";
+import "../../assets/css/admin.css";
+import { AiOutlineExclamation} from 'react-icons/ai';
 
 console.log("hello");
 
@@ -43,11 +45,11 @@ const Products = () => {
 
   const verifiedProduct = (verify) => {
     if (verify == 2) {
-      return "Rejected";
+      return (<i className="fas fa-times" ></i>);
     } else if (verify == 1) {
-      return "Verified";
+      return (<i className="fas fa-check"></i>);
     } else {
-      return "Pending";
+      return (<AiOutlineExclamation className="pendingIcon"/>);
     }
   };
 

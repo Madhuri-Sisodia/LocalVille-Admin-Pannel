@@ -69,6 +69,19 @@ color: "white";
 margin-top: "20px";
 }
 
+i.fa-times{
+ color: #f83b3b;
+ font-size: 1rem;
+}
+i.fa-check{
+    color:#3fd621 ;
+    font-size: 1rem;
+}
+.pendingIcon{
+    color:#FF9500 ;
+    font-size: 1.3rem;
+    font-weight: 800;
+}
 
 /* --------------------------------responsive------------------------------- */
 
