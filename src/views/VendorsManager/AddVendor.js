@@ -61,10 +61,10 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (validate()) {
-      console.log(vendorData);
+      console.log(image);
 
       var data = new FormData();
-      data.append("image", image);
+      data.append("user_image", image);
       data.append("name", vendorData.vendorName);
       data.append("email", vendorData.email);
       data.append("phonenumber", vendorData.phone);
