@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import ErrorMessage from "customComponents/ErrorMessage";
 import { useHistory } from "react-router-dom";
-import { Form, Button } from "rsuite";
+import { Form, Button, Panel } from "rsuite";
 import logoWhite from "assets/img/logoWhite.png";
 import "../../assets/css/login.css";
 import LoginNavbar from "components/Navbars/LoginNavbar";
@@ -86,15 +86,16 @@ const Login = () => {
           {/* <p className="textArea" style={{marginTop:-30}}>LOCALVILLE ADMIN</p> */}
         </div>
         <div className="SecondSection">
+        <Panel style={{paddingTop:50, paddingBottom:50}} shaded>
           <Form style={{ textAlign: "left" }} >
             <Form.Group controlId="email">
               <Form.ControlLabel style={{ color: "white" }}>
-                Email
+                EMAIL
               </Form.ControlLabel>
               <Form.Control
                 name="email"
                 placeholder="Email"
-                style={{ width: 300 }}
+                style={{ width: 400, height:50 }}
                 value={email}
                 required="email"
                 onChange={(value) => setEmail(value)}
@@ -104,14 +105,14 @@ const Login = () => {
 
             <Form.Group controlId="password">
               <Form.ControlLabel style={{ color: "white" }}>
-                Password
+                PASSWORD
               </Form.ControlLabel>
               <Form.Control
                 name="password"
                 type="password"
                 placeholder="Password"
                 autoComplete="off"
-                style={{ width: 300 }}
+                style={{ width: 400, height:50 }}
                 value={password}
                 required="password"
                 onChange={(value) => setPassword(value)}
@@ -119,16 +120,19 @@ const Login = () => {
               {errors.password && <ErrorMessage message={errors.password} />}
             </Form.Group>
 
+            <div align="center">
             <Button
-              style={{ padding: "9px 132px" }}
+              style={{ padding: "15px 180px" }}
               appearance="primary"
               type="submit"
               className="loginButton"
               onClick={handleSubmit}
             >
-              Login
+              <b>LOGIN</b>
             </Button>
+            </div>
           </Form>
+          </Panel>
         </div>
       </div>
     </>
