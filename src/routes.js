@@ -30,7 +30,7 @@ const dashboardRoutes = [
   {
     path: "/admin",
     name: "Admin Manager",
-    icon: "nc-icon nc-circle-09",
+    icon: "nc-icon nc-single-02",
     component: AdminManager,
     layout: "/admin"
   },
@@ -38,14 +38,14 @@ const dashboardRoutes = [
   {
     path: "/banner",
     name: "Banner Manager",
-    icon: "nc-icon nc-circle-09",
+    icon: "nc-icon nc-album-2",
     component: BannerManager,
     layout: "/admin"
   },
   {
     path: "/category",
     name: "Categories",
-    icon: "nc-icon nc-circle-09",
+    icon: "nc-icon nc-grid-45",
     component: Category,
     layout: "/admin"
   },
@@ -76,7 +76,7 @@ const dashboardRoutes = [
   {
     path: "/products",
     name: "Products",
-    icon: "nc-icon nc-circle-09",
+    icon: "nc-icon nc-grid-45",
     component: Products,
     layout: "/admin"
   },
@@ -85,7 +85,7 @@ const dashboardRoutes = [
   {
     path: "/productapproval",
     name: "Product Approval",
-    icon: "nc-icon nc-circle-09",
+    icon: "nc-icon nc-notes",
     component: ProductApproval,
     layout: "/admin"
   },
@@ -101,7 +101,7 @@ const dashboardRoutes = [
     name: "User Profile",
     path: "/notification",
     name: "Notification Manager",
-    icon: "nc-icon nc-circle-09",
+    icon: "nc-icon nc-notification-70",
     component: NotificationManager,
     layout: "/admin"
   },
