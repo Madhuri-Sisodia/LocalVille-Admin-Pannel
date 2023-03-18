@@ -19,7 +19,10 @@ const SubCategory = () => {
   const { Categoriesid } = useContext(Utils);
   const notificationAlertRef = React.useRef(null);
   const [status, setStatus] = useState();
+  const [selectSection, setSelectSection] = useState("");
   const [notifyMessage, setnotifyMessage] = useState();
+  const [selectSizeAttribute, setSelectSizeAttribute] = useState("");
+
   const notify = (place) => {
     var options = {};
     options = {
@@ -123,6 +126,29 @@ const SubCategory = () => {
       });
   }, []);
 
+  useEffect(() => {
+    Http.GetAPI(process.env.REACT_APP_GETSIZEATTRIBUTES + "?" + Math.random(),data, null)
+      .then((res) => {
+        console.log(res);
+        setStatus(res?.data?.status);
+        setnotifyMessage(res?.data?.message);
+        console.warn(res?.data?.message);
+        if (res?.data?.status) {
+          setData(res?.data?.data);
+        } else {
+          notify("tr");
+          alert("Fields not matched");
+        }
+      })
+      .catch((e) => {
+        notifySecond("tr");
+        // alert("Something went wrong.");
+        console.log("Error:", e);
+      });
+  }, []);
+
+
+
   return (
     <>
       <div className="rna-container">
@@ -198,7 +224,42 @@ const SubCategory = () => {
               </RadioGroup>
             </Form.Group>
               </div>
-              <div style={{paddingLeft:"10px",marginTop:"20px"}}>
+
+{/* ---------------------Select size Attribute start--------------- ----*/}
+
+                 <div style={{paddingLeft:"10px",marginTop:"20px"}}>
+                  <select
+                    name="selectSizeAttribute"
+                    value={selectSizeAttribute}
+                    required
+                    onChange={(event) =>
+                      setSelectSizeAttribute(event.target.value)
+                    }
+                    style={{
+                      height: "30px",
+                      borderRadius: "5px",
+                      paddingLeft: "5px",
+                      paddingRight: "5px",
+                      borderColor: "#808020",
+                    }}
+                  >
+                    <option value="">Select Size Attribute</option>
+                    {data.map((sizeAttribute) => (
+                      <option
+                        key={sizeAttribute.id}
+                        value={sizeAttribute.attr_name}
+                      >
+                        {sizeAttribute.attr_name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+      
+{/* ---------------------Select size Attribute end--------------- ----*/}
+
+
+
+              {/* <div style={{paddingLeft:"10px",marginTop:"20px"}}>
               <Form.Group>
               <Form.ControlLabel>Size Attribute</Form.ControlLabel>
               <RadioGroup
@@ -211,7 +272,7 @@ const SubCategory = () => {
                 <Radio value="No">No</Radio>
               </RadioGroup>
             </Form.Group>
-              </div>
+              </div> */}
               </div>
               </div>
             </Form.Group>

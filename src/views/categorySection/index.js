@@ -18,16 +18,18 @@ function index() {
   }
   const Card = (props) => {
     return(
+      <div className='CategoryCardSection'>
       <Panel {...props}>
       <Placeholder.Paragraph />
     </Panel>
+    </div>
     )
   };
   
 
   return (
     <div className='MainContainer'>
-     
+       {/* <div className='CategoryCardSection'> */}
         <Row>
         <Col md={6} sm={12}>
             <Card bordered header="Section" className="Categorycards" onClick={()=>setSelectedItem(1)}
@@ -77,8 +79,8 @@ function index() {
         {selectedItem==5 && <Size/>}
         {selectedItem==6 && <Color/>}
         
-      
-    </div>
+        </div>
+    // </div>
   )
 }
 

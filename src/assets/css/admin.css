@@ -48,15 +48,29 @@
 
 /* -----------------------------------Category Cards */
 
-.rs-col .Categorycards{
+.rs-col .CategoryCardSection{
     margin-right: 5rem;
 }
 .Categorycards{
-    background: linear-gradient(to right, #8f69d6, #e5e5ea);
+    
+    background: linear-gradient(to right, #9c6cf7 ,#e7e2f0);
 
 }
 .rs-panel-header {
-    color: darkblue;
+    color:#f0ecf7 ;
+    font-weight: 700;
+    font-family: "Roboto","Helvetica Neue",Arial,sans-serif;
+    padding: 1rem;
+    background-color: #6c35d3;
+    border-radius: 4px;
+    margin-bottom: 0.6rem;
+}
+.CategoryCardSection{
+    display: grid;
+    
+    background-color: #ececf0;
+    padding: 0.7rem;
+    border-radius: 7px;
 }
 /* -------------------------------Button Component---------------------------- */ 
 button.buttonComponent {
