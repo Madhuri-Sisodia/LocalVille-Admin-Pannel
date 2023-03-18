@@ -129,8 +129,6 @@ const ProductDetailModel = ({
                   {rowData.active == "1" ? "active" : "block"}
                 </td>
               </tr>
-             
-              
             </tbody>
           </Table>
           <div
@@ -142,18 +140,13 @@ const ProductDetailModel = ({
           >
             Attributes
           </div>
-          <Table striped bordered className="table">
-            <tbody>
-              {rowData?.attributes?.map((attr, index) => (
-                <React.Fragment key={index}>
+          {rowData?.attributes?.map((attr, index) => (
+            <React.Fragment key={index}>
+              <Table striped bordered className="table">
+                <tbody>
                   <tr>
                     <td className="bold-col">ID:</td>
                     <td>{attr.id}</td>
-                  </tr>
-
-                  <tr>
-                    <td className="bold-col">Product ID:</td>
-                    <td>{attr.pid}</td>
                   </tr>
 
                   <tr>
@@ -163,7 +156,7 @@ const ProductDetailModel = ({
 
                   <tr>
                     <td className="bold-col">Sku:</td>
-                    <td>{attr.sku?.[index]}</td>
+                    <td>{attr.sku}</td>
                   </tr>
 
                   <tr>
@@ -188,7 +181,7 @@ const ProductDetailModel = ({
 
                   <tr>
                     <td className="bold-col">Stock:</td>
-                    <td>{attr.in_stock}</td>
+                    <td>{attr.in_stock == "1"? "Yes":"No"}</td>
                   </tr>
 
                   <tr>
@@ -217,16 +210,17 @@ const ProductDetailModel = ({
                       {attr.active == "1" ? "active" : "block"}
                     </td>
                   </tr>
-                </React.Fragment>
-              ))}
-            </tbody>
-          </Table>
-          {rowData.images && rowData.images.length > 0 && (
+                </tbody>
+              </Table>
+              <br></br>
+            </React.Fragment>
+          ))}
+          {rowData?.images && rowData?.images.length > 0 && (
             <div>
-              {rowData.images.map((image, index) => (
+              {rowData?.images.map((image, index) => (
                 <img
                   key={index}
-                  src={image.images?.[index]}
+                  src={image?.images}
                   alt="image"
                   style={{
                     width: "70px",

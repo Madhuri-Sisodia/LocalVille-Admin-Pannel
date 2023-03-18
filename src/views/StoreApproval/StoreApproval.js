@@ -28,7 +28,7 @@ import {
 const StoreApproval = () => {
   const [data, setData] = useState([]);
   const [showVerifiedStore, setShowVerifiedStore] = useState(false);
-  const [showStoreDetails, setShowStoreDetails] = useState(false);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showRejectStore, setShowRejectStore] = useState(false);
   const [storeApproval, setStoreApproval] = useState(false);
   const {pageNo,setDisabledNext,pageView} = useContext(Utils)
@@ -144,7 +144,7 @@ const StoreApproval = () => {
                             type="button"
                             variant="primary"
                             onClick={() => {
-                              setShowStoreDetails(true);
+                              setShowDetailsModal(true);
                               setRowData(item);
                             }}
                           >
@@ -194,8 +194,8 @@ const StoreApproval = () => {
         />
 
         <ViewStoreDetails
-          showStoreDetails={showStoreDetails}
-          setShowStoreDetails={setShowStoreDetails}
+          showDetailsModal={showDetailsModal}
+          setShowDetailsModal={setShowDetailsModal}
           rowData={rowData}
         />
         <RejectStore
