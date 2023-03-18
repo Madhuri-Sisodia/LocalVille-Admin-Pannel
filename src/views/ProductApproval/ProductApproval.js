@@ -25,7 +25,7 @@ import VerifyProduct from "./VerifyProduct";
 import ViewProduct from "./ViewProduct";
 import RejectProduct from "./RejectProduct";
 import "../../assets/css/TableCss.css"
-const notificationAlertRef = React.useRef(null);
+
 
 const ProductApproval = () => {
   const [data, setData] = useState([]);
@@ -36,6 +36,7 @@ const ProductApproval = () => {
   const {pageNo,setDisabledNext,pageView} = useContext(Utils)
   const [rowData, setRowData] = useState([]);
   const [product, setProduct] = useState([]);
+  const notificationAlertRef = React.useRef(null);
 
   const getUnverifiedProduct = () => {
     Http.GetAPI(apis.getUnverifiedProducts + "?" +`page=${pageView}`, "", null)

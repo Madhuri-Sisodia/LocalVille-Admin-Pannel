@@ -27,7 +27,7 @@ import {
  import ViewStoreDetails from "./ViewStoreDetails";
  import VerifiedStore from "./VerifiedStore";
  import RejectStore from "./RejectStore";
- const notificationAlertRef = React.useRef(null);
+
 
 const StoreApproval = () => {
   const [data, setData] = useState([]);
@@ -39,6 +39,7 @@ const StoreApproval = () => {
   const [totalPages,setTotalPages] = useState(1)
   const [rowData, setRowData] = useState([]);
   const [store, setStore] = useState([]);
+  const notificationAlertRef = React.useRef(null);
   const daysOfWeek = ["M", "T", "W", "T", "F", "S", "S"];
   const getLocation = (latitude, longitude) => {
     const url = `https://www.google.com/maps?q=${latitude}+${longitude}`;

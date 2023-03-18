@@ -19,10 +19,11 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-const notificationAlertRef = React.useRef(null);
+
 const BlockVendor = ({ showModal, setShowModal, blockData, getVendors }) => {
   const [blockUser, setBlockUser] = useState([]);
   const [blockReason, setBlockReason] = useState("");
+  const notificationAlertRef = React.useRef(null);
 
   const handleBlockUser = (id) => {
     var data = new FormData();

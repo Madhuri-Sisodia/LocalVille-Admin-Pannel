@@ -35,7 +35,6 @@ import {
 import ViewProduct from "views/ProductApproval/ViewProduct";
 import ViewStore from "./ViewStore";
 import BlockStore from "./BlockStore";
-const notificationAlertRef = React.useRef(null);
 const daysOfWeek = ["M", "T", "W", "T", "F", "S", "S"];
 
 // const data = [
@@ -127,6 +126,7 @@ const StoreManager = () => {
   const [days, setDays] = useState([]);
   const {pageNo,setDisabledNext,pageView} = useContext(Utils)
   const [totalPages,setTotalPages] = useState(1);
+  const notificationAlertRef = React.useRef(null);
   let parseDays;
   let VendorData;
 
