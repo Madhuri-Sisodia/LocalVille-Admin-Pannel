@@ -1,7 +1,7 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import ErrorMessage from "customComponents/ErrorMessage";
-import { useHistory} from "react-router-dom";
-import { Form, Button } from "rsuite";
+import { useHistory } from "react-router-dom";
+import { Form, Button, Panel } from "rsuite";
 import logoWhite from "assets/img/logoWhite.png";
 import "../../assets/css/login.css";
 import LoginNavbar from "components/Navbars/LoginNavbar";
@@ -9,6 +9,7 @@ import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import User from "views/UserProfile";
 import { Utils } from "CommonUtils/Utils";
+import { Player, Controls } from '@lottiefiles/react-lottie-player';
 
 const Login = () => {
   const history = useHistory();
@@ -16,7 +17,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState([]);
   const [errors, setErrors] = useState({});
- 
+
 
   const validate = () => {
     let tempErrors = {};
@@ -38,23 +39,23 @@ const Login = () => {
   };
 
   const handleSubmit = (e) => {
-      e.preventDefault();
-     if (validate()) {
-     console.log("Email", email);
+    e.preventDefault();
+    if (validate()) {
+      console.log("Email", email);
       console.log("Password", password);
-       const loginData = { email, password };
-       var data = new FormData();
-       data.append("email", email);
-       data.append("password", password);
+      const loginData = { email, password };
+      var data = new FormData();
+      data.append("email", email);
+      data.append("password", password);
 
-       console.log("usersss", data);
-       Http.PostAPI(process.env.REACT_APP_LOGINADMINDATA, data, null)
-         .then((res) => {
+      console.log("usersss", data);
+      Http.PostAPI(process.env.REACT_APP_LOGINADMINDATA, data, null)
+        .then((res) => {
           if (res?.data?.status) {
-             setUser(res?.data?.data);
+            setUser(res?.data?.data);
             sessionStorage.setItem("loggedIn", JSON.stringify(res.data.data.token));
-            sessionStorage.setItem("name",res.data.data.name)
-              
+            sessionStorage.setItem("name", res.data.data.name)
+
             history.push("/admin/dashboard");
           } else {
             alert("Fields not matched");
@@ -74,19 +75,27 @@ const Login = () => {
       <LoginNavbar />
       <div className="LoginContainer">
         <div className="FirstSection">
-          <img src={logoWhite} className="adminLogo" />
-          <p className="textArea">LOCALVILLE VENDOR</p>
+          {/* <img src={logoWhite} className="adminLogo" /> */}
+          <Player
+            autoplay
+            loop
+            src={require('./../../assets/animations/login_admin2.json')}
+            style={{ height: '550px', width: '550px' }}
+          >
+          </Player>
+          {/* <p className="textArea" style={{marginTop:-30}}>LOCALVILLE ADMIN</p> */}
         </div>
         <div className="SecondSection">
+        <Panel style={{paddingTop:50, paddingBottom:50}} shaded>
           <Form style={{ textAlign: "left" }} >
             <Form.Group controlId="email">
               <Form.ControlLabel style={{ color: "white" }}>
-                Email
+                EMAIL
               </Form.ControlLabel>
               <Form.Control
                 name="email"
                 placeholder="Email"
-                style={{ width: 300 }}
+                style={{ width: 400, height:50 }}
                 value={email}
                 required="email"
                 onChange={(value) => setEmail(value)}
@@ -96,14 +105,14 @@ const Login = () => {
 
             <Form.Group controlId="password">
               <Form.ControlLabel style={{ color: "white" }}>
-                Password
+                PASSWORD
               </Form.ControlLabel>
               <Form.Control
                 name="password"
                 type="password"
                 placeholder="Password"
                 autoComplete="off"
-                style={{ width: 300 }}
+                style={{ width: 400, height:50 }}
                 value={password}
                 required="password"
                 onChange={(value) => setPassword(value)}
@@ -111,16 +120,19 @@ const Login = () => {
               {errors.password && <ErrorMessage message={errors.password} />}
             </Form.Group>
 
+            <div align="center">
             <Button
-              style={{ padding: "9px 132px" }}
+              style={{ padding: "15px 180px" }}
               appearance="primary"
               type="submit"
               className="loginButton"
               onClick={handleSubmit}
             >
-              Login
+              <b>LOGIN</b>
             </Button>
+            </div>
           </Form>
+          </Panel>
         </div>
       </div>
     </>

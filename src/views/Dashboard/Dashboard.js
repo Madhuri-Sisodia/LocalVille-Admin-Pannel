@@ -181,7 +181,7 @@ const Dashboard = () => {
           <Col md="8">
             <Card>
               <Card.Header>
-                <Card.Title as="h4">Users Behavior</Card.Title>
+                <Card.Title as="h4">Order Statistics</Card.Title>
                 <p className="card-category">24 Hours performance</p>
               </Card.Header>
               <Card.Body>
@@ -268,7 +268,6 @@ const Dashboard = () => {
             <Card>
               <Card.Header>
                 <Card.Title as="h4">Users Statistics</Card.Title>
-                {/* <p className="card-category">Last Campaign Performance</p> */}
               </Card.Header>
               <Card.Body>
                 <div
@@ -300,7 +299,7 @@ const Dashboard = () => {
                 <hr></hr>
                 <div className="stats">
                   <i className="far fa-clock"></i>
-                  {/* Campaign sent 2 days ago */}
+                  User chartActivity
                 </div>
               </Card.Body>
             </Card>
