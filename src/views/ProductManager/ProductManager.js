@@ -9,6 +9,9 @@ import UpdateProducts from "./UpdateProducts";
 import AddProduct from "./AddProduct";
 import Paginte from "../../components/Paginate";
 import { Utils } from "CommonUtils/Utils";
+import NotificationAlert from "react-notification-alert";
+import { SuccessNotify } from "components/NotificationShowPopUp";
+import { ErrorNotify } from "components/NotificationShowPopUp";
 
 console.log("hello");
 
@@ -43,6 +46,7 @@ const Products = () => {
   const [showUpdateProduct, setShowUpdateProduct] = useState(false);
   const { pageNo, setDisabledNext, pageView } = useContext(Utils);
   const [blockReason, setBlockReason] = useState("");
+  const notificationAlertRef = React.useRef(null);
 
   console.log("row", rowData);
 
@@ -84,8 +88,9 @@ const Products = () => {
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
   };
 
@@ -104,13 +109,17 @@ const Products = () => {
         if (res?.data?.status) {
           setBlockProducts(res?.data?.data);
           getProducts();
+          
         } else {
-          alert("Fields not matched");
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
   };
 
@@ -129,8 +138,9 @@ const Products = () => {
       })
       .catch((e) => {
         setIsLoading(false);
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
   };
 
@@ -138,6 +148,9 @@ const Products = () => {
 
   return (
     <>
+        <div className="rna-container">
+        <NotificationAlert ref={notificationAlertRef} />
+      </div>
       <Container fluid>
         <Row>
           <Col md="12">

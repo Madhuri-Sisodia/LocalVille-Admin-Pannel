@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { BiBlock } from "react-icons/bi";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
+import NotificationAlert from "react-notification-alert";
+import { SuccessNotify } from "components/NotificationShowPopUp";
+import { ErrorNotify } from "components/NotificationShowPopUp";
 
 import {
   Modal,
@@ -16,6 +19,7 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
+const notificationAlertRef = React.useRef(null);
 const BlockVendor = ({ showModal, setShowModal, blockData, getVendors }) => {
   const [blockUser, setBlockUser] = useState([]);
   const [blockReason, setBlockReason] = useState("");
@@ -32,17 +36,23 @@ const BlockVendor = ({ showModal, setShowModal, blockData, getVendors }) => {
           setBlockUser(res?.data?.data);
           getVendors();
         } else {
-          alert("Fields not matched");
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
   };
 
   return (
     <>
+     <div className="rna-container">
+        <NotificationAlert ref={notificationAlertRef} />
+      </div>
       <Modal
         className="modal-mini modal-primary"
         show={showModal}

@@ -14,6 +14,10 @@ import MAPDays from "./MAPDays";
 import Paginate from "../../components/Paginate";
 import { Utils } from "CommonUtils/Utils";
 import "./Store.css";
+import NotificationAlert from "react-notification-alert";
+import { SuccessNotify } from "components/NotificationShowPopUp";
+import { ErrorNotify } from "components/NotificationShowPopUp";
+
 
 import {
   Modal,
@@ -31,6 +35,7 @@ import {
 import ViewProduct from "views/ProductApproval/ViewProduct";
 import ViewStore from "./ViewStore";
 import BlockStore from "./BlockStore";
+const notificationAlertRef = React.useRef(null);
 const daysOfWeek = ["M", "T", "W", "T", "F", "S", "S"];
 
 // const data = [
@@ -158,8 +163,9 @@ const StoreManager = () => {
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
   };
   console.log("data", data);
@@ -187,8 +193,9 @@ const StoreManager = () => {
       })
       .catch((e) => {
         setIsLoading(false);
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
   };
 
@@ -196,6 +203,9 @@ const StoreManager = () => {
 
   return (
     <>
+      <div className="rna-container">
+        <NotificationAlert ref={notificationAlertRef} />
+      </div>
       <Container fluid>
         <Row>
           <Col md="12">

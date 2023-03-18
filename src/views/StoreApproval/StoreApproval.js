@@ -7,6 +7,9 @@ import { apis } from "../../config/WebConstant";
 import "../../assets/css/modal.css";
 import Paginte from "components/Paginate";
 import { Utils } from "CommonUtils/Utils";
+import NotificationAlert from "react-notification-alert";
+import { SuccessNotify } from "components/NotificationShowPopUp";
+import { ErrorNotify } from "components/NotificationShowPopUp";
 
 import {
   Modal,
@@ -24,6 +27,7 @@ import {
  import ViewStoreDetails from "./ViewStoreDetails";
  import VerifiedStore from "./VerifiedStore";
  import RejectStore from "./RejectStore";
+ const notificationAlertRef = React.useRef(null);
 
 const StoreApproval = () => {
   const [data, setData] = useState([]);
@@ -55,8 +59,9 @@ const StoreApproval = () => {
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
   };
 
@@ -66,6 +71,9 @@ const StoreApproval = () => {
 
   return (
     <>
+    <div className="rna-container">
+        <NotificationAlert ref={notificationAlertRef} />
+      </div>
       <Container fluid>
         <Row>
           <Col md="12">

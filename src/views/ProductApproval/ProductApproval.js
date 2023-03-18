@@ -5,6 +5,9 @@ import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import Paginte from "components/Paginate";
 import { Utils } from "CommonUtils/Utils";
+import NotificationAlert from "react-notification-alert";
+import { SuccessNotify } from "components/NotificationShowPopUp";
+import { ErrorNotify } from "components/NotificationShowPopUp";
 import {
   Modal,
   Form,
@@ -22,6 +25,7 @@ import VerifyProduct from "./VerifyProduct";
 import ViewProduct from "./ViewProduct";
 import RejectProduct from "./RejectProduct";
 import "../../assets/css/TableCss.css"
+const notificationAlertRef = React.useRef(null);
 
 const ProductApproval = () => {
   const [data, setData] = useState([]);
@@ -46,8 +50,9 @@ const ProductApproval = () => {
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
   };
 
@@ -57,6 +62,9 @@ const ProductApproval = () => {
 
   return (
     <>
+    <div className="rna-container">
+        <NotificationAlert ref={notificationAlertRef} />
+      </div>
       <Container fluid>
         <Row>
           <Col md="12">

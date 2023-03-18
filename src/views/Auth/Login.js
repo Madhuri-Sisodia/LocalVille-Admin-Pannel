@@ -10,6 +10,9 @@ import { apis } from "../../config/WebConstant";
 import User from "views/UserProfile";
 import { Utils } from "CommonUtils/Utils";
 import { Player, Controls } from '@lottiefiles/react-lottie-player';
+import NotificationAlert from "react-notification-alert";
+import { SuccessNotify } from "components/NotificationShowPopUp";
+import { ErrorNotify } from "components/NotificationShowPopUp";
 
 const Login = () => {
   const history = useHistory();
@@ -17,6 +20,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState([]);
   const [errors, setErrors] = useState({});
+  const notificationAlertRef = React.useRef(null);
 
 
   const validate = () => {
@@ -55,15 +59,20 @@ const Login = () => {
             setUser(res?.data?.data);
             sessionStorage.setItem("loggedIn", JSON.stringify(res.data.data.token));
             sessionStorage.setItem("name", res.data.data.name)
-
-            history.push("/admin/dashboard");
+            notificationAlertRef.current.notificationAlert(
+              SuccessNotify(res?.data?.message)
+            );
+           history.push("/admin/dashboard");
           } else {
-            alert("Fields not matched");
+            notificationAlertRef.current.notificationAlert(
+              ErrorNotify(res?.data?.message)
+            );
           }
         })
         .catch((e) => {
-          alert("Something went wrong.");
-          console.log("Error:", e);
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify("Something went wrong")
+          );
         });
       setEmail("");
       setPassword("");
@@ -72,6 +81,9 @@ const Login = () => {
 
   return (
     <>
+     <div className="rna-container">
+        <NotificationAlert ref={notificationAlertRef} />
+      </div>
       <LoginNavbar />
       <div className="LoginContainer">
         <div className="FirstSection">
