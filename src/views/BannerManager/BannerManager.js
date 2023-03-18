@@ -58,7 +58,7 @@ const BannerManager = () => {
   const [notifymessage, setNotifymessage] = useState();
   const notificationAlertRef = React.useRef(null);
 
-  console.log("aa",imageUrl,formData.redirect,formData.url)
+  console.log("aaaa",imageUrl);
 
   const notify = (place) => {
     var options = {};
@@ -145,7 +145,7 @@ const BannerManager = () => {
     console.log(redirectImg)
     var data = new FormData();
     data.append("banner_image", imageUrl);
-    console.log("aaa",imageUrl)
+    console.log("BBB",imageUrl)
     data.append("is_redirect", redirectImg);
     data.append("url", formData.url);
     data.append("active", 1);

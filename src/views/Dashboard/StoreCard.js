@@ -62,7 +62,7 @@ const StoreCard = ({ latestStore }) => {
             <div className="row">
               {latestStore.map((item, index) => (
                 <Col md="4" key={index}>
-                  <Card className="card" style={{backgroundImage:`url(${item.store_image})`}}>
+                  <Card className="card">
                     <div
                       className="card-div"
                       style={{
@@ -88,7 +88,7 @@ const StoreCard = ({ latestStore }) => {
                         setRowData(item);
                       }}
                       style={{
-                        backgroundImage: `url(${imageVAr})`,
+                        backgroundImage: `url('${item.store_image}')`,
                       }}
                     >
                       <div className="heading">

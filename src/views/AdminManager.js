@@ -67,11 +67,10 @@ const AdminManager = () => {
       data.append("email", email);
       data.append("password", password);
 
-     
       Http.PostAPI(process.env.REACT_APP_ADDADMINDATA, data, null)
         .then((res) => {
           console.log("user", res.data.status);
-          if (res?.data?.status){
+          if (res?.data?.status) {
             setUser(res?.data?.data);
           } else {
             alert("Fields not matched");
@@ -158,10 +157,7 @@ const AdminManager = () => {
                 )}
               </Form.Group>
             </div>
-            <ButtonComponent 
-          block 
-          buttontext="Submit"
-           />
+            <ButtonComponent block buttontext="Submit" />
           </Form>
         </div>
       </div>

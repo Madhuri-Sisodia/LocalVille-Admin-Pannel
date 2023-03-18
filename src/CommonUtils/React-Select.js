@@ -18,7 +18,6 @@ export default function ReactSelect({data,setSelectSection}) {
         defaultValue={selectedOption}
         onChange={setSelectSection}
         options={options}
-        required
       />
     </div>
   );

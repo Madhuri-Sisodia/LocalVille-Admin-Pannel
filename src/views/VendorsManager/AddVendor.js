@@ -4,7 +4,7 @@ import { Modal, Form, Button } from "react-bootstrap";
 import { Http } from "../../config/Service";
 import "../../assets/css/modal.css";
 import ButtonComponent from "views/ButtonComponent";
-
+import ReactSelect from "CommonUtils/React-Select";
 
 const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
   const [vendors, setVendors] = useState([]);
@@ -60,7 +60,7 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (validate()) {
-      console.log(vendorData);
+      console.log(image);
 
       var data = new FormData();
       data.append("user_image", image);

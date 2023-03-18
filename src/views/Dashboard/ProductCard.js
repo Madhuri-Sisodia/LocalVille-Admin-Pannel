@@ -86,7 +86,9 @@ const ProductCard = ({ latestProduct }) => {
 
                     <div
                       className="image"
-                      style={{ backgroundImage: `url(${item.p_images})` }}
+                      style={{
+                        backgroundImage: `url('${item.theme_img}')`,
+                      }}
                       onClick={() => {
                         setShowProductDetail(true);
                         setRowData(item);

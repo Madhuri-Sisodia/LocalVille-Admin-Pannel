@@ -140,11 +140,12 @@ function Header() {
                 onClick={(e) => e.preventDefault()}
               >
                 <img
-                  src="https://lh3.googleusercontent.com/a/AEdFTp4yuL037npPJXKU1oM2ITR0nKPUnkfpYb8rEh43Ug=s96-c"
+                  src={require("./../../assets/img/localvilleLogo.png")}
                   alt="Image"
                   style={{
-                    height: "50px",
-                    width: "50px",
+                    height: "25px",
+                    width: "25px",
+                    marginTop:5,
                     borderRadius: "50%",
                   }}
                 />
@@ -188,7 +189,12 @@ function Header() {
             </Dropdown> */}
             <Nav.Item>
               <Nav.Link className="m-0">
-                <span className="no-icon">{name}</span>
+                <p style={{
+                  fontSize:'1.1rem',
+                  marginLeft:-20,
+                  marginTop:5,
+                  color:'#6D44BC'
+                }} className="no-icon"><b>{name}</b></p>
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>

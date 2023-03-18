@@ -190,7 +190,7 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
       sub_category: "",
       is_buy: "",
       is_pickup: "",
-      Attributes:"",
+      Attributes:[],
       price: "",
       dis_price: "",
       in_stock: "",
