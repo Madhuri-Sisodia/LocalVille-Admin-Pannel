@@ -34,7 +34,7 @@ const Products = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showAddProduct, setShowAddProduct] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
-  const [totalPages, setTotalPages] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
   const [blockProducts, setBlockProducts] = useState([]);
   const [blockData, setBlockData] = useState([]);
   const [rowData, setRowData] = useState([]);

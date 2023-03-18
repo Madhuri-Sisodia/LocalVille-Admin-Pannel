@@ -32,7 +32,7 @@ const StoreApproval = () => {
   const [showRejectStore, setShowRejectStore] = useState(false);
   const [storeApproval, setStoreApproval] = useState(false);
   const {pageNo,setDisabledNext,pageView} = useContext(Utils)
-  const [totalPages,setTotalPages] = useState(0)
+  const [totalPages,setTotalPages] = useState(1)
   const [rowData, setRowData] = useState([]);
   const [store, setStore] = useState([]);
   const daysOfWeek = ["M", "T", "W", "T", "F", "S", "S"];

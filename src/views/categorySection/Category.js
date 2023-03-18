@@ -6,6 +6,8 @@ import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import { useEffect, useContext } from "react";
 import { Utils } from "CommonUtils/Utils";
+import { SuccessNotify } from "components/NotificationShowPopUp";
+import { ErrorNotify } from "components/NotificationShowPopUp";
 
 const Category = () => {
   const [categoryName, setCategoryName] = useState("");
@@ -16,44 +18,6 @@ const Category = () => {
   const [status, setStatus] = useState();
   const [notifyMessage, setnotifyMessage] = useState();
   const notificationAlertRef = React.useRef(null);
-  
-
-  const notify = (place) => {
-    var options = {};
-    options = {
-      place: place,
-      message: (
-        <div>
-          <div>
-            <b>{notifyMessage}</b>
-          </div>
-        </div>
-      ),
-      type: status ? "success" : "danger",
-      icon: "nc-icon nc-bell-55",
-      autoDismiss: 7,
-    };
-
-    notificationAlertRef.current.notificationAlert(options);
-  };
-  const notifySecond = (place) => {
-    var options = {};
-    options = {
-      place: place,
-      message: (
-        <div>
-          <div>
-            <b>Something went wrong.</b>
-          </div>
-        </div>
-      ),
-      type: status ? "success" : "danger",
-      icon: "nc-icon nc-bell-55",
-      autoDismiss: 7,
-    };
-
-    notificationAlertRef.current.notificationAlert(options);
-  };
 
   const handleSubmit = () => {
     const SelectedSection = data.filter((ele) => {
@@ -67,27 +31,25 @@ const Category = () => {
 
     formdata.append("section_id", `${id}`);
     formdata.append("category_name", categoryName);
-  
-    console.log("formdata=>",formdata)
+
+    console.log("formdata=>", formdata);
     Http.PostAPI(process.env.REACT_APP_ADDPRODUCTCATEGORY, formdata, null)
       .then((res) => {
-        console.log("Data", res);
-        setStatus(res?.data?.status);
-        setnotifyMessage(res?.data?.message);
-        console.warn(res?.data?.message);
         if (res?.data?.status) {
           setCategory(res?.data?.data);
-          notify("tr");
-          // alert("Category added successfully");
+          notificationAlertRef.current.notificationAlert(
+            SuccessNotify(res?.data?.message)
+          );
         } else {
-          notify("tr");
-          // alert("Category already exists");
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {
-        notifySecond("tr");
-        // alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
 
     setCategoryName("");
@@ -95,18 +57,21 @@ const Category = () => {
   };
 
   useEffect(() => {
-    Http.GetAPI(process.env.REACT_APP_GETCTEGORYSECTION + "?" + Math.random(),data, null)
+    Http.GetAPI(
+      process.env.REACT_APP_GETCTEGORYSECTION + "?" + Math.random(),
+      data,
+      null
+    )
       .then((res) => {
         console.log(res);
         if (res?.data?.status) {
           setData(res?.data?.data);
-        } else {
-          alert("Fields not matched");
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
   }, []);
 

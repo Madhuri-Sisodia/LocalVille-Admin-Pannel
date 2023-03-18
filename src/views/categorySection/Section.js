@@ -6,6 +6,8 @@ import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import { useEffect } from "react";
 import { Utils } from "CommonUtils/Utils";
+import {SuccessNotify} from "components/NotificationShowPopUp";
+import {ErrorNotify} from "components/NotificationShowPopUp";
 
 const Section = () => {
   const [sectionName, setSectionName] = useState("");
@@ -14,51 +16,11 @@ const Section = () => {
 //   const [selectCategory, setSelectCategory] = useState("");
   const [data, setData] = useState([]);
   const [category, setCategory] = useState([]);
-//   const [category, setCategory] = useState([]);
-  // const [getCategoryData, setGetCategoryData] = useState([]);
+
 console.log(sectionName)
   const notificationAlertRef = React.useRef(null);
 
-  const notify = (place) => {
-    var color = Math.floor(Math.random() * 5 + 1);
-    var type;
-    switch (color) {
-      case 1:
-        type = "primary";
-        break;
-      case 2:
-        type = "success";
-        break;
-      case 3:
-        type = "danger";
-        break;
-      case 4:
-        type = "warning";
-        break;
-      case 5:
-        type = "info";
-        break;
-      default:
-        break;
-    }
-    var options = {};
-    options = {
-      place: place,
-      message: (
-        <div>
-          <div>
-            <b>Section Successfully Added..!!</b>
-          </div>
-        </div>
-      ),
-      type: type,
-      icon: "nc-icon nc-bell-55",
-      autoDismiss: 7,
-    };
-
-    notificationAlertRef.current.notificationAlert(options);
-  };
-
+  
   const handleSubmit = () => {
 
         var formdata = new FormData();
@@ -69,14 +31,19 @@ console.log(sectionName)
           console.log("Data", res);
           if (res?.data?.status) {
             setCategory(res?.data?.data);
-            alert("Category added successfully");
+            notificationAlertRef.current.notificationAlert(
+              SuccessNotify(res?.data?.message)
+            );
           } else {
-            alert("Category already exists");
+            notificationAlertRef.current.notificationAlert(
+              ErrorNotify(res?.data?.message)
+            );
           }
         })
         .catch((e) => {
-          alert("Something went wrong.");
-          console.log("Error:", e);
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify("Something went wrong")
+          );
         });
         setSectionName("");
   };

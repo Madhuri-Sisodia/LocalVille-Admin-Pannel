@@ -3,11 +3,13 @@ import { MdClose } from "react-icons/md";
 import { Modal, Form,} from "react-bootstrap";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
-import NotificationAlert from "react-notification-alert";
 import "../../assets/css/modal.css";
 import Size from "components/size";
 import ButtonComponent from "views/ButtonComponent";
 import ReactSelect from "CommonUtils/React-Select";
+import NotificationAlert from "react-notification-alert";
+import { SuccessNotify } from "components/NotificationShowPopUp";
+import { ErrorNotify } from "components/NotificationShowPopUp";
 
 
 const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
@@ -60,13 +62,12 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
       .then((res) => {
         if (res?.data?.status) {
           setGetProCat(res?.data?.data);
-        } else {
-          alert("Fields not matched");
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
   }, []);
 
@@ -83,13 +84,12 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
       .then((res) => {
         if (res?.data?.status) {
           setGetProSubCat(res?.data?.data);
-        } else {
-          alert("Fields not matched");
-        }
+        } 
       })
       .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
     }
   }, [selectProCat]);
@@ -111,8 +111,9 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
   };
 
@@ -172,13 +173,19 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
         if (res?.data?.status) {
           setProduct(res?.data?.data);
           getProducts();
-          alert("Product Added Sucessfully")
+          notificationAlertRef.current.notificationAlert(
+            SuccessNotify(res?.data?.message)
+          );
         } else {
-          alert("Fields not matched");
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
     resetForm();
     setShowAddProduct(false);

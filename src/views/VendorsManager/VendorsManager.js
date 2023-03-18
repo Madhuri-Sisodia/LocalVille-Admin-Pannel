@@ -26,7 +26,7 @@ import BlockVendor from "./BlockVendor";
 const VendorsManager = () => {
   const [showModal, setShowModal] = useState(false);
   const [data, setData] = useState([]);
-  const [totalPages,setTotalPages] = useState(0)
+  const [totalPages,setTotalPages] = useState(1)
   const [blockData, setBlockData] = useState([]);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showAddVendor, setShowAddVendor] = useState(false);

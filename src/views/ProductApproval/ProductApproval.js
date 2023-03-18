@@ -28,7 +28,7 @@ const ProductApproval = () => {
   const [showVerifiedProduct, setShowVerifiedProduct] = useState(false);
   const [showProductDetail, setShowProductDetail] = useState(false);
   const [showRejectProduct, setShowRejectProduct] = useState(false);
-  const [totalPages,setTotalPages] = useState(0)
+  const [totalPages,setTotalPages] = useState(1)
   const {pageNo,setDisabledNext,pageView} = useContext(Utils)
   const [rowData, setRowData] = useState([]);
   const [product, setProduct] = useState([]);

@@ -6,6 +6,8 @@ import "../assets/css/admin.css";
 import { Http } from "../config/Service";
 import { apis } from "../config/WebConstant";
 import ButtonComponent from "views/ButtonComponent";
+import { SuccessNotify } from "components/NotificationShowPopUp";
+import { ErrorNotify } from "components/NotificationShowPopUp";
 
 const AdminManager = () => {
   const [name, setName] = useState("");
@@ -16,25 +18,6 @@ const AdminManager = () => {
   const [errors, setErrors] = useState({});
 
   const notificationAlertRef = React.useRef(null);
-
-  const notify = (place) => {
-    var options = {};
-    options = {
-      place: place,
-      message: (
-        <div>
-          <div>
-            <b>Admin Details Successfully Added..!!</b>
-          </div>
-        </div>
-      ),
-      type: "success",
-      icon: "nc-icon nc-bell-55",
-      autoDismiss: 7,
-    };
-
-    notificationAlertRef.current.notificationAlert(options);
-  };
 
   const validate = () => {
     let tempErrors = {};
@@ -72,13 +55,19 @@ const AdminManager = () => {
           console.log("user", res.data.status);
           if (res?.data?.status) {
             setUser(res?.data?.data);
+            notificationAlertRef.current.notificationAlert(
+              SuccessNotify(res?.data?.message)
+            );
           } else {
-            alert("Fields not matched");
+            notificationAlertRef.current.notificationAlert(
+              ErrorNotify(res?.data?.message)
+            );
           }
         })
         .catch((e) => {
-          alert("Something went wrong.");
-          console.log("Error:", e);
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify("Something went wrong")
+          );
         });
       setName("");
       setEmail("");

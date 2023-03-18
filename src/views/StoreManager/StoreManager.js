@@ -121,7 +121,7 @@ const StoreManager = () => {
   const [storeAdded,setAddStored] = useState(false)
   const [days, setDays] = useState([]);
   const {pageNo,setDisabledNext,pageView} = useContext(Utils)
-  const [totalPages,setTotalPages] = useState(0)
+  const [totalPages,setTotalPages] = useState(1);
   let parseDays;
   let VendorData;
 
