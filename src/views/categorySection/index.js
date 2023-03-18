@@ -31,7 +31,7 @@ function index() {
     <div className='MainContainer'>
        {/* <div className='CategoryCardSection'> */}
         <Row>
-        <Col md={6} sm={12}>
+        <Col md={6} sm={12} block>
             <Card bordered header="Section" className="Categorycards" onClick={()=>setSelectedItem(1)}
                />
               

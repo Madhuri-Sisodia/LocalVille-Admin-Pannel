@@ -72,6 +72,9 @@
     padding: 0.7rem;
     border-radius: 7px;
 }
+.CategoryCardSection p {
+    border-radius: 1rem;
+}
 /* -------------------------------Button Component---------------------------- */ 
 button.buttonComponent {
 background-color: "blueviolet";
