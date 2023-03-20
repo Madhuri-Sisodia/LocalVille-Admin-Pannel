@@ -279,12 +279,10 @@ const Dashboard = () => {
                       labels: [
                         `${parseInt((totalActiveUsers/totalUsers)*100)}%`,
                         `${parseInt(((totalUsers - totalActiveUsers)/totalUsers)*100)}%`,
-                        
                       ],
                       series: [
                         totalActiveUsers,
                         totalUsers - totalActiveUsers,
-                        
                       ],
                     }}
                     type="Pie"

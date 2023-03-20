@@ -5,6 +5,9 @@ import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import "../../assets/css/modal.css";
 import ButtonComponent from "views/ButtonComponent";
+import NotificationAlert from "react-notification-alert";
+import { SuccessNotify } from "components/NotificationShowPopUp";
+import { ErrorNotify } from "components/NotificationShowPopUp";
 
 const UpdateVendor = ({ showUpdateModal, setShowUpdateModal, item,getVendors }) => {
   // console.log("item", item)
@@ -14,6 +17,7 @@ const UpdateVendor = ({ showUpdateModal, setShowUpdateModal, item,getVendors }) 
   const [vendorId, setVendorId] = useState();
   const [vendorName, setVendorName] = useState();
   const [vendorPhone, setVendorPhone] = useState();
+  const notificationAlertRef = React.useRef(null);
  
 
   const handleUpdateVendor = () => {
@@ -34,18 +38,27 @@ const UpdateVendor = ({ showUpdateModal, setShowUpdateModal, item,getVendors }) 
         if (res?.data?.status) {
           setVendors(res?.data?.data);
           getVendors();
+          notificationAlertRef.current.notificationAlert(
+            SuccessNotify(res?.data?.message)
+          );
         } else {
-          alert("Fields not matched");
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
   };
 
   return (
     <>
+    <div className="rna-container">
+        <NotificationAlert ref={notificationAlertRef} />
+      </div>
       {item != null && (
         <Modal show={showUpdateModal} onHide={() => setShowUpdateModal(false)}>
           <Modal.Header>

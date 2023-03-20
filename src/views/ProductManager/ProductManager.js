@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import SearchIcon from "@rsuite/icons/Search";
 import { Input, InputGroup } from "rsuite";
 import { Http } from "../../config/Service";
@@ -11,11 +11,15 @@ import Paginte from "../../components/Paginate";
 import { Utils } from "CommonUtils/Utils";
 import "../../assets/css/admin.css";
 import { AiOutlineExclamation} from 'react-icons/ai';
+import NotificationAlert from "react-notification-alert";
+import { SuccessNotify } from "components/NotificationShowPopUp";
+import { ErrorNotify } from "components/NotificationShowPopUp";
 
 console.log("hello");
 
 import {
   Modal,
+  Form,
   CloseButton,
   Badge,
   Button,
@@ -27,6 +31,7 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
+import index from "views/categorySection";
 
 const Products = () => {
   const [showModal, setShowModal] = useState(false);
@@ -34,14 +39,18 @@ const Products = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showAddProduct, setShowAddProduct] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
-  const [totalPages, setTotalPages] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
   const [blockProducts, setBlockProducts] = useState([]);
   const [blockData, setBlockData] = useState([]);
   const [rowData, setRowData] = useState([]);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState(null);
   const [showUpdateProduct, setShowUpdateProduct] = useState(false);
-  const {pageNo,setDisabledNext,pageView,setUPdatedAtt} = useContext(Utils)
+  const { pageNo, setDisabledNext, pageView } = useContext(Utils);
+  const [blockReason, setBlockReason] = useState("");
+  const notificationAlertRef = React.useRef(null);
+
+  console.log("row", rowData);
 
   const verifiedProduct = (verify) => {
     if (verify == 2) {
@@ -66,8 +75,12 @@ const Products = () => {
   };
 
   const getProducts = () => {
-    console.log("helloget")
-    Http.GetAPI(process.env.REACT_APP_GETPRODUCTS + "?" + `page=${pageView}`, "", null)
+    console.log("helloget");
+    Http.GetAPI(
+      process.env.REACT_APP_GETPRODUCTS + "?" + `page=${pageView}`,
+      "",
+      null
+    )
       .then((res) => {
         if (res?.data?.status) {
 
@@ -78,8 +91,9 @@ const Products = () => {
         }
       })
       .catch((e) => {
-        // alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
   };
 
@@ -90,6 +104,7 @@ const Products = () => {
   const handleBlockProducts = (e) => {
     var data = new FormData();
     data.append("product_id", blockData);
+    data.append("reason", blockReason);
     console.log("usersss", data);
     Http.PostAPI(process.env.REACT_APP_BLOCKPRODUCTS, data, null)
       .then((res) => {
@@ -97,13 +112,17 @@ const Products = () => {
         if (res?.data?.status) {
           setBlockProducts(res?.data?.data);
           getProducts();
+          
         } else {
-          alert("Fields not matched");
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
   };
 
@@ -123,8 +142,9 @@ const Products = () => {
       })
       .catch((e) => {
         setIsLoading(false);
-        // alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
   };
 
@@ -132,6 +152,9 @@ const Products = () => {
 
   return (
     <>
+        <div className="rna-container">
+        <NotificationAlert ref={notificationAlertRef} />
+      </div>
       <Container fluid>
         <Row>
           <Col md="12">
@@ -279,6 +302,7 @@ const Products = () => {
                               }}
                             >
                               <i className="fa fa-eye"></i>
+                              {/* {console.log("aaa",rowData)} */}
                             </Button>
                             <Button
                               className="btn-simple btn-link p-1"
@@ -347,6 +371,7 @@ const Products = () => {
               <BiBlock
                 style={{
                   fontSize: "30px",
+                  marginBottom: "14px",
                   color: "gray",
                 }}
               />
@@ -354,6 +379,15 @@ const Products = () => {
           </Modal.Header>
           <Modal.Body className="text-center">
             <p>Are you sure you want to block this Product?</p>
+            <Form.Control
+              componentClass="textarea"
+              rows={3}
+              style={{ fontSize: "0.9rem", height: "70px" }}
+              placeholder="Enter Reason"
+              maxLength={200}
+              value={blockReason}
+              onChange={(event) => setBlockReason(event.target.value)}
+            />
           </Modal.Body>
           <div className="modal-footer">
             <Button
@@ -488,16 +522,105 @@ const Products = () => {
                 </tr>
               </tbody>
             </Table>
-            {rowData.images && rowData.images.length > 0 && (
+            <div
+              style={{
+                fontSize: "0.9rem",
+                fontWeight: "bold",
+                marginTop: "33px",
+              }}
+            >
+              Attributes
+            </div>
+            {rowData?.attributes?.map((attr, index) => (
+              <React.Fragment key={index}>
+                <Table striped bordered className="table">
+                  <tbody>
+                    <tr>
+                      <td className="bold-col">ID:</td>
+                      <td>{attr.id}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col">Quantity:</td>
+                      <td>{attr.qty}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col">Sku:</td>
+                      <td>{attr.sku}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col">Color:</td>
+                      <td>{attr.color?.[index]?.name}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col">Size:</td>
+                      <td>{attr.size?.[index]?.name}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col">Price:</td>
+                      <td>{attr.price}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col">DiscountPrice:</td>
+                      <td>{attr.discount_price}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col">Stock:</td>
+                      <td>{attr.in_stock == "1"?"Yes":"No"}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col">Created At:</td>
+                      <td>{attr.created_at}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col">Modified At:</td>
+                      <td>{attr.modified_at}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col"> Status:</td>
+                      <td
+                        style={{
+                          backgroundColor: attr.active == "1" ? "green" : "red",
+                          border: "none",
+                          fontSize: "0.75rem",
+                          color: "white",
+                          padding: "0px 7px",
+                          borderRadius: "17px",
+                          display: "inline-block",
+                        }}
+                      >
+                        {attr.active == "1" ? "active" : "block"}
+                      </td>
+                    </tr>
+                  </tbody>
+                </Table>
+                <br></br>
+              </React.Fragment>
+            ))}
+
+            {rowData?.images && rowData?.images.length > 0 && (
               <div>
-                <img
-                  src={rowData.images[0].images}
-                  alt="image"
-                  style={{
-                    width: "70px",
-                    height: "70px",
-                  }}
-                />
+                {rowData?.images.map((image, index) => (
+                  <img
+                    key={index}
+                    src={image?.images}
+                    alt="image"
+                    style={{
+                      width: "70px",
+                      height: "70px",
+                      marginRight: "10px",
+                    }}
+                  />
+                ))}
               </div>
             )}
           </Modal.Body>

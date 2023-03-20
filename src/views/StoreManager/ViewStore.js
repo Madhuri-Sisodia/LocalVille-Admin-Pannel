@@ -16,6 +16,7 @@ import {
 } from "react-bootstrap";
 const ViewStore = ({ showDetailsModal, setShowDetailsModal, rowData }) => {
   const [days, setDays] = useState([]);
+
   const daysOfWeek = ["M", "T", "W", "T", "F", "S", "S"];
 
   useEffect(() => {
@@ -23,13 +24,9 @@ const ViewStore = ({ showDetailsModal, setShowDetailsModal, rowData }) => {
       let parsedDays;
       if (Array.isArray(rowData.opening_days)) {
         parsedDays = rowData.opening_days;
+        parsedDays = JSON.parse(rowData.opening_days);
       } else if (typeof rowData.opening_days === "string") {
-        try {
-          parsedDays = JSON.parse(rowData.opening_days);
-        } catch (error) {
-          console.error("Error parsing JSON:", error);
-          parsedDays = [];
-        }
+        parsedDays = rowData.opening_days.split(",");
       }
       setDays(parsedDays);
     }
@@ -45,13 +42,12 @@ const ViewStore = ({ showDetailsModal, setShowDetailsModal, rowData }) => {
             onClick={() => setShowDetailsModal(false)}
           />
         </Modal.Header>
+
         <Modal.Body className="body">
-        <div style={{fontSize:"0.9rem",fontWeight:"bold"}}>Store Details</div>
           <Table striped bordered className="table">
-           
             <tbody>
               <tr>
-                <td className="bold-col"> Store Id:</td>
+                <td className="bold-col">Store Id:</td>
                 <td>{rowData.id}</td>
               </tr>
               <tr>
@@ -59,7 +55,7 @@ const ViewStore = ({ showDetailsModal, setShowDetailsModal, rowData }) => {
                 <td>
                   <img
                     src={rowData.store_image}
-                    alt="image"
+                    alt={rowData.store_name}
                     style={{
                       width: "40px",
                       height: "40px",
@@ -103,9 +99,9 @@ const ViewStore = ({ showDetailsModal, setShowDetailsModal, rowData }) => {
               <tr>
                 <td className="bold-col">Opening Days:</td>
                 <td>
-                  {days.map((day,index) => (
-                    <div key={day} className="day-circle">
-                      {daysOfWeek[index - 1] || day}
+                  {days.map((day, index) => (
+                    <div key={day} className={`week-days`}>
+                      {daysOfWeek[index] || day}
                     </div>
                   ))}
                 </td>
@@ -133,7 +129,7 @@ const ViewStore = ({ showDetailsModal, setShowDetailsModal, rowData }) => {
                 <td>{rowData.updated_at}</td>
               </tr>
               <tr>
-                <td className="bold-col"> Store Status:</td>
+                <td className="bold-col">Status:</td>
 
                 <td
                   style={{
@@ -150,63 +146,71 @@ const ViewStore = ({ showDetailsModal, setShowDetailsModal, rowData }) => {
                 </td>
               </tr>
             </tbody>
-          </Table>
-          
-          <div style={{fontSize:"0.9rem",fontWeight:"bold",marginTop:"33px"}}>Vendor Details</div>
-          <Table striped bordered className="table">
-          
-            <tbody>
-              <tr>
-                <td className="bold-col">Vendor Id:</td>
-                <td>{rowData.vendor_id}</td>
-              </tr>
-              <tr>
-                <td className="bold-col">Vendor Image:</td>
-                <td>
-                  <img
-                    src={rowData.user_image}
-                    alt="image"
+            </Table>
+            <div
+              style={{
+                fontSize: "0.9rem",
+                fontWeight: "bold",
+                marginTop: "33px",
+              }}
+            >
+              Vendor Details
+            </div>
+            <Table striped bordered className="table">
+              <tbody>
+                <tr>
+                  <td className="bold-col">Vendor Id:</td>
+                  <td>{rowData.vendor_id}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Vendor Image:</td>
+                  <td>
+                    <img
+                      src={rowData.user_image}
+                      alt="image"
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "50%",
+                      }}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Vendor Name:</td>
+                  <td>{rowData.name}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Vendor Email:</td>
+                  <td>{rowData.email}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Vendor Phone:</td>
+                  <td>{rowData.phone}</td>
+                </tr>
+
+                <tr>
+                  <td className="bold-col"> Vendor Status:</td>
+
+                  <td
                     style={{
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "50%",
+                      backgroundColor: rowData.active == "1" ? "green" : "red",
+                      border: "none",
+                      fontSize: "0.75rem",
+                      color: "white",
+                      padding: "0px 7px",
+                      borderRadius: "17px",
+                      display: "inline-block",
                     }}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td className="bold-col">Vendor Name:</td>
-                <td>{rowData.name}</td>
-              </tr>
-              <tr>
-                <td className="bold-col">Vendor Email:</td>
-                <td>{rowData.email}</td>
-              </tr>
-              <tr>
-                <td className="bold-col">Vendor Phone:</td>
-                <td>{rowData.phone}</td>
-              </tr>
-
-              <tr>
-                <td className="bold-col"> Vendor Status:</td>
-
-                <td
-                  style={{
-                    backgroundColor: rowData.active == "1" ? "green" : "red",
-                    border: "none",
-                    fontSize: "0.75rem",
-                    color: "white",
-                    padding: "0px 7px",
-                    borderRadius: "17px",
-                    display: "inline-block",
-                  }}
-                >
-                  {rowData.active == "1" ? "active" : "block"}
-                </td>
-              </tr>
-            </tbody>
+                  >
+                    {rowData.active == "1" ? "active" : "block"}
+                  </td>
+                </tr>
+              </tbody>
+            
           </Table>
         </Modal.Body>
+        <Modal.Footer></Modal.Footer>
       </Modal>
     </>
   );

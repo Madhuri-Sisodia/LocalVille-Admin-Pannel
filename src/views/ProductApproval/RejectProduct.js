@@ -29,7 +29,8 @@ const RejectProduct = ({
     var data = new FormData();
     data.append("product_id", product.id);
     data.append("verified_status", 2);
-    Http.PostAPI(process.env.REACT_APP_UPDATEVERIFIEDSTORE, data, null)
+    data.append("reason", rejectReason);
+    Http.PostAPI(process.env.REACT_APP_UPDATEVERIFIEDPRODUCT, data, null)
       .then((res) => {
         console.log("resp", res);
         if (res?.data?.status) {
@@ -62,7 +63,7 @@ const RejectProduct = ({
           <Form.Control
             componentClass="textarea"
             rows={3}
-            style={{ fontSize: "0.9rem" }}
+            style={{ fontSize: "0.9rem", height: "70px" }}
             placeholder="Enter Reason"
             maxLength={200}
             value={rejectReason}

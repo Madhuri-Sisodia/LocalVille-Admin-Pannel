@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdClose } from "react-icons/md";
+import "../../assets/css/day.css";
 import {
   Modal,
   Form,
@@ -13,18 +14,32 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
+const ViewStoreDetails = ({ showDetailsModal, setShowDetailsModal, rowData }) => {
+  const [days, setDays] = useState([]);
 
-const ViewStoreDetails = ({
-  showStoreDetails, setShowStoreDetails, rowData,
-}) => {
+  const daysOfWeek = ["M", "T", "W", "T", "F", "S", "S"];
+
+  useEffect(() => {
+    if (rowData.opening_days) {
+      let parsedDays;
+      if (Array.isArray(rowData.opening_days)) {
+        parsedDays = rowData.opening_days;
+        parsedDays = JSON.parse(rowData.opening_days);
+      } else if (typeof rowData.opening_days === "string") {
+        parsedDays = rowData.opening_days.split(",");
+      }
+      setDays(parsedDays);
+    }
+  }, [rowData]);
+
   return (
     <>
-      <Modal show={showStoreDetails} onHide={() => setShowStoreDetails(false)}>
+      <Modal show={showDetailsModal} onHide={() => setShowDetailsModal(false)}>
         <Modal.Header style={{ borderBottom: "1px solid gray" }}>
           <Modal.Title className="title">View Store Details</Modal.Title>
           <MdClose
             className="close-icon"
-            onClick={() =>setShowStoreDetails(false)}
+            onClick={() => setShowDetailsModal(false)}
           />
         </Modal.Header>
 
@@ -32,8 +47,8 @@ const ViewStoreDetails = ({
           <Table striped bordered className="table">
             <tbody>
               <tr>
-                <td className="bold-col">Vendor ID:</td>
-                <td>{rowData.vendor_id}</td>
+                <td className="bold-col">Store Id:</td>
+                <td>{rowData.id}</td>
               </tr>
               <tr>
                 <td className="bold-col">Store Image:</td>
@@ -83,23 +98,12 @@ const ViewStoreDetails = ({
               </tr>
               <tr>
                 <td className="bold-col">Opening Days:</td>
-                <td
-                  style={{
-                    backgroundColor:
-                      rowData.opening_days == "[1,2,3,4,5,6]" ? "red" : "white",
-                    border: "none",
-                    height: "20px",
-                    width: "20px",
-                    fontSize: "0.75rem",
-                    color: "white",
-                    padding: " 10px",
-                    borderRadius: "50%",
-                    display: "inline-block",
-                  }}
-                >
-                  {rowData.opening_days == "[1,2,3,4,5,6]"
-                    ? "M,T,W,TH,F,S"
-                    : "S"}
+                <td>
+                  {days.map((day, index) => (
+                    <div key={day} className={`week-days`}>
+                      {daysOfWeek[index] || day}
+                    </div>
+                  ))}
                 </td>
               </tr>
               <tr>
@@ -142,6 +146,68 @@ const ViewStoreDetails = ({
                 </td>
               </tr>
             </tbody>
+            </Table>
+            <div
+              style={{
+                fontSize: "0.9rem",
+                fontWeight: "bold",
+                marginTop: "33px",
+              }}
+            >
+              Vendor Details
+            </div>
+            <Table striped bordered className="table">
+              <tbody>
+                <tr>
+                  <td className="bold-col">Vendor Id:</td>
+                  <td>{rowData.vendor_id}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Vendor Image:</td>
+                  <td>
+                    <img
+                      src={rowData.user_image}
+                      alt="image"
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "50%",
+                      }}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Vendor Name:</td>
+                  <td>{rowData.name}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Vendor Email:</td>
+                  <td>{rowData.email}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Vendor Phone:</td>
+                  <td>{rowData.phone}</td>
+                </tr>
+
+                <tr>
+                  <td className="bold-col"> Vendor Status:</td>
+
+                  <td
+                    style={{
+                      backgroundColor: rowData.active == "1" ? "green" : "red",
+                      border: "none",
+                      fontSize: "0.75rem",
+                      color: "white",
+                      padding: "0px 7px",
+                      borderRadius: "17px",
+                      display: "inline-block",
+                    }}
+                  >
+                    {rowData.active == "1" ? "active" : "block"}
+                  </td>
+                </tr>
+              </tbody>
+            
           </Table>
         </Modal.Body>
         <Modal.Footer></Modal.Footer>
@@ -149,5 +215,4 @@ const ViewStoreDetails = ({
     </>
   );
 };
-
 export default ViewStoreDetails;

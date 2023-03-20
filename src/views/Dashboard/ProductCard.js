@@ -52,7 +52,7 @@ const ProductCard = ({ latestProduct }) => {
                 color: "white",
               }}
               onClick={() => {
-                history.push("/admin/store");
+                history.push("/admin/product");
               }}
             >
               View All

@@ -52,8 +52,7 @@
     margin-right: 2rem;
 }
 .Categorycards{
-    
-    background: linear-gradient(to right, #9c6cf7 ,#e7e2f0);
+    background: linear-gradient(to right, #8f69d6, #e5e5ea);
 
 }
 .rs-panel-header {
@@ -99,6 +98,18 @@ i.fa-check{
     font-size: 1.3rem;
     font-weight: 800;
 }
+
+/* -------------------------------Button Component---------------------------- */ 
+button.buttonComponent {
+background-color: "blueviolet";
+border: "blueviolet";
+border-radius: "3px 3px 3px 3px";
+width: "100%";
+padding: "5px";
+color: "white";
+margin-top: "20px";
+}
+
 
 /* --------------------------------responsive------------------------------- */
 

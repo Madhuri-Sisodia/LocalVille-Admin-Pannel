@@ -12,6 +12,9 @@ import { SelectPicker } from 'rsuite';
 import { visitIterationBody } from "typescript";
 import ButtonComponent from "views/ButtonComponent";
 import ReactSelect from "CommonUtils/React-Select";
+import NotificationAlert from "react-notification-alert";
+import { SuccessNotify } from "components/NotificationShowPopUp";
+import { ErrorNotify } from "components/NotificationShowPopUp";
 
 
     
@@ -39,6 +42,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
     openingTime: "",
     closingTime: "",
   });
+  const notificationAlertRef = React.useRef(null);
  
   console.log("select",selectSection.value)
    
@@ -134,13 +138,19 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
         if (res?.data?.status) {
           setStore(res?.data?.data);
           getStore()
+          notificationAlertRef.current.notificationAlert(
+            SuccessNotify(res?.data?.message)
+          );
         } else {
-          alert("Fields not matched");
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
     resetForm();
     setShowAddStore(false);
@@ -161,14 +171,13 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
     .then((res) => { 
       if (res?.data?.status) {
         setVendorData(res.data.data)
-      } else {
-        alert("Fields not matched");
-      }
+      } 
     })
     .catch((e) => {
       setIsLoading(false);
-      alert("Something went wrong.");
-      console.log("Error:", e);
+      notificationAlertRef.current.notificationAlert(
+        ErrorNotify("Something went wrong")
+      );
     });
   }
   getVendorsData()
@@ -186,6 +195,9 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
 
   return (
     <>
+    <div className="rna-container">
+        <NotificationAlert ref={notificationAlertRef} />
+      </div>
       <Modal show={showAddStore} onHide={() => setShowAddStore(false)}>
         <Modal.Header>
           <Modal.Title className="title">Add Stores</Modal.Title>

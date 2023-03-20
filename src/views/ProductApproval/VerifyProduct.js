@@ -29,7 +29,7 @@ const VerifyProduct = ({
     var data = new FormData();
     data.append("product_id", product.id);
     data.append("verified_status", 1);
-    Http.PostAPI(process.env.REACT_APP_UPDATEVERIFIEDSTORE, data, null)
+    Http.PostAPI(process.env.REACT_APP_UPDATEVERIFIEDPRODUCT, data, null)
       .then((res) => {
         console.log("resp", res);
         if (res?.data?.status) {

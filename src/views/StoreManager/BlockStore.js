@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { BiBlock } from "react-icons/bi";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
+import NotificationAlert from "react-notification-alert";
+import { SuccessNotify } from "components/NotificationShowPopUp";
+import { ErrorNotify } from "components/NotificationShowPopUp";
 
 import {
   Modal,
@@ -20,29 +23,37 @@ import {
 const BlockStore = ({ showModal, setShowModal, blockData, getStore }) => {
   const [blockStore, setBlockStore] = useState([]);
   const [blockReason, setBlockReason] = useState("");
+  const notificationAlertRef = React.useRef(null);
 
   const handleBlockStore = (id) => {
     var data = new FormData();
+    data.append("reason", blockReason);
     data.append("id", id);
     console.log("usersss", data);
-    Http.PostAPI(process.env.REACT_APP_BLOCKSTORE, data, null)
+    Http.PostAPI(apis.blockStore, data, null)
       .then((res) => {
         console.log("user", res);
         if (res?.data?.status) {
           setBlockStore(res?.data?.data);
           getStore();
         } else {
-          alert("Fields not matched");
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify("Something went wrong")
+          );
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
   };
 
   return (
     <>
+      <div className="rna-container">
+        <NotificationAlert ref={notificationAlertRef} />
+      </div>
       <Modal
         className="modal-mini modal-primary"
         show={showModal}

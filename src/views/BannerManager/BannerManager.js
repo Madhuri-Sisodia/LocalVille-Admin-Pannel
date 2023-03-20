@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Http } from "../../config/Service";
 import { apis } from "../../config/WebConstant";
 import NotificationAlert from "react-notification-alert";
+import { SuccessNotify } from "components/NotificationShowPopUp";
+import { ErrorNotify } from "components/NotificationShowPopUp";
 
 import {
   Form,
@@ -60,43 +62,9 @@ const BannerManager = () => {
 
   console.log("aaaa",imageUrl);
 
-  const notify = (place) => {
-    var options = {};
-    options = {
-      place: place,
-      message: (
-        <div>
-          <div>
-            <b>{notifymessage}</b>
-          </div>
-        </div>
-      ),
-      type: status ? "success" : "danger",
-      icon: "nc-icon nc-bell-55",
-      autoDismiss: 7,
-    };
+ 
 
-    notificationAlertRef.current.notificationAlert(options);
-  };
-
-  const notifySecond = (place) => {
-    var options = {};
-    options = {
-      place: place,
-      message: (
-        <div>
-          <div>
-            <b>Something went wrong..!!</b>
-          </div>
-        </div>
-      ),
-      type: status ? "success" : "danger",
-      icon: "nc-icon nc-bell-55",
-      autoDismiss: 7,
-    };
-
-    notificationAlertRef.current.notificationAlert(options);
-  };
+ 
 
   const getBanner = () => {
     Http.GetAPI(process.env.REACT_APP_GETBANNER + "?" + Math.random(), data)
@@ -105,16 +73,15 @@ const BannerManager = () => {
         if (res?.data?.status) {
           setData(res?.data?.data);
           console.log(res.data.data)
-        } else {
-          // alert("Fields not matched");
-          notify("tr");
-        }
+        } 
       })
       .catch((e) => {
         setIsLoading(false);
-        notifySecond("tr");
-        // alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
+        
+       
       });
   };
 
@@ -132,6 +99,7 @@ const BannerManager = () => {
   };
 
   const handleSubmit = () => {
+  //  e.preventDefault();
     let redirectImg
     console.log(formData.redirect=="Yes")
     if(formData.redirect=="Yes"){
@@ -151,22 +119,22 @@ const BannerManager = () => {
 
     Http.PostAPI(process.env.REACT_APP_ADDBANNER, data)
       .then((res) => {
-        console.log("resp", res);
-        setStatus(res?.data?.status);
-        setNotifymessage(res?.data?.message);
-        console.warn(res?.data?.message);
         if (res?.data?.status) {
           setAddBanner(res?.data?.data);
           getBanner();
+          notificationAlertRef.current.notificationAlert(
+            SuccessNotify(res?.data?.message)
+          );
         } else {
-          notify("tr");
-          // alert("Fields not matched");
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {
-        notifySecond("tr");
-        // alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
     resetForm();
   };

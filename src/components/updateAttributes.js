@@ -28,7 +28,6 @@ const UpdateAttributes = ({getProducts, setAttributes, attributes,updateAttribut
     attr_id:"",
     sku:"",
   });
-console.log("sku",ele)
   useEffect(() => {
     function ColorSize() {
       Http.GetAPI(apis.getSize, "")
@@ -39,7 +38,6 @@ console.log("sku",ele)
           } else {
             alert("Fields not matched");
           }
-          
         })
         .catch((e) => {
           alert("Something went wrong.");
@@ -50,10 +48,10 @@ console.log("sku",ele)
     ColorSize();
   }, []);
 
-  // console.log("tessst", item)
+  
   useEffect(() => {
     function ColorSize() {
-      Http.GetAPI(`${process.env.REACT_APP_GETCOLOR}`, "")
+      Http.GetAPI(apis.getColor, "")
         .then((res) => {
           if (res?.data?.status) {
             setColorData(res?.data?.data);
@@ -110,7 +108,7 @@ console.log("sku",ele)
   useEffect(()=>{
     if(isAdded)
       {
-         console.log("usersabc")
+        
             const data = new FormData()
             data.append(`color[${index}]`,(getAttributes.Color.id)?(getAttributes.Color.id) :ele?.color[0]?.id)
             data.append(`size[${index}]`,(getAttributes.Size.id)?(getAttributes.Size.id) :ele?.size[0]?.id)
@@ -122,7 +120,6 @@ console.log("sku",ele)
 
           Http.PostAPI(process.env.REACT_APP_UPDATEATTRIBUTE, data, null)
           .then((res) => {
-            console.log("eeeerrt")
             console.log("resp", res);
             if (res?.data?.status) {
               console.log("hello")
@@ -330,7 +327,6 @@ console.log("sku",ele)
               }}
             ></Form.Control>
           </Form.Group>
-          
           <button
             type="submit"
             style={{
@@ -358,19 +354,16 @@ console.log("sku",ele)
                 }}
               >
                 <p style={{ margin: "7px" }}>
-                  Size : {ele?.size?.[0]?.name}
+                  Size : {ele?.size[0]?.name}
                 </p>
                 <p style={{ margin: "7px" }}>
-                  Color : {ele?.color?.[0]?.name}
+                  Color : {ele?.color[0]?.name}
                 </p>
                 <p style={{ margin: "7px" }}>
                   Price : {ele?.price}
                 </p>
                 <p style={{ margin: "7px" }}>
                   Dis_Price : {ele?.discount_price}
-                </p>
-                <p style={{ margin: "7px" }}>
-                  Sku : {ele?.sku}
                 </p>
                 <Button
         className="btn-simple btn-link p-1"
