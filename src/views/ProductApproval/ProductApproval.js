@@ -144,11 +144,12 @@ const ProductApproval = () => {
               </Card.Body>
             </Card>
           </Col>
-          <div style={{display:"flex",justifyContent:"center",textAlign:"center"}}>
+         
+        </Row>
+        <div style={{display:"flex",justifyContent:"center",textAlign:"center"}}>
         <Paginte pages={totalPages}/>
         </div>
-        </Row>
-
+        
         <VerifyProduct
           showVerifiedProduct={showVerifiedProduct}
           setShowVerifiedProduct={setShowVerifiedProduct}
