@@ -9,7 +9,6 @@ const options = [];
 //     { label: "Strawberry 🍓", value: "strawberry", disabled: true },
 //   ];
 const MultipleSelect = ({data,selectedVendors,setSelectedVendors}) => {
-    console.log(data)
 
     data.map((ele,index)=>{
        options.push( { label:`${ele.name},  ${ele.email}`, value:ele.email })
@@ -26,7 +25,6 @@ const MultipleSelect = ({data,selectedVendors,setSelectedVendors}) => {
         onChange={(e)=>{setSelectedVendors(e)}}
         labelledBy="Select"
       />
-      {console.log("value",selectedVendors)}
     </div>
   );
 };

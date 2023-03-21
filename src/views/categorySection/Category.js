@@ -3,7 +3,6 @@ import NotificationAlert from "react-notification-alert";
 import "../../assets/css/admin.css";
 import { Form, Button, ButtonToolbar } from "rsuite";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
 import { useEffect, useContext } from "react";
 import { Utils } from "CommonUtils/Utils";
 import { SuccessNotify } from "components/NotificationShowPopUp";
@@ -21,7 +20,6 @@ const Category = () => {
 
   const handleSubmit = () => {
     const SelectedSection = data.filter((ele) => {
-      console.log(ele.name);
       return ele.section_name == selectSection;
     });
     const id = SelectedSection[0].id;
@@ -32,7 +30,6 @@ const Category = () => {
     formdata.append("section_id", `${id}`);
     formdata.append("category_name", categoryName);
 
-    console.log("formdata=>", formdata);
     Http.PostAPI(process.env.REACT_APP_ADDPRODUCTCATEGORY, formdata, null)
       .then((res) => {
         if (res?.data?.status) {
@@ -63,7 +60,6 @@ const Category = () => {
       null
     )
       .then((res) => {
-        console.log(res);
         if (res?.data?.status) {
           setData(res?.data?.data);
         }

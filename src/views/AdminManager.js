@@ -4,7 +4,6 @@ import ErrorMessage from "customComponents/ErrorMessage";
 import NotificationAlert from "react-notification-alert";
 import "../assets/css/admin.css";
 import { Http } from "../config/Service";
-import { apis } from "../config/WebConstant";
 import ButtonComponent from "views/ButtonComponent";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";

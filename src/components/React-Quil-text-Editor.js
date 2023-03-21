@@ -24,7 +24,6 @@ const formats = [
 const MyComponent = ()=> {
    
     const [input, setInput] = useState('');
-     console.log(input)
       return (
         <div className="text-editor" style={{paddingBottom:"20px"}}>
           <ReactQuill theme="snow"

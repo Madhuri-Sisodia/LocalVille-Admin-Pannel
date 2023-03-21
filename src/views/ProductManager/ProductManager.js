@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import SearchIcon from "@rsuite/icons/Search";
 import { Input, InputGroup } from "rsuite";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
 import { BiBlock } from "react-icons/bi";
 import { MdClose } from "react-icons/md";
 import UpdateProducts from "./UpdateProducts";
@@ -13,7 +12,6 @@ import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 
-console.log("hello");
 
 import {
   Modal,
@@ -48,8 +46,6 @@ const Products = () => {
   const [blockReason, setBlockReason] = useState("");
   const notificationAlertRef = React.useRef(null);
 
-  console.log("row", rowData);
-
   const verifiedProduct = (verify) => {
     if (verify == 2) {
       return "Rejected";
@@ -73,7 +69,6 @@ const Products = () => {
   };
 
   const getProducts = () => {
-    console.log("helloget");
     Http.GetAPI(
       process.env.REACT_APP_GETPRODUCTS + "?" + `page=${pageView}`,
       "",
@@ -102,10 +97,8 @@ const Products = () => {
     var data = new FormData();
     data.append("product_id", blockData);
     data.append("reason", blockReason);
-    console.log("usersss", data);
     Http.PostAPI(process.env.REACT_APP_BLOCKPRODUCTS, data, null)
       .then((res) => {
-        console.log("user", res);
         if (res?.data?.status) {
           setBlockProducts(res?.data?.data);
           getProducts();
@@ -316,7 +309,6 @@ const Products = () => {
                                 setShowModal(true);
                                 // setShowDetailsModal(false);
                                 setBlockData(e.target.id);
-                                console.log(e.target.id);
                               }}
                             >
                               <i className="fas fa-times" id={item.id}></i>

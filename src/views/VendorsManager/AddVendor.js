@@ -64,7 +64,6 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (validate()) {
-      console.log(image);
 
       var data = new FormData();
       data.append("user_image", image);
@@ -72,11 +71,8 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
       data.append("email", vendorData.email);
       data.append("phonenumber", vendorData.phone);
 
-      console.log("dddd", data);
-
       Http.PostAPI(process.env.REACT_APP_ADDVENDORS, data)
         .then((res) => {
-          console.log("resp", res);
           if (res?.data?.status) {
             setVendors(res?.data?.data);
             getVendors();

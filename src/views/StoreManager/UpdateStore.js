@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { MdClose } from "react-icons/md";
 import { Modal, Form, Button } from "react-bootstrap";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
 import "../../assets/css/day.css";
 import GoogleAutocomplete from "components/googleAutoComplete";
 import GooglePlacesPicker from "components/googlePlacesPicker";
@@ -41,12 +40,9 @@ const UpdateStore = ({
   const [selectedDays, setSelectedDays] = useState([]);
   const notificationAlertRef = React.useRef(null);
 
-  console.log(selectedDays);
-
   const toggleDaySelection = (index) => {
     if (selectedDays.includes(index + 1)) {
       setSelectedDays(selectedDays.filter((d) => d !== index + 1));
-      console.log("sss", selectedDays);
     } else {
       setSelectedDays([...selectedDays, index + 1]);
     }
@@ -60,8 +56,7 @@ const UpdateStore = ({
       let parsedDays;
       if (Array.isArray(item.opening_days)) {
         parsedDays = item.opening_days;
-        parsedDays = JSON.parse(item.opening_days);
-        console.log(parsedDays);
+        parsedDays = JSON.parse(item.opening_days)
       } else {
         try {
           parsedDays = item.opening_days.split(",");
@@ -124,11 +119,9 @@ const UpdateStore = ({
       "closing_time",
       storeData.closingTime ? storeData.closingTime : item.closing_time
     );
-    console.log("updateStore", data);
 
     Http.PostAPI(process.env.REACT_APP_UPDATESTORE, data, null)
       .then((res) => {
-        console.log("data", res);
         if (res?.data?.status) {
           setStore(res?.data?.data);
           getStore();
@@ -156,7 +149,6 @@ const UpdateStore = ({
             "https://api.postalpincode.in/pincode/" + storeData.pincode
           );
           const data = Result?.data[0]?.PostOffice;
-          console.log(data);
           if (data.length >= 1) {
             setStoreData((previous) => {
               return { ...previous, city: data[0]?.District };
@@ -406,6 +398,7 @@ const UpdateStore = ({
                 }}
               />
             </Form>
+           
           </Modal.Body>
         </Modal>
       )}

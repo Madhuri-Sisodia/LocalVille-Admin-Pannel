@@ -3,7 +3,6 @@ import NotificationAlert from "react-notification-alert";
 import "../../assets/css/admin.css";
 import { Form, Button, ButtonToolbar, Dropdown } from "rsuite";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
 import { useEffect } from "react";
 import { Utils } from "CommonUtils/Utils";
 import { SuccessNotify } from "components/NotificationShowPopUp";
@@ -18,7 +17,7 @@ const SizeAttribute = () => {
   //   const [category, setCategory] = useState([]);
   //   const [category, setCategory] = useState([]);
   // const [getCategoryData, setGetCategoryData] = useState([]);
-  console.log(sizeAttributeName);
+
   const notificationAlertRef = React.useRef(null);
 
   const handleSubmit = () => {
@@ -33,7 +32,6 @@ const SizeAttribute = () => {
 
     Http.PostAPI(process.env.REACT_APP_ADDSIZEATTRIBUTE, formdata, null)
       .then((res) => {
-        console.log("Data", res);
         if (res?.data?.status) {
           notificationAlertRef.current.notificationAlert(
             SuccessNotify(res?.data?.message)

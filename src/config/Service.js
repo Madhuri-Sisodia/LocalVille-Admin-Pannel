@@ -1,7 +1,7 @@
 import axios from "axios";//import { base_url, prod_url } from "./WebConstant";
 
 const base_url = process.env.REACT_APP_BASEURL
-console.log(process.env.REACT_APP_BASEURL)
+// const prod_url = process.env.REACT_APP_PRODURL
 
 export var Http = {
   GetAPI:async(url, data) => {
@@ -18,7 +18,6 @@ export var Http = {
         params: {data},
         headers:header,
     }).then((e) => {
-      console.log("getData", e);
         return e;
     }).catch((e) => {
       console.log("error", e);
@@ -36,15 +35,11 @@ export var Http = {
       });
   }, //Authorization
   PostAPI: (url, body) => {
-    console.log("Api", base_url + url);
-    console.log(body);
     var headers = {
       "Content-Type": "multipart/form-data",
       Accept: "application/json",
       Authorization: JSON.parse(sessionStorage.getItem("loggedIn")),
     };
-
-    console.log("body", body);
     return axios({
       method: "POST",
       url: base_url + url,

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { BiBlock } from "react-icons/bi";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
 
 import {
   Modal,
@@ -31,7 +30,6 @@ const VerifyProduct = ({
     data.append("verified_status", 1);
     Http.PostAPI(process.env.REACT_APP_UPDATEVERIFIEDPRODUCT, data, null)
       .then((res) => {
-        console.log("resp", res);
         if (res?.data?.status) {
           setUpdateProduct(res?.data?.data);
           getUnverifiedProduct();

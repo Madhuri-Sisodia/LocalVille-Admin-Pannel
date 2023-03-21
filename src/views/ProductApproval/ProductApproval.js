@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { Input, Whisper, Tooltip, InputGroup } from "rsuite";
 import SearchIcon from "@rsuite/icons/Search";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
 import Paginte from "components/Paginate";
 import { Utils } from "CommonUtils/Utils";
 import NotificationAlert from "react-notification-alert";
@@ -26,7 +25,6 @@ import ViewProduct from "./ViewProduct";
 import RejectProduct from "./RejectProduct";
 import "../../assets/css/TableCss.css"
 
-
 const ProductApproval = () => {
   const [data, setData] = useState([]);
   const [showVerifiedProduct, setShowVerifiedProduct] = useState(false);
@@ -39,7 +37,7 @@ const ProductApproval = () => {
   const notificationAlertRef = React.useRef(null);
 
   const getUnverifiedProduct = () => {
-    Http.GetAPI(apis.getUnverifiedProducts + "?" +`page=${pageView}`, "", null)
+    Http.GetAPI(process.env.REACT_APP_GETUNVERIFIEDPRODUCTS + "?" +`page=${pageView}`, "", null)
       .then((res) => {
         if (res?.data?.status) {
           if(res.data.data.length>0){
@@ -153,10 +151,10 @@ const ProductApproval = () => {
               </Card.Body>
             </Card>
           </Col>
+        </Row>
           <div style={{display:"flex",justifyContent:"center",textAlign:"center"}}>
         <Paginte pages={totalPages}/>
         </div>
-        </Row>
 
         <VerifyProduct
           showVerifiedProduct={showVerifiedProduct}

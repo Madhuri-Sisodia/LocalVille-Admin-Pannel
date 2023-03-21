@@ -6,7 +6,6 @@ import logoWhite from "assets/img/logoWhite.png";
 import "../../assets/css/login.css";
 import LoginNavbar from "components/Navbars/LoginNavbar";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
 import User from "views/UserProfile";
 import { Utils } from "CommonUtils/Utils";
 import { Player, Controls } from "@lottiefiles/react-lottie-player";
@@ -44,14 +43,11 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      console.log("Email", email);
-      console.log("Password", password);
       const loginData = { email, password };
       var data = new FormData();
       data.append("email", email);
       data.append("password", password);
 
-      console.log("usersss", data);
       Http.PostAPI(process.env.REACT_APP_LOGINADMINDATA, data, null)
         .then((res) => {
           if (res?.data?.status) {

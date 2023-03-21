@@ -30,7 +30,6 @@ const imageVAr = "https://localville.in/apis/seller_api/../seller_api/stores/Mad
 
 const StoreCard = ({ latestStore }) => {
   const history = useHistory();
-  console.log("latestStore", latestStore);
 
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [rowData, setRowData] = useState(false);
@@ -68,7 +67,7 @@ const StoreCard = ({ latestStore }) => {
                       style={{
                         backgroundColor:
                           item.verified == "1"
-                            ? "blue"
+                            ? "#76cbac"
                             : item.verified == "0"
                             ? "orange"
                             : "red",

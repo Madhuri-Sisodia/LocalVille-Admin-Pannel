@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import ChartistGraph from "react-chartist";
 import StoreCard from "./StoreCard";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
 import axios from "axios";
 // react-bootstrap components
 import {
@@ -26,18 +25,13 @@ const Dashboard = () => {
   const [totalActiveUsers, setTotalActiveUsers] = useState(0);
   const [latestStore, setLatestStore] = useState([]);
   const [latestProduct, setLatestProduct] = useState([]);
-   console.log(totalUsers,totalActiveUsers)
   
-  console.log(Math.ceil((totalActiveUsers/totalUsers)*100))
 
   useEffect(() => {
     const CallApi = ()=>{
       Http.GetAPI(process.env.REACT_APP_GETDASHBOARD + "?" + Math.random(), data)
       .then((res) => {
-        console.log(
-          "res",
-          res.data.details.stores_products_data.recent_added_products
-        );
+       
         if (res?.data?.status) {
           setData(res?.data?.details);
           setTotalUsers(res?.data?.details?.total_users || 0);

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
@@ -60,19 +59,13 @@ const BannerManager = () => {
   const [notifymessage, setNotifymessage] = useState();
   const notificationAlertRef = React.useRef(null);
 
-  console.log("aaaa",imageUrl);
-
  
-
- 
-
   const getBanner = () => {
     Http.GetAPI(process.env.REACT_APP_GETBANNER + "?" + Math.random(), data)
       .then((res) => {
         setIsLoading(false);
         if (res?.data?.status) {
           setData(res?.data?.data);
-          console.log(res.data.data)
         } 
       })
       .catch((e) => {
@@ -101,7 +94,6 @@ const BannerManager = () => {
   const handleSubmit = () => {
   //  e.preventDefault();
     let redirectImg
-    console.log(formData.redirect=="Yes")
     if(formData.redirect=="Yes"){
             redirectImg = "1"
     }
@@ -109,10 +101,8 @@ const BannerManager = () => {
       redirectImg = "0"
     }
 
-    console.log(redirectImg)
     var data = new FormData();
     data.append("banner_image", imageUrl);
-    console.log("BBB",imageUrl)
     data.append("is_redirect", redirectImg);
     data.append("url", formData.url);
     data.append("active", 1);
@@ -148,7 +138,6 @@ const BannerManager = () => {
    
   };
   
-  console.log(formData)
 
   return (
     <>
@@ -188,7 +177,6 @@ const BannerManager = () => {
                 name="url"
                 type="url"
                 onChange={(e) => handleFieldChange(e,'url')}
-                required
               />
             </Form.Group>
 
@@ -241,7 +229,6 @@ const BannerManager = () => {
                             />
                           </td>
                           <td style={{ textAlign: "center" }}>
-                            {console.log(item.is_redirect)}
                             {(item.is_redirect == 1) ? "Yes" : "No"}
                           </td>
                           <td>{item.url}</td>

@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Form, Button, ButtonToolbar, SelectPicker, Checkbox } from "rsuite";
 import ErrorMessage from "customComponents/ErrorMessage";
 import "../assets/css/admin.css";
+import NotificationAlert from "react-notification-alert";
 import { Http } from "config/Service";
-import { apis } from "config/WebConstant";
 import ButtonComponent from "./ButtonComponent";
 import MultipleSelect from "components/multipleSelect";
-import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 
@@ -21,7 +20,7 @@ const NotificationManager = () => {
   const notificationAlertRef = React.useRef(null);
 
   const getVendors = () => {
-    Http.GetAPI(apis.getVendorsData + "?" + Math.random(), "")
+    Http.GetAPI(process.env.REACT_APP_GETVENDORSDATA + "?" + Math.random(), "")
       .then((res) => {
         if (res?.data?.status) {
           setVendorData(res?.data?.data);
@@ -43,14 +42,12 @@ const NotificationManager = () => {
     let arr = [];
 
     // const id = vendorid[0].id;
-    console.log("vvv", arr);
 
     var data = new FormData();
     for (let i = 0; i < vendorData.length; i++) {
       for (let j = 0; j < selectedVendors.length; j++) {
         if (vendorData[i].email == selectedVendors[j].value) {
           data.append("vendors[]", vendorData[i].id);
-          console.log("aaa", vendorData[i].id);
         }
       }
     }
@@ -61,7 +58,6 @@ const NotificationManager = () => {
 
     Http.PostAPI(process.env.REACT_APP_ADDNOTICATIONMANAGER, data)
       .then((res) => {
-        console.log("resp", res);
         if (res?.data?.status) {
           setAddNotification(res?.data?.data);
           notificationAlertRef.current.notificationAlert(
@@ -150,7 +146,10 @@ const NotificationManager = () => {
                 required
               />
             </Form.Group>
-            <ButtonComponent block buttontext="Submit" />
+            <ButtonComponent
+              block
+              buttontext="Submit"
+            />
           </Form>
         </div>
       </div>

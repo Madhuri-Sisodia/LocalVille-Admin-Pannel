@@ -3,7 +3,6 @@ import NotificationAlert from "react-notification-alert";
 import "../../assets/css/admin.css";
 import { Form, Button, ButtonToolbar, Dropdown } from "rsuite";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
 import { useEffect } from "react";
 import { Utils } from "CommonUtils/Utils";
 import {SuccessNotify} from "components/NotificationShowPopUp";
@@ -17,7 +16,6 @@ const Section = () => {
   const [data, setData] = useState([]);
   const [category, setCategory] = useState([]);
 
-console.log(sectionName)
   const notificationAlertRef = React.useRef(null);
 
   
@@ -28,7 +26,6 @@ console.log(sectionName)
 
         Http.PostAPI(process.env.REACT_APP_ADDCATEGORYSECTION, formdata, null)
         .then((res) => {
-          console.log("Data", res);
           if (res?.data?.status) {
             setCategory(res?.data?.data);
             notificationAlertRef.current.notificationAlert(
