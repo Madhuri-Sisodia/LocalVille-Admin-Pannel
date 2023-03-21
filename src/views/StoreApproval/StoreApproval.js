@@ -3,10 +3,12 @@ import { Input, Whisper, Tooltip, InputGroup } from "rsuite";
 import { MdLocationPin } from "react-icons/md";
 import SearchIcon from "@rsuite/icons/Search";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
 import "../../assets/css/modal.css";
 import Paginte from "components/Paginate";
 import { Utils } from "CommonUtils/Utils";
+import NotificationAlert from "react-notification-alert";
+import { SuccessNotify } from "components/NotificationShowPopUp";
+import { ErrorNotify } from "components/NotificationShowPopUp";
 
 import {
   Modal,
@@ -25,16 +27,18 @@ import {
  import VerifiedStore from "./VerifiedStore";
  import RejectStore from "./RejectStore";
 
+
 const StoreApproval = () => {
   const [data, setData] = useState([]);
   const [showVerifiedStore, setShowVerifiedStore] = useState(false);
-  const [showStoreDetails, setShowStoreDetails] = useState(false);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showRejectStore, setShowRejectStore] = useState(false);
   const [storeApproval, setStoreApproval] = useState(false);
   const {pageNo,setDisabledNext,pageView} = useContext(Utils)
-  const [totalPages,setTotalPages] = useState(0)
+  const [totalPages,setTotalPages] = useState(1)
   const [rowData, setRowData] = useState([]);
   const [store, setStore] = useState([]);
+  const notificationAlertRef = React.useRef(null);
   const daysOfWeek = ["M", "T", "W", "T", "F", "S", "S"];
   const getLocation = (latitude, longitude) => {
     const url = `https://www.google.com/maps?q=${latitude}+${longitude}`;
@@ -45,18 +49,17 @@ const StoreApproval = () => {
     Http.GetAPI(process.env.REACT_APP_GETUNVERIFIEDSTORE + "?" + `page=${pageView}`, data, null)
       .then((res) => {
         if (res?.data?.status) {
-              if(res.data.data.length>0){
-                setData(res?.data?.data);
-                setTotalPages(res.data.total_pages)
-                setStoreApproval(false);
-              }
+          setData(res?.data?.data);
+          setTotalPages(res.data.total_pages)
+          setStoreApproval(false);
         } else {
           alert("Fields not matched");
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
   };
 
@@ -66,6 +69,9 @@ const StoreApproval = () => {
 
   return (
     <>
+    <div className="rna-container">
+        <NotificationAlert ref={notificationAlertRef} />
+      </div>
       <Container fluid>
         <Row>
           <Col md="12">
@@ -144,7 +150,7 @@ const StoreApproval = () => {
                             type="button"
                             variant="primary"
                             onClick={() => {
-                              setShowStoreDetails(true);
+                              setShowDetailsModal(true);
                               setRowData(item);
                             }}
                           >
@@ -190,18 +196,18 @@ const StoreApproval = () => {
           showVerifiedStore={showVerifiedStore}
           setShowVerifiedStore={setShowVerifiedStore}
           store={store}
-          getUnverifiedStore={getUnverifiedStore}
+          getUnverifiedStore={()=>getUnverifiedStore()}
         />
 
         <ViewStoreDetails
-          showStoreDetails={showStoreDetails}
-          setShowStoreDetails={setShowStoreDetails}
+          showDetailsModal={showDetailsModal}
+          setShowDetailsModal={setShowDetailsModal}
           rowData={rowData}
         />
         <RejectStore
           showRejectStore={showRejectStore}
           setShowRejectStore={setShowRejectStore}
-          getUnverifiedStore={getUnverifiedStore}
+          getUnverifiedStore={()=>getUnverifiedStore()}
           store={store}
         />
         

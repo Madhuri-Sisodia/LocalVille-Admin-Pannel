@@ -13,9 +13,6 @@ const GooglePlacesPicker = () => {
   const DefaultZoom = 15;
   const {Selectedcoordinates,setLocation,location} = useContext(Utils)
   const [defaultLocation, setDefaultLocation] = useState(DefaultLocation);
-   //console.log(Selectedcoordinates)
-  //const [location, setLocation] = useState(defaultLocation);
-    // setLocation(Selectedcoordinates)
     
   useEffect(()=>{
     if(Selectedcoordinates.lat){

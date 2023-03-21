@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { BiBlock } from "react-icons/bi";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
 import {Modal, Form, Badge, Button, Card, Navbar, Nav, Table, Container, Row, Col } from "react-bootstrap";
 
 const VerifiedStore = ({
@@ -16,9 +15,8 @@ const VerifiedStore = ({
     var data = new FormData();
     data.append("store_id", store.id);
     data.append("verified_status", 1);
-    Http.PostAPI(process.env.REACT_APP_GETUNVERIFIEDSTORE, data, null)
+    Http.PostAPI(process.env.REACT_APP_UPDATEVERIFIEDSTORE, data, null)
       .then((res) => {
-        console.log("resp", res);
         if (res?.data?.status) {
           setUpdateStore(res?.data?.data);
           getUnverifiedStore();

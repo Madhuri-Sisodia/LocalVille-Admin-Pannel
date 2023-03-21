@@ -3,9 +3,10 @@ import NotificationAlert from "react-notification-alert";
 import "../../assets/css/admin.css";
 import { Form, Button, ButtonToolbar, Dropdown } from "rsuite";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
 import { useEffect, useContext } from "react";
 import { Utils } from "CommonUtils/Utils";
+import { SuccessNotify } from "components/NotificationShowPopUp";
+import { ErrorNotify } from "components/NotificationShowPopUp";
 
 const Size = () => {
   const [sizeName, setSizeName] = useState("");
@@ -14,50 +15,10 @@ const Size = () => {
   const [sizeAttribute, setSizeAttribute] = useState([]);
   const { setCategoriesId } = useContext(Utils);
   const [size, setSize] = useState("");
-  const [status, setStatus] = useState();
-  const [notifyMessage, setnotifyMessage] = useState();
   const notificationAlertRef = React.useRef(null);
-  console.log(data);
-  const notify = (place) => {
-    var options = {};
-    options = {
-      place: place,
-      message: (
-        <div>
-          <div>
-            <b>{notifyMessage}</b>
-          </div>
-        </div>
-      ),
-      type: status ? "success" : "danger",
-      icon: "nc-icon nc-bell-55",
-      autoDismiss: 7,
-    };
-
-    notificationAlertRef.current.notificationAlert(options);
-  };
-  const notifySecond = (place) => {
-    var options = {};
-    options = {
-      place: place,
-      message: (
-        <div>
-          <div>
-            <b>Something went wrong.</b>
-          </div>
-        </div>
-      ),
-      type: status ? "success" : "danger",
-      icon: "nc-icon nc-bell-55",
-      autoDismiss: 7,
-    };
-
-    notificationAlertRef.current.notificationAlert(options);
-  };
 
   const handleSubmit = () => {
     const SelectedSizeAttribute = data.filter((ele) => {
-      console.log(ele.name);
       return ele.attr_name == selectSizeAttribute;
     });
     const id = SelectedSizeAttribute[0].id;
@@ -68,23 +29,23 @@ const Size = () => {
     formdata.append("id", `${id}`);
     formdata.append("size", sizeName);
 
-    console.log("formdata=>", formdata);
-    Http.PostAPI(apis.addSize, formdata, null)
+    Http.PostAPI(process.env.REACT_APP_ADDSIZE, formdata, null)
       .then((res) => {
-        console.log("Data", res);
         if (res?.data?.success) {
           setSize(res?.data?.data);
-          notify("tr");
-          // alert("Size added successfully");
+          notificationAlertRef.current.notificationAlert(
+            SuccessNotify(res?.data?.message)
+          );
         } else {
-          notify("tr");
-          // alert("Size already exists");
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {
-        notifySecond("tr");
-        // alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
 
     setSizeName("");
@@ -92,26 +53,22 @@ const Size = () => {
   };
 
   useEffect(() => {
-    Http.GetAPI(process.env.REACT_APP_GETSIZEATTRIBUTES + "?" + Math.random(),data, null)
+    Http.GetAPI(
+      process.env.REACT_APP_GETSIZEATTRIBUTES + "?" + Math.random(),
+      data,
+      null
+    )
       .then((res) => {
-        console.log(res);
-        setStatus(res?.data?.status);
-        setnotifyMessage(res?.data?.message);
-        console.warn(res?.data?.message);
         if (res?.data?.status) {
           setData(res?.data?.data);
-        } else {
-          notify("tr");
-          alert("Fields not matched");
         }
       })
       .catch((e) => {
-        notifySecond("tr");
-        // alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
   }, []);
-
 
   return (
     <>

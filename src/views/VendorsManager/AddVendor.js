@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { MdClose } from "react-icons/md";
 import { Modal, Form, Button } from "react-bootstrap";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
 import "../../assets/css/modal.css";
 import ButtonComponent from "views/ButtonComponent";
 import ReactSelect from "CommonUtils/React-Select";
+import NotificationAlert from "react-notification-alert";
+import { SuccessNotify } from "components/NotificationShowPopUp";
+import { ErrorNotify } from "components/NotificationShowPopUp";
 
 const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
   const [vendors, setVendors] = useState([]);
@@ -17,6 +19,7 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
     email: "",
     phone: "",
   });
+  const notificationAlertRef = React.useRef(null);
 
   const resetForm = () => {
     setVendorData({
@@ -61,7 +64,6 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (validate()) {
-      console.log(image);
 
       var data = new FormData();
       data.append("user_image", image);
@@ -69,21 +71,24 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
       data.append("email", vendorData.email);
       data.append("phonenumber", vendorData.phone);
 
-      console.log("dddd", data);
-
       Http.PostAPI(process.env.REACT_APP_ADDVENDORS, data)
         .then((res) => {
-          console.log("resp", res);
           if (res?.data?.status) {
             setVendors(res?.data?.data);
             getVendors();
+            notificationAlertRef.current.notificationAlert(
+              SuccessNotify(res?.data?.message)
+            );
           } else {
-            alert("Fields not matched");
+            notificationAlertRef.current.notificationAlert(
+              ErrorNotify(res?.data?.message)
+            );
           }
         })
         .catch((e) => {
-          alert("Something went wrong.");
-          console.log("Error:", e);
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify("Something went wrong")
+          );
         });
       resetForm();
       setShowAddVendor(false);
@@ -98,6 +103,9 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
 
   return (
     <>
+    <div className="rna-container">
+        <NotificationAlert ref={notificationAlertRef} />
+      </div>
       <Modal show={showAddVendor} onHide={() => setShowAddVendor(false)}>
         <Modal.Header>
           <Modal.Title className="title">Add Vendors</Modal.Title>

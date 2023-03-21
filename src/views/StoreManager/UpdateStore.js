@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import { MdClose } from "react-icons/md";
 import { Modal, Form, Button } from "react-bootstrap";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
 import "../../assets/css/day.css";
 import GoogleAutocomplete from "components/googleAutoComplete";
 import GooglePlacesPicker from "components/googlePlacesPicker";
 import axios from "axios";
+import NotificationAlert from "react-notification-alert";
+import { SuccessNotify } from "components/NotificationShowPopUp";
+import { ErrorNotify } from "components/NotificationShowPopUp";
 
 import "../../assets/css/modal.css";
 import ButtonComponent from "views/ButtonComponent";
@@ -34,17 +36,15 @@ const UpdateStore = ({
   });
   const [store, setStore] = useState([]);
   const [hideData, setHideData] = useState(true);
-  const [UpdateStoreImage,SetUpdateStoreImage] = useState("")
+  const [UpdateStoreImage, SetUpdateStoreImage] = useState("");
   const [selectedDays, setSelectedDays] = useState([]);
-
-  console.log(selectedDays);
+  const notificationAlertRef = React.useRef(null);
 
   const toggleDaySelection = (index) => {
-    if (selectedDays.includes(index+1)) {
-      setSelectedDays(selectedDays.filter((d) => d !== index+1));
-      console.log("sss", selectedDays);
+    if (selectedDays.includes(index + 1)) {
+      setSelectedDays(selectedDays.filter((d) => d !== index + 1));
     } else {
-      setSelectedDays([...selectedDays, index+1]);
+      setSelectedDays([...selectedDays, index + 1]);
     }
   };
 
@@ -56,11 +56,10 @@ const UpdateStore = ({
       let parsedDays;
       if (Array.isArray(item.opening_days)) {
         parsedDays = item.opening_days;
-        parsedDays = JSON.parse(item.opening_days);
-        console.log(parsedDays)
-      } else  {
+        parsedDays = JSON.parse(item.opening_days)
+      } else {
         try {
-          parsedDays = item.opening_days.split(",")
+          parsedDays = item.opening_days.split(",");
         } catch (error) {
           console.error("Error parsing JSON:", error);
           parsedDays = [];
@@ -78,8 +77,8 @@ const UpdateStore = ({
 
   const handleUpdateStore = () => {
     var data = new FormData();
-    
-    data.append("store_image",UpdateStoreImage)
+
+    data.append("store_image", UpdateStoreImage);
     data.append("store_id", storeData.storeId ? storeData.storeId : item.id);
     data.append(
       "store_name",
@@ -120,57 +119,66 @@ const UpdateStore = ({
       "closing_time",
       storeData.closingTime ? storeData.closingTime : item.closing_time
     );
-    console.log("updateStore", data);
 
     Http.PostAPI(process.env.REACT_APP_UPDATESTORE, data, null)
       .then((res) => {
-        console.log("data", res);
         if (res?.data?.status) {
           setStore(res?.data?.data);
           getStore();
+          notificationAlertRef.current.notificationAlert(
+            SuccessNotify(res?.data?.message)
+          );
         } else {
-          alert("Fields not matched");
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
-  }; 
-   
-  useEffect(()=>{
-    if(storeData.pincode){
-  const getCity = async()=>{
-          try{
-            const Result = await axios.get("https://api.postalpincode.in/pincode/"+storeData.pincode)
-             const data = Result?.data[0]?.PostOffice
-             console.log(data)
-             if(data.length>=1){
-             setStoreData((previous)=>{
-               return{...previous,city:data[0]?.District}
-             })
-             setStoreData((previous)=>{
-              return{...previous,country:data[0]?.Country}
-            })
-            setStoreData((previous)=>{
-              return{...previous,state:data[0]?.State}
-            })
-           }}
-          catch(error){
-           console.log(error)
+  };
+
+  useEffect(() => {
+    if (storeData.pincode) {
+      const getCity = async () => {
+        try {
+          const Result = await axios.get(
+            "https://api.postalpincode.in/pincode/" + storeData.pincode
+          );
+          const data = Result?.data[0]?.PostOffice;
+          if (data.length >= 1) {
+            setStoreData((previous) => {
+              return { ...previous, city: data[0]?.District };
+            });
+            setStoreData((previous) => {
+              return { ...previous, country: data[0]?.Country };
+            });
+            setStoreData((previous) => {
+              return { ...previous, state: data[0]?.State };
+            });
           }
-       }
-       getCity()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      getCity();
     }
-    
-  },[storeData.pincode])
+  }, [storeData.pincode]);
 
   return (
     <>
+      <div className="rna-container">
+        <NotificationAlert ref={notificationAlertRef} />
+      </div>
       {item != null && (
         <Modal show={showUpdateStore} onHide={() => setShowUpdateStore(false)}>
           <Modal.Header>
-            <Modal.Title className="update-title">Update Stores data</Modal.Title>
+            <Modal.Title className="update-title">
+              Update Stores data
+            </Modal.Title>
             <MdClose
               className="update-close-icon"
               onClick={() => {
@@ -226,27 +234,27 @@ const UpdateStore = ({
                 </Form.Group>
               )}
 
-               <Form.Group style={{ marginBottom: "1rem" }}>
+              <Form.Group style={{ marginBottom: "1rem" }}>
                 <label className="update-label">Store File</label>
                 <Form.Control
                   className="update-form"
                   name="storeName"
                   onChange={(e) => {
-                    SetUpdateStoreImage(e.target.files[0])
+                    SetUpdateStoreImage(e.target.files[0]);
                   }}
                   type="file"
                 ></Form.Control>
               </Form.Group>
-              
+
               <Form.Group>
-              <Form.Label className="add-label">Store Address</Form.Label>
-              <div style={{marginBottom:"20px"}}>     
-              <GoogleAutocomplete/>
-              </div>   
-              <div>
-          <GooglePlacesPicker/>
-          </div>
-            </Form.Group>
+                <Form.Label className="add-label">Store Address</Form.Label>
+                <div style={{ marginBottom: "20px" }}>
+                  <GoogleAutocomplete />
+                </div>
+                <div>
+                  <GooglePlacesPicker />
+                </div>
+              </Form.Group>
               <Form.Group style={{ marginBottom: "1rem" }}>
                 <label className="update-label">Store Name</label>
                 <Form.Control
@@ -307,7 +315,7 @@ const UpdateStore = ({
                   type="text"
                   name="city"
                   disabled
-                  value={storeData.city?storeData.city:item.city}
+                  value={storeData.city ? storeData.city : item.city}
                 ></Form.Control>
               </Form.Group>
 
@@ -319,7 +327,7 @@ const UpdateStore = ({
                   type="text"
                   name="state"
                   disabled
-                  value={storeData.state?storeData.state:item.state}
+                  value={storeData.state ? storeData.state : item.state}
                 ></Form.Control>
               </Form.Group>
 
@@ -331,22 +339,24 @@ const UpdateStore = ({
                   type="text"
                   name="country"
                   disabled
-                  value={storeData.country?storeData.country:item.country}
+                  value={storeData.country ? storeData.country : item.country}
                 ></Form.Control>
               </Form.Group>
 
               <Form.Group>
                 <Form.Label className="update-label">Opening Days</Form.Label>
                 <div className="update-form">
-                  {daysOfWeek.map((day,index) => {
-                    const isSelected = selectedDays.includes(index+1) ? selectedDays.includes(index+1) : days.includes(index+1);
+                  {daysOfWeek.map((day, index) => {
+                    const isSelected = selectedDays.includes(index + 1)
+                      ? selectedDays.includes(index + 1)
+                      : days.includes(index + 1);
                     return (
                       <div
                         className={`week-days ${isSelected ? "selected" : ""}`}
                         name="selectedDays"
                         onClick={() => toggleDaySelection(index)}
                       >
-                       {day}
+                        {day}
                       </div>
                     );
                   })}
@@ -378,15 +388,15 @@ const UpdateStore = ({
                 ></Form.Control>
               </Form.Group>
 
-            <ButtonComponent
-            buttontext="Update"
-             block
-             onClick={(e) => {
-               e.preventDefault();
-               handleUpdateStore();
-               setShowUpdateStore(false);
-             }}
-            />
+              <ButtonComponent
+                buttontext="Update"
+                block
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleUpdateStore();
+                  setShowUpdateStore(false);
+                }}
+              />
             </Form>
            
           </Modal.Body>
@@ -396,4 +406,3 @@ const UpdateStore = ({
   );
 };
 export default UpdateStore;
-

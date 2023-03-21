@@ -2,9 +2,11 @@ import React, { useState, useEffect, useContext } from "react";
 import { Input, Whisper, Tooltip, InputGroup } from "rsuite";
 import SearchIcon from "@rsuite/icons/Search";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
 import Paginte from "components/Paginate";
 import { Utils } from "CommonUtils/Utils";
+import NotificationAlert from "react-notification-alert";
+import { SuccessNotify } from "components/NotificationShowPopUp";
+import { ErrorNotify } from "components/NotificationShowPopUp";
 import {
   Modal,
   Form,
@@ -26,15 +28,16 @@ import "../../assets/css/TableCss.css"
 const ProductApproval = () => {
   const [data, setData] = useState([]);
   const [showVerifiedProduct, setShowVerifiedProduct] = useState(false);
-  const [showProductDetails, setShowProductDetails] = useState(false);
+  const [showProductDetail, setShowProductDetail] = useState(false);
   const [showRejectProduct, setShowRejectProduct] = useState(false);
-  const [totalPages,setTotalPages] = useState(0)
+  const [totalPages,setTotalPages] = useState(1)
   const {pageNo,setDisabledNext,pageView} = useContext(Utils)
   const [rowData, setRowData] = useState([]);
   const [product, setProduct] = useState([]);
+  const notificationAlertRef = React.useRef(null);
 
   const getUnverifiedProduct = () => {
-    Http.GetAPI(apis.getUnverifiedProducts + "?" +`page=${pageView}`, "", null)
+    Http.GetAPI(process.env.REACT_APP_GETUNVERIFIEDPRODUCTS + "?" +`page=${pageView}`, "", null)
       .then((res) => {
         if (res?.data?.status) {
           if(res.data.data.length>0){
@@ -46,8 +49,9 @@ const ProductApproval = () => {
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
   };
 
@@ -57,6 +61,9 @@ const ProductApproval = () => {
 
   return (
     <>
+    <div className="rna-container">
+        <NotificationAlert ref={notificationAlertRef} />
+      </div>
       <Container fluid>
         <Row>
           <Col md="12">
@@ -107,7 +114,7 @@ const ProductApproval = () => {
                             type="button"
                             variant="primary"
                             onClick={() => {
-                              setShowProductDetails(true);
+                              setShowProductDetail(true);
                               setRowData(item);
                             }}
                           >
@@ -144,10 +151,10 @@ const ProductApproval = () => {
               </Card.Body>
             </Card>
           </Col>
+        </Row>
           <div style={{display:"flex",justifyContent:"center",textAlign:"center"}}>
         <Paginte pages={totalPages}/>
         </div>
-        </Row>
 
         <VerifyProduct
           showVerifiedProduct={showVerifiedProduct}
@@ -157,8 +164,8 @@ const ProductApproval = () => {
         />
 
         <ViewProduct
-          showProductDetails={showProductDetails}
-          setShowProductDetails={setShowProductDetails}
+          showProductDetail={showProductDetail}
+          setShowProductDetail={setShowProductDetail}
           rowData={rowData}
         />
         <RejectProduct

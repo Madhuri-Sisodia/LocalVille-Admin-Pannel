@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import { MdClose } from "react-icons/md";
 import { Modal, Form,} from "react-bootstrap";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
-import NotificationAlert from "react-notification-alert";
 import "../../assets/css/modal.css";
 import Size from "components/size";
 import ButtonComponent from "views/ButtonComponent";
 import ReactSelect from "CommonUtils/React-Select";
+import NotificationAlert from "react-notification-alert";
+import { SuccessNotify } from "components/NotificationShowPopUp";
+import { ErrorNotify } from "components/NotificationShowPopUp";
 
 
 const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
@@ -60,13 +61,12 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
       .then((res) => {
         if (res?.data?.status) {
           setGetProCat(res?.data?.data);
-        } else {
-          alert("Fields not matched");
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
   }, []);
 
@@ -77,31 +77,27 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
         return(ele.name==selectProCat)
             })
 
-            console.log(vendorid)
 
       Http.GetAPI(process.env.REACT_APP_GETPRODSUBCATEGORY + "?" + `category_id=${vendorid[0].id}`, "", null)
       .then((res) => {
         if (res?.data?.status) {
           setGetProSubCat(res?.data?.data);
-        } else {
-          alert("Fields not matched");
-        }
+        } 
       })
       .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
     }
   }, [selectProCat]);
   
   const getStore = () => {
-    console.log("hello")
     Http.GetAPI(process.env.REACT_APP_GETSTOREDATA + "?" + Math.random(), "", null)
       .then((res) => {
         if (res?.data?.status) {
            if(res.data.data.length>0){
             setGetStoreData(res?.data?.data);
-            console.log("store=>",res.data.data)
            }
            else{
             setDisabledNext(false)
@@ -111,8 +107,9 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
   };
 
@@ -128,7 +125,6 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
       return(ele.email==selectSection.value)
           })
        
-          console.log(selectSection,vendorid)
 
     const Catgoryid = getProcat.filter((ele)=>{
             return(ele.name==selectProCat)
@@ -172,13 +168,19 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
         if (res?.data?.status) {
           setProduct(res?.data?.data);
           getProducts();
-          alert("Product Added Sucessfully")
+          notificationAlertRef.current.notificationAlert(
+            SuccessNotify(res?.data?.message)
+          );
         } else {
-          alert("Fields not matched");
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
     resetForm();
     setShowAddProduct(false);
@@ -201,7 +203,6 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
   };
 
   const handleInput = (e) => {
-    console.log(e.target.value);
     setProductData((previous) => {
       return { ...previous, [e.target.name]: e.target.value };
     });
@@ -232,12 +233,12 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
                 name="productImage"
                 multiple
                 onChange={(e) => {
-                  console.log(e.target.files)
                    setProductData((previous)=>{
                           return {...previous,productImage:e.target.files}
                    })  
                   }}
                 type="file"
+                required
               ></Form.Control>
 
             <Form.Label className="add-label">Select Vendor</Form.Label>

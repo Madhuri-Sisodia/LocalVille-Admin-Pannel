@@ -3,7 +3,6 @@ import React, { useState, useEffect, useCallback } from "react";
 import { MdClose } from "react-icons/md";
 import { Modal, Form, Button } from "react-bootstrap";
 import { Http } from "../config/Service";
-import { apis } from "../config/WebConstant";
 import "../assets/css/day.css";
 import { ColorSize } from "../CommonUtils/ColorSize"
 import ButtonComponent from "views/ButtonComponent";
@@ -51,7 +50,7 @@ const Size = ({ setAttributes, attributes, isAddProduct, len, id }) => {
 
   useEffect(() => {
     function ColorSize() {
-      Http.GetAPI(apis.getSize, "")
+      Http.GetAPI(process.env.REACT_APP_GETSIZE, "")
         .then((res) => {
           if (res?.data?.status) {
             setSizeData(res?.data?.data);
@@ -73,7 +72,7 @@ const Size = ({ setAttributes, attributes, isAddProduct, len, id }) => {
 
   useEffect(() => {
     function ColorSize() {
-      Http.GetAPI(apis.getColor, "")
+      Http.GetAPI(process.env.REACT_APP_GETCOLOR, "")
         .then((res) => {
           if (res?.data?.status) {
             setColorData(res?.data?.data);

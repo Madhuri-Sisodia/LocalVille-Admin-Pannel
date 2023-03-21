@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
 import NotificationAlert from "react-notification-alert";
+import { SuccessNotify } from "components/NotificationShowPopUp";
+import { ErrorNotify } from "components/NotificationShowPopUp";
 
 import {
   Form,
@@ -58,63 +59,22 @@ const BannerManager = () => {
   const [notifymessage, setNotifymessage] = useState();
   const notificationAlertRef = React.useRef(null);
 
-  console.log("aaaa",imageUrl);
-
-  const notify = (place) => {
-    var options = {};
-    options = {
-      place: place,
-      message: (
-        <div>
-          <div>
-            <b>{notifymessage}</b>
-          </div>
-        </div>
-      ),
-      type: status ? "success" : "danger",
-      icon: "nc-icon nc-bell-55",
-      autoDismiss: 7,
-    };
-
-    notificationAlertRef.current.notificationAlert(options);
-  };
-
-  const notifySecond = (place) => {
-    var options = {};
-    options = {
-      place: place,
-      message: (
-        <div>
-          <div>
-            <b>Something went wrong..!!</b>
-          </div>
-        </div>
-      ),
-      type: status ? "success" : "danger",
-      icon: "nc-icon nc-bell-55",
-      autoDismiss: 7,
-    };
-
-    notificationAlertRef.current.notificationAlert(options);
-  };
-
+ 
   const getBanner = () => {
     Http.GetAPI(process.env.REACT_APP_GETBANNER + "?" + Math.random(), data)
       .then((res) => {
         setIsLoading(false);
         if (res?.data?.status) {
           setData(res?.data?.data);
-          console.log(res.data.data)
-        } else {
-          // alert("Fields not matched");
-          notify("tr");
-        }
+        } 
       })
       .catch((e) => {
         setIsLoading(false);
-        notifySecond("tr");
-        // alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
+        
+       
       });
   };
 
@@ -132,8 +92,8 @@ const BannerManager = () => {
   };
 
   const handleSubmit = () => {
+  //  e.preventDefault();
     let redirectImg
-    console.log(formData.redirect=="Yes")
     if(formData.redirect=="Yes"){
             redirectImg = "1"
     }
@@ -141,32 +101,30 @@ const BannerManager = () => {
       redirectImg = "0"
     }
 
-    console.log(redirectImg)
     var data = new FormData();
     data.append("banner_image", imageUrl);
-    console.log("BBB",imageUrl)
     data.append("is_redirect", redirectImg);
     data.append("url", formData.url);
     data.append("active", 1);
 
     Http.PostAPI(process.env.REACT_APP_ADDBANNER, data)
       .then((res) => {
-        console.log("resp", res);
-        setStatus(res?.data?.status);
-        setNotifymessage(res?.data?.message);
-        console.warn(res?.data?.message);
         if (res?.data?.status) {
           setAddBanner(res?.data?.data);
           getBanner();
+          notificationAlertRef.current.notificationAlert(
+            SuccessNotify(res?.data?.message)
+          );
         } else {
-          notify("tr");
-          // alert("Fields not matched");
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {
-        notifySecond("tr");
-        // alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
       });
     resetForm();
   };
@@ -180,7 +138,6 @@ const BannerManager = () => {
    
   };
   
-  console.log(formData)
 
   return (
     <>
@@ -220,7 +177,6 @@ const BannerManager = () => {
                 name="url"
                 type="url"
                 onChange={(e) => handleFieldChange(e,'url')}
-                required
               />
             </Form.Group>
 
@@ -273,7 +229,6 @@ const BannerManager = () => {
                             />
                           </td>
                           <td style={{ textAlign: "center" }}>
-                            {console.log(item.is_redirect)}
                             {(item.is_redirect == 1) ? "Yes" : "No"}
                           </td>
                           <td>{item.url}</td>

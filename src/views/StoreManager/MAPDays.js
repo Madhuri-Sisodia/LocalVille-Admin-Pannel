@@ -1,6 +1,5 @@
 
 const MAPDays = (ele)=>{
-      console.log("hello")
     let days = JSON.parse(ele)
     const daysOfWeek = ["M", "T", "W", "Th", "F", "S", "Su"];
 
