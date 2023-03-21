@@ -1,11 +1,13 @@
-import React, { Component } from "react";
-import { useLocation } from "react-router-dom";
+import React, { Component, useEffect } from "react";
+import { useLocation, useHistory } from "react-router-dom";
 import { Navbar, Container, Nav, Dropdown, Button } from "react-bootstrap";
-
+import useDecode from "components/DecodeToken";
 import routes from "routes.js";
 
 function Header() {
   const location = useLocation();
+  const history = useHistory();
+  const name = sessionStorage.getItem("name")
   const mobileSidebarToggle = (e) => {
     e.preventDefault();
     document.documentElement.classList.toggle("nav-open");
@@ -26,6 +28,17 @@ function Header() {
     }
     return "Brand";
   };
+  useEffect(() => {
+    if (!sessionStorage.getItem("loggedIn")) {
+      history.push("/login");
+    }
+  }, [history]);
+
+  const handlerLogout = () => {
+    sessionStorage.removeItem("loggedIn");
+    history.push("/login");
+  };
+
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
@@ -52,7 +65,7 @@ function Header() {
         </Navbar.Toggle>
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="nav mr-auto" navbar>
-            <Nav.Item>
+            {/* <Nav.Item>
               <Nav.Link
                 data-toggle="dropdown"
                 href="#pablo"
@@ -62,8 +75,8 @@ function Header() {
                 <i className="nc-icon nc-palette"></i>
                 <span className="d-lg-none ml-1">Dashboard</span>
               </Nav.Link>
-            </Nav.Item>
-            <Dropdown as={Nav.Item}>
+            </Nav.Item> */}
+            {/* <Dropdown as={Nav.Item}>
               <Dropdown.Toggle
                 as={Nav.Link}
                 data-toggle="dropdown"
@@ -107,8 +120,8 @@ function Header() {
                   Another notification
                 </Dropdown.Item>
               </Dropdown.Menu>
-            </Dropdown>
-            <Nav.Item>
+            </Dropdown> */}
+            {/* <Nav.Item>
               <Nav.Link
                 className="m-0"
                 href="#pablo"
@@ -117,7 +130,7 @@ function Header() {
                 <i className="nc-icon nc-zoom-split"></i>
                 <span className="d-lg-block"> Search</span>
               </Nav.Link>
-            </Nav.Item>
+            </Nav.Item> */}
           </Nav>
           <Nav className="ml-auto" navbar>
             <Nav.Item>
@@ -126,21 +139,20 @@ function Header() {
                 href="#pablo"
                 onClick={(e) => e.preventDefault()}
               >
-                <span className="no-icon">Account</span>
+                <img
+                  src={require("./../../assets/img/localvilleLogo.png")}
+                  alt="Image"
+                  style={{
+                    height: "25px",
+                    width: "25px",
+                    marginTop:5,
+                    borderRadius: "50%",
+                  }}
+                />
               </Nav.Link>
             </Nav.Item>
-            <Dropdown as={Nav.Item}>
-              <Dropdown.Toggle
-                aria-expanded={false}
-                aria-haspopup={true}
-                as={Nav.Link}
-                data-toggle="dropdown"
-                id="navbarDropdownMenuLink"
-                variant="default"
-                className="m-0"
-              >
-                <span className="no-icon">Dropdown</span>
-              </Dropdown.Toggle>
+            {/* <Dropdown as={Nav.Item}>
+          
               <Dropdown.Menu aria-labelledby="navbarDropdownMenuLink">
                 <Dropdown.Item
                   href="#pablo"
@@ -174,13 +186,19 @@ function Header() {
                   Separated link
                 </Dropdown.Item>
               </Dropdown.Menu>
-            </Dropdown>
+            </Dropdown> */}
             <Nav.Item>
-              <Nav.Link
-                className="m-0"
-                href="#pablo"
-                onClick={(e) => e.preventDefault()}
-              >
+              <Nav.Link className="m-0">
+                <p style={{
+                  fontSize:'1.1rem',
+                  marginLeft:-20,
+                  marginTop:5,
+                  color:'#6D44BC'
+                }} className="no-icon"><b>{name}</b></p>
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link className="m-0" onClick={handlerLogout}>
                 <span className="no-icon">Log out</span>
               </Nav.Link>
             </Nav.Item>

@@ -8,7 +8,14 @@ import logo from "assets/img/reactlogo.png";
 function Sidebar({ color, image, routes }) {
   const location = useLocation();
   const activeRoute = (routeName) => {
-    return location.pathname.indexOf(routeName) > -1 ? "active" : "";
+   if(routeName==location.pathname){
+     return "active"
+   }
+   else{
+     return ""
+   }
+    //console.log(location.pathname)
+    //return location.pathname.indexOf(routeName) > -1 ? "active" : "";
   };
   return (
     <div className="sidebar" data-image={image} data-color={color}>
@@ -44,9 +51,10 @@ function Sidebar({ color, image, routes }) {
                     to={prop.layout + prop.path}
                     className="nav-link"
                     activeClassName="active"
+                    
                   >
                     <i className={prop.icon} />
-                    <p>{prop.name}</p>
+                    <p style={{fontSize:"11px"}}>{prop.name}</p>
                   </NavLink>
                 </li>
               );

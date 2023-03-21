@@ -1,0 +1,82 @@
+/* ----------------------------------admin Manager section css */
+.MainContainer{
+    font-size: 0.8rem;
+    padding: 1rem;
+}
+.Container{
+    border: 1px solid #e5e5ea;
+    border-radius: 2px;
+    padding: 1rem;
+    background-color: white;
+    color: #808080;
+}
+.InnnerContainerAdmin{
+    border: 1px solid #e5e5ea;
+    border-radius: 10px;
+    padding: 1.5rem;
+    background-color: white;
+}
+
+
+/* ------------------------------------category section css */
+.InnnerContainer{
+    border: 1px solid #e5e5ea;
+    border-radius: 10px;
+}
+
+/*------------------------------------Sub- category section css */
+.InnnerContainerCategory{
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-start;
+}
+.closeButton{
+    color: #f06767; 
+    font-size:1.1rem;
+    text-align: center;
+    margin-left: 1rem;
+}
+.InnnerContainerRadio{
+    display: flex;
+    align-items: center;
+}
+.InnerContainer2{
+    padding: 1rem;
+}
+
+
+
+/* -----------------------------------Category Cards */
+
+.rs-col .Categorycards{
+    margin-right: 5rem;
+}
+.Categorycards{
+    background: linear-gradient(to right, #8f69d6, #e5e5ea);
+
+}
+.rs-panel-header {
+    color: darkblue;
+}
+/* -------------------------------Button Component---------------------------- */ 
+button.buttonComponent {
+background-color: "blueviolet";
+border: "blueviolet";
+border-radius: "3px 3px 3px 3px";
+width: "100%";
+padding: "5px";
+color: "white";
+margin-top: "20px";
+}
+
+
+/* --------------------------------responsive------------------------------- */
+
+
+
+@media screen and (min-width:320px) and (max-width:768px){
+    .rs-col .Categorycards{
+        margin-right: 0;
+    }
+}
+

@@ -1,22 +1,61 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ChartistGraph from "react-chartist";
+import StoreCard from "./StoreCard";
+import { Http } from "../../config/Service";
+import axios from "axios";
 // react-bootstrap components
 import {
-  Badge,
-  Button,
   Card,
-  Navbar,
-  Nav,
-  Table,
   Container,
   Row,
   Col,
+  Table,
   Form,
-  OverlayTrigger,
   Tooltip,
+  OverlayTrigger,
+  Button,
 } from "react-bootstrap";
+import ProductCard from "./ProductCard";
 
-function Dashboard() {
+const Dashboard = () => {
+  const [data, setData] = useState([]);
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [totalStores, setTotalStores] = useState(0);
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [totalActiveUsers, setTotalActiveUsers] = useState(0);
+  const [latestStore, setLatestStore] = useState([]);
+  const [latestProduct, setLatestProduct] = useState([]);
+  
+
+  useEffect(() => {
+    const CallApi = ()=>{
+      Http.GetAPI(process.env.REACT_APP_GETDASHBOARD + "?" + Math.random(), data)
+      .then((res) => {
+       
+        if (res?.data?.status) {
+          setData(res?.data?.details);
+          setTotalUsers(res?.data?.details?.total_users || 0);
+          setTotalStores(res?.data?.details?.no_of_Stores || 0);
+          setTotalProducts(res?.data?.details?.no_of_products || 0);
+          setTotalActiveUsers(res?.data?.details?.active_users || 0);
+          setLatestStore(
+            res?.data?.details?.stores_products_data?.recent_added_stores
+          );
+          setLatestProduct(
+            res?.data?.details?.stores_products_data?.recent_added_products
+          );
+        } else {
+          alert("Fields not matched");
+        }
+      })
+      .catch((e) => {
+        alert("Something went wrong.");
+        console.log("Error:", e);
+      });
+    }
+    CallApi()
+  }, []);
+
   return (
     <>
       <Container fluid>
@@ -27,13 +66,13 @@ function Dashboard() {
                 <Row>
                   <Col xs="5">
                     <div className="icon-big text-center icon-warning">
-                      <i className="nc-icon nc-chart text-warning"></i>
+                      <i className="nc-icon nc-single-02 text-warning"></i>
                     </div>
                   </Col>
                   <Col xs="7">
                     <div className="numbers">
-                      <p className="card-category">Number</p>
-                      <Card.Title as="h4">150GB</Card.Title>
+                      <p className="card-category">Users</p>
+                      <Card.Title as="h4">{totalUsers}</Card.Title>
                     </div>
                   </Col>
                 </Row>
@@ -41,8 +80,8 @@ function Dashboard() {
               <Card.Footer>
                 <hr></hr>
                 <div className="stats">
-                  <i className="fas fa-redo mr-1"></i>
-                  Update Now
+                  <i className="fas fa-user text-orange fa-sm"></i>
+                  Total Users
                 </div>
               </Card.Footer>
             </Card>
@@ -53,13 +92,16 @@ function Dashboard() {
                 <Row>
                   <Col xs="5">
                     <div className="icon-big text-center icon-warning">
-                      <i className="nc-icon nc-light-3 text-success"></i>
+                      <i
+                        className="fas fa-store"
+                        style={{ color: "red", fontSize: "2.6rem" }}
+                      ></i>
                     </div>
                   </Col>
                   <Col xs="7">
                     <div className="numbers">
-                      <p className="card-category">Revenue</p>
-                      <Card.Title as="h4">$ 1,345</Card.Title>
+                      <p className="card-category">Stores</p>
+                      <Card.Title as="h4">{totalStores}</Card.Title>
                     </div>
                   </Col>
                 </Row>
@@ -67,8 +109,8 @@ function Dashboard() {
               <Card.Footer>
                 <hr></hr>
                 <div className="stats">
-                  <i className="far fa-calendar-alt mr-1"></i>
-                  Last day
+                  <i className="fas fa-store mr-1"></i>
+                  Total Stores
                 </div>
               </Card.Footer>
             </Card>
@@ -79,13 +121,16 @@ function Dashboard() {
                 <Row>
                   <Col xs="5">
                     <div className="icon-big text-center icon-warning">
-                      <i className="nc-icon nc-vector text-danger"></i>
+                      <i
+                        className="fas fa-box "
+                        style={{ color: "orange", fontSize: "2.6rem" }}
+                      ></i>
                     </div>
                   </Col>
                   <Col xs="7">
                     <div className="numbers">
-                      <p className="card-category">Errors</p>
-                      <Card.Title as="h4">23</Card.Title>
+                      <p className="card-category">Products</p>
+                      <Card.Title as="h4">{totalProducts}</Card.Title>
                     </div>
                   </Col>
                 </Row>
@@ -93,8 +138,8 @@ function Dashboard() {
               <Card.Footer>
                 <hr></hr>
                 <div className="stats">
-                  <i className="far fa-clock-o mr-1"></i>
-                  In the last hour
+                  <i className="fas fa-box mr-1"></i>
+                  Total Products
                 </div>
               </Card.Footer>
             </Card>
@@ -105,13 +150,13 @@ function Dashboard() {
                 <Row>
                   <Col xs="5">
                     <div className="icon-big text-center icon-warning">
-                      <i className="nc-icon nc-favourite-28 text-primary"></i>
+                      <i className="nc-icon nc-single-02 text-success"></i>
                     </div>
                   </Col>
                   <Col xs="7">
                     <div className="numbers">
-                      <p className="card-category">Followers</p>
-                      <Card.Title as="h4">+45K</Card.Title>
+                      <p className="card-category">Active Users</p>
+                      <Card.Title as="h4">{totalActiveUsers}</Card.Title>
                     </div>
                   </Col>
                 </Row>
@@ -119,8 +164,8 @@ function Dashboard() {
               <Card.Footer>
                 <hr></hr>
                 <div className="stats">
-                  <i className="fas fa-redo mr-1"></i>
-                  Update now
+                  <i className="fas fa-user text-orange fa-sm"></i>
+                  Total Active Users
                 </div>
               </Card.Footer>
             </Card>
@@ -130,7 +175,7 @@ function Dashboard() {
           <Col md="8">
             <Card>
               <Card.Header>
-                <Card.Title as="h4">Users Behavior</Card.Title>
+                <Card.Title as="h4">Order Statistics</Card.Title>
                 <p className="card-category">24 Hours performance</p>
               </Card.Header>
               <Card.Body>
@@ -138,19 +183,32 @@ function Dashboard() {
                   <ChartistGraph
                     data={{
                       labels: [
-                        "9:00AM",
-                        "12:00AM",
-                        "3:00PM",
-                        "6:00PM",
-                        "9:00PM",
-                        "12:00PM",
-                        "3:00AM",
-                        "6:00AM",
+                        "Jan",
+                        "Feb",
+                        "Mar",
+                        "Apr",
+                        "May",
+                        "June",
+                        "July",
+                        "Aug",
+                        "Sep",
+                        "Oct",
+                        "Nov",
+                        "Dec",
                       ],
                       series: [
-                        [287, 385, 490, 492, 554, 586, 698, 695],
-                        [67, 152, 143, 240, 287, 335, 435, 437],
-                        [23, 113, 67, 108, 190, 239, 307, 308],
+                        [
+                          287, 385, 490, 492, 554, 560, 598, 600, 650, 660, 700,
+                          800,
+                        ],
+                        [
+                          67, 152, 143, 240, 287, 335, 435, 437, 480, 500, 600,
+                          610,
+                        ],
+                        [
+                          23, 113, 67, 108, 190, 239, 280, 290, 340, 400, 420,
+                          500,
+                        ],
                       ],
                     }}
                     type="Line"
@@ -167,7 +225,7 @@ function Dashboard() {
                       showPoint: true,
                       fullWidth: true,
                       chartPadding: {
-                        right: 50,
+                        right: 60,
                       },
                     }}
                     responsiveOptions={[
@@ -188,9 +246,9 @@ function Dashboard() {
               <Card.Footer>
                 <div className="legend">
                   <i className="fas fa-circle text-info"></i>
-                  Open <i className="fas fa-circle text-danger"></i>
-                  Click <i className="fas fa-circle text-warning"></i>
-                  Click Second Time
+                  Revenue <i className="fas fa-circle text-danger"></i>
+                  Cancel Order <i className="fas fa-circle text-warning"></i>
+                  Complete Order
                 </div>
                 <hr></hr>
                 <div className="stats">
@@ -203,8 +261,7 @@ function Dashboard() {
           <Col md="4">
             <Card>
               <Card.Header>
-                <Card.Title as="h4">Email Statistics</Card.Title>
-                <p className="card-category">Last Campaign Performance</p>
+                <Card.Title as="h4">Users Statistics</Card.Title>
               </Card.Header>
               <Card.Body>
                 <div
@@ -213,28 +270,34 @@ function Dashboard() {
                 >
                   <ChartistGraph
                     data={{
-                      labels: ["40%", "20%", "40%"],
-                      series: [40, 20, 40],
+                      labels: [
+                        `${parseInt((totalActiveUsers/totalUsers)*100)}%`,
+                        `${parseInt(((totalUsers - totalActiveUsers)/totalUsers)*100)}%`,
+                      ],
+                      series: [
+                        totalActiveUsers,
+                        totalUsers - totalActiveUsers,
+                      ],
                     }}
                     type="Pie"
                   />
                 </div>
-                <div className="legend">
+                <div className="legend" style={{ fontSize: "0.8rem" }}>
                   <i className="fas fa-circle text-info"></i>
-                  Open <i className="fas fa-circle text-danger"></i>
-                  Bounce <i className="fas fa-circle text-warning"></i>
-                  Unsubscribe
+                  Active Users <i className="fas fa-circle text-danger"></i>
+                  Block Users <i className="fas fa-circle text-warning"></i>
+                  Total Users
                 </div>
                 <hr></hr>
                 <div className="stats">
                   <i className="far fa-clock"></i>
-                  Campaign sent 2 days ago
+                  User chartActivity
                 </div>
               </Card.Body>
             </Card>
           </Col>
         </Row>
-        <Row>
+        {/* <Row>
           <Col md="6">
             <Card>
               <Card.Header>
@@ -261,31 +324,11 @@ function Dashboard() {
                       ],
                       series: [
                         [
-                          542,
-                          443,
-                          320,
-                          780,
-                          553,
-                          453,
-                          326,
-                          434,
-                          568,
-                          610,
-                          756,
+                          542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756,
                           895,
                         ],
                         [
-                          412,
-                          243,
-                          280,
-                          580,
-                          453,
-                          353,
-                          300,
-                          364,
-                          368,
-                          410,
-                          636,
+                          412, 243, 280, 580, 453, 353, 300, 364, 368, 410, 636,
                           695,
                         ],
                       ],
@@ -631,10 +674,12 @@ function Dashboard() {
               </Card.Footer>
             </Card>
           </Col>
-        </Row>
+        </Row> */}
+        <ProductCard latestProduct={latestProduct} />
+        <StoreCard latestStore={latestStore} />
       </Container>
     </>
   );
-}
+};
 
 export default Dashboard;

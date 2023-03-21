@@ -1,0 +1,93 @@
+/* .......Model Css..... */
+
+.table tbody tr td {
+  padding: 1px 8px;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+
+.bold-col {
+  font-weight: bold;
+}
+.header {
+  border-bottom: 1px solid gray;
+}
+.title {
+  margin-top: 0px;
+  font-weight: bold;
+}
+.close-icon {
+  font-size: 20px;
+  cursor: pointer;
+  color: black;
+  font-weight: bold;
+}
+.body {
+  height: 300px;
+  overflow-y: scroll;
+}
+ .modal-body::-webkit-scrollbar {
+    width: 8px;
+ }
+  .modal-body::-webkit-scrollbar-track {
+    background-color: rgb(234, 228, 228);
+  }
+  .modal-body::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 6px rgba(156, 7, 231, 0.93);
+    border-radius: 5px;
+    /* color:rgba(156, 7, 231, 0.93) !important ; */
+  }
+@media (max-width: 768px) {
+  .table tbody tr td {
+    padding: 1px 5px;
+    font-size: 0.7rem;
+  }
+
+  .body {
+    height: 150px;
+  }
+}
+
+/* .......Update Model Css..... */
+
+.update-title {
+  margin-top: 0px;
+  font-weight: bold;
+ 
+}
+.update-close-icon {
+  font-size: 20px;
+  cursor: pointer;
+  color: black;
+  font-weight: bold;
+  
+}
+.update-body {
+  height: 300px;
+  overflow-y: scroll;
+ 
+}
+.update-label{
+  font-size:1rem;
+ margin-bottom: 0rem ;
+}
+
+.update-form{
+  font-size: 0.9rem; 
+}
+
+/* .......Add Model Css..... */
+
+.add-label{
+  font-size:1rem;
+ margin-bottom: 0rem ;
+ margin-top: 1rem ;
+}
+
+.add-body {
+  height: 400px;
+  overflow-y: scroll;
+ 
+}
+

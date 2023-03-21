@@ -1,0 +1,23 @@
+
+.title {
+    margin-top: 0px;
+    font-weight: bold;
+   
+}
+.close-icon {
+    font-size: 20px;
+    cursor: pointer;
+    color: black;
+    font-weight: bold;
+    
+}
+.body {
+    height: 400px;
+    overflow-y: scroll;
+   
+}
+
+
+.form{
+    font-size: 0.9rem; 
+}

@@ -1,0 +1,57 @@
+.LoginContainer{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 100vh;
+    width: auto;
+    background-color:blueviolet;
+
+}
+.adminLogo{
+    width: 9rem;
+    margin-top: 1rem;
+}
+.textArea{
+    font-weight: 600;
+    color: aliceblue;
+    font-size: 2.1rem;
+    margin-top: 1rem;
+}
+.FirstSection{
+    text-align: center;
+}
+
+.SecondSection{
+    display: flex;
+    align-items: centre;
+    justify-content: center;
+}
+.loginButton{
+    background-color:#562FA0 !important;
+}
+@media only screen and (min-width:320px) and (max-width:768px){
+    .LoginContainer{
+       flex-flow: column;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+    }
+    .FirstSection{
+     width: auto;
+   } 
+   .textArea{
+    margin-top: 1rem;
+    font-weight: 500;
+   }
+   .SecondSection{
+    width: auto;
+    margin-top: 2rem;
+   }
+}
+/* For iPad Responsive start */
+@media screen and (min-width:768px) and (max-width:1023px){
+    .LoginContainer{
+         padding: 6rem 2rem;
+         align-items: center;
+    }
+}
