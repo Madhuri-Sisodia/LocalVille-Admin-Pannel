@@ -31,20 +31,20 @@ function index() {
     <div className='MainContainer'>
        {/* <div className='CategoryCardSection'> */}
         <Row>
-        <Col md={6} sm={12} block>
+        <Col lg="6" md="12" sm="12" xs="24">
             <Card bordered header="Section" className="Categorycards" onClick={()=>setSelectedItem(1)}
                />
               
           </Col>
 
-          <Col md={6} sm={12}>
+          <Col lg="6" md="12" sm="12" xs="24">
             <Card bordered header="Categories" className="Categorycards"
             cardid="1"
             onClick={()=>setSelectedItem(2)}
             />
           </Col>
           
-          <Col md={6} sm={12}>
+          <Col lg="6" md="12" sm="12" xs="24">
             <Card bordered header="Sub Categories" className="Categorycards"
               onClick={()=>setSelectedItem(3)}
               />
@@ -52,19 +52,19 @@ function index() {
         </Row>
         <br/>
         <Row>
-          <Col md={6} sm={12}>
+        <Col lg="6" md="12" sm="12" xs="24">
             <Card bordered header="Size Attribute" className="Categorycards"
               onClick={()=>setSelectedItem(4)}
               />
           </Col>
 
-          <Col md={6} sm={12}>
+          <Col lg="6" md="12" sm="12" xs="24">
             <Card bordered header="Size" className="Categorycards"
               onClick={()=>setSelectedItem(5)}
               />
           </Col>
 
-          <Col md={6} sm={12}>
+          <Col lg="6" md="12" sm="12" xs="24">
             <Card bordered header="Color" className="Categorycards"
               onClick={()=>setSelectedItem(6)}
               />

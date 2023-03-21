@@ -116,8 +116,9 @@ margin-top: "20px";
 
 
 @media screen and (min-width:320px) and (max-width:768px){
-    .rs-col .Categorycards{
+    .rs-col .CategoryCardSection{
         margin-right: 0;
+        margin-bottom: 1rem;
     }
 }
 
