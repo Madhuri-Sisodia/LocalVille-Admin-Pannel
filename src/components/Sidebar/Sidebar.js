@@ -8,7 +8,6 @@ import logo from "assets/img/reactlogo.png";
 function Sidebar({ color, image, routes }) {
   const location = useLocation();
   const activeRoute = (routeName) => {
-   console.log(routeName)
    if(routeName==location.pathname){
      return "active"
    }

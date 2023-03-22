@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { BiBlock } from "react-icons/bi";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
@@ -29,10 +28,8 @@ const BlockVendor = ({ showModal, setShowModal, blockData, getVendors }) => {
     var data = new FormData();
     data.append("id", id);
     data.append("reason", blockReason);
-    console.log("usersss", data);
     Http.PostAPI(process.env.REACT_APP_BLOCKUSER, data, null)
       .then((res) => {
-        console.log("user", res);
         if (res?.data?.status) {
           setBlockUser(res?.data?.data);
           getVendors();

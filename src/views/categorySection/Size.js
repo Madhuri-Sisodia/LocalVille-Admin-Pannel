@@ -3,7 +3,6 @@ import NotificationAlert from "react-notification-alert";
 import "../../assets/css/admin.css";
 import { Form, Button, ButtonToolbar, Dropdown } from "rsuite";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
 import { useEffect, useContext } from "react";
 import { Utils } from "CommonUtils/Utils";
 import { SuccessNotify } from "components/NotificationShowPopUp";
@@ -20,7 +19,6 @@ const Size = () => {
 
   const handleSubmit = () => {
     const SelectedSizeAttribute = data.filter((ele) => {
-      console.log(ele.name);
       return ele.attr_name == selectSizeAttribute;
     });
     const id = SelectedSizeAttribute[0].id;
@@ -31,10 +29,8 @@ const Size = () => {
     formdata.append("id", `${id}`);
     formdata.append("size", sizeName);
 
-    console.log("formdata=>", formdata);
-    Http.PostAPI(apis.addSize, formdata, null)
+    Http.PostAPI(process.env.REACT_APP_ADDSIZE, formdata, null)
       .then((res) => {
-        console.log("Data", res);
         if (res?.data?.success) {
           setSize(res?.data?.data);
           notificationAlertRef.current.notificationAlert(

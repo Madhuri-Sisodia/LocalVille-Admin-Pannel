@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { MdClose } from "react-icons/md";
 import { Modal, Form, Button } from "react-bootstrap";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
 import "../../assets/css/modal.css";
 import Size from "components/size";
 import { get } from "jquery";
@@ -82,9 +81,7 @@ const AddProduct = ({
     data.append("product_id", item.id);
     Http.PostAPI(process.env.REACT_APP_UPDATEPRODUCTIMAGE, data, null)
       .then((res) => {
-        console.log("resp", res);
         if (res?.data?.status) {
-          console.log("hello");
           setProduct(res?.data?.data);
           notificationAlertRef.current.notificationAlert(
             SuccessNotify(res?.data?.message)
@@ -123,7 +120,6 @@ const AddProduct = ({
 
     Http.PostAPI(process.env.REACT_APP_UPDATEPRODUCTS, data, null)
       .then((res) => {
-        console.log("resp", res);
         if (res?.data?.status) {
           setProduct(res?.data?.data);
           getProducts();
@@ -151,7 +147,6 @@ const AddProduct = ({
   };
 
   const handleInput = (e) => {
-    console.log(e.target.value);
     setProductData((previous) => {
       return { ...previous, [e.target.name]: e.target.value };
     });
@@ -182,7 +177,6 @@ const AddProduct = ({
                   name="productImage"
                   multiple
                   onChange={(e) => {
-                    console.log(e.target.files);
                     setProductData((previous) => {
                       return { ...previous, productImage: e.target.files };
                     });

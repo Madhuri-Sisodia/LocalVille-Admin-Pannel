@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { MdClose } from "react-icons/md";
 import { Modal, Form, Button } from "react-bootstrap";
 import { Http } from "../config/Service";
-import { apis } from "../config/WebConstant";
 import "../assets/css/day.css";
 import {ColorSize} from "../CommonUtils/ColorSize"
 import ButtonComponent from "views/ButtonComponent";
@@ -30,18 +29,16 @@ const UpdateAttributes = ({getProducts, setAttributes, attributes,updateAttribut
   });
   useEffect(() => {
     function ColorSize() {
-      Http.GetAPI(apis.getSize, "")
+      Http.GetAPI(process.env.REACT_APP_GETSIZE, "")
         .then((res) => {
           if (res?.data?.status) {
             setSizeData(res?.data?.data);
-            console.log(res.data.data);
           } else {
             alert("Fields not matched");
           }
         })
         .catch((e) => {
           alert("Something went wrong.");
-          console.log("Error:", e);
         });
     }
 
@@ -51,18 +48,16 @@ const UpdateAttributes = ({getProducts, setAttributes, attributes,updateAttribut
   
   useEffect(() => {
     function ColorSize() {
-      Http.GetAPI(apis.getColor, "")
+      Http.GetAPI(process.env.REACT_APP_GETCOLOR, "")
         .then((res) => {
           if (res?.data?.status) {
             setColorData(res?.data?.data);
-            console.log(res.data.data);
           } else {
             alert("Fields not matched");
           }
         })
         .catch((e) => {
           alert("Something went wrong.");
-          console.log("Error:", e);
         });
     }
 
@@ -74,7 +69,6 @@ const UpdateAttributes = ({getProducts, setAttributes, attributes,updateAttribut
 
     sizeData.filter((ele) => {
         if (ele.name == getSelectedSize) {
-          console.log(ele.name);
           setGetAttributes((previous) => {
             return { ...previous, Size: ele };
           });
@@ -120,9 +114,7 @@ const UpdateAttributes = ({getProducts, setAttributes, attributes,updateAttribut
 
           Http.PostAPI(process.env.REACT_APP_UPDATEATTRIBUTE, data, null)
           .then((res) => {
-            console.log("resp", res);
             if (res?.data?.status) {
-              console.log("hello")
               setProduct(res?.data?.data);
               getProducts();
             } else {
@@ -146,7 +138,6 @@ const UpdateAttributes = ({getProducts, setAttributes, attributes,updateAttribut
 
   Http.PostAPI(process.env.REACT_APP_DELETEATTRIBUTE , data, null)
   .then((res) => {
-    console.log("resp", res);
     if (res?.data?.status) {
        alert(res?.data?.message)
       setProduct(res?.data?.data);

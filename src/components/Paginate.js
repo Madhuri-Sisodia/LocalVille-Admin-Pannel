@@ -9,7 +9,6 @@ const Paginte = ({pages})=>{
   const [finalArray,setFinalArray] = useState([])
      
    const NextPAge=()=>{ 
-    console.log(pageNo)
     let len = finalArray.length
     if(pageNo>=len){
       const button = document.getElementById("next")
@@ -74,7 +73,6 @@ const Paginte = ({pages})=>{
 
    
   const PreviousPAge = ()=>{
-    console.log(pageNo)
      if((pageNo-1)==0){
       const button = document.getElementById("next")
       button.setAttribute("disabled","")
@@ -84,7 +82,6 @@ const Paginte = ({pages})=>{
      else{
       const button = document.getElementById("next")
       button.disabled = false
-      console.log(pageNo)
       setPageNo(pageNo-1)
       setPaginationArrya(finalArray[pageNo-2])  
       setPageView(finalArray[pageNo-2][0]) 

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { BiBlock } from "react-icons/bi";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
 
 import {
   Modal,
@@ -27,7 +26,6 @@ const BlockBanner = ({ showModal, setShowModal, blockData, getBanner }) => {
 
     Http.PostAPI(process.env.REACT_APP_BLOCKBANNER, data, null)
       .then((res) => {
-        console.log("resp", res);
         if (res?.data?.status) {
           setBlockBanner(res?.data?.data);
           getBanner();

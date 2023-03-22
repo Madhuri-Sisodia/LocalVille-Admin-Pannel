@@ -3,9 +3,6 @@ import NotificationAlert from "react-notification-alert";
 import "../../assets/css/admin.css";
 import { Form, Button, ButtonToolbar, Dropdown } from "rsuite";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
-import { useEffect } from "react";
-import { Utils } from "CommonUtils/Utils";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 
@@ -14,11 +11,8 @@ const Color = () => {
   const [colorCode, setColorCode] = useState("");
   const [selectColor, setColor] = useState("");
   const [selectColorCode, setSelectColorCode] = useState("");
-  console.log(colorCode);
 
   const [data, setData] = useState([]);
-
-  console.log(colorName);
 
   const notificationAlertRef = React.useRef(null);
 

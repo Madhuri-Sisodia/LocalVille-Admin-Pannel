@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { MdClose } from "react-icons/md";
 import { Modal, Form, Button } from "react-bootstrap";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
 import "../../assets/css/modal.css";
 import ButtonComponent from "views/ButtonComponent";
 import NotificationAlert from "react-notification-alert";
@@ -21,20 +20,13 @@ const UpdateVendor = ({ showUpdateModal, setShowUpdateModal, item,getVendors }) 
  
 
   const handleUpdateVendor = () => {
-    // console.log("Vn",vendorName);
-    // console.log("VI",vendorId);
-    // console.log("VP",vendorPhone);
     var data = new FormData();
-    console.log(item.phone);
     data.append("vendor_id", vendorId ? vendorId : item.id);
     data.append("v_name", vendorName ? vendorName : item.name);
     data.append("phone_number", vendorPhone ? vendorPhone : item.phone);
 
-    console.log("updateVendors", data);
-
     Http.PostAPI(process.env.REACT_APP_UPDATEVENDORS, data, null)
       .then((res) => {
-        console.log("data", res);
         if (res?.data?.status) {
           setVendors(res?.data?.data);
           getVendors();

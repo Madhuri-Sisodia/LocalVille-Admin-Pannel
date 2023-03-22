@@ -2,7 +2,6 @@ import React, { useState, useEffect,useContext } from "react";
 import { Input, Whisper, Tooltip, InputGroup } from "rsuite";
 import SearchIcon from "@rsuite/icons/Search";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
 import UpdateVendor from "./UpdateVendor";
 import { Utils } from "CommonUtils/Utils";
 import Paginte from "components/Paginate";
@@ -83,8 +82,7 @@ const VendorsManager = () => {
 
 
    const filtervendor = (e)=>{
-    console.log(e)
-    Http.GetAPI(apis.searchvendor + "?" +`search=${e} & page=${pageNo}`, data, null)
+    Http.GetAPI(process.env.REACT_APP_SEARCHVENDOR + "?" +`search=${e} & page=${pageNo}`, data, null)
     .then((res) => {
       setIsLoading(false);
       if (res?.data?.status) {

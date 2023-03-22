@@ -26,7 +26,6 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
   const [vendortData,setVendorData] = useState([])
   const [storeImage,setStoreImage] = useState([])
   const {location} = useContext(Utils)
-  console.log("location=>",location)
   const [Data,setData] = useState([])
   const [storeData, setStoreData] = useState({
     storeName: "",
@@ -44,14 +43,10 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
   });
   const notificationAlertRef = React.useRef(null);
  
-  console.log("select",selectSection.value)
-   
   const [selectedDays, setSelectedDays] = useState([]);
-  console.log(selectedDays)
   const toggleDaySelection = (index) => {
     if (selectedDays.includes(index+1)) {
       setSelectedDays(selectedDays.filter((d) => d !== index+1));
-      console.log("sss", selectedDays);
     } else {
       setSelectedDays([...selectedDays, index+1]);
     }
@@ -84,7 +79,6 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
           try{
             const Result = await axios.get("https://api.postalpincode.in/pincode/"+storeData.pincode)
              const data = Result?.data[0]?.PostOffice
-             console.log(data)
              if(data.length>=1){
              setStoreData((previous)=>{
                return{...previous,city:data[0]?.District}
@@ -131,10 +125,9 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
     data.append("opening_days", selectedDays);
     data.append("opening_time", storeData.openingTime);
     data.append("closing_time", storeData.closingTime);
-    console.log("updateStore", data);
+
     Http.PostAPI(process.env.REACT_APP_ADDSTORE, data, null)
       .then((res) => {
-        console.log("resp", res);
         if (res?.data?.status) {
           setStore(res?.data?.data);
           getStore()
@@ -157,7 +150,6 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
   };
 
   const handleInput = (e) => {
-    console.log(e.target.value);
     setStoreData((previous) => {
       return { ...previous, [e.target.name]: e.target.value };
     });
@@ -185,7 +177,6 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
   
   useEffect(()=>{
     if(vendortData){
-      console.log("hello")
        const Result =  vendortData.map((ele,index)=>{
           return { label: `${index+1})  ${ele.name} , ${ele.email}`, value: ele.email}
         })  

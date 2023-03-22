@@ -2,7 +2,6 @@ import React, { useState, useEffect,useContext } from "react";
 import { Input, Whisper, Tooltip, InputGroup,SelectPicker } from "rsuite";
 import SearchIcon from "@rsuite/icons/Search";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
 import { MdBlock } from "react-icons/md";
 import { MdClose } from "react-icons/md";
 import { BiBlock } from "react-icons/bi";
@@ -168,7 +167,6 @@ const StoreManager = () => {
         );
       });
   };
-  console.log("data", data);
   useEffect(() => {
     getStore();
   }, [pageView]);

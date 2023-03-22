@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
 
 import {
   Modal,
@@ -31,7 +30,6 @@ const RejectStore = ({
     data.append("reason", blockReason);
     Http.PostAPI(process.env.REACT_APP_UPDATEVERIFIEDSTORE, data, null)
       .then((res) => {
-        console.log("resp", res);
         if (res?.data?.status) {
           setUpdateStore(res?.data?.data);
           getUnverifiedStore();

@@ -3,7 +3,6 @@ import { Input, Whisper, Tooltip, InputGroup } from "rsuite";
 import { MdLocationPin } from "react-icons/md";
 import SearchIcon from "@rsuite/icons/Search";
 import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
 import "../../assets/css/modal.css";
 import Paginte from "components/Paginate";
 import { Utils } from "CommonUtils/Utils";
@@ -50,11 +49,9 @@ const StoreApproval = () => {
     Http.GetAPI(process.env.REACT_APP_GETUNVERIFIEDSTORE + "?" + `page=${pageView}`, data, null)
       .then((res) => {
         if (res?.data?.status) {
-              if(res.data.data.length>0){
-                setData(res?.data?.data);
-                setTotalPages(res.data.total_pages)
-                setStoreApproval(false);
-              }
+          setData(res?.data?.data);
+          setTotalPages(res.data.total_pages)
+          setStoreApproval(false);
         } else {
           alert("Fields not matched");
         }
@@ -199,7 +196,7 @@ const StoreApproval = () => {
           showVerifiedStore={showVerifiedStore}
           setShowVerifiedStore={setShowVerifiedStore}
           store={store}
-          getUnverifiedStore={getUnverifiedStore}
+          getUnverifiedStore={()=>getUnverifiedStore()}
         />
 
         <ViewStoreDetails
@@ -210,7 +207,7 @@ const StoreApproval = () => {
         <RejectStore
           showRejectStore={showRejectStore}
           setShowRejectStore={setShowRejectStore}
-          getUnverifiedStore={getUnverifiedStore}
+          getUnverifiedStore={()=>getUnverifiedStore()}
           store={store}
         />
         

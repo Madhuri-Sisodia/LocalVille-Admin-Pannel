@@ -30,7 +30,6 @@ import ProductDetailModel from "./ProductDetailModel";
 // ];
 
 const ProductCard = ({ latestProduct }) => {
-  console.log("latestProduct", latestProduct);
    
   const history = useHistory();
   const [showProductDetail, setShowProductDetail] = useState(false);
@@ -71,7 +70,7 @@ const ProductCard = ({ latestProduct }) => {
                       style={{
                         backgroundColor:
                           item.is_verified == "1"
-                            ? "blueviolet"
+                            ? "#76cbac"
                             : item.is_verified == "0"
                             ? "orange"
                             : "red",
@@ -94,7 +93,6 @@ const ProductCard = ({ latestProduct }) => {
                         setRowData(item);
                       }}
                     >
-                      {console.log("item", item)}
                       <div className="heading">
                         <div className="price">
                           <FaRupeeSign />

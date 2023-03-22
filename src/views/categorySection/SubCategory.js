@@ -9,8 +9,7 @@ import {
   RadioGroup,
   Radio,
 } from "rsuite";
-import { Http } from "../../config/Service";
-import { apis } from "../../config/WebConstant";
+import { Http } from "../../config/Service"; 
 import { useEffect } from "react";
 import { Utils } from "CommonUtils/Utils";
 import { SuccessNotify } from "components/NotificationShowPopUp";
@@ -19,7 +18,7 @@ import { ErrorNotify } from "components/NotificationShowPopUp";
 const SubCategory = () => {
   const [subCategoryName, setSubCategoryName] = useState("");
   const [selectCategory, setSelectCategory] = useState("");
-  // const [selectSizeAttribute,setSelectSizeAttribute]=useState("");
+  const [selectSizeAttribute,setSelectSizeAttribute]=useState("");
   const [color, setColor] = useState(1);
   const [size, setSize] = useState(1);
   const [sizeData, setSizeData] = useState([]);
@@ -28,10 +27,6 @@ const SubCategory = () => {
   const [subCategory, setSubCategory] = useState([]);
   const { Categoriesid } = useContext(Utils);
   const notificationAlertRef = React.useRef(null);
-  const [status, setStatus] = useState();
-  const [selectSection, setSelectSection] = useState("");
-  const [notifyMessage, setnotifyMessage] = useState();
-  const [selectSizeAttribute, setSelectSizeAttribute] = useState("");
 
   useEffect(() => {
     Http.GetAPI(
@@ -52,23 +47,23 @@ const SubCategory = () => {
   }, []);
 
   const handleSubmit = () => {
-    console.log(selectCategory);
-    console.log(data);
     const SelectedCategory = data.filter((ele) => {
       return ele.name == selectCategory;
     });
+    
+    const selectedAttribute = sizeData.filter((ele) => {
+      return ele.attr_name == selectSizeAttribute;
+    });
 
-    console.log(SelectedCategory);
-    const id = SelectedCategory[0].id;
-    console.log(id);
+    const id = SelectedCategory[0]?.id ? SelectedCategory[0]?.id:0;
+    const attrId = selectedAttribute[0]?.id ? selectedAttribute[0]?.id:0;
 
-    console.log(color, size, sizeAttribute);
     var formdata = new FormData();
     formdata.append("category_id", `${id}`);
     formdata.append("subcategory_name", subCategoryName);
     formdata.append("color", color == "Yes" ? 1 : 0);
     formdata.append("size", size == "Yes" ? 1 : 0);
-    formdata.append("size_att", sizeAttribute == "Yes" ? 1 : 0);
+    formdata.append("size_att", attrId);
     Http.PostAPI(
       process.env.REACT_APP_ADDPRODSUBCATEGORY + "?" + Math.random(),
       formdata,
@@ -105,33 +100,8 @@ const SubCategory = () => {
       null
     )
       .then((res) => {
-        setStatus(res?.data?.status);
-        setnotifyMessage(res?.data?.message);
         if (res?.data?.status) {
           setData(res?.data?.data);
-        } else {
-          notify("tr");
-          // alert("Fields not matched");
-        }
-      })
-      .catch((e) => {
-        notifySecond("tr");
-        console.log("Error:", e);
-      });
-  }, []);
-
-  useEffect(() => {
-    Http.GetAPI(process.env.REACT_APP_GETSIZEATTRIBUTES + "?" + Math.random(),data, null)
-      .then((res) => {
-        console.log(res);
-        setStatus(res?.data?.status);
-        setnotifyMessage(res?.data?.message);
-        console.warn(res?.data?.message);
-        if (res?.data?.status) {
-          setData(res?.data?.data);
-        } else {
-          notify("tr");
-          alert("Fields not matched");
         }
       })
       // .catch((e) => {
@@ -269,9 +239,9 @@ const SubCategory = () => {
                           <select
                             name="selectSizeAttribute"
                             value={selectSizeAttribute}
-                            onChange={(event) =>
+                            onChange={(event) =>{
                               setSelectSizeAttribute(event.target.value)
-                            }
+                            }}
                             style={{
                               height: "30px",
                               borderRadius: "5px",

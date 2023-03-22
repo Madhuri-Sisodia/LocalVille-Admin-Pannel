@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { MdClose } from "react-icons/md";
 import { Modal, Form, Button } from "react-bootstrap";
 import { Http } from "../config/Service";
-import { apis } from "../config/WebConstant";
 import "../assets/css/day.css";
 import GoogleAutocomplete from "components/googleAutoComplete";
 import GooglePlacesPicker from "components/googlePlacesPicker";
@@ -16,7 +15,6 @@ const UpdateProduct = ({
   item,
   getStore,
 }) => {
-  console.log(showUpdateStore)
   const [storeData, setStoreData] = useState({
     storeId: "",
     storeName: "",
@@ -37,12 +35,9 @@ const UpdateProduct = ({
   const [UpdateStoreImage,SetUpdateStoreImage] = useState("")
   const [selectedDays, setSelectedDays] = useState([]);
 
-  console.log(selectedDays);
-
   const toggleDaySelection = (index) => {
     if (selectedDays.includes(index+1)) {
       setSelectedDays(selectedDays.filter((d) => d !== index+1));
-      console.log("sss", selectedDays);
     } else {
       setSelectedDays([...selectedDays, index+1]);
     }
@@ -57,7 +52,6 @@ const UpdateProduct = ({
       if (Array.isArray(item.opening_days)) {
         parsedDays = item.opening_days;
         parsedDays = JSON.parse(item.opening_days);
-        console.log(parsedDays)
       } else  {
         try {
           parsedDays = item.opening_days.split(",")
@@ -120,11 +114,9 @@ const UpdateProduct = ({
       "closing_time",
       storeData.closingTime ? storeData.closingTime : item.closing_time
     );
-    console.log("updateStore", data);
 
-    Http.PostAPI(apis.updateStore, data, null)
+    Http.PostAPI(process.env.REACT_APP_UPDATESTORE, data, null)
       .then((res) => {
-        console.log("data", res);
         if (res?.data?.status) {
           setStore(res?.data?.data);
           getStore();
@@ -134,7 +126,6 @@ const UpdateProduct = ({
       })
       .catch((e) => {
         alert("Something went wrong.");
-        console.log("Error:", e);
       });
   }; 
    
@@ -144,7 +135,6 @@ const UpdateProduct = ({
           try{
             const Result = await axios.get("https://api.postalpincode.in/pincode/"+storeData.pincode)
              const data = Result?.data[0]?.PostOffice
-             console.log(data)
              if(data.length>=1){
              setStoreData((previous)=>{
                return{...previous,city:data[0]?.District}
