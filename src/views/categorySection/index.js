@@ -29,8 +29,8 @@ function index() {
 
   return (
     <div className='MainContainer'>
-       {/* <div className='CategoryCardSection'> */}
-        <Row>
+       <div className='CategoryCardSection1'>
+        
         <Col lg="6" md="12" sm="12" xs="24">
             <Card bordered header="Section" className="Categorycards" onClick={()=>setSelectedItem(1)}
                />
@@ -49,9 +49,9 @@ function index() {
               onClick={()=>setSelectedItem(3)}
               />
           </Col>
-        </Row>
+        </div>
         <br/>
-        <Row>
+        <div className='CategoryCardSection1'>
         <Col lg="6" md="12" sm="12" xs="24">
             <Card bordered header="Size Attribute" className="Categorycards"
               onClick={()=>setSelectedItem(4)}
@@ -69,7 +69,7 @@ function index() {
               onClick={()=>setSelectedItem(6)}
               />
           </Col>
-        </Row>
+        </div>
       
 <br/>
         {selectedItem==1 && <Section/>}

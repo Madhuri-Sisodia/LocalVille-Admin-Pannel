@@ -65,14 +65,16 @@
     margin-bottom: 0.6rem;
 }
 .CategoryCardSection{
-    display: grid;
-    
+    /* display: flex; */
     background-color: #ececf0;
     padding: 0.7rem;
     border-radius: 7px;
 }
 .CategoryCardSection p {
     border-radius: 1rem;
+}
+.CategoryCardSection1{
+    display: flex;
 }
 /* -------------------------------Button Component---------------------------- */ 
 button.buttonComponent {
@@ -119,6 +121,8 @@ margin-top: "20px";
     .rs-col .CategoryCardSection{
         margin-right: 0;
         margin-bottom: 1rem;
+        grid-row: auto;
+
     }
 }
 
