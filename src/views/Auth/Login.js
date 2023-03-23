@@ -43,7 +43,6 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      const loginData = { email, password };
       var data = new FormData();
       data.append("email", email);
       data.append("password", password);

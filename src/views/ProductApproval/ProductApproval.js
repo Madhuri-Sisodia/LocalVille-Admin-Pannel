@@ -7,6 +7,7 @@ import { Utils } from "CommonUtils/Utils";
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
+import Loading from "customComponents/Loading";
 import {
   Modal,
   Form,
@@ -23,32 +24,39 @@ import {
 import VerifyProduct from "./VerifyProduct";
 import ViewProduct from "./ViewProduct";
 import RejectProduct from "./RejectProduct";
-import "../../assets/css/TableCss.css"
+import "../../assets/css/TableCss.css";
 
 const ProductApproval = () => {
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [showVerifiedProduct, setShowVerifiedProduct] = useState(false);
   const [showProductDetail, setShowProductDetail] = useState(false);
   const [showRejectProduct, setShowRejectProduct] = useState(false);
-  const [totalPages,setTotalPages] = useState(1)
-  const {pageNo,setDisabledNext,pageView} = useContext(Utils)
+  const [totalPages, setTotalPages] = useState(1);
+  const { pageNo, setDisabledNext, pageView } = useContext(Utils);
   const [rowData, setRowData] = useState([]);
   const [product, setProduct] = useState([]);
   const notificationAlertRef = React.useRef(null);
 
   const getUnverifiedProduct = () => {
-    Http.GetAPI(process.env.REACT_APP_GETUNVERIFIEDPRODUCTS + "?" +`page=${pageView}`, "", null)
+    Http.GetAPI(
+      process.env.REACT_APP_GETUNVERIFIEDPRODUCTS + "?" + `page=${pageView}`,
+      "",
+      null
+    )
       .then((res) => {
+        setIsLoading(false);
         if (res?.data?.status) {
-          if(res.data.data.length>0){
+          if (res.data.data.length > 0) {
             setData(res?.data?.data);
-            setTotalPages(res.data.total_pages)
+            setTotalPages(res.data.total_pages);
           }
         } else {
           alert("Fields not matched");
         }
       })
       .catch((e) => {
+        setIsLoading(false);
         notificationAlertRef.current.notificationAlert(
           ErrorNotify("Something went wrong")
         );
@@ -61,7 +69,7 @@ const ProductApproval = () => {
 
   return (
     <>
-    <div className="rna-container">
+      <div className="rna-container">
         <NotificationAlert ref={notificationAlertRef} />
       </div>
       <Container fluid>
@@ -81,80 +89,94 @@ const ProductApproval = () => {
                 </InputGroup>
                 <br></br>
               </Card.Header>
-              <Card.Body className="table-full-width table-responsive px-0">
-                <Table className="table-hover table-striped">
-                  <thead>
-                    <tr style={{dislay:"flex",justifyContent:"center"}}>
-                      <th className="border-0">ID</th>
-                      <th className="border-0">Product Image</th>
-                      <th className="border-0">Product Name</th>
-                      <th className="border-0 ">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {data.map((item, index) => (
-                      <tr style={{ fontSize: "0.95rem" }} key={item.id}>
-                        <td>{item.id}</td>
-                        <td>
-                          <img
-                            src={item.theme_img}
-                            alt="image"
-                            style={{
-                              width: "50px",
-                              height: "50px",
-                              borderRadius: "50%",
-                            }}
-                          />
-                        </td>
-                        <td>{item.product_name}</td>
-
-                        <td>
-                          <Button
-                            className="btn-simple btn-link p-1"
-                            type="button"
-                            variant="primary"
-                            onClick={() => {
-                              setShowProductDetail(true);
-                              setRowData(item);
-                            }}
-                          >
-                            <i className="fa fa-eye"></i>
-                          </Button>
-                          <Button
-                            className="btn-simple btn-link p-1"
-                            type="button"
-                            variant="success"
-                            onClick={() => {
-                              setShowVerifiedProduct(true);
-                              setProduct(item);
-                            }}
-                          >
-                            <i className="fas fa-check"></i>
-                          </Button>
-
-                          <Button
-                            className="btn-simple btn-link p-1"
-                            type="button"
-                            variant="danger"
-                            onClick={() => {
-                              setShowRejectProduct(true);
-                              setProduct(item);
-                            }}
-                          >
-                            <i className="fas fa-times"></i>
-                          </Button>
-                        </td>
+              {isLoading ? (
+                <Loading isLoading={isLoading} />
+              ) : (
+                <Card.Body className="table-full-width table-responsive px-0">
+                  <Table className="table-hover table-striped">
+                    <thead>
+                      <tr style={{ dislay: "flex", justifyContent: "center" }}>
+                        <th className="border-0">ID</th>
+                        <th className="border-0">Product Image</th>
+                        <th className="border-0">Product Name</th>
+                        <th className="border-0 ">Action</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              </Card.Body>
+                    </thead>
+                    <tbody>
+                      {data.map((item, index) => (
+                        <tr style={{ fontSize: "0.95rem" }} key={item.id}>
+                          <td>{item.id}</td>
+                          <td>
+                            <img
+                              src={item.theme_img}
+                              alt="image"
+                              style={{
+                                width: "50px",
+                                height: "50px",
+                                borderRadius: "50%",
+                              }}
+                            />
+                          </td>
+                          <td>{item.product_name}</td>
+
+                          <td>
+                            <Button
+                              className="btn-simple btn-link p-1"
+                              type="button"
+                              variant="primary"
+                              onClick={() => {
+                                setShowProductDetail(true);
+                                setRowData(item);
+                              }}
+                            >
+                              <i className="fa fa-eye"></i>
+                            </Button>
+                            <Button
+                              className="btn-simple btn-link p-1"
+                              type="button"
+                              variant="success"
+                              onClick={() => {
+                                setShowVerifiedProduct(true);
+                                setProduct(item);
+                              }}
+                            >
+                              <i className="fas fa-check"></i>
+                            </Button>
+
+                            <Button
+                              className="btn-simple btn-link p-1"
+                              type="button"
+                              variant="danger"
+                              onClick={() => {
+                                setShowRejectProduct(true);
+                                setProduct(item);
+                              }}
+                            >
+                              <i className="fas fa-times"></i>
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </Card.Body>
+              )}
             </Card>
           </Col>
         </Row>
-          <div style={{display:"flex",justifyContent:"center",textAlign:"center"}}>
-        <Paginte pages={totalPages}/>
-        </div>
+        {isLoading ? (
+          ""
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              textAlign: "center",
+            }}
+          >
+            <Paginte pages={totalPages} />
+          </div>
+        )}
 
         <VerifyProduct
           showVerifiedProduct={showVerifiedProduct}

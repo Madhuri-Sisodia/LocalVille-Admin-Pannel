@@ -30,7 +30,6 @@ import ProductDetailModel from "./ProductDetailModel";
 // ];
 
 const ProductCard = ({ latestProduct }) => {
-   
   const history = useHistory();
   const [showProductDetail, setShowProductDetail] = useState(false);
   const [rowData, setRowData] = useState(false);
@@ -60,58 +59,63 @@ const ProductCard = ({ latestProduct }) => {
             <Card.Title as="h4">Latest Products</Card.Title>
             <p className="card-category"></p>
           </Card.Header>
-          <Card.Body>
-            <div className="row">
-              {latestProduct.map((item, index) => (
-                <Col md="4" key={index}>
-                  <Card className="card">
-                    <div
-                      className="card-div"
-                      style={{
-                        backgroundColor:
-                          item.is_verified == "1"
-                            ? "#76cbac"
-                            : item.is_verified == "0"
-                            ? "orange"
-                            : "red",
-                      }}
-                    >
-                      {item.is_verified == "1"
-                        ? "Verified"
-                        : item.is_verified == "0"
-                        ? "Pending"
-                        : "Rejected"}
-                    </div>
-
-                    <div
-                      className="image"
-                      style={{
-                        backgroundImage: `url('${item.theme_img}')`,
-                      }}
-                      onClick={() => {
-                        setShowProductDetail(true);
-                        setRowData(item);
-                      }}
-                    >
-                      <div className="heading">
-                        <div className="price">
-                          <FaRupeeSign />
-                          {item.price}
-                        </div>
-                        <h5 className="title">{item.product_name}</h5>
-
-                        <p className="card-description paragraph">
-                          {item.product_desc}
-                        </p>
-                        <p className="card-description paragraph">{item.p_created}</p>
-                        
+          {latestProduct.length == 0 ? (
+            <p>No data available</p>
+          ) : (
+            <Card.Body>
+              <div className="row">
+                {latestProduct.map((item, index) => (
+                  <Col md="4" key={index}>
+                    <Card className="card">
+                      <div
+                        className="card-div"
+                        style={{
+                          backgroundColor:
+                            item.is_verified == "1"
+                              ? "#76cbac"
+                              : item.is_verified == "0"
+                              ? "orange"
+                              : "red",
+                        }}
+                      >
+                        {item.is_verified == "1"
+                          ? "Verified"
+                          : item.is_verified == "0"
+                          ? "Pending"
+                          : "Rejected"}
                       </div>
-                    </div>
-                  </Card>
-                </Col>
-              ))}
-            </div>
-          </Card.Body>
+
+                      <div
+                        className="image"
+                        style={{
+                          backgroundImage: `url('${item.theme_img}')`,
+                        }}
+                        onClick={() => {
+                          setShowProductDetail(true);
+                          setRowData(item);
+                        }}
+                      >
+                        <div className="heading">
+                          <div className="price">
+                            <FaRupeeSign />
+                            {item.price}
+                          </div>
+                          <h5 className="title">{item.product_name}</h5>
+
+                          <p className="card-description paragraph">
+                            {item.product_desc}
+                          </p>
+                          <p className="card-description paragraph">
+                            {item.p_created}
+                          </p>
+                        </div>
+                      </div>
+                    </Card>
+                  </Col>
+                ))}
+              </div>
+            </Card.Body>
+          )}
         </Card>
       </Col>
       <ProductDetailModel

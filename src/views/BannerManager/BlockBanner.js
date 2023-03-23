@@ -2,22 +2,14 @@ import React, { useState } from "react";
 import { BiBlock } from "react-icons/bi";
 import { Http } from "../../config/Service";
 
-import {
-  Modal,
-  Form,
-  Badge,
-  Button,
-  Card,
-  Navbar,
-  Nav,
-  Table,
-  Container,
-  Row,
-  Col,
-} from "react-bootstrap";
+import { ErrorNotify } from "components/NotificationShowPopUp";
+import NotificationAlert from "react-notification-alert";
+
+import { Modal, Form, Badge, Button } from "react-bootstrap";
 const BlockBanner = ({ showModal, setShowModal, blockData, getBanner }) => {
   const [blockBanner, setBlockBanner] = useState([]);
   const [blockReason, setBlockReason] = useState("");
+  const notificationAlertRef = React.useRef(null);
 
   const handleBlockBanner = (id) => {
     var data = new FormData();
@@ -30,17 +22,23 @@ const BlockBanner = ({ showModal, setShowModal, blockData, getBanner }) => {
           setBlockBanner(res?.data?.data);
           getBanner();
         } else {
-          alert("Fields not matched");
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify(res?.data?.message)
+        );
       });
   };
 
   return (
     <>
+      <div className="rna-container">
+        <NotificationAlert ref={notificationAlertRef} />
+      </div>
       <Modal
         className="modal-mini modal-primary"
         show={showModal}

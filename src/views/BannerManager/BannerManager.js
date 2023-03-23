@@ -4,46 +4,15 @@ import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 
-import {
-  Form,
-  Radio,
-  RadioGroup,
-  Button,
-  ButtonToolbar,
-  SelectPicker,
-  Checkbox,
-} from "rsuite";
+import { Form, Radio, RadioGroup, Button } from "rsuite";
 import { Table, Card, Col } from "react-bootstrap";
-import CloseIcon from "@rsuite/icons/Close";
 
 import "../../assets/css/admin.css";
 import BlockBanner from "./BlockBanner";
 import ButtonComponent from "views/ButtonComponent";
+import Loading from "customComponents/Loading";
 
 const BannerManager = () => {
-  // const dummyData = [
-  //   {
-  //     id: 1,
-  //     image: "https://i.pravatar.cc/50",
-  //     redirect: "Yes",
-  //     url: "url1",
-  //     status: "active",
-  //   },
-  //   {
-  //     id: 2,
-  //     image: "https://i.pravatar.cc/50",
-  //     redirect: "Yes",
-  //     url: "url2",
-  //     status: "block",
-  //   },
-  //   {
-  //     id: 3,
-  //     image: "https://i.pravatar.cc/50",
-  //     redirect: "No",
-  //     url: "url3",
-  //     status: "active",
-  //   },
-  // ];
   const [formData, setFormData] = useState({
     image: "",
     redirect: "",
@@ -55,33 +24,28 @@ const BannerManager = () => {
   const [showModal, setShowModal] = useState(false);
   const [blockData, setBlockData] = useState([]);
   const [addBanner, setAddBanner] = useState([]);
-  const [status, setStatus] = useState();
-  const [notifymessage, setNotifymessage] = useState();
   const notificationAlertRef = React.useRef(null);
 
- 
   const getBanner = () => {
     Http.GetAPI(process.env.REACT_APP_GETBANNER + "?" + Math.random(), data)
       .then((res) => {
         setIsLoading(false);
         if (res?.data?.status) {
           setData(res?.data?.data);
-        } 
+        }
       })
       .catch((e) => {
         setIsLoading(false);
         notificationAlertRef.current.notificationAlert(
           ErrorNotify("Something went wrong")
         );
-        
-       
       });
   };
 
   useEffect(() => {
     getBanner();
   }, []);
-  
+
   const resetForm = () => {
     setFormData({
       image: "",
@@ -92,13 +56,12 @@ const BannerManager = () => {
   };
 
   const handleSubmit = () => {
-  //  e.preventDefault();
-    let redirectImg
-    if(formData.redirect=="Yes"){
-            redirectImg = "1"
-    }
-    else{
-      redirectImg = "0"
+    //  e.preventDefault();
+    let redirectImg;
+    if (formData.redirect == "Yes") {
+      redirectImg = "1";
+    } else {
+      redirectImg = "0";
     }
 
     var data = new FormData();
@@ -129,15 +92,11 @@ const BannerManager = () => {
     resetForm();
   };
 
-  
-
-  const handleFieldChange = (e,name) => {
-    setFormData((previous)=>{
-      return {...previous,[name]:e}
+  const handleFieldChange = (e, name) => {
+    setFormData((previous) => {
+      return { ...previous, [name]: e };
     });
-   
   };
-  
 
   return (
     <>
@@ -163,11 +122,11 @@ const BannerManager = () => {
               <RadioGroup
                 name="redirect"
                 inline
-                onChange={(e) => handleFieldChange(e,'redirect')}
+                onChange={(e) => handleFieldChange(e, "redirect")}
                 required
               >
-                <Radio value="Yes">Yes</Radio>
-                <Radio value="No">No</Radio>
+                <Radio value="1">Yes</Radio>
+                <Radio value="0">No</Radio>
               </RadioGroup>
             </Form.Group>
 
@@ -176,15 +135,11 @@ const BannerManager = () => {
               <Form.Control
                 name="url"
                 type="url"
-                onChange={(e) => handleFieldChange(e,'url')}
+                onChange={(e) => handleFieldChange(e, "url")}
               />
             </Form.Group>
 
-           <ButtonComponent 
-          block 
-          buttontext="Submit"
-           />
-
+            <ButtonComponent block buttontext="Submit" />
 
             <div style={{ marginTop: "80px" }}>
               <Card
@@ -200,74 +155,77 @@ const BannerManager = () => {
                 >
                   <Card.Title as="h4">Banner Manager Table</Card.Title>
                 </Card.Header>
-
-                <Card.Body className="table-full-width table-responsive px-0">
-                  <Table className="table-hover table-striped">
-                    <thead>
-                      <tr>
-                        <th className="border-0">ID</th>
-                        <th className="border-0">Image</th>
-                        <th className="border-0">Image Redirection</th>
-                        <th className="border-0">Url</th>
-                        <th className="border-0">Status</th>
-                        <th className="border-0">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {data.map((item, index) => (
-                        <tr key={index}>
-                          <td>{item.id}</td>
-                          <td>
-                            <img
-                              src={item.image}
-                              alt="image"
-                              style={{
-                                width: "50px",
-                                height: "50px",
-                                borderRadius: "50%",
-                              }}
-                            />
-                          </td>
-                          <td style={{ textAlign: "center" }}>
-                            {(item.is_redirect == 1) ? "Yes" : "No"}
-                          </td>
-                          <td>{item.url}</td>
-                          <td>
-                            <div
-                              style={{
-                                backgroundColor:
-                                  item.active == "1" ? "green" : "red",
-                                border: "none",
-                                fontSize: "0.75rem",
-                                color: "white",
-                                padding: "3px 10px",
-                                borderRadius: "17px",
-                                display: "inline-block",
-                              }}
-                            >
-                              {item.active == "1" ? "active" : "block"}
-                            </div>
-                          </td>
-                          <td>
-                            {item?.active == "1" && (
-                              <Button
-                                className="btn-simple btn-link p-1"
-                                type="button"
-                                style={{ cursor: "pointer", color: "red" }}
-                                onClick={() => {
-                                  setShowModal(true);
-                                  setBlockData(item.id);
+                {isLoading ? (
+                  <Loading isLoading={isLoading} />
+                ) : (
+                  <Card.Body className="table-full-width table-responsive px-0">
+                    <Table className="table-hover table-striped">
+                      <thead>
+                        <tr>
+                          <th className="border-0">ID</th>
+                          <th className="border-0">Image</th>
+                          <th className="border-0">Image Redirection</th>
+                          <th className="border-0">Url</th>
+                          <th className="border-0">Status</th>
+                          <th className="border-0">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {data?.map((item, index) => (
+                          <tr key={index}>
+                            <td>{item?.id}</td>
+                            <td>
+                              <img
+                                src={item?.image}
+                                alt="image"
+                                style={{
+                                  width: "50px",
+                                  height: "50px",
+                                  borderRadius: "50%",
+                                }}
+                              />
+                            </td>
+                            <td style={{ textAlign: "center" }}>
+                              {item?.is_redirect == 1 ? "Yes" : "No"}
+                            </td>
+                            <td>{item?.url}</td>
+                            <td>
+                              <div
+                                style={{
+                                  backgroundColor:
+                                    item?.active == "1" ? "green" : "red",
+                                  border: "none",
+                                  fontSize: "0.75rem",
+                                  color: "white",
+                                  padding: "3px 10px",
+                                  borderRadius: "17px",
+                                  display: "inline-block",
                                 }}
                               >
-                                <i className="fas fa-times"></i>
-                              </Button>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                </Card.Body>
+                                {item?.active == "1" ? "active" : "block"}
+                              </div>
+                            </td>
+                            <td>
+                              {item?.active == "1" && (
+                                <Button
+                                  className="btn-simple btn-link p-1"
+                                  type="button"
+                                  style={{ cursor: "pointer", color: "red" }}
+                                  onClick={() => {
+                                    setShowModal(true);
+                                    setBlockData(item.id);
+                                  }}
+                                >
+                                  <i className="fas fa-times"></i>
+                                </Button>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  </Card.Body>
+                )}
               </Card>
             </div>
           </Form>
