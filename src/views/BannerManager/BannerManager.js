@@ -32,6 +32,10 @@ const BannerManager = () => {
         setIsLoading(false);
         if (res?.data?.status) {
           setData(res?.data?.data);
+        } else {
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {

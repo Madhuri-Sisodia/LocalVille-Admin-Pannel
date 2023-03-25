@@ -73,6 +73,7 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
 
       Http.PostAPI(process.env.REACT_APP_ADDVENDORS, data)
         .then((res) => {
+          console.log("addd",res)
           if (res?.data?.status) {
             setVendors(res?.data?.data);
             getVendors();

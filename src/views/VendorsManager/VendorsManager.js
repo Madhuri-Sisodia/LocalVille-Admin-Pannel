@@ -60,6 +60,7 @@ const VendorsManager = () => {
     )
       .then((res) => {
         setIsLoading(false);
+        console.log("get",res)
         if (res?.data?.status) {
           if (res.data.data.length > 0) {
             setData(res?.data?.data);
@@ -69,7 +70,9 @@ const VendorsManager = () => {
             setDisabledNext(false);
           }
         } else {
-          alert("Fields not matched");
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {

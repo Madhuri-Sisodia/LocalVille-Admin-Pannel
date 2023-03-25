@@ -52,7 +52,9 @@ const ProductApproval = () => {
             setTotalPages(res.data.total_pages);
           }
         } else {
-          alert("Fields not matched");
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {

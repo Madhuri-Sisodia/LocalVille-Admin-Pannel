@@ -58,7 +58,9 @@ const StoreApproval = () => {
           setTotalPages(res.data.total_pages);
           setStoreApproval(false);
         } else {
-          alert("Fields not matched");
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {

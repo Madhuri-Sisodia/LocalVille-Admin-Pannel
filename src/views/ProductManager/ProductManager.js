@@ -80,7 +80,9 @@ const Products = () => {
           setTotalPages(res.data.total_pages);
           setData(res?.data?.data);
         } else {
-          alert("Fields not matched");
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {
@@ -127,7 +129,9 @@ const Products = () => {
         if (res?.data?.status) {
           setData(res?.data?.data);
         } else {
-          alert("Fields not matched");
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {
