@@ -158,7 +158,7 @@ const StoreManager = () => {
             setDisabledNext(false);
           }
         } else {
-          alert("Fields not matched");
+          // alert("Fields not matched");
         }
       })
       .catch((e) => {
@@ -186,7 +186,7 @@ const StoreManager = () => {
             setDisabledNext(false);
           }
         } else {
-          alert("Fields not matched");
+          // alert("Fields not matched");
         }
       })
       .catch((e) => {

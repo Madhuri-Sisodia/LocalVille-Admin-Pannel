@@ -8,6 +8,8 @@ import UpdateProducts from "./UpdateProducts";
 import AddProduct from "./AddProduct";
 import Paginte from "../../components/Paginate";
 import { Utils } from "CommonUtils/Utils";
+import "../../assets/css/admin.css";
+import { AiOutlineExclamation} from 'react-icons/ai';
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
@@ -48,11 +50,11 @@ const Products = () => {
 
   const verifiedProduct = (verify) => {
     if (verify == 2) {
-      return "Rejected";
+      return (<i className="fas fa-times" ></i>);
     } else if (verify == 1) {
-      return "Verified";
+      return (<i className="fas fa-check"></i>);
     } else {
-      return "Pending";
+      return (<AiOutlineExclamation className="pendingIcon"/>);
     }
   };
 
@@ -76,10 +78,11 @@ const Products = () => {
     )
       .then((res) => {
         if (res?.data?.status) {
+
           setTotalPages(res.data.total_pages);
           setData(res?.data?.data);
         } else {
-          alert("Fields not matched");
+          // alert("Fields not matched");
         }
       })
       .catch((e) => {
@@ -125,8 +128,9 @@ const Products = () => {
       .then((res) => {
         if (res?.data?.status) {
           setData(res?.data?.data);
+          console.log("users",res.data.data)
         } else {
-          alert("Fields not matched");
+          // alert("Fields not matched");
         }
       })
       .catch((e) => {
@@ -200,15 +204,15 @@ const Products = () => {
                       <th className="border-0">SubCategory</th>
                       <th className="border-0"> buy</th>
                       <th className="border-0">Pickup</th>
-                      <th className="border-0">Total Clicks</th>
-                      <th className="border-0">Verified</th>
-                      <th className="border-0">Status</th>
+                      <th className="border-0">Total Clicks</th>                      
                       <th className="border-0">Category Name</th>
                       <th className="border-0">SubCategory Name</th>
                       <th className="border-0">Color</th>
                       <th className="border-0">Size</th>
                       <th className="border-0">Price</th>
                       <th className="border-0">Discounted Price</th>
+                      <th className="border-0">Verified</th>
+                      <th className="border-0">Status</th>
                       <th className="border-0">Action</th>
                     </tr>
                   </thead>
@@ -246,8 +250,17 @@ const Products = () => {
                         <td>{item.is_buy == 1 ? "Yes" : "No"}</td>
                         <td>{item.is_pickup == 1 ? "Yes" : "No"}</td>
                         <td>{item.total_clicks}</td>
+                        
+                        
+                        <td>{item.category_name}</td>
+                        <td>{item.subcategory_name}</td>
+                        <td>{item.is_color == 1 ? "Yes" : "No"}</td>
+                        <td>{item.is_size == 1 ? "Yes" : "No"}</td>
+                        <td>{item.price}</td>
+                        <td>{item.discount_price}</td>
                         <td>{verifiedProduct(item.is_verified)}</td>
                         <td>
+
                           <div
                             style={{
                               backgroundColor:
@@ -263,12 +276,6 @@ const Products = () => {
                             {item.active == "1" ? "active" : "block"}
                           </div>
                         </td>
-                        <td>{item.category_name}</td>
-                        <td>{item.subcategory_name}</td>
-                        <td>{item.is_color == 1 ? "Yes" : "No"}</td>
-                        <td>{item.is_size == 1 ? "Yes" : "No"}</td>
-                        <td>{item.price}</td>
-                        <td>{item.discount_price}</td>
 
                         <td>
                           <div
@@ -284,6 +291,7 @@ const Products = () => {
                               onClick={() => {
                                 setShowDetailsModal(true);
                                 setRowData(item);
+                                
                               }}
                             >
                               <i className="fa fa-eye"></i>
@@ -296,6 +304,7 @@ const Products = () => {
                               onClick={() => {
                                 setSelectedProducts(item);
                                 setShowUpdateModal(true);
+                                
                               }}
                             >
                               <i className="fa fa-edit"></i>
@@ -307,6 +316,7 @@ const Products = () => {
                               variant="danger"
                               onClick={(e) => {
                                 setShowModal(true);
+                                
                                 // setShowDetailsModal(false);
                                 setBlockData(e.target.id);
                               }}

@@ -18,56 +18,58 @@ function index() {
   }
   const Card = (props) => {
     return(
+      <div className='CategoryCardSection'>
       <Panel {...props}>
       <Placeholder.Paragraph />
     </Panel>
+    </div>
     )
   };
   
 
   return (
     <div className='MainContainer'>
-     
-        <Row>
-        <Col md={6} sm={12}>
+       <div className='CategoryCardSection1'>
+        
+        <Col lg="6" md="12" sm="12" xs="24">
             <Card bordered header="Section" className="Categorycards" onClick={()=>setSelectedItem(1)}
                />
               
           </Col>
 
-          <Col md={6} sm={12}>
+          <Col lg="6" md="12" sm="12" xs="24">
             <Card bordered header="Categories" className="Categorycards"
             cardid="1"
             onClick={()=>setSelectedItem(2)}
             />
           </Col>
           
-          <Col md={6} sm={12}>
+          <Col lg="6" md="12" sm="12" xs="24">
             <Card bordered header="Sub Categories" className="Categorycards"
               onClick={()=>setSelectedItem(3)}
               />
           </Col>
-        </Row>
+        </div>
         <br/>
-        <Row>
-          <Col md={6} sm={12}>
+        <div className='CategoryCardSection1'>
+        <Col lg="6" md="12" sm="12" xs="24">
             <Card bordered header="Size Attribute" className="Categorycards"
               onClick={()=>setSelectedItem(4)}
               />
           </Col>
 
-          <Col md={6} sm={12}>
+          <Col lg="6" md="12" sm="12" xs="24">
             <Card bordered header="Size" className="Categorycards"
               onClick={()=>setSelectedItem(5)}
               />
           </Col>
 
-          <Col md={6} sm={12}>
+          <Col lg="6" md="12" sm="12" xs="24">
             <Card bordered header="Color" className="Categorycards"
               onClick={()=>setSelectedItem(6)}
               />
           </Col>
-        </Row>
+        </div>
       
 <br/>
         {selectedItem==1 && <Section/>}
@@ -77,8 +79,8 @@ function index() {
         {selectedItem==5 && <Size/>}
         {selectedItem==6 && <Color/>}
         
-      
-    </div>
+        </div>
+    // </div>
   )
 }
 

@@ -30,7 +30,7 @@ const EmailManager = () => {
         if (res?.data?.status) {
           setData(res?.data?.data);
         } else {
-          alert("Fields not matched");
+          // alert("Fields not matched");
         }
       })
       .catch((e) => {

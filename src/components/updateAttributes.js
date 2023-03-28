@@ -27,7 +27,6 @@ const UpdateAttributes = ({getProducts, setAttributes, attributes,updateAttribut
     attr_id:"",
     sku:"",
   });
-
   useEffect(() => {
     function ColorSize() {
       Http.GetAPI(process.env.REACT_APP_GETSIZE, "")
