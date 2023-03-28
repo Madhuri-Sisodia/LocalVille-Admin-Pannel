@@ -28,8 +28,8 @@ const UpdateVendor = ({
   const updateImage = () => {
     const data = new FormData();
     data.append("vendor_id", vendorId ? vendorId : item.id);
-    data.append("vendor_name", vendorName ? vendorName : item.name);
-    data.append("vendor_image", vendorImage);
+    data.append("Vendor_name", vendorName ? vendorName : item.name);
+    data.append("Vendor_image", vendorImage);
     console.log("vvv", vendorImage);
 
     Http.PostAPI(process.env.REACT_APP_UPDATEVENDORIMAGE, data, null)
@@ -37,15 +37,9 @@ const UpdateVendor = ({
         console.log("imageresp", res);
         if (res?.data?.status) {
           setVendors(res?.data?.data);
-          notificationAlertRef.current.notificationAlert(
-            SuccessNotify(res?.data?.message)
-          );
-        } else {
-          notificationAlertRef.current.notificationAlert(
-            ErrorNotify(res?.data?.message)
-          );
-        }
-      })
+          getVendors();
+          } 
+        })
       .catch((e) => {
         notificationAlertRef.current.notificationAlert(
           ErrorNotify("Something went wrong")

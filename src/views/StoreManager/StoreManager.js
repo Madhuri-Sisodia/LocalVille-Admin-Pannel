@@ -172,7 +172,7 @@ const StoreManager = () => {
                 <br></br>
               </Card.Header>
               {isLoading ? (
-                <Loading isLoading={isLoading} />
+                <Loading isLoading={isLoading} noData={data?.length == 0} />
               ) : (
                 <Card.Body className="table-full-width table-responsive px-0">
                   <Table

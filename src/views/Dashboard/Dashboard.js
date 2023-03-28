@@ -25,35 +25,36 @@ const Dashboard = () => {
   const [totalActiveUsers, setTotalActiveUsers] = useState(0);
   const [latestStore, setLatestStore] = useState([]);
   const [latestProduct, setLatestProduct] = useState([]);
-  
 
   useEffect(() => {
-    const CallApi = ()=>{
-      Http.GetAPI(process.env.REACT_APP_GETDASHBOARD + "?" + Math.random(), data)
-      .then((res) => {
-       
-        if (res?.data?.status) {
-          setData(res?.data?.details);
-          setTotalUsers(res?.data?.details?.total_users || 0);
-          setTotalStores(res?.data?.details?.no_of_Stores || 0);
-          setTotalProducts(res?.data?.details?.no_of_products || 0);
-          setTotalActiveUsers(res?.data?.details?.active_users || 0);
-          setLatestStore(
-            res?.data?.details?.stores_products_data?.recent_added_stores
-          );
-          setLatestProduct(
-            res?.data?.details?.stores_products_data?.recent_added_products
-          );
-        } else {
-          alert("Fields not matched");
-        }
-      })
-      .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
-      });
-    }
-    CallApi()
+    const CallApi = () => {
+      Http.GetAPI(
+        process.env.REACT_APP_GETDASHBOARD + "?" + Math.random(),
+        data
+      )
+        .then((res) => {
+          if (res?.data?.status) {
+            setData(res?.data?.details);
+            setTotalUsers(res?.data?.details?.total_users || 0);
+            setTotalStores(res?.data?.details?.no_of_Stores || 0);
+            setTotalProducts(res?.data?.details?.no_of_products || 0);
+            setTotalActiveUsers(res?.data?.details?.active_users || 0);
+            setLatestStore(
+              res?.data?.details?.stores_products_data?.recent_added_stores
+            );
+            setLatestProduct(
+              res?.data?.details?.stores_products_data?.recent_added_products
+            );
+          } else {
+            alert("Fields not matched");
+          }
+        })
+        .catch((e) => {
+          alert("Something went wrong.");
+          console.log("Error:", e);
+        });
+    };
+    CallApi();
   }, []);
 
   return (
@@ -271,13 +272,12 @@ const Dashboard = () => {
                   <ChartistGraph
                     data={{
                       labels: [
-                        `${parseInt((totalActiveUsers/totalUsers)*100)}%`,
-                        `${parseInt(((totalUsers - totalActiveUsers)/totalUsers)*100)}%`,
+                        `${parseInt((totalActiveUsers / totalUsers) * 100)}%`,
+                        `${parseInt(
+                          ((totalUsers - totalActiveUsers) / totalUsers) * 100
+                        )}%`,
                       ],
-                      series: [
-                        totalActiveUsers,
-                        totalUsers - totalActiveUsers,
-                      ],
+                      series: [totalActiveUsers, totalUsers - totalActiveUsers],
                     }}
                     type="Pie"
                   />
@@ -675,8 +675,12 @@ const Dashboard = () => {
             </Card>
           </Col>
         </Row> */}
-        <ProductCard latestProduct={latestProduct} />
-        <StoreCard latestStore={latestStore} />
+        {latestProduct.length == 0 ? (
+          ""
+        ) : (
+          <ProductCard latestProduct={latestProduct} />
+        )}
+        {latestStore.length == 0 ? "" : <StoreCard latestStore={latestStore} />}
       </Container>
     </>
   );

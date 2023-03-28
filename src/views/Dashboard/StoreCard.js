@@ -58,58 +58,55 @@ const StoreCard = ({ latestStore }) => {
             <Card.Title as="h4">Latest Stores</Card.Title>
             <p className="card-category"></p>
           </Card.Header>
-          {latestStore.length == 0 ? (
-            <p>No data available</p>
-          ) : (
-            <Card.Body>
-              <div className="row">
-                {latestStore.map((item, index) => (
-                  <Col md="4" key={index}>
-                    <Card className="card">
-                      <div
-                        className="card-div"
-                        style={{
-                          backgroundColor:
-                            item.verified == "1"
-                              ? "#76cbac"
-                              : item.verified == "0"
-                              ? "orange"
-                              : "red",
-                        }}
-                      >
-                        {item.verified == "1"
-                          ? "Verified"
-                          : item.verified == "0"
-                          ? "In Review"
-                          : "Rejected"}
-                      </div>
 
-                      <div
-                        className="image"
-                        onClick={() => {
-                          setShowDetailsModal(true);
-                          setRowData(item);
-                        }}
-                        style={{
-                          backgroundImage: `url('${item.store_image}')`,
-                        }}
-                      >
-                        <div className="heading">
-                          <h5 className="title">{item.store_name}</h5>
-                          <p className="card-description paragraph">
-                            {item.store_desc}
-                          </p>
-                          <p className="card-description paragraph">
-                            {item.created_at}
-                          </p>
-                        </div>
+          <Card.Body>
+            <div className="row">
+              {latestStore.map((item, index) => (
+                <Col md="4" key={index}>
+                  <Card className="card">
+                    <div
+                      className="card-div"
+                      style={{
+                        backgroundColor:
+                          item.verified == "1"
+                            ? "#76cbac"
+                            : item.verified == "0"
+                            ? "orange"
+                            : "red",
+                      }}
+                    >
+                      {item.verified == "1"
+                        ? "Verified"
+                        : item.verified == "0"
+                        ? "In Review"
+                        : "Rejected"}
+                    </div>
+
+                    <div
+                      className="image"
+                      onClick={() => {
+                        setShowDetailsModal(true);
+                        setRowData(item);
+                      }}
+                      style={{
+                        backgroundImage: `url('${item.store_image}')`,
+                      }}
+                    >
+                      <div className="heading">
+                        <h5 className="title">{item.store_name}</h5>
+                        <p className="card-description paragraph">
+                          {item.store_desc}
+                        </p>
+                        <p className="card-description paragraph">
+                          {item.created_at}
+                        </p>
                       </div>
-                    </Card>
-                  </Col>
-                ))}
-              </div>
-            </Card.Body>
-          )}
+                    </div>
+                  </Card>
+                </Col>
+              ))}
+            </div>
+          </Card.Body>
         </Card>
       </Col>
       <StoreDetailModal
