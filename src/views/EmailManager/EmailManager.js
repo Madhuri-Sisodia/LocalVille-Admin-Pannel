@@ -3,7 +3,7 @@ import React from "react";
 import { Form } from "rsuite";
 import ErrorMessage from "customComponents/ErrorMessage";
 import "../../assets/css/admin.css";
-import MultipleSelect from "components/multipleSelect";
+import MultipleSelect from "components/MultipleSelect";
 import { Http } from "config/Service";
 import MyComponent from "components/React-Quil-text-Editor";
 import { Data } from "@react-google-maps/api";
@@ -30,7 +30,7 @@ const EmailManager = () => {
         if (res?.data?.status) {
           setData(res?.data?.data);
         } else {
-          alert("Fields not matched");
+          // alert("Fields not matched");
         }
       })
       .catch((e) => {

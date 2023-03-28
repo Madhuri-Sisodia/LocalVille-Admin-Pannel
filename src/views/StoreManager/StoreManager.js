@@ -116,7 +116,7 @@ const StoreManager = () => {
             setDisabledNext(false);
           }
         } else {
-          alert("Fields not matched");
+          // alert("Fields not matched");
         }
       })
       .catch((e) => {

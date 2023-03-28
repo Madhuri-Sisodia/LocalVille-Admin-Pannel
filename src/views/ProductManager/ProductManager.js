@@ -8,6 +8,8 @@ import UpdateProducts from "./UpdateProducts";
 import AddProduct from "./AddProduct";
 import Paginte from "../../components/Paginate";
 import { Utils } from "CommonUtils/Utils";
+import "../../assets/css/admin.css";
+import { AiOutlineExclamation} from 'react-icons/ai';
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
@@ -48,11 +50,11 @@ const Products = () => {
 
   const verifiedProduct = (verify) => {
     if (verify == 2) {
-      return "Rejected";
+      return (<i className="fas fa-times" ></i>);
     } else if (verify == 1) {
-      return "Verified";
+      return (<i className="fas fa-check"></i>);
     } else {
-      return "Pending";
+      return (<AiOutlineExclamation className="pendingIcon"/>);
     }
   };
 
@@ -77,6 +79,7 @@ const Products = () => {
       .then((res) => {
         setIsLoading(false);
         if (res?.data?.status) {
+
           setTotalPages(res.data.total_pages);
           setData(res?.data?.data);
         } else {
@@ -128,6 +131,7 @@ const Products = () => {
       .then((res) => {
         if (res?.data?.status) {
           setData(res?.data?.data);
+          console.log("users",res.data.data)
         } else {
           notificationAlertRef.current.notificationAlert(
             ErrorNotify(res?.data?.message)

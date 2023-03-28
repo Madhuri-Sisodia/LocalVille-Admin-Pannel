@@ -87,34 +87,33 @@ const VendorsManager = () => {
     getVendors();
   }, [pageView]);
 
-  const filtervendor = (e) => {
-    Http.GetAPI(
-      process.env.REACT_APP_SEARCHVENDOR + "?" + `search=${e} & page=${pageNo}`,
-      data,
-      null
-    )
-      .then((res) => {
-        setIsLoading(false);
-        if (res?.data?.status) {
-          if (res.data.data.length > 0) {
-            setData(res?.data?.data);
-            setDisabledNext(true);
-          } else {
-            setDisabledNext(false);
-          }
-        } else {
-          alert("Fields not matched");
-        }
-      })
-      .catch((e) => {
-        setIsLoading(false);
-        notificationAlertRef.current.notificationAlert(
-          ErrorNotify("Something went wrong")
-        );
-      });
-  };
 
-  const search = Debounce(filtervendor);
+   const filtervendor = (e)=>{
+    Http.GetAPI(process.env.REACT_APP_SEARCHVENDOR + "?" +`search=${e} & page=${pageNo}`, data, null)
+    .then((res) => {
+      setIsLoading(false);
+      if (res?.data?.status) {
+        setData(res?.data?.data);
+          setDisabledNext(true)
+          console.log("userr", res.data.data)
+        // if(res.data.data.length>0){
+        //   setData(res?.data?.data);
+        //   setDisabledNext(true)
+        // }
+        // else{
+        //   setDisabledNext(false)
+        // }
+      } else {
+        // alert("Fields not matched");
+      }
+    })
+    .catch((e) => {
+      setIsLoading(false);
+      notificationAlertRef.current.notificationAlert(
+        ErrorNotify("Something went wrong")
+      );
+    });
+   }
 
   return (
     <>

@@ -104,12 +104,20 @@ const SubCategory = () => {
           setData(res?.data?.data);
         }
       })
+      // .catch((e) => {
+      //   notifySecond("tr");
+      //   // alert("Something went wrong.");
+      //   console.log("Error:", e);
+      //   }
+      // })
       .catch((e) => {
         notificationAlertRef.current.notificationAlert(
           ErrorNotify("Something went wrong")
         );
       });
   }, []);
+
+
 
   return (
     <>
@@ -141,6 +149,7 @@ const SubCategory = () => {
                 </Form.ControlLabel>
                 <select
                   name="selectCategory"
+                 
                   value={selectCategory}
                   onChange={(event) => setSelectCategory(event.target.value)}
                   style={{
