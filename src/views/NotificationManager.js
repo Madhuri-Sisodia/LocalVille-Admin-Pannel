@@ -5,7 +5,7 @@ import "../assets/css/admin.css";
 import NotificationAlert from "react-notification-alert";
 import { Http } from "config/Service";
 import ButtonComponent from "./ButtonComponent";
-import MultipleSelect from "components/MultipleSelect";
+import MultipleSelect from "components/multipleSelect";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 
@@ -146,10 +146,7 @@ const NotificationManager = () => {
                 required
               />
             </Form.Group>
-            <ButtonComponent
-              block
-              buttontext="Submit"
-            />
+            <ButtonComponent block buttontext="Submit" />
           </Form>
         </div>
       </div>

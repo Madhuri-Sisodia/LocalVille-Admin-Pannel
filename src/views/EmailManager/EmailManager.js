@@ -3,7 +3,7 @@ import React from "react";
 import { Form } from "rsuite";
 import ErrorMessage from "customComponents/ErrorMessage";
 import "../../assets/css/admin.css";
-import MultipleSelect from "components/MultipleSelect";
+import MultipleSelect from "components/multipleSelect";
 import { Http } from "config/Service";
 import MyComponent from "components/React-Quil-text-Editor";
 import { Data } from "@react-google-maps/api";
