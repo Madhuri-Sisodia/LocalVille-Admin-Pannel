@@ -14,16 +14,18 @@ function index() {
   const handleClick = () => {};
   const Card = (props) => {
     return (
-      <Panel {...props}>
-        <Placeholder.Paragraph />
-      </Panel>
+      <div className="CategoryCardSection">
+        <Panel {...props}>
+          <Placeholder.Paragraph />
+        </Panel>
+      </div>
     );
   };
 
   return (
     <div className="MainContainer">
-      <Row>
-        <Col md={6} sm={12}>
+      <div className="CategoryCardSection1">
+        <Col lg="6" md="12" sm="12" xs="24">
           <Card
             bordered
             header="Section"
@@ -32,7 +34,7 @@ function index() {
           />
         </Col>
 
-        <Col md={6} sm={12}>
+        <Col lg="6" md="12" sm="12" xs="24">
           <Card
             bordered
             header="Categories"
@@ -42,7 +44,7 @@ function index() {
           />
         </Col>
 
-        <Col md={6} sm={12}>
+        <Col lg="6" md="12" sm="12" xs="24">
           <Card
             bordered
             header="Sub Categories"
@@ -50,10 +52,10 @@ function index() {
             onClick={() => setSelectedItem(3)}
           />
         </Col>
-      </Row>
+      </div>
       <br />
-      <Row>
-        <Col md={6} sm={12}>
+      <div className="CategoryCardSection1">
+        <Col lg="6" md="12" sm="12" xs="24">
           <Card
             bordered
             header="Size Attribute"
@@ -62,7 +64,7 @@ function index() {
           />
         </Col>
 
-        <Col md={6} sm={12}>
+        <Col lg="6" md="12" sm="12" xs="24">
           <Card
             bordered
             header="Size"
@@ -71,7 +73,7 @@ function index() {
           />
         </Col>
 
-        <Col md={6} sm={12}>
+        <Col lg="6" md="12" sm="12" xs="24">
           <Card
             bordered
             header="Color"
@@ -79,7 +81,7 @@ function index() {
             onClick={() => setSelectedItem(6)}
           />
         </Col>
-      </Row>
+      </div>
 
       <br />
       {selectedItem == 1 && <Section />}
@@ -89,6 +91,7 @@ function index() {
       {selectedItem == 5 && <Size />}
       {selectedItem == 6 && <Color />}
     </div>
+    // </div>
   );
 }
 

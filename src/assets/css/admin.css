@@ -45,8 +45,8 @@
 
 /* -----------------------------------Category Cards */
 
-.rs-col .Categorycards {
-  margin-right: 5rem;
+.rs-col .CategoryCardSection {
+  margin-right: 2rem;
 }
 .Categorycards {
   background: linear-gradient(to right, #8f69d6, #e5e5ea);
@@ -57,6 +57,53 @@
 .rs-panel-header {
   color: darkblue;
 }
+/* -------------------------------Button Component---------------------------- */
+ {
+  color: #f0ecf7;
+  font-weight: 700;
+  font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+  padding: 1rem;
+  background-color: #6c35d3;
+  border-radius: 4px;
+  margin-bottom: 0.6rem;
+}
+.CategoryCardSection {
+  /* display: flex; */
+  background-color: #ececf0;
+  padding: 0.7rem;
+  border-radius: 7px;
+}
+.CategoryCardSection p {
+  border-radius: 1rem;
+}
+.CategoryCardSection1 {
+  display: flex;
+}
+/* -------------------------------Button Component---------------------------- */
+button.buttonComponent {
+  background-color: "blueviolet";
+  border: "blueviolet";
+  border-radius: "3px 3px 3px 3px";
+  width: "100%";
+  padding: "5px";
+  color: "white";
+  margin-top: "20px";
+}
+
+i.fa-times {
+  color: #f83b3b;
+  font-size: 1rem;
+}
+i.fa-check {
+  color: #3fd621;
+  font-size: 1rem;
+}
+.pendingIcon {
+  color: #ff9500;
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
 /* -------------------------------Button Component---------------------------- */
 button.buttonComponent {
   background-color: "blueviolet";
@@ -71,7 +118,9 @@ button.buttonComponent {
 /* --------------------------------responsive------------------------------- */
 
 @media screen and (min-width: 320px) and (max-width: 768px) {
-  .rs-col .Categorycards {
+  .rs-col .CategoryCardSection {
     margin-right: 0;
+    margin-bottom: 1rem;
+    grid-row: auto;
   }
 }
