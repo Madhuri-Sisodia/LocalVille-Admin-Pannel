@@ -48,7 +48,7 @@ const BlockVendor = ({ showModal, setShowModal, blockData, getVendors }) => {
 
   return (
     <>
-     <div className="rna-container">
+      <div className="rna-container">
         <NotificationAlert ref={notificationAlertRef} />
       </div>
       <Modal

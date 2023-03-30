@@ -73,7 +73,6 @@ const AdminManager = () => {
       setPassword("");
       setRePassword("");
       setErrors({});
-      notify("tr");
     }
   };
 
