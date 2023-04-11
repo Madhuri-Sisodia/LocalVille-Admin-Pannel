@@ -2,12 +2,9 @@ import React, { useState, useEffect, useContext } from "react";
 import ErrorMessage from "customComponents/ErrorMessage";
 import { useHistory } from "react-router-dom";
 import { Form, Button, Panel } from "rsuite";
-import logoWhite from "assets/img/logoWhite.png";
 import "../../assets/css/login.css";
 import LoginNavbar from "components/Navbars/LoginNavbar";
 import { Http } from "../../config/Service";
-import User from "views/UserProfile";
-import { Utils } from "CommonUtils/Utils";
 import { Player, Controls } from "@lottiefiles/react-lottie-player";
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
@@ -25,15 +22,19 @@ const Login = () => {
     let tempErrors = {};
 
     if (!email) {
-      tempErrors.email = "Email is required";
+      tempErrors.email =  notificationAlertRef.current.notificationAlert(
+        ErrorNotify("Email and Password Required")
+      );
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      tempErrors.email = "Email is invalid";
+      tempErrors.email =  notificationAlertRef.current.notificationAlert(
+        ErrorNotify("Email is invalid")
+      );
     }
 
-    if (!password) {
-      tempErrors.password = "Password is required";
-    } else if (password.length < 7) {
-      tempErrors.password = "Password must be at least 7 characters long";
+     if (password.length < 8) {
+      tempErrors.password =   notificationAlertRef.current.notificationAlert(
+        ErrorNotify("Password must be at least 8 characters long")
+      );
     }
 
     setErrors(tempErrors);
