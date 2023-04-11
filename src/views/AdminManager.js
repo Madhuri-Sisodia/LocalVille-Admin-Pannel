@@ -51,9 +51,10 @@ const AdminManager = () => {
 
       Http.PostAPI(process.env.REACT_APP_ADDADMINDATA, data, null)
         .then((res) => {
-          console.log("user", res.data.status);
+          
           if (res?.data?.status) {
             setUser(res?.data?.data);
+           
             notificationAlertRef.current.notificationAlert(
               SuccessNotify(res?.data?.message)
             );
@@ -73,7 +74,7 @@ const AdminManager = () => {
       setPassword("");
       setRePassword("");
       setErrors({});
-      notify("tr");
+      
     }
   };
 

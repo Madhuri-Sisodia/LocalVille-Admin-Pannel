@@ -10,6 +10,7 @@ import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 import Loading from "customComponents/Loading";
+import image from "assets/img/noVendor.png";
 
 import {
   Modal,
@@ -60,10 +61,11 @@ const VendorsManager = () => {
     )
       .then((res) => {
         setIsLoading(false);
-        console.log("get",res)
+
         if (res?.data?.status) {
           if (res.data.data.length > 0) {
             setData(res?.data?.data);
+
             setDisabledNext(true);
             setTotalPages(res.data.total_pages);
           } else {
@@ -87,33 +89,36 @@ const VendorsManager = () => {
     getVendors();
   }, [pageView]);
 
-
-   const filtervendor = (e)=>{
-    Http.GetAPI(process.env.REACT_APP_SEARCHVENDOR + "?" +`search=${e} & page=${pageNo}`, data, null)
-    .then((res) => {
-      setIsLoading(false);
-      if (res?.data?.status) {
-        setData(res?.data?.data);
-          setDisabledNext(true)
-          console.log("userr", res.data.data)
-        // if(res.data.data.length>0){
-        //   setData(res?.data?.data);
-        //   setDisabledNext(true)
-        // }
-        // else{
-        //   setDisabledNext(false)
-        // }
-      } else {
-        // alert("Fields not matched");
-      }
-    })
-    .catch((e) => {
-      setIsLoading(false);
-      notificationAlertRef.current.notificationAlert(
-        ErrorNotify("Something went wrong")
-      );
-    });
-   }
+  const filtervendor = (e) => {
+    Http.GetAPI(
+      process.env.REACT_APP_SEARCHVENDOR + "?" + `search=${e} & page=${pageNo}`,
+      data,
+      null
+    )
+      .then((res) => {
+        setIsLoading(false);
+        if (res?.data?.status) {
+          setData(res?.data?.data);
+          setDisabledNext(true);
+          console.log("userr", res.data.data);
+          // if(res.data.data.length>0){
+          //   setData(res?.data?.data);
+          //   setDisabledNext(true)
+          // }
+          // else{
+          //   setDisabledNext(false)
+          // }
+        } else {
+          // alert("Fields not matched");
+        }
+      })
+      .catch((e) => {
+        setIsLoading(false);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
+      });
+  };
 
   return (
     <>
@@ -158,9 +163,10 @@ const VendorsManager = () => {
                   </InputGroup.Button>
                 </InputGroup>
                 <br></br>
+                
               </Card.Header>
               {isLoading ? (
-               <Loading isLoading={isLoading} noData={data?.length == 0} />
+                <Loading isLoading={isLoading} noData={data?.length == 0} image={image} />
               ) : (
                 <Card.Body className="table-full-width table-responsive px-0">
                   <Table className="table-hover table-striped">

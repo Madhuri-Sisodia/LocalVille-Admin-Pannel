@@ -1,5 +1,5 @@
 import React from "react";
-const Loading = ({ isLoading, noData }) => {
+const Loading = ({ isLoading, noData,image }) => {
   return (
     <div>
       {isLoading && (
@@ -20,15 +20,11 @@ const Loading = ({ isLoading, noData }) => {
       {!isLoading && noData && (
         <div
           style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItem: "center",
-            fontSize: "1rem",
-            color: "gray",
-            margin: "50px",
+            height:"100px",
+            width:"100px",
           }}
         >
-          Data Not Found
+          <img src={image} alt="Image" />
         </div>
       )}
     </div>
