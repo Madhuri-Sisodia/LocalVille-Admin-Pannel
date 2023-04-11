@@ -1,27 +1,27 @@
 import React from "react";
-const Loading = ({ isLoading, noData,image }) => {
+import { TailSpin, ThreeDots } from "react-loader-spinner";
+const Loading = ({ isLoading, noData, image }) => {
   return (
     <div>
       {isLoading && (
+      
         <div
           style={{
             display: "flex",
             justifyContent: "center",
             alignItem: "center",
-            fontSize: "0.9rem",
-            color: "gray",
             margin: "50px",
           }}
         >
-          Loading....
+          <TailSpin height="45" width="45" color="grey" ariaLabel="loading" />
         </div>
       )}
 
       {!isLoading && noData && (
         <div
           style={{
-            height:"100px",
-            width:"100px",
+            height: "100px",
+            width: "100px",
           }}
         >
           <img src={image} alt="Image" />

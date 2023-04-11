@@ -52,6 +52,7 @@ const BannerManager = () => {
 
   const resetForm = () => {
     setFormData({
+      ...formData,
       image: "",
       redirect: "",
       url: "",
@@ -82,6 +83,7 @@ const BannerManager = () => {
           notificationAlertRef.current.notificationAlert(
             SuccessNotify(res?.data?.message)
           );
+          resetForm();
         } else {
           notificationAlertRef.current.notificationAlert(
             ErrorNotify(res?.data?.message)
@@ -93,7 +95,7 @@ const BannerManager = () => {
           ErrorNotify("Something went wrong")
         );
       });
-    resetForm();
+   
   };
 
   const handleFieldChange = (e, name) => {
@@ -116,6 +118,7 @@ const BannerManager = () => {
                 type="file"
                 name="imageUrl"
                 required
+                accept="image/jpeg, image/png, image/jpg"
                 onChange={(e) => {
                   setImageUrl(e.target.files[0]);
                 }}
@@ -134,14 +137,16 @@ const BannerManager = () => {
               </RadioGroup>
             </Form.Group>
 
-            <Form.Group>
-              <Form.ControlLabel>URL</Form.ControlLabel>
-              <Form.Control
-                name="url"
-                type="url"
-                onChange={(e) => handleFieldChange(e, "url")}
-              />
-            </Form.Group>
+            {formData.redirect == "1" && (
+              <Form.Group>
+                <Form.ControlLabel>URL</Form.ControlLabel>
+                <Form.Control
+                  name="url"
+                  type="url"
+                  onChange={(e) => handleFieldChange(e, "url")}
+                />
+              </Form.Group>
+            )}
 
             <ButtonComponent block buttontext="Submit" />
 

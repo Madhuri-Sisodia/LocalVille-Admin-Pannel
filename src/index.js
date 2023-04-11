@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import "rsuite/dist/rsuite.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "./assets/css/animate.min.css";
 import "./assets/scss/light-bootstrap-dashboard-react.scss?v=2.0.0";
 import "./assets/css/demo.css";
