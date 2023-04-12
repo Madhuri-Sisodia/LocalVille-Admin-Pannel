@@ -1,21 +1,25 @@
 import React, { useState } from "react";
-import { BiBlock } from "react-icons/bi";
+// import {TfiReload } from "react-icons/bi";
 import { Http } from "../../config/Service";
 
 import { ErrorNotify } from "components/NotificationShowPopUp";
 import NotificationAlert from "react-notification-alert";
 
 import { Modal, Form, Badge, Button } from "react-bootstrap";
-const BlockBanner = ({ showModal, setShowModal, blockData, getBanner }) => {
+const ActiveBanner = ({
+  showActiveModal,
+  setShowActiveModal,
+  blockData,
+  getBanner,
+}) => {
   const [blockBanner, setBlockBanner] = useState([]);
-  const [blockReason, setBlockReason] = useState("");
+
   const notificationAlertRef = React.useRef(null);
 
   const handleBlockBanner = (id) => {
     var data = new FormData();
     data.append("banner_id", id);
-    data.append("status", 0 );
-    data.append("reason", blockReason);
+    data.append("status", 1);
 
     Http.PostAPI(process.env.REACT_APP_BLOCKBANNER, data, null)
       .then((res) => {
@@ -42,31 +46,16 @@ const BlockBanner = ({ showModal, setShowModal, blockData, getBanner }) => {
       </div>
       <Modal
         className="modal-mini modal-primary"
-        show={showModal}
-        onHide={() => setShowModal(false)}
+        show={showActiveModal}
+        onHide={() => setShowActiveModal(false)}
       >
-        <Modal.Header className="justify-content-center">
+       <Modal.Header className="justify-content-center">
           <div className="modal-profile">
-            <BiBlock
-              style={{
-                fontSize: "30px",
-                marginBottom: "14px",
-                color: "gray",
-              }}
-            />
+          <i className="nc-icon nc-check-2"></i>
           </div>
         </Modal.Header>
         <Modal.Body className="text-center">
-          <p>Are you sure you want to block this banner?</p>
-          <Form.Control
-            componentClass="textarea"
-            rows={3}
-            style={{ fontSize: "0.9rem", height: "70px" }}
-            placeholder="Enter Reason"
-            maxLength={200}
-            value={blockReason}
-            onChange={(event) => setBlockReason(event.target.value)}
-          />
+          <p>Are you sure you want to active this banner?</p>
         </Modal.Body>
         <div className="modal-footer">
           <Button
@@ -77,15 +66,14 @@ const BlockBanner = ({ showModal, setShowModal, blockData, getBanner }) => {
               setShowModal(false);
             }}
           >
-            Block
+            Active
           </Button>
           <Button
             className="btn-simple"
             type="button"
             variant="secondary"
             onClick={() => {
-              setShowModal(false);
-              setBlockReason("");
+              setShowActiveModal(false);
             }}
           >
             Close
@@ -95,4 +83,4 @@ const BlockBanner = ({ showModal, setShowModal, blockData, getBanner }) => {
     </>
   );
 };
-export default BlockBanner;
+export default ActiveBanner;

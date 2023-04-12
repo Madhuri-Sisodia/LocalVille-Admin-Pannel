@@ -11,6 +11,7 @@ import "../../assets/css/admin.css";
 import BlockBanner from "./BlockBanner";
 import ButtonComponent from "views/ButtonComponent";
 import Loading from "customComponents/Loading";
+import ActiveBanner from "./ActiveBanner";
 
 const BannerManager = () => {
   const [formData, setFormData] = useState({
@@ -22,6 +23,7 @@ const BannerManager = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [imageUrl, setImageUrl] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [showActiveModal, setShowActiveModal] = useState(false);
   const [blockData, setBlockData] = useState([]);
   const [addBanner, setAddBanner] = useState([]);
   const notificationAlertRef = React.useRef(null);
@@ -52,7 +54,6 @@ const BannerManager = () => {
 
   const resetForm = () => {
     setFormData({
-      ...formData,
       image: "",
       redirect: "",
       url: "",
@@ -95,7 +96,6 @@ const BannerManager = () => {
           ErrorNotify("Something went wrong")
         );
       });
-   
   };
 
   const handleFieldChange = (e, name) => {
@@ -228,6 +228,19 @@ const BannerManager = () => {
                                   <i className="fas fa-times"></i>
                                 </Button>
                               )}
+                              {item?.active == "0" && (
+                                <Button
+                                  className="btn-simple btn-link p-1"
+                                  type="button"
+                                  variant="success"
+                                  onClick={() => {
+                                    setShowActiveModal(true);
+                                    setBlockData(item.id);
+                                  }}
+                                >
+                                  <i className="fa fa-check"></i>
+                                </Button>
+                              )}
                             </td>
                           </tr>
                         ))}
@@ -244,6 +257,12 @@ const BannerManager = () => {
       <BlockBanner
         showModal={showModal}
         setShowModal={setShowModal}
+        blockData={blockData}
+        getBanner={getBanner}
+      />
+      <ActiveBanner
+        showActiveModal={showActiveModal}
+        setShowActiveModal={setShowActiveModal}
         blockData={blockData}
         getBanner={getBanner}
       />

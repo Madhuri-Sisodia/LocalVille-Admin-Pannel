@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Button, ButtonToolbar } from "rsuite";
+import { Form, Button, ButtonToolbar, Schema, model, Message } from "rsuite";
 import ErrorMessage from "customComponents/ErrorMessage";
 import NotificationAlert from "react-notification-alert";
 import "../assets/css/admin.css";
@@ -15,46 +15,46 @@ const AdminManager = () => {
   const [rePassword, setRePassword] = useState("");
   const [user, setUser] = useState([]);
   const [errors, setErrors] = useState({});
-
   const notificationAlertRef = React.useRef(null);
 
-  const validate = () => {
-    let tempErrors = {};
-    if (!name) {
-      tempErrors.name = "Name is required";
-    }
-    if (!email) {
-      tempErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      tempErrors.email = "Email is invalid";
-    }
-    if (!password) {
-      tempErrors.password = "Password is required";
-    } else if (password.length < 5) {
-      tempErrors.password = "Password must be at least 5 characters long";
-    }
-    if (!rePassword) {
-      tempErrors.rePassword = "Re-entered password is required";
-    } else if (password !== rePassword) {
-      tempErrors.rePassword = "Password do not match";
-    }
-    setErrors(tempErrors);
-    return Object.keys(tempErrors).length === 0;
-  };
+  const { StringType } = Schema.Types;
+  const model = Schema.Model({
+    adminName: StringType().isRequired("Admin field is required."),
+    email: StringType()
+      .isEmail("Please enter a valid email address.")
+      .isRequired("Email field is required."),
+    password: StringType()
+      .isRequired("Password field is required.")
+      .minLength(8, "Password must be at least 8 characters long."),
+    rePassword: StringType()
+      .isRequired("Re-enter Password field is required.")
+      .addRule((value, formData) => {
+        if (value !== formData.password) {
+          return "Passwords do not match.";
+        }
+      }, "Passwords do not match."),
+  });
 
   const handleSubmit = (e) => {
-    if (validate()) {
+    const validationErrors = model.validate({
+      adminName: name,
+      email,
+      password,
+      rePassword,
+    });
+ 
+      if (Object.keys(validationErrors).length === 0) {
       var data = new FormData();
       data.append("name", name);
       data.append("email", email);
       data.append("password", password);
 
       Http.PostAPI(process.env.REACT_APP_ADDADMINDATA, data, null)
+
         .then((res) => {
-          
           if (res?.data?.status) {
             setUser(res?.data?.data);
-           
+
             notificationAlertRef.current.notificationAlert(
               SuccessNotify(res?.data?.message)
             );
@@ -69,13 +69,14 @@ const AdminManager = () => {
             ErrorNotify("Something went wrong")
           );
         });
-      setName("");
-      setEmail("");
-      setPassword("");
-      setRePassword("");
-      setErrors({});
-      
+    } else {
+      setErrors(validationErrors);
     }
+    setName("");
+    setEmail("");
+    setPassword("");
+    setRePassword("");
+    setErrors({});
   };
 
   return (
@@ -89,6 +90,7 @@ const AdminManager = () => {
 
           <Form
             fluid
+            model={model}
             onSubmit={(e) => {
               handleSubmit(e);
             }}
@@ -104,7 +106,7 @@ const AdminManager = () => {
                   value={name}
                   onChange={(value) => setName(value)}
                 />
-                {errors.name && <ErrorMessage message={errors.name} />}
+                {errors.adminName && <Message>{errors.adminName}</Message>}
               </Form.Group>
               <Form.Group>
                 <Form.ControlLabel>ADMIN EMAIL</Form.ControlLabel>
@@ -115,7 +117,7 @@ const AdminManager = () => {
                   value={email}
                   onChange={(value) => setEmail(value)}
                 />
-                {errors.email && <ErrorMessage message={errors.email} />}
+                {errors.email && <Message>{errors.email}</Message>}
               </Form.Group>
 
               <Form.Group>
@@ -128,7 +130,7 @@ const AdminManager = () => {
                   value={password}
                   onChange={(value) => setPassword(value)}
                 />
-                {errors.password && <ErrorMessage message={errors.password} />}
+                {errors.password && <Message>{errors.password}</Message>}
               </Form.Group>
 
               <Form.Group>
@@ -141,9 +143,7 @@ const AdminManager = () => {
                   value={rePassword}
                   onChange={(value) => setRePassword(value)}
                 />
-                {errors.rePassword && (
-                  <ErrorMessage message={errors.rePassword} />
-                )}
+                {errors.rePassword && <Message>{errors.rePassword}</Message>}
               </Form.Group>
             </div>
             <ButtonComponent block buttontext="Submit" />

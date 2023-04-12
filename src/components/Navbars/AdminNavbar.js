@@ -37,8 +37,8 @@ function Header() {
   }, [history]);
 
   const handlerLogout = () => {
-    sessionStorage.removeItem("loggedIn");
-    history.push("/login");
+    // sessionStorage.removeItem("loggedIn");
+    // history.push("/login");
     setShowLogout(true);
   };
 
@@ -215,8 +215,9 @@ function Header() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <LogoutAlert showLogout={showLogout} setShowLogout={setShowLogout} />
+      <LogoutAlert showLogout={showLogout} setShowLogout={(e)=>setShowLogout(e)} />
     </>
+   
   );
 }
 
