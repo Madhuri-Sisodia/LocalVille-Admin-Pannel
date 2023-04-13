@@ -122,7 +122,9 @@ const BannerManager = () => {
                 onChange={(e) => {
                   setImageUrl(e.target.files[0]);
                 }}
+              
               />
+            
             </Form.Group>
             <Form.Group>
               <Form.ControlLabel>IMAGE REDIRECTION</Form.ControlLabel>
@@ -143,6 +145,7 @@ const BannerManager = () => {
                 <Form.Control
                   name="url"
                   type="url"
+                
                   onChange={(e) => handleFieldChange(e, "url")}
                 />
               </Form.Group>

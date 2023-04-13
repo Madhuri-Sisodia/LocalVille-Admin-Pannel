@@ -4,7 +4,8 @@ import SearchIcon from "@rsuite/icons/Search";
 import { Http } from "../../config/Service";
 import UpdateVendor from "./UpdateVendor";
 import { Utils } from "CommonUtils/Utils";
-import Paginte from "components/Paginate";
+import Paginate from "components/Paginate";
+import Pages from "components/Pages";
 import AddVendor from "./AddVendor";
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
@@ -36,7 +37,7 @@ const VendorsManager = () => {
   const [showAddVendor, setShowAddVendor] = useState(false);
   const [currentModalIdx, setCurrentModalIdx] = useState(null);
   const [selectedVendor, setSelectedVendor] = useState(null);
-  const { pageNo, setDisabledNext, pageView } = useContext(Utils);
+  const { pageNo, setDisabledNext, pageView,setPageView } = useContext(Utils);
 
   const [isLoading, setIsLoading] = useState(true);
   const notificationAlertRef = React.useRef(null);
@@ -61,7 +62,7 @@ const VendorsManager = () => {
     )
       .then((res) => {
         setIsLoading(false);
-
+console.log("respnse----->",res)
         if (res?.data?.status) {
           if (res.data.data.length > 0) {
             setData(res?.data?.data);
@@ -101,13 +102,7 @@ const VendorsManager = () => {
           setData(res?.data?.data);
           setDisabledNext(true);
           console.log("userr", res.data.data);
-          // if(res.data.data.length>0){
-          //   setData(res?.data?.data);
-          //   setDisabledNext(true)
-          // }
-          // else{
-          //   setDisabledNext(false)
-          // }
+        
         } else {
           // alert("Fields not matched");
         }
@@ -248,21 +243,20 @@ const VendorsManager = () => {
                       ))}
                     </tbody>
                   </Table>
+                
                 </Card.Body>
               )}
             </Card>
             {isLoading ? (
               ""
             ) : (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  textAlign: "center",
-                }}
-              >
-                <Paginte pages={totalPages} />
-              </div>
+              <Pages
+              currentPage={pageView} 
+              totalPages={totalPages} 
+              onPageChange={(page) => {
+                setPageView(page);
+              }}
+            />
             )}
           </Col>
         </Row>

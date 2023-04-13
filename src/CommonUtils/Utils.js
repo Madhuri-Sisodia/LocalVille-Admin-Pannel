@@ -6,7 +6,7 @@ export const Utils = createContext();
 const Context = ({ children }) => {
  const [Categoriesid,setCategoriesId] = useState("")
  const [disalbledNext,setDisabledNext] = useState(true)
- const [pageNo,setPageNo] = useState(0)
+ const [pageNo,setPageNo] = useState(1)
  const [Selectedcoordinates,setSelectedCoordinates] = useState({
   lat: null, 
   lng: null

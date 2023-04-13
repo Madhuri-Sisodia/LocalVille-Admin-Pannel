@@ -1,48 +1,42 @@
-import React, { useState,useContext } from "react";
+import React, { useState} from "react";
 import NotificationAlert from "react-notification-alert";
 import "../../assets/css/admin.css";
 import { Form, Button, ButtonToolbar, Dropdown } from "rsuite";
 import { Http } from "../../config/Service";
-import { useEffect } from "react";
-import { Utils } from "CommonUtils/Utils";
-import {SuccessNotify} from "components/NotificationShowPopUp";
-import {ErrorNotify} from "components/NotificationShowPopUp";
+import { SuccessNotify } from "components/NotificationShowPopUp";
+import { ErrorNotify } from "components/NotificationShowPopUp";
 
 const Section = () => {
   const [sectionName, setSectionName] = useState("");
-  const [selectSection, setSelectSection] = useState("");
-  const {setCategoriesId} = useContext(Utils)
-//   const [selectCategory, setSelectCategory] = useState("");
-  const [data, setData] = useState([]);
   const [category, setCategory] = useState([]);
-
   const notificationAlertRef = React.useRef(null);
 
-  
   const handleSubmit = () => {
+    var formdata = new FormData();
+    formdata.append("section_name", sectionName);
 
-        var formdata = new FormData();
-        formdata.append("section_name",sectionName );
-
-        Http.PostAPI(process.env.REACT_APP_ADDCATEGORYSECTION, formdata, null)
-        .then((res) => {
-          if (res?.data?.status) {
-            setCategory(res?.data?.data);
-            notificationAlertRef.current.notificationAlert(
-              SuccessNotify(res?.data?.message)
-            );
-          } else {
-            notificationAlertRef.current.notificationAlert(
-              ErrorNotify(res?.data?.message)
-            );
-          }
-        })
-        .catch((e) => {
+    Http.PostAPI(process.env.REACT_APP_ADDCATEGORYSECTION, formdata, null)
+      .then((res) => {
+        if (res?.data?.status) {
+          setCategory(res?.data?.data);
           notificationAlertRef.current.notificationAlert(
-            ErrorNotify("Something went wrong")
+            SuccessNotify(res?.data?.message)
           );
-        });
-        setSectionName("");
+
+        } else {
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
+          setSectionName("");
+        }
+       
+      })
+      .catch((e) => {
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
+      });
+  //  setSectionName("");
   };
 
   return (
@@ -54,42 +48,26 @@ const Section = () => {
         <div className="Container">
           <Form fluid onSubmit={handleSubmit}>
             <Form.Group controlId="name-1">
-            <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
+              <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
                 Add Category Section
               </Form.ControlLabel>
-              <input type="text" required
-              placeholder="Enter Category Section" onChange={(e)=>{ setSectionName(e.target.value)}} style={{width:"100%",height:"30px",borderRadius:"5px",padding:"10px",marginTop:"20px"}}/>
-               {/* <select
-                name="selectSection"
-                value={selectSection}
-                onChange={(event) => setSelectSection(event.target.value)}
-              >
-                <option value="">Select</option>
-                {data.map((category) => (
-                  <option key={category.id} value={category.section_name}>
-                    {category.section_name}
-                  </option>
-                ))}
-              </select> */}
+              <input
+                type="text"
+                required
+                value={sectionName}
+                placeholder="Enter Category Section"
+                onChange={(e) => {
+                  setSectionName(e.target.value);
+                }}
+                style={{
+                  width: "100%",
+                  height: "30px",
+                  borderRadius: "5px",
+                  padding: "10px",
+                  marginTop: "20px",
+                }}
+              />
             </Form.Group>
-            {/* <Form.Group controlId="name-1"> */}
-            {/* <div className="InnnerContainerCategory">
-              <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
-                Category Section Name
-              </Form.ControlLabel>
-              <select
-                name="selectCategory"
-                value={selectCategory}
-                onChange={(event) => setSelectCategory(event.target.value)}
-              >
-                <option value="">Select</option>
-                {data.map((category) => (
-                  <option key={category.id} value={category.section_name}>
-                    {category.section_name}
-                  </option>
-                ))}
-              </select>
-            </div> */}
 
             <Form.Group>
               <ButtonToolbar>

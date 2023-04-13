@@ -30,6 +30,7 @@
     "react-loader-spinner": "^5.1.5",
     "react-multi-select-component": "^4.3.4",
     "react-notification-alert": "0.0.13",
+    "react-paginate": "^8.2.0",
     "react-places-autocomplete": "^7.3.0",
     "react-quill": "^2.0.0",
     "react-router": "5.2.0",
