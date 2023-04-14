@@ -13,11 +13,8 @@ import { AiOutlineExclamation } from "react-icons/ai";
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
-<<<<<<< HEAD
-=======
 import Loading from "customComponents/Loading";
 import image from "assets/img/noStore.png";
->>>>>>> b43f690c46461b9b728f34076c4062827b180601
 
 import {
   Modal,
@@ -48,7 +45,7 @@ const Products = () => {
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState(null);
   const [showUpdateProduct, setShowUpdateProduct] = useState(false);
-  const { pageNo, setDisabledNext, pageView,setPageView } = useContext(Utils);
+  const { pageNo, setDisabledNext, pageView, setPageView } = useContext(Utils);
   const [blockReason, setBlockReason] = useState("");
   const notificationAlertRef = React.useRef(null);
 
@@ -189,7 +186,11 @@ const Products = () => {
                 <br></br>
               </Card.Header>
               {isLoading ? (
-                 <Loading isLoading={isLoading} noData={data?.length == 0} image={image}/>
+                <Loading
+                  isLoading={isLoading}
+                  noData={data?.length == 0}
+                  image={image}
+                />
               ) : (
                 <Card.Body className="table-full-width table-responsive px-0">
                   <Table
@@ -346,12 +347,12 @@ const Products = () => {
                 }}
               >
                 <Pagenate
-                currentPage={pageView}
-                totalPages={totalPages}
-                onPageChange={(page) => {
-                  setPageView(page);
-                }}
-              />
+                  currentPage={pageView}
+                  totalPages={totalPages}
+                  onPageChange={(page) => {
+                    setPageView(page);
+                  }}
+                />
               </div>
             )}
           </Col>
