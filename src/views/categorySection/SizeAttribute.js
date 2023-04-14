@@ -12,11 +12,8 @@ const SizeAttribute = () => {
   const [sizeAttributeName, setSizeAttributeName] = useState("");
   const [selectSizeAttribute, setSizeAttribute] = useState("");
   const { setCategoriesId } = useContext(Utils);
-  //   const [selectCategory, setSelectCategory] = useState("");
+
   const [data, setData] = useState([]);
-  //   const [category, setCategory] = useState([]);
-  //   const [category, setCategory] = useState([]);
-  // const [getCategoryData, setGetCategoryData] = useState([]);
 
   const notificationAlertRef = React.useRef(null);
 
@@ -64,6 +61,7 @@ const SizeAttribute = () => {
               </Form.ControlLabel>
               <input
                 type="text"
+                value={sizeAttributeName}
                 onChange={(e) => {
                   setSizeAttributeName(e.target.value);
                 }}
