@@ -6,7 +6,7 @@ import { BiBlock } from "react-icons/bi";
 import { MdClose } from "react-icons/md";
 import UpdateProducts from "./UpdateProducts";
 import AddProduct from "./AddProduct";
-import Paginte from "../../components/Paginate";
+import Pagenate from "../../components/Pagenate";
 import { Utils } from "CommonUtils/Utils";
 import "../../assets/css/admin.css";
 import { AiOutlineExclamation} from 'react-icons/ai';
@@ -45,7 +45,7 @@ const Products = () => {
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState(null);
   const [showUpdateProduct, setShowUpdateProduct] = useState(false);
-  const { pageNo, setDisabledNext, pageView } = useContext(Utils);
+  const { pageNo, setDisabledNext, pageView,setPageView } = useContext(Utils);
   const [blockReason, setBlockReason] = useState("");
   const notificationAlertRef = React.useRef(null);
 
@@ -345,7 +345,13 @@ const Products = () => {
                   textAlign: "center",
                 }}
               >
-                <Paginte pages={totalPages} />
+                <Pagenate
+                currentPage={pageView}
+                totalPages={totalPages}
+                onPageChange={(page) => {
+                  setPageView(page);
+                }}
+              />
               </div>
             )}
           </Col>

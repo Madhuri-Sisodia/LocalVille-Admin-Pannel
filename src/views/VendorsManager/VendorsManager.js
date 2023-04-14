@@ -4,8 +4,6 @@ import SearchIcon from "@rsuite/icons/Search";
 import { Http } from "../../config/Service";
 import UpdateVendor from "./UpdateVendor";
 import { Utils } from "CommonUtils/Utils";
-import Paginate from "components/Paginate";
-import Pages from "components/Pages";
 import AddVendor from "./AddVendor";
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
@@ -27,6 +25,7 @@ import {
   Col,
 } from "react-bootstrap";
 import BlockVendor from "./BlockVendor";
+import Pagenate from "components/Pagenate";
 
 const VendorsManager = () => {
   const [showModal, setShowModal] = useState(false);
@@ -37,7 +36,7 @@ const VendorsManager = () => {
   const [showAddVendor, setShowAddVendor] = useState(false);
   const [currentModalIdx, setCurrentModalIdx] = useState(null);
   const [selectedVendor, setSelectedVendor] = useState(null);
-  const { pageNo, setDisabledNext, pageView,setPageView } = useContext(Utils);
+  const { pageNo, setDisabledNext, pageView, setPageView } = useContext(Utils);
 
   const [isLoading, setIsLoading] = useState(true);
   const notificationAlertRef = React.useRef(null);
@@ -62,7 +61,7 @@ const VendorsManager = () => {
     )
       .then((res) => {
         setIsLoading(false);
-console.log("respnse----->",res)
+        console.log("respnse----->", res);
         if (res?.data?.status) {
           if (res.data.data.length > 0) {
             setData(res?.data?.data);
@@ -102,7 +101,6 @@ console.log("respnse----->",res)
           setData(res?.data?.data);
           setDisabledNext(true);
           console.log("userr", res.data.data);
-        
         } else {
           // alert("Fields not matched");
         }
@@ -158,10 +156,13 @@ console.log("respnse----->",res)
                   </InputGroup.Button>
                 </InputGroup>
                 <br></br>
-                
               </Card.Header>
               {isLoading ? (
-                <Loading isLoading={isLoading} noData={data?.length == 0} image={image} />
+                <Loading
+                  isLoading={isLoading}
+                  noData={data?.length == 0}
+                  image={image}
+                />
               ) : (
                 <Card.Body className="table-full-width table-responsive px-0">
                   <Table className="table-hover table-striped">
@@ -243,20 +244,19 @@ console.log("respnse----->",res)
                       ))}
                     </tbody>
                   </Table>
-                
                 </Card.Body>
               )}
             </Card>
             {isLoading ? (
               ""
             ) : (
-              <Pages
-              currentPage={pageView} 
-              totalPages={totalPages} 
-              onPageChange={(page) => {
-                setPageView(page);
-              }}
-            />
+              <Pagenate
+                currentPage={pageView}
+                totalPages={totalPages}
+                onPageChange={(page) => {
+                  setPageView(page);
+                }}
+              />
             )}
           </Col>
         </Row>

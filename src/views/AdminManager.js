@@ -36,14 +36,14 @@ const AdminManager = () => {
   });
 
   const handleSubmit = (e) => {
-    const validationErrors = model.validate({
-      adminName: name,
-      email,
-      password,
-      rePassword,
-    });
+    // const validationErrors = model.validate({
+    //   adminName: name,
+    //   email,
+    //   password,
+    //   rePassword,
+    // });
  
-      if (Object.keys(validationErrors).length === 0) {
+      // if (Object.keys(validationErrors).length === 0) {
       var data = new FormData();
       data.append("name", name);
       data.append("email", email);
@@ -69,9 +69,9 @@ const AdminManager = () => {
             ErrorNotify("Something went wrong")
           );
         });
-    } else {
-      setErrors(validationErrors);
-    }
+   
+      // setErrors(validationErrors);
+    
     setName("");
     setEmail("");
     setPassword("");

@@ -1,7 +1,7 @@
 import React from "react";
 import { Pagination } from "rsuite";
 
-const Pages = ({ totalPages, currentPage, onPageChange }) => {
+const Pagenate = ({ totalPages, currentPage, onPageChange }) => {
   const handlePageChange = (page) => {
     if (page !== currentPage) {
       onPageChange(page);
@@ -23,7 +23,7 @@ const Pages = ({ totalPages, currentPage, onPageChange }) => {
         next
         first
         last
-        total={100}
+        total={120}
         limit={totalPages}
         maxButtons={5}
         size="md"
@@ -46,4 +46,4 @@ const Pages = ({ totalPages, currentPage, onPageChange }) => {
   );
 };
 
-export default Pages;
+export default Pagenate;
