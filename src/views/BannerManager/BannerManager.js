@@ -55,33 +55,28 @@ const BannerManager = () => {
   const [showModal, setShowModal] = useState(false);
   const [blockData, setBlockData] = useState([]);
   const [addBanner, setAddBanner] = useState([]);
-  const [status, setStatus] = useState();
-  const [notifymessage, setNotifymessage] = useState();
   const notificationAlertRef = React.useRef(null);
 
- 
   const getBanner = () => {
     Http.GetAPI(process.env.REACT_APP_GETBANNER + "?" + Math.random(), data)
       .then((res) => {
         setIsLoading(false);
         if (res?.data?.status) {
           setData(res?.data?.data);
-        } 
+        }
       })
       .catch((e) => {
         setIsLoading(false);
         notificationAlertRef.current.notificationAlert(
           ErrorNotify("Something went wrong")
         );
-        
-       
       });
   };
 
   useEffect(() => {
     getBanner();
   }, []);
-  
+
   const resetForm = () => {
     setFormData({
       image: "",
@@ -92,13 +87,12 @@ const BannerManager = () => {
   };
 
   const handleSubmit = () => {
-  //  e.preventDefault();
-    let redirectImg
-    if(formData.redirect=="Yes"){
-            redirectImg = "1"
-    }
-    else{
-      redirectImg = "0"
+    //  e.preventDefault();
+    let redirectImg;
+    if (formData.redirect == "Yes") {
+      redirectImg = "1";
+    } else {
+      redirectImg = "0";
     }
 
     var data = new FormData();
@@ -129,15 +123,11 @@ const BannerManager = () => {
     resetForm();
   };
 
-  
-
-  const handleFieldChange = (e,name) => {
-    setFormData((previous)=>{
-      return {...previous,[name]:e}
+  const handleFieldChange = (e, name) => {
+    setFormData((previous) => {
+      return { ...previous, [name]: e };
     });
-   
   };
-  
 
   return (
     <>
@@ -163,7 +153,7 @@ const BannerManager = () => {
               <RadioGroup
                 name="redirect"
                 inline
-                onChange={(e) => handleFieldChange(e,'redirect')}
+                onChange={(e) => handleFieldChange(e, "redirect")}
                 required
               >
                 <Radio value="Yes">Yes</Radio>
@@ -176,15 +166,11 @@ const BannerManager = () => {
               <Form.Control
                 name="url"
                 type="url"
-                onChange={(e) => handleFieldChange(e,'url')}
+                onChange={(e) => handleFieldChange(e, "url")}
               />
             </Form.Group>
 
-           <ButtonComponent 
-          block 
-          buttontext="Submit"
-           />
-
+            <ButtonComponent block buttontext="Submit" />
 
             <div style={{ marginTop: "80px" }}>
               <Card
@@ -229,7 +215,7 @@ const BannerManager = () => {
                             />
                           </td>
                           <td style={{ textAlign: "center" }}>
-                            {(item.is_redirect == 1) ? "Yes" : "No"}
+                            {item.is_redirect == 1 ? "Yes" : "No"}
                           </td>
                           <td>{item.url}</td>
                           <td>

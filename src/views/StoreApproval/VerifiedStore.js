@@ -1,8 +1,22 @@
 import React, { useState } from "react";
 import { BiBlock } from "react-icons/bi";
 import { Http } from "../../config/Service";
-import {Modal, Form, Badge, Button, Card, Navbar, Nav, Table, Container, Row, Col } from "react-bootstrap";
-
+import {
+  Modal,
+  Form,
+  Badge,
+  Button,
+  Card,
+  Navbar,
+  Nav,
+  Table,
+  Container,
+  Row,
+  Col,
+} from "react-bootstrap";
+import NotificationAlert from "react-notification-alert";
+import { SuccessNotify } from "components/NotificationShowPopUp";
+import { ErrorNotify } from "components/NotificationShowPopUp";
 const VerifiedStore = ({
   showVerifiedStore,
   setShowVerifiedStore,
@@ -10,6 +24,7 @@ const VerifiedStore = ({
   getUnverifiedStore,
 }) => {
   const [updateStore, setUpdateStore] = useState([]);
+  const notificationAlertRef = React.useRef(null);
 
   const handleUpdateStore = (store) => {
     var data = new FormData();
@@ -20,18 +35,30 @@ const VerifiedStore = ({
         if (res?.data?.status) {
           setUpdateStore(res?.data?.data);
           getUnverifiedStore();
+          notificationAlertRef.current.notificationAlert(
+            SuccessNotify(res?.data?.message)
+          );
         } else {
-          alert("Fields not matched");
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
+          // alert("Fields not matched");
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
+        // alert("Something went wrong.");
         console.log("Error:", e);
       });
   };
 
   return (
     <>
+      <div className="rna-container">
+        <NotificationAlert ref={notificationAlertRef} />
+      </div>
       <Modal
         className="modal-mini modal-primary"
         show={showVerifiedStore}

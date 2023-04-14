@@ -9,11 +9,10 @@ import AddProduct from "./AddProduct";
 import Paginte from "../../components/Paginate";
 import { Utils } from "CommonUtils/Utils";
 import "../../assets/css/admin.css";
-import { AiOutlineExclamation} from 'react-icons/ai';
+import { AiOutlineExclamation } from "react-icons/ai";
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
-
 
 import {
   Modal,
@@ -50,11 +49,11 @@ const Products = () => {
 
   const verifiedProduct = (verify) => {
     if (verify == 2) {
-      return (<i className="fas fa-times" ></i>);
+      return <i className="fas fa-times"></i>;
     } else if (verify == 1) {
-      return (<i className="fas fa-check"></i>);
+      return <i className="fas fa-check"></i>;
     } else {
-      return (<AiOutlineExclamation className="pendingIcon"/>);
+      return <AiOutlineExclamation className="pendingIcon" />;
     }
   };
 
@@ -78,7 +77,6 @@ const Products = () => {
     )
       .then((res) => {
         if (res?.data?.status) {
-
           setTotalPages(res.data.total_pages);
           setData(res?.data?.data);
         } else {
@@ -105,7 +103,6 @@ const Products = () => {
         if (res?.data?.status) {
           setBlockProducts(res?.data?.data);
           getProducts();
-          
         } else {
           notificationAlertRef.current.notificationAlert(
             ErrorNotify(res?.data?.message)
@@ -128,7 +125,7 @@ const Products = () => {
       .then((res) => {
         if (res?.data?.status) {
           setData(res?.data?.data);
-          console.log("users",res.data.data)
+          console.log("users", res.data.data);
         } else {
           // alert("Fields not matched");
         }
@@ -141,11 +138,9 @@ const Products = () => {
       });
   };
 
-  const search = Debounce(filtervendor);
-
   return (
     <>
-        <div className="rna-container">
+      <div className="rna-container">
         <NotificationAlert ref={notificationAlertRef} />
       </div>
       <Container fluid>
@@ -204,7 +199,7 @@ const Products = () => {
                       <th className="border-0">SubCategory</th>
                       <th className="border-0"> buy</th>
                       <th className="border-0">Pickup</th>
-                      <th className="border-0">Total Clicks</th>                      
+                      <th className="border-0">Total Clicks</th>
                       <th className="border-0">Category Name</th>
                       <th className="border-0">SubCategory Name</th>
                       <th className="border-0">Color</th>
@@ -250,8 +245,7 @@ const Products = () => {
                         <td>{item.is_buy == 1 ? "Yes" : "No"}</td>
                         <td>{item.is_pickup == 1 ? "Yes" : "No"}</td>
                         <td>{item.total_clicks}</td>
-                        
-                        
+
                         <td>{item.category_name}</td>
                         <td>{item.subcategory_name}</td>
                         <td>{item.is_color == 1 ? "Yes" : "No"}</td>
@@ -260,7 +254,6 @@ const Products = () => {
                         <td>{item.discount_price}</td>
                         <td>{verifiedProduct(item.is_verified)}</td>
                         <td>
-
                           <div
                             style={{
                               backgroundColor:
@@ -291,7 +284,6 @@ const Products = () => {
                               onClick={() => {
                                 setShowDetailsModal(true);
                                 setRowData(item);
-                                
                               }}
                             >
                               <i className="fa fa-eye"></i>
@@ -304,7 +296,6 @@ const Products = () => {
                               onClick={() => {
                                 setSelectedProducts(item);
                                 setShowUpdateModal(true);
-                                
                               }}
                             >
                               <i className="fa fa-edit"></i>
@@ -316,7 +307,7 @@ const Products = () => {
                               variant="danger"
                               onClick={(e) => {
                                 setShowModal(true);
-                                
+
                                 // setShowDetailsModal(false);
                                 setBlockData(e.target.id);
                               }}
@@ -564,7 +555,7 @@ const Products = () => {
 
                     <tr>
                       <td className="bold-col">Stock:</td>
-                      <td>{attr.in_stock == "1"?"Yes":"No"}</td>
+                      <td>{attr.in_stock == "1" ? "Yes" : "No"}</td>
                     </tr>
 
                     <tr>

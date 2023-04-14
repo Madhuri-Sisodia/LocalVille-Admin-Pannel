@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Input, Whisper, Tooltip, InputGroup } from "rsuite";
 import { MdLocationPin } from "react-icons/md";
 import SearchIcon from "@rsuite/icons/Search";
@@ -23,10 +23,9 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
- import ViewStoreDetails from "./ViewStoreDetails";
- import VerifiedStore from "./VerifiedStore";
- import RejectStore from "./RejectStore";
-
+import ViewStoreDetails from "./ViewStoreDetails";
+import VerifiedStore from "./VerifiedStore";
+import RejectStore from "./RejectStore";
 
 const StoreApproval = () => {
   const [data, setData] = useState([]);
@@ -34,8 +33,8 @@ const StoreApproval = () => {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showRejectStore, setShowRejectStore] = useState(false);
   const [storeApproval, setStoreApproval] = useState(false);
-  const {pageNo,setDisabledNext,pageView} = useContext(Utils)
-  const [totalPages,setTotalPages] = useState(1)
+  const { pageNo, setDisabledNext, pageView } = useContext(Utils);
+  const [totalPages, setTotalPages] = useState(1);
   const [rowData, setRowData] = useState([]);
   const [store, setStore] = useState([]);
   const notificationAlertRef = React.useRef(null);
@@ -46,11 +45,15 @@ const StoreApproval = () => {
   };
 
   const getUnverifiedStore = () => {
-    Http.GetAPI(process.env.REACT_APP_GETUNVERIFIEDSTORE + "?" + `page=${pageView}`, data, null)
+    Http.GetAPI(
+      process.env.REACT_APP_GETUNVERIFIEDSTORE + "?" + `page=${pageView}`,
+      data,
+      null
+    )
       .then((res) => {
         if (res?.data?.status) {
           setData(res?.data?.data);
-          setTotalPages(res.data.total_pages)
+          setTotalPages(res.data.total_pages);
           setStoreApproval(false);
         } else {
           alert("Fields not matched");
@@ -69,7 +72,7 @@ const StoreApproval = () => {
 
   return (
     <>
-    <div className="rna-container">
+      <div className="rna-container">
         <NotificationAlert ref={notificationAlertRef} />
       </div>
       <Container fluid>
@@ -90,21 +93,22 @@ const StoreApproval = () => {
                 <br></br>
               </Card.Header>
               <Card.Body className="table-full-width table-responsive px-0">
-                <Table className="table-hover table-striped"
+                <Table
+                  className="table-hover table-striped"
                   responsive="xl"
                   style={{
                     width: "100%",
-                    textAlign:"center"
+                    textAlign: "center",
                   }}
                 >
                   <thead>
                     <tr>
-                      <th className="border-0" >ID</th>
-                      <th className="border-0" >Store Image</th>
-                      <th className="border-0" >Store Name</th>
-                      <th className="border-0" >Store Address</th>
-                      <th className="border-0" >Opening Days</th>
-                      <th className="border-0" >Get Location</th>
+                      <th className="border-0">ID</th>
+                      <th className="border-0">Store Image</th>
+                      <th className="border-0">Store Name</th>
+                      <th className="border-0">Store Address</th>
+                      <th className="border-0">Opening Days</th>
+                      <th className="border-0">Get Location</th>
                       <th className="border-0">Action</th>
                     </tr>
                   </thead>
@@ -127,11 +131,22 @@ const StoreApproval = () => {
                         <td>{item.store_address}</td>
                         {/* <td>{item.opening_days}</td> */}
                         <td>
-                          {item.opening_days.split(",").map((ele,index)=>(
-                            <div key={index}  className="day-circle" style={{marginTop:"20px",width:"15px",height:"15px",background:"lightgray",color:"black"}}>
-                                    {daysOfWeek[index] || ele}
-                             </div>
-                         ))}</td>
+                          {item.opening_days.split(",").map((ele, index) => (
+                            <div
+                              key={index}
+                              className="day-circle"
+                              style={{
+                                marginTop: "20px",
+                                width: "15px",
+                                height: "15px",
+                                background: "lightgray",
+                                color: "black",
+                              }}
+                            >
+                              {daysOfWeek[index] || ele}
+                            </div>
+                          ))}
+                        </td>
                         <td>
                           <MdLocationPin
                             style={{
@@ -186,9 +201,15 @@ const StoreApproval = () => {
                 </Table>
               </Card.Body>
             </Card>
-            <div style={{display:"flex",justifyContent:"center",textAlign:"center"}}>
-        <Paginte pages={totalPages}/>
-        </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                textAlign: "center",
+              }}
+            >
+              <Paginte pages={totalPages} />
+            </div>
           </Col>
         </Row>
 
@@ -196,7 +217,7 @@ const StoreApproval = () => {
           showVerifiedStore={showVerifiedStore}
           setShowVerifiedStore={setShowVerifiedStore}
           store={store}
-          getUnverifiedStore={()=>getUnverifiedStore()}
+          getUnverifiedStore={() => getUnverifiedStore()}
         />
 
         <ViewStoreDetails
@@ -207,14 +228,12 @@ const StoreApproval = () => {
         <RejectStore
           showRejectStore={showRejectStore}
           setShowRejectStore={setShowRejectStore}
-          getUnverifiedStore={()=>getUnverifiedStore()}
+          getUnverifiedStore={() => getUnverifiedStore()}
           store={store}
         />
-        
       </Container>
     </>
   );
 };
-
 
 export default StoreApproval;

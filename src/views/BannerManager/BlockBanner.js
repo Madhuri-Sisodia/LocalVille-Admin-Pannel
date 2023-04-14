@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { BiBlock } from "react-icons/bi";
 import { Http } from "../../config/Service";
-
+import NotificationAlert from "react-notification-alert";
+import { SuccessNotify } from "components/NotificationShowPopUp";
+import { ErrorNotify } from "components/NotificationShowPopUp";
 import {
   Modal,
   Form,
@@ -18,6 +20,7 @@ import {
 const BlockBanner = ({ showModal, setShowModal, blockData, getBanner }) => {
   const [blockBanner, setBlockBanner] = useState([]);
   const [blockReason, setBlockReason] = useState("");
+  const notificationAlertRef = React.useRef(null);
 
   const handleBlockBanner = (id) => {
     var data = new FormData();
@@ -29,18 +32,30 @@ const BlockBanner = ({ showModal, setShowModal, blockData, getBanner }) => {
         if (res?.data?.status) {
           setBlockBanner(res?.data?.data);
           getBanner();
+          notificationAlertRef.current.notificationAlert(
+            SuccessNotify(res?.data?.message)
+          );
         } else {
-          alert("Fields not matched");
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
+          // alert("Fields not matched");
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
+        // alert("Something went wrong.");
         console.log("Error:", e);
       });
   };
 
   return (
     <>
+      <div className="rna-container">
+        <NotificationAlert ref={notificationAlertRef} />
+      </div>
       <Modal
         className="modal-mini modal-primary"
         show={showModal}
