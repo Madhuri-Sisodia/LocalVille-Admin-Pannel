@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Pagination } from "rsuite";
+import "../assets/css/pagination.css";
 
-const Pagenate = ({ totalPages, currentPage, onPageChange }) => {
+const Pagenate = ({ totalPages, onChange }) => {
+  const [activePage, setActivePage] = useState(1);
+
   const handlePageChange = (page) => {
-    if (page !== currentPage) {
-      onPageChange(page);
-    }
+    setActivePage(page);
+    onChange(page);
   };
 
   return (
@@ -23,25 +25,15 @@ const Pagenate = ({ totalPages, currentPage, onPageChange }) => {
         next
         first
         last
-        total={120}
-        limit={totalPages}
+        total={totalPages}
         maxButtons={5}
         size="md"
-        activePage={currentPage}
-        totalPages={totalPages}
+        activePage={activePage}
+        pages={totalPages}
         onSelect={handlePageChange}
+        className="mobile-pagination"
       />
-      {/* Media queries for mobile screens
-      <style jsx>{`
-        @media (max-width: 360px) {
-          .rs-pagination {
-            font-size: 12px;
-          }
-          .rs-pagination-btn-group button {
-            padding: 0 4px;
-          }
-        }
-      `}</style> */}
+  
     </div>
   );
 };

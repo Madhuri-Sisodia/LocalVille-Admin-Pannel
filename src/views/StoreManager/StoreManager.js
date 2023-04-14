@@ -8,7 +8,7 @@ import "../../assets/css/day.css";
 import UpdateStore from "./UpdateStore";
 import AddStore from "./AddStore";
 import MAPDays from "./MAPDays";
-import Paginate from "../../components/Paginate";
+import Pagenate from "../../components/Pagenate";
 import { Utils } from "CommonUtils/Utils";
 import "./Store.css";
 import NotificationAlert from "react-notification-alert";
@@ -47,7 +47,7 @@ const StoreManager = () => {
   const [selectedStore, setSelectedStore] = useState(null);
   const [storeAdded, setAddStored] = useState(false);
   const [days, setDays] = useState([]);
-  const { pageNo, setDisabledNext, pageView } = useContext(Utils);
+  const { pageNo, setDisabledNext, pageView,setPageView } = useContext(Utils);
   const [totalPages, setTotalPages] = useState(1);
   const notificationAlertRef = React.useRef(null);
   let parseDays;
@@ -101,6 +101,11 @@ const StoreManager = () => {
   useEffect(() => {
     getStore();
   }, [pageView]);
+
+  const handlePageChange = (page) => {
+    setPageView(page);
+    getStore();
+  };
 
   const filtervendor = (e) => {
     Http.GetAPI(
@@ -364,15 +369,7 @@ const StoreManager = () => {
         {isLoading ? (
           ""
         ) : (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              textAlign: "center",
-            }}
-          >
-            <Paginate pages={totalPages} />
-          </div>
+          <Pagenate totalPages={totalPages} onChange={handlePageChange} />
         )}
       </Container>
       <UpdateStore

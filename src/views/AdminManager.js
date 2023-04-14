@@ -36,25 +36,24 @@ const AdminManager = () => {
   });
 
   const handleSubmit = (e) => {
-    // const validationErrors = model.validate({
-    //   adminName: name,
-    //   email,
-    //   password,
-    //   rePassword,
-    // });
- 
-      // if (Object.keys(validationErrors).length === 0) {
+    e.preventDefault();
+    const validationErrors = model.validate({
+      adminName: name,
+      email,
+      password,
+      rePassword,
+    });
+
+    if (Object.keys(validationErrors).length === 0) {
       var data = new FormData();
       data.append("name", name);
       data.append("email", email);
       data.append("password", password);
 
       Http.PostAPI(process.env.REACT_APP_ADDADMINDATA, data, null)
-
         .then((res) => {
           if (res?.data?.status) {
             setUser(res?.data?.data);
-
             notificationAlertRef.current.notificationAlert(
               SuccessNotify(res?.data?.message)
             );
@@ -69,14 +68,16 @@ const AdminManager = () => {
             ErrorNotify("Something went wrong")
           );
         });
+          setName("");
+          setEmail("");
+          setPassword("");
+          setRePassword("");
+          setErrors({});
+        
+    } else {
+      setErrors(validationErrors);
+    }
    
-      // setErrors(validationErrors);
-    
-    setName("");
-    setEmail("");
-    setPassword("");
-    setRePassword("");
-    setErrors({});
   };
 
   return (

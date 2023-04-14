@@ -4,7 +4,7 @@ import { MdLocationPin } from "react-icons/md";
 import SearchIcon from "@rsuite/icons/Search";
 import { Http } from "../../config/Service";
 import "../../assets/css/modal.css";
-import Paginte from "components/Paginate";
+import Pagenate from "components/Pagenate";
 import { Utils } from "CommonUtils/Utils";
 import NotificationAlert from "react-notification-alert";
 import { ErrorNotify } from "components/NotificationShowPopUp";
@@ -34,7 +34,7 @@ const StoreApproval = () => {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showRejectStore, setShowRejectStore] = useState(false);
   const [storeApproval, setStoreApproval] = useState(false);
-  const { pageNo, setDisabledNext, pageView } = useContext(Utils);
+  const { pageNo, setDisabledNext, pageView, setPageView } = useContext(Utils);
   const [totalPages, setTotalPages] = useState(1);
   const [rowData, setRowData] = useState([]);
   const [store, setStore] = useState([]);
@@ -53,6 +53,7 @@ const StoreApproval = () => {
     )
       .then((res) => {
         setIsLoading(false);
+
         if (res?.data?.status) {
           setData(res?.data?.data);
           setTotalPages(res.data.total_pages);
@@ -74,6 +75,11 @@ const StoreApproval = () => {
   useEffect(() => {
     getUnverifiedStore();
   }, [pageView]);
+
+  const handlePageChange = (page) => {
+    setPageView(page);
+    getUnverifiedStore();
+  };
 
   return (
     <>
@@ -98,7 +104,7 @@ const StoreApproval = () => {
                 <br></br>
               </Card.Header>
               {isLoading ? (
-                 <Loading isLoading={isLoading} noData={data?.length == 0} />
+                <Loading isLoading={isLoading} noData={data?.length == 0} />
               ) : (
                 <Card.Body className="table-full-width table-responsive px-0">
                   <Table
@@ -213,15 +219,7 @@ const StoreApproval = () => {
             {isLoading ? (
               ""
             ) : (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  textAlign: "center",
-                }}
-              >
-                <Paginte pages={totalPages} />
-              </div>
+              <Pagenate totalPages={totalPages} onChange={handlePageChange} />
             )}
           </Col>
         </Row>

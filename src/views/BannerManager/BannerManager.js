@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Http } from "../../config/Service";
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 
-import { Form, Radio, RadioGroup, Button } from "rsuite";
+import { Form, Radio, RadioGroup, Button, Uploader } from "rsuite";
 import { Table, Card, Col } from "react-bootstrap";
 
 import "../../assets/css/admin.css";
@@ -27,6 +27,7 @@ const BannerManager = () => {
   const [blockData, setBlockData] = useState([]);
   const [addBanner, setAddBanner] = useState([]);
   const notificationAlertRef = React.useRef(null);
+  const fileInputRef = useRef(null);
 
   const getBanner = () => {
     Http.GetAPI(process.env.REACT_APP_GETBANNER + "?" + Math.random(), data)
@@ -58,13 +59,15 @@ const BannerManager = () => {
       redirect: "",
       url: "",
     });
-    setImageUrl("");
+
+    fileInputRef.current.value = "";
+    setImageUrl(null);
   };
 
   const handleSubmit = () => {
     //  e.preventDefault();
     let redirectImg;
-    if (formData.redirect == "Yes") {
+    if (formData.redirect) {
       redirectImg = "1";
     } else {
       redirectImg = "0";
@@ -84,7 +87,6 @@ const BannerManager = () => {
           notificationAlertRef.current.notificationAlert(
             SuccessNotify(res?.data?.message)
           );
-          resetForm();
         } else {
           notificationAlertRef.current.notificationAlert(
             ErrorNotify(res?.data?.message)
@@ -96,11 +98,12 @@ const BannerManager = () => {
           ErrorNotify("Something went wrong")
         );
       });
+    resetForm();
   };
 
-  const handleFieldChange = (e, name) => {
+  const handleFieldChange = (value, name) => {
     setFormData((previous) => {
-      return { ...previous, [name]: e };
+      return { ...previous, [name]: value };
     });
   };
 
@@ -114,6 +117,7 @@ const BannerManager = () => {
           <Form fluid onSubmit={handleSubmit}>
             <Form.Group>
               <Form.ControlLabel htmlFor="file">IMAGE</Form.ControlLabel>
+
               <input
                 type="file"
                 name="imageUrl"
@@ -122,20 +126,21 @@ const BannerManager = () => {
                 onChange={(e) => {
                   setImageUrl(e.target.files[0]);
                 }}
-              
+                ref={fileInputRef}
               />
-            
             </Form.Group>
+
             <Form.Group>
               <Form.ControlLabel>IMAGE REDIRECTION</Form.ControlLabel>
               <RadioGroup
                 name="redirect"
                 inline
-                onChange={(e) => handleFieldChange(e, "redirect")}
+                onChange={(value) => handleFieldChange(value, "redirect")}
+                value={formData.redirect}
                 required
               >
-                <Radio value="1">Yes</Radio>
-                <Radio value="0">No</Radio>
+                <Radio value={true}>Yes</Radio>
+                <Radio value={false}>No</Radio>
               </RadioGroup>
             </Form.Group>
 
@@ -145,8 +150,8 @@ const BannerManager = () => {
                 <Form.Control
                   name="url"
                   type="url"
-                
-                  onChange={(e) => handleFieldChange(e, "url")}
+                  value={formData.url}
+                  onChange={(value) => handleFieldChange(value, "url")}
                 />
               </Form.Group>
             )}

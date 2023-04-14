@@ -63,7 +63,7 @@ const ActiveBanner = ({
             variant="danger"
             onClick={() => {
               handleBlockBanner(blockData);
-              setShowModal(false);
+              setShowActiveModal(false);
             }}
           >
             Active
