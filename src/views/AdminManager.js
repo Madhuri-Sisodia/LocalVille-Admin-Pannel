@@ -113,7 +113,6 @@ const AdminManager = () => {
                   placeholder="Admin Name"
                   name="adminName"
                   value={name}
-                  onBlur={validate}
                   onChange={(value) => setName(value)}
                   className={
                     errors.name ? "form-control is-invalid" : "form-control"
@@ -128,7 +127,6 @@ const AdminManager = () => {
                   name="email"
                   type="email"
                   value={email}
-                  onBlur={validate}
                   onChange={(value) => setEmail(value)}
                   className={
                     errors.email ? "form-control is-invalid" : "form-control"
@@ -145,7 +143,6 @@ const AdminManager = () => {
                   placeholder="Enter Password"
                   autoComplete="off"
                   value={password}
-                  onBlur={validate}
                   onChange={(value) => setPassword(value)}
                   className={
                     errors.password ? "form-control is-invalid" : "form-control"
@@ -162,7 +159,6 @@ const AdminManager = () => {
                   placeholder="Re-enter Password"
                   autoComplete="off"
                   value={rePassword}
-                  onBlur={validate}
                   onChange={(value) => setRePassword(value)}
                   className={
                     errors.rePassword

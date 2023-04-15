@@ -5,20 +5,21 @@ import {
   Form,
   Button,
   ButtonToolbar,
+  Avatar,
   Dropdown,
   RadioGroup,
   Radio,
 } from "rsuite";
-import { Http } from "../../config/Service"; 
+import { Http } from "../../config/Service";
 import { useEffect } from "react";
 import { Utils } from "CommonUtils/Utils";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
-
+import Modal from "rsuite/Modal";
 const SubCategory = () => {
   const [subCategoryName, setSubCategoryName] = useState("");
   const [selectCategory, setSelectCategory] = useState("");
-  const [selectSizeAttribute,setSelectSizeAttribute]=useState("");
+  const [selectSizeAttribute, setSelectSizeAttribute] = useState("");
   const [color, setColor] = useState(1);
   const [size, setSize] = useState(1);
   const [sizeData, setSizeData] = useState([]);
@@ -27,6 +28,7 @@ const SubCategory = () => {
   const [subCategory, setSubCategory] = useState([]);
   const { Categoriesid } = useContext(Utils);
   const notificationAlertRef = React.useRef(null);
+  const [imageUrl, setImageUrl] = useState("");
 
   useEffect(() => {
     Http.GetAPI(
@@ -50,13 +52,13 @@ const SubCategory = () => {
     const SelectedCategory = data.filter((ele) => {
       return ele.name == selectCategory;
     });
-    
+
     const selectedAttribute = sizeData.filter((ele) => {
       return ele.attr_name == selectSizeAttribute;
     });
 
-    const id = SelectedCategory[0]?.id ? SelectedCategory[0]?.id:0;
-    const attrId = selectedAttribute[0]?.id ? selectedAttribute[0]?.id:0;
+    const id = SelectedCategory[0]?.id ? SelectedCategory[0]?.id : 0;
+    const attrId = selectedAttribute[0]?.id ? selectedAttribute[0]?.id : 0;
 
     var formdata = new FormData();
     formdata.append("category_id", `${id}`);
@@ -117,8 +119,6 @@ const SubCategory = () => {
       });
   }, []);
 
-
-
   return (
     <>
       <div className="rna-container">
@@ -149,7 +149,6 @@ const SubCategory = () => {
                 </Form.ControlLabel>
                 <select
                   name="selectCategory"
-                 
                   value={selectCategory}
                   onChange={(event) => setSelectCategory(event.target.value)}
                   style={{
@@ -239,8 +238,8 @@ const SubCategory = () => {
                           <select
                             name="selectSizeAttribute"
                             value={selectSizeAttribute}
-                            onChange={(event) =>{
-                              setSelectSizeAttribute(event.target.value)
+                            onChange={(event) => {
+                              setSelectSizeAttribute(event.target.value);
                             }}
                             style={{
                               height: "30px",
@@ -267,12 +266,38 @@ const SubCategory = () => {
                 </div>
               </div>
             </Form.Group>
+            <Form.ControlLabel
+              style={{
+                color: "#808080",
+                fontSize: "0.9rem",
+                marginTop: "1em",
+                PaddingTop: "20px",
+              }}
+            >
+              Add Image
+            </Form.ControlLabel>
+            <Form.Group>
+              {/* <Avatar
+                onClick={handleOpen}
+                style={{ marginTop: "0.5rem", width: "3em", height: "3em" }}
+              ></Avatar> */}
+              <input
+                type="file"
+                name="imageUrl"
+                required
+                accept="image/jpeg, image/png, image/jpg"
+                onChange={(e) => {
+                  setImageUrl(e.target.files[0]);
+                }}
+              />
+            </Form.Group>
+
             <Form.Group>
               <ButtonToolbar>
                 <Button
                   appearance="primary"
                   type="submit"
-                  style={{ marginTop: "3rem", marginBottom: "0.5rem" }}
+                  style={{ marginTop: "1rem", marginBottom: "0.5rem" }}
                   block
                   onClick={handleSubmit}
                 >

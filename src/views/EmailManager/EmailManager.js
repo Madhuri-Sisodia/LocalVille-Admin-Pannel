@@ -3,7 +3,7 @@ import React from "react";
 import { Form } from "rsuite";
 import ErrorMessage from "customComponents/ErrorMessage";
 import "../../assets/css/admin.css";
-import MultipleSelect from "components/multipleSelect";
+import MultipleSelect from "components/MultipleSelect";
 import { Http } from "config/Service";
 import MyComponent from "components/React-Quil-text-Editor";
 import { Data } from "@react-google-maps/api";
@@ -16,6 +16,7 @@ const EmailManager = () => {
   const [selectedVendors, setSelectedVendors] = useState([]);
   const [image, setImage] = useState("");
   const [title, setTitle] = useState("");
+  const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [data, setData] = useState([]);
   const notificationAlertRef = React.useRef(null);
@@ -81,10 +82,20 @@ const EmailManager = () => {
               />
             </Form.Group>
             <Form.Group>
+              <Form.ControlLabel>SUBJECT</Form.ControlLabel>
+              <Form.Control
+                placeholder="Subject"
+                name="subject"
+                value={subject}
+                onChange={(value) => setSubject(value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group>
               <Form.ControlLabel>MESSAGE</Form.ControlLabel>
               <MyComponent />
             </Form.Group>
-            <ButtonComponent  buttontext="Submit" />
+            <ButtonComponent buttontext="Submit" />
           </Form>
         </div>
       </div>

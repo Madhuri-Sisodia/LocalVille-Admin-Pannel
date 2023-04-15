@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import NotificationAlert from "react-notification-alert";
 import "../../assets/css/admin.css";
-import { Form, Button, ButtonToolbar } from "rsuite";
+import { Form, Button, ButtonToolbar, Placeholder, Avatar } from "rsuite";
 import { Http } from "../../config/Service";
 import { useEffect, useContext } from "react";
 import { Utils } from "CommonUtils/Utils";
@@ -14,8 +14,8 @@ const Category = () => {
   const [data, setData] = useState([]);
   const [category, setCategory] = useState([]);
   const { setCategoriesId } = useContext(Utils);
-
   const notificationAlertRef = React.useRef(null);
+  const [imageUrl, setImageUrl] = useState("");
 
   const handleSubmit = () => {
     const SelectedSection = data.filter((ele) => {
@@ -59,6 +59,7 @@ const Category = () => {
       null
     )
       .then((res) => {
+        console.log(res?.data?.data);
         if (res?.data?.status) {
           setData(res?.data?.data);
         }
@@ -136,6 +137,34 @@ const Category = () => {
                 required="setCategoryName"
                 onChange={(value) => setCategoryName(value)}
               />
+              <Form.ControlLabel
+                style={{
+                  color: "#808080",
+                  fontSize: "0.9rem",
+                  marginTop: "2em",
+                  PaddingTop: "20px",
+                }}
+              >
+                Add Image
+              </Form.ControlLabel>
+              <ButtonToolbar>
+                {/* <Avatar
+                  onClick={handleOpen}
+                  style={{ marginTop: "0.5rem", width: "3em", height: "3em" }}
+                ></Avatar> */}
+              </ButtonToolbar>
+            </Form.Group>
+
+            <Form.Group>
+              <input
+                type="file"
+                name="imageUrl"
+                required
+                accept="image/jpeg, image/png, image/jpg"
+                onChange={(e) => {
+                  setImageUrl(e.target.files[0]);
+                }}
+              />
             </Form.Group>
             <Form.Group>
               <ButtonToolbar>
@@ -154,6 +183,7 @@ const Category = () => {
       </div>
     </>
   );
+  ReactDOM.render(<App />, document.getElementById("root"));
 };
 
 export default Category;

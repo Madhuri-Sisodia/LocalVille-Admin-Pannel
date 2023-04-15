@@ -5,7 +5,7 @@ import "../assets/css/admin.css";
 import NotificationAlert from "react-notification-alert";
 import { Http } from "config/Service";
 import ButtonComponent from "./ButtonComponent";
-import MultipleSelect from "components/multipleSelect";
+import MultipleSelect from "components/MultipleSelect";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 

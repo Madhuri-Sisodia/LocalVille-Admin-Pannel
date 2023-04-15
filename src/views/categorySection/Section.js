@@ -1,15 +1,18 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import NotificationAlert from "react-notification-alert";
 import "../../assets/css/admin.css";
-import { Form, Button, ButtonToolbar, Dropdown } from "rsuite";
+import { Form, Button, ButtonToolbar, Avatar, Dropdown } from "rsuite";
 import { Http } from "../../config/Service";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
+import Modal from "rsuite/Modal";
+import { Uploader } from "rsuite";
 
 const Section = () => {
   const [sectionName, setSectionName] = useState("");
   const [category, setCategory] = useState([]);
   const notificationAlertRef = React.useRef(null);
+  const [imageUrl, setImageUrl] = useState("");
 
   const handleSubmit = () => {
     var formdata = new FormData();
@@ -22,21 +25,19 @@ const Section = () => {
           notificationAlertRef.current.notificationAlert(
             SuccessNotify(res?.data?.message)
           );
-
         } else {
           notificationAlertRef.current.notificationAlert(
             ErrorNotify(res?.data?.message)
           );
           setSectionName("");
         }
-       
       })
       .catch((e) => {
         notificationAlertRef.current.notificationAlert(
           ErrorNotify("Something went wrong")
         );
       });
-  //  setSectionName("");
+    //  setSectionName("");
   };
 
   return (
@@ -68,13 +69,34 @@ const Section = () => {
                 }}
               />
             </Form.Group>
+            <Form.ControlLabel
+              style={{
+                color: "#808080",
+                fontSize: "0.9rem",
+                marginTop: "1em",
+                PaddingTop: "20px",
+              }}
+            >
+              Add Image
+            </Form.ControlLabel>
+            <Form.Group>
+              <input
+                type="file"
+                name="imageUrl"
+                required
+                accept="image/jpeg, image/png, image/jpg"
+                onChange={(e) => {
+                  setImageUrl(e.target.files[0]);
+                }}
+              />
+            </Form.Group>
 
             <Form.Group>
               <ButtonToolbar>
                 <Button
                   appearance="primary"
                   type="submit"
-                  style={{ marginTop: "3rem", marginBottom: "0.5rem" }}
+                  style={{ marginTop: "1rem", marginBottom: "0.5rem" }}
                   block
                 >
                   Submit
