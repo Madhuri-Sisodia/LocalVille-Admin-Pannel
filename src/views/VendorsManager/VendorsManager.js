@@ -112,173 +112,177 @@ const VendorsManager = () => {
         );
       });
   };
-
+  const search = Debounce(filtervendor);
   return (
     <>
       <div className="rna-container">
         <NotificationAlert ref={notificationAlertRef} />
       </div>
-      <Container fluid>
-        <Row>
-          <Col md="12">
-            <Card className="strpied-tabled-with-hover">
-              <Card.Header>
-                <button
-                  type="submit"
-                  style={{
-                    backgroundColor: "blueviolet",
-                    border: "blueviolet",
-                    borderRadius: "4px",
-                    float: "right",
-                    padding: "9px 19px",
-                    color: "white",
-                  }}
-                  onClick={() => {
-                    setShowAddVendor(true);
-                  }}
-                >
-                  Add Vendors
-                </button>
-
-                <Card.Title as="h4">Vendors Manager</Card.Title>
-
-                <p className="card-category">Vendors details and action</p>
-                <br></br>
-                <InputGroup style={{ width: "250px" }}>
-                  <Input
-                    placeholder="Search"
-                    onChange={(e) => {
-                      search(e);
+      {data.length === 0 ? (
+        <img width={400} height={400} src={image} alt="vendor data Image" />
+      ) : (
+        <Container fluid>
+          <Row>
+            <Col md="12">
+              <Card className="strpied-tabled-with-hover">
+                <Card.Header>
+                  <button
+                    type="submit"
+                    style={{
+                      backgroundColor: "blueviolet",
+                      border: "blueviolet",
+                      borderRadius: "4px",
+                      float: "right",
+                      padding: "9px 19px",
+                      color: "white",
                     }}
-                  />
-                  <InputGroup.Button>
-                    <SearchIcon />
-                  </InputGroup.Button>
-                </InputGroup>
-                <br></br>
-              </Card.Header>
-              {isLoading ? (
-                <Loading
-                  isLoading={isLoading}
-                  noData={data?.length == 0}
-                  image={image}
-                />
-              ) : (
-                <Card.Body className="table-full-width table-responsive px-0">
-                  <Table className="table-hover table-striped">
-                    <thead>
-                      <tr>
-                        <th className="border-0">ID</th>
-                        <th className="border-0">Vendor Image</th>
-                        <th className="border-0">Vendor Name</th>
-                        <th className="border-0">Email</th>
-                        <th className="border-0">Phone</th>
-                        <th className="border-0">Status</th>
-                        <th className="border-0">Login Count</th>
-                        <th className="border-0">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {data.map((item, index) => (
-                        <tr style={{ fontSize: "0.95rem" }} key={item.id}>
-                          <td>{item.id}</td>
-                          <td>
-                            <img
-                              src={item.user_image}
-                              alt="image"
-                              style={{
-                                width: "50px",
-                                height: "50px",
-                                borderRadius: "50%",
-                              }}
-                            />
-                          </td>
-                          <td>{item.name}</td>
-                          <td>{item.email}</td>
-                          <td>{item.phone}</td>
-                          <td>
-                            <div
-                              style={{
-                                backgroundColor:
-                                  item.active == "1" ? "green" : "red",
-                                border: "none",
-                                fontSize: "0.75rem",
-                                color: "white",
-                                padding: "3px 10px",
-                                borderRadius: "17px",
-                                display: "inline-block",
-                              }}
-                            >
-                              {item.active == "1" ? "active" : "block"}
-                            </div>
-                          </td>
-                          <td>{item.login_count}</td>
-                          <td>
-                            <Button
-                              className="btn-simple btn-link p-1"
-                              type="button"
-                              variant="primary"
-                              onClick={() => {
-                                setSelectedVendor(item);
-                                setShowUpdateModal(true);
-                              }}
-                            >
-                              <i className="fas fa-edit"></i>
-                            </Button>
+                    onClick={() => {
+                      setShowAddVendor(true);
+                    }}
+                  >
+                    Add Vendors
+                  </button>
 
-                            {item?.active == "1" && (
+                  <Card.Title as="h4">Vendors Manager</Card.Title>
+
+                  <p className="card-category">Vendors details and action</p>
+                  <br></br>
+                  <InputGroup style={{ width: "250px" }}>
+                    <Input
+                      placeholder="Search"
+                      onChange={(e) => {
+                        search(e);
+                      }}
+                    />
+                    <InputGroup.Button>
+                      <SearchIcon />
+                    </InputGroup.Button>
+                  </InputGroup>
+                  <br></br>
+                </Card.Header>
+                {isLoading ? (
+                  <Loading
+                    isLoading={isLoading}
+                    noData={data?.length == 0}
+                    image={image}
+                  />
+                ) : (
+                  <Card.Body className="table-full-width table-responsive px-0">
+                    <Table className="table-hover table-striped">
+                      <thead>
+                        <tr>
+                          <th className="border-0">ID</th>
+                          <th className="border-0">Vendor Image</th>
+                          <th className="border-0">Vendor Name</th>
+                          <th className="border-0">Email</th>
+                          <th className="border-0">Phone</th>
+                          <th className="border-0">Status</th>
+                          <th className="border-0">Login Count</th>
+                          <th className="border-0">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {data.map((item, index) => (
+                          <tr style={{ fontSize: "0.95rem" }} key={item.id}>
+                            <td>{item.id}</td>
+                            <td>
+                              <img
+                                src={item.user_image}
+                                alt="image"
+                                style={{
+                                  width: "50px",
+                                  height: "50px",
+                                  borderRadius: "50%",
+                                }}
+                              />
+                            </td>
+                            <td>{item.name}</td>
+                            <td>{item.email}</td>
+                            <td>{item.phone}</td>
+                            <td>
+                              <div
+                                style={{
+                                  backgroundColor:
+                                    item.active == "1" ? "green" : "red",
+                                  border: "none",
+                                  fontSize: "0.75rem",
+                                  color: "white",
+                                  padding: "3px 10px",
+                                  borderRadius: "17px",
+                                  display: "inline-block",
+                                }}
+                              >
+                                {item.active == "1" ? "active" : "block"}
+                              </div>
+                            </td>
+                            <td>{item.login_count}</td>
+                            <td>
                               <Button
                                 className="btn-simple btn-link p-1"
                                 type="button"
-                                variant="danger"
+                                variant="primary"
                                 onClick={() => {
-                                  setShowModal(true);
-                                  setBlockData(item.id);
+                                  setSelectedVendor(item);
+                                  setShowUpdateModal(true);
                                 }}
                               >
-                                <i className="fas fa-times"></i>
+                                <i className="fas fa-edit"></i>
                               </Button>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                </Card.Body>
-              )}
-            </Card>
-            {isLoading ? (
-              ""
-            ) : (
-              <Pagenate
-                currentPage={pageView}
-                totalPages={totalPages}
-                onPageChange={(page) => {
-                  setPageView(page);
-                }}
-              />
-            )}
-          </Col>
-        </Row>
 
-        <UpdateVendor
-          showUpdateModal={showUpdateModal}
-          setShowUpdateModal={setShowUpdateModal}
-          item={selectedVendor}
-          getVendors={getVendors}
-        />
-        <AddVendor
-          showAddVendor={showAddVendor}
-          setShowAddVendor={setShowAddVendor}
-          getVendors={getVendors}
-        />
-        <BlockVendor
-          showModal={showModal}
-          setShowModal={setShowModal}
-          blockData={blockData}
-          getVendors={getVendors}
-        />
-      </Container>
+                              {item?.active == "1" && (
+                                <Button
+                                  className="btn-simple btn-link p-1"
+                                  type="button"
+                                  variant="danger"
+                                  onClick={() => {
+                                    setShowModal(true);
+                                    setBlockData(item.id);
+                                  }}
+                                >
+                                  <i className="fas fa-times"></i>
+                                </Button>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  </Card.Body>
+                )}
+              </Card>
+              {isLoading ? (
+                ""
+              ) : (
+                <Pagenate
+                  currentPage={pageView}
+                  totalPages={totalPages}
+                  onPageChange={(page) => {
+                    setPageView(page);
+                  }}
+                />
+              )}
+            </Col>
+          </Row>
+
+          <UpdateVendor
+            showUpdateModal={showUpdateModal}
+            setShowUpdateModal={setShowUpdateModal}
+            item={selectedVendor}
+            getVendors={getVendors}
+          />
+          <AddVendor
+            showAddVendor={showAddVendor}
+            setShowAddVendor={setShowAddVendor}
+            getVendors={getVendors}
+          />
+          <BlockVendor
+            showModal={showModal}
+            setShowModal={setShowModal}
+            blockData={blockData}
+            getVendors={getVendors}
+          />
+        </Container>
+      )}
     </>
   );
 };

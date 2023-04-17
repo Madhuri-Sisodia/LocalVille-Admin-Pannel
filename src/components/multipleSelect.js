@@ -22,8 +22,8 @@ const MultipleSelect = ({ data, selectedVendors, setSelectedVendors }) => {
       <MultiSelect
         options={options}
         value={selectedVendors}
-        onChange={(e) => {
-          setSelectedVendors(e);
+        onChange={(value) => {
+          setSelectedVendors(value);
         }}
         labelledBy="Select"
       />

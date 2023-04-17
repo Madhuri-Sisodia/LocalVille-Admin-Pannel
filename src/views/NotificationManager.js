@@ -16,7 +16,6 @@ const NotificationManager = () => {
   const [message, setMessage] = useState("");
   const [addNotification, setAddNotification] = useState([]);
   const [vendorData, setVendorData] = useState([]);
-
   const notificationAlertRef = React.useRef(null);
 
   const getVendors = () => {
@@ -42,7 +41,11 @@ const NotificationManager = () => {
     let arr = [];
 
     // const id = vendorid[0].id;
-
+    // if (formData.image == "Yes") {
+    //   image = "1";
+    // } else {
+    //   image = "0";
+    // }
     var data = new FormData();
     for (let i = 0; i < vendorData.length; i++) {
       for (let j = 0; j < selectedVendors.length; j++) {
@@ -60,6 +63,7 @@ const NotificationManager = () => {
       .then((res) => {
         if (res?.data?.status) {
           setAddNotification(res?.data?.data);
+          getVendors();
           notificationAlertRef.current.notificationAlert(
             SuccessNotify(res?.data?.message)
           );
@@ -78,7 +82,6 @@ const NotificationManager = () => {
     setImage("");
     setTitle("");
     setMessage("");
-    notify("tr");
   };
 
   return (
@@ -117,7 +120,7 @@ const NotificationManager = () => {
               <input
                 name="image"
                 type="file"
-                accept="image/*"
+                accept="image/jpeg, image/png, image/jpg"
                 onChange={(e) => setImage(e.target.files[0])}
               />
             </Form.Group>

@@ -18,18 +18,20 @@ const EmailManager = () => {
   const [title, setTitle] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
-  const [data, setData] = useState([]);
+  const [addemail, setAddemail] = useState([]);
+  const [emailData, setEmailData] = useState([]);
   const notificationAlertRef = React.useRef(null);
 
   const getVendors = () => {
     Http.GetAPI(
       process.env.REACT_APP_GETVENDORSDATA + "?" + Math.random(),
-      data,
-      null
+      ""
+      // data,
+      // null
     )
       .then((res) => {
         if (res?.data?.status) {
-          setData(res?.data?.data);
+          setEmailData(res?.data?.data);
         } else {
           // alert("Fields not matched");
         }
@@ -47,7 +49,46 @@ const EmailManager = () => {
   }, []);
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
+
+    var data = new FormData();
+    for (let i = 0; i < emailData.length; i++) {
+      for (let j = 0; j < selectedVendors.length; j++) {
+        if (emailData[i].email == selectedVendors[j].value) {
+          data.append("vendors[]", emailData[i].id);
+        }
+      }
+    }
+
+    // data.append("vendors_field", selectedVendors && selectedVendors?.vendors);
+    data.append("title", title);
+    data.append("subject", subject);
+    data.append("message", message);
+
+    Http.PostAPI(process.env.REACT_APP_POSTEMAIL, data)
+      .then((res) => {
+        console.log(res?.data);
+        if (res?.data?.status) {
+          setAddemail(res?.data?.data);
+          getVendors();
+          notificationAlertRef.current.notificationAlert(
+            SuccessNotify(res?.data?.message)
+          );
+        } else {
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
+        }
+      })
+      .catch((e) => {
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
+      });
+    setSelectedVendors("");
+    setTitle("");
+    setSubject("");
+    setMessage("");
   };
 
   return (
@@ -66,7 +107,7 @@ const EmailManager = () => {
             <Form.Group>
               <Form.ControlLabel>VENDORS</Form.ControlLabel>
               <MultipleSelect
-                data={data}
+                data={emailData}
                 setSelectedVendors={setSelectedVendors}
                 selectedVendors={selectedVendors}
               />
@@ -93,7 +134,7 @@ const EmailManager = () => {
             </Form.Group>
             <Form.Group>
               <Form.ControlLabel>MESSAGE</Form.ControlLabel>
-              <MyComponent />
+              <MyComponent setMessage={setMessage} message={message} />
             </Form.Group>
             <ButtonComponent buttontext="Submit" />
           </Form>
