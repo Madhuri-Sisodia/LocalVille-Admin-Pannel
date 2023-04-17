@@ -120,6 +120,7 @@ const AddProduct = ({
 
     Http.PostAPI(process.env.REACT_APP_UPDATEPRODUCTS, data, null)
       .then((res) => {
+        console.log("response....",res);
         if (res?.data?.status) {
           setProduct(res?.data?.data);
           getProducts();
@@ -173,6 +174,21 @@ const AddProduct = ({
             <Form>
               <Form.Group>
                 <Form.Label className="add-label">Product Image</Form.Label>
+                <div>
+                  <img
+                    src={
+                      productData?.productImage
+                        ? productData?.productImage
+                        : item.theme_img
+                    }
+                    alt="image"
+                    style={{
+                      width: "50px",
+                      height: "50px",
+                      borderRadius: "50%",
+                    }}
+                  />
+                </div>
                 <Form.Control
                   name="productImage"
                   multiple
@@ -183,7 +199,9 @@ const AddProduct = ({
                   }}
                   type="file"
                 ></Form.Control>
+              </Form.Group>
 
+              <Form.Group>
                 <Form.Label className="add-label">Product Name</Form.Label>
                 <Form.Control
                   name="productName"

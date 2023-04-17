@@ -6,7 +6,6 @@ import UpdateVendor from "./UpdateVendor";
 import { Utils } from "CommonUtils/Utils";
 import AddVendor from "./AddVendor";
 import NotificationAlert from "react-notification-alert";
-import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 import Loading from "customComponents/Loading";
 import image from "assets/img/noVendor.png";
@@ -61,7 +60,7 @@ const VendorsManager = () => {
     )
       .then((res) => {
         setIsLoading(false);
-      
+
         if (res?.data?.status) {
           if (res.data.data.length > 0) {
             setData(res?.data?.data);

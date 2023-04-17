@@ -47,7 +47,7 @@ const StoreManager = () => {
   const [selectedStore, setSelectedStore] = useState(null);
   const [storeAdded, setAddStored] = useState(false);
   const [days, setDays] = useState([]);
-  const { pageNo, setDisabledNext, pageView,setPageView } = useContext(Utils);
+  const { pageNo, setDisabledNext, pageView, setPageView } = useContext(Utils);
   const [totalPages, setTotalPages] = useState(1);
   const notificationAlertRef = React.useRef(null);
   let parseDays;
@@ -178,7 +178,11 @@ const StoreManager = () => {
                 <br></br>
               </Card.Header>
               {isLoading ? (
-                <Loading isLoading={isLoading} noData={data?.length == 0} image={image} />
+                <Loading
+                  isLoading={isLoading}
+                  noData={data?.length == 0}
+                  image={image}
+                />
               ) : (
                 <Card.Body className="table-full-width table-responsive px-0">
                   <Table
@@ -197,8 +201,8 @@ const StoreManager = () => {
                         <th className="border-0">Vendor ID</th>
                         <th className="border-0">Store Image</th>
                         <th className="border-0">Store Name</th>
-                        <th className="border-0">Store Address</th>
                         <th className="border-0">Store Description</th>
+                        <th className="border-0">Store Address</th>
                         <th className="border-0">Pincode</th>
                         <th className="border-0">City</th>
                         <th className="border-0">State</th>
@@ -238,13 +242,13 @@ const StoreManager = () => {
                             />
                           </td>
                           <td title={item.store_name}>
-                            {item.store_name.slice(0, 5)}
+                            {item.store_name.slice(0, 10)}
                           </td>
                           <td title={item.store_desc}>
-                            {item.store_desc.slice(0, 8)}
+                            {item.store_desc.slice(0, 14)}
                           </td>
                           <td title={item.store_address}>
-                            {item.store_address.slice(0, 10)}
+                            {item.store_address.slice(0, 14)}
                           </td>
                           <td>{item.pincode}</td>
                           <td>{item.city}</td>

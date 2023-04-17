@@ -34,7 +34,7 @@ const StoreApproval = () => {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showRejectStore, setShowRejectStore] = useState(false);
   const [storeApproval, setStoreApproval] = useState(false);
-  const { pageNo, setDisabledNext, pageView, setPageView } = useContext(Utils);
+  const { pageView, setPageView } = useContext(Utils);
   const [totalPages, setTotalPages] = useState(1);
   const [rowData, setRowData] = useState([]);
   const [store, setStore] = useState([]);

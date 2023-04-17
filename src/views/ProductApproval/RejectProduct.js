@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { Http } from "../../config/Service";
+import NotificationAlert from "react-notification-alert";
+import { ErrorNotify } from "components/NotificationShowPopUp";
+import { SuccessNotify } from "components/NotificationShowPopUp";
 
 import {
   Modal,
@@ -23,6 +26,7 @@ const RejectProduct = ({
 }) => {
   const [updateProduct, setUpdateProduct] = useState([]);
   const [rejectReason, setRejectReason] = useState("");
+  const notificationAlertRef = React.useRef(null);
 
   const handleRejectProduct = (product) => {
     var data = new FormData();
@@ -34,18 +38,27 @@ const RejectProduct = ({
         if (res?.data?.status) {
           setUpdateProduct(res?.data?.data);
           getUnverifiedProduct();
+          notificationAlertRef.current.notificationAlert(
+            SuccessNotify(res?.data?.message)
+          );
         } else {
-          alert("Fields not matched");
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something Went Wrong")
+        );
       });
   };
 
   return (
     <>
+      <div className="rna-container">
+        <NotificationAlert ref={notificationAlertRef} />
+      </div>
       <Modal
         className="modal-mini modal-primary"
         show={showRejectProduct}

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { BiBlock } from "react-icons/bi";
 import { Http } from "../../config/Service";
-
+import NotificationAlert from "react-notification-alert";
+import { ErrorNotify } from "components/NotificationShowPopUp";
+import { SuccessNotify } from "components/NotificationShowPopUp";
 import {
   Modal,
   Form,
@@ -23,6 +25,7 @@ const VerifyProduct = ({
   getUnverifiedProduct,
 }) => {
   const [updateProduct, setUpdateProduct] = useState([]);
+  const notificationAlertRef = React.useRef(null);
 
   const handleUpdateProduct = (product) => {
     var data = new FormData();
@@ -33,18 +36,27 @@ const VerifyProduct = ({
         if (res?.data?.status) {
           setUpdateProduct(res?.data?.data);
           getUnverifiedProduct();
+          notificationAlertRef.current.notificationAlert(
+            SuccessNotify(res?.data?.message)
+          );
         } else {
-          alert("Fields not matched");
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something Went Wrong")
+        );
       });
   };
 
   return (
     <>
+      <div className="rna-container">
+        <NotificationAlert ref={notificationAlertRef} />
+      </div>
       <Modal
         className="modal-mini modal-primary"
         show={showVerifiedProduct}
@@ -52,7 +64,7 @@ const VerifyProduct = ({
       >
         <Modal.Header className="justify-content-center">
           <div className="modal-profile">
-          <i className="nc-icon nc-check-2"></i>
+            <i className="nc-icon nc-check-2"></i>
           </div>
         </Modal.Header>
         <Modal.Body className="text-center">

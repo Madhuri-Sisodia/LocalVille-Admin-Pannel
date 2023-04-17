@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { Http } from "../../config/Service";
+import NotificationAlert from "react-notification-alert";
+import { ErrorNotify } from "components/NotificationShowPopUp";
+import { SuccessNotify } from "components/NotificationShowPopUp";
 
 import {
   Modal,
@@ -19,9 +22,11 @@ const RejectStore = ({
   showRejectStore,
   setShowRejectStore,
   store,
-  getUnverifiedStore
+  getUnverifiedStore,
 }) => {
   const [updateStore, setUpdateStore] = useState([]);
+  const notificationAlertRef = React.useRef(null);
+
   const [blockReason, setBlockReason] = useState("");
   const handleRejectStore = (store) => {
     var data = new FormData();
@@ -33,18 +38,27 @@ const RejectStore = ({
         if (res?.data?.status) {
           setUpdateStore(res?.data?.data);
           getUnverifiedStore();
+          notificationAlertRef.current.notificationAlert(
+            SuccessNotify(res?.data?.message)
+          );
         } else {
-          alert("Fields not matched");
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something Went Wrong")
+        );
       });
   };
 
   return (
     <>
+      <div className="rna-container">
+        <NotificationAlert ref={notificationAlertRef} />
+      </div>
       <Modal
         className="modal-mini modal-primary"
         show={showRejectStore}

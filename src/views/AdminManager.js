@@ -7,6 +7,7 @@ import { Http } from "../config/Service";
 import ButtonComponent from "views/ButtonComponent";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
+import  validationModel  from "../components/Validation";
 
 const AdminManager = () => {
   const [name, setName] = useState("");
@@ -17,34 +18,42 @@ const AdminManager = () => {
   const [errors, setErrors] = useState({});
   const notificationAlertRef = React.useRef(null);
 
-  const { StringType } = Schema.Types;
-  const model = Schema.Model({
-    adminName: StringType().isRequired("Admin field is required."),
-    email: StringType()
-      .isEmail("Please enter a valid email address.")
-      .isRequired("Email field is required."),
-    password: StringType()
-      .isRequired("Password field is required.")
-      .minLength(8, "Password must be at least 8 characters long."),
-    rePassword: StringType()
-      .isRequired("Re-enter Password field is required.")
-      .addRule((value, formData) => {
-        if (value !== formData.password) {
-          return "Passwords do not match.";
-        }
-      }, "Passwords do not match."),
-  });
+  // const { StringType } = Schema.Types;
+  // const model = Schema.Model({
+  //   adminName: StringType().isRequired("Admin field is required."),
+  //   email: StringType()
+  //     .isEmail("Please enter a valid email address.")
+  //     .isRequired("Email field is required."),
+  //   password: StringType()
+  //     .isRequired("Password field is required.")
+  //     .minLength(8, "Password must be at least 8 characters long."),
+  //   rePassword: StringType()
+  //     .isRequired("Re-enter Password field is required.")
+  //     .addRule((value, formData) => {
+  //       if (value !== formData.password) {
+  //         return "Passwords do not match.";
+  //       }
+  //     }, "Passwords do not match."),
+  // });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const validationErrors = model.validate({
-      adminName: name,
-      email,
-      password,
-      rePassword,
-    });
+    const formValue = { adminName: name, email, password, rePassword };
+    const validationErrors = validationModel.check(formValue);
+    if (validationErrors) {
+      setErrors(validationErrors);
+      return;
+    } else {
+      setErrors({});
+    }
+    // const validationErrors = model.validate({
+    //   adminName: name,
+    //   email,
+    //   password,
+    //   rePassword,
+    // });
 
-    if (Object.keys(validationErrors).length === 0) {
+    // if (Object.keys(validationErrors).length === 0) {
       var data = new FormData();
       data.append("name", name);
       data.append("email", email);
@@ -74,9 +83,9 @@ const AdminManager = () => {
           setRePassword("");
           setErrors({});
         
-    } else {
-      setErrors(validationErrors);
-    }
+    // } else {
+    //   setErrors(validationErrors);
+    // }
    
   };
 
@@ -91,7 +100,7 @@ const AdminManager = () => {
 
           <Form
             fluid
-            model={model}
+            model={validationModel}
             onSubmit={(e) => {
               handleSubmit(e);
             }}
