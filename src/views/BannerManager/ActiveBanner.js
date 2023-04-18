@@ -26,6 +26,9 @@ const ActiveBanner = ({
         if (res?.data?.status) {
           setBlockBanner(res?.data?.data);
           getBanner();
+          notificationAlertRef.current.notificationAlert(
+            SuccessNotify(res?.data?.message)
+          );
         } else {
           notificationAlertRef.current.notificationAlert(
             ErrorNotify(res?.data?.message)
@@ -34,7 +37,7 @@ const ActiveBanner = ({
       })
       .catch((e) => {
         notificationAlertRef.current.notificationAlert(
-          ErrorNotify(res?.data?.message)
+          ErrorNotify("Something Went Wrong")
         );
       });
   };

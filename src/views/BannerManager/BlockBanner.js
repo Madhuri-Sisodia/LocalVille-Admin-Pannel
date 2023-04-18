@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BiBlock } from "react-icons/bi";
 import { Http } from "../../config/Service";
-
+import { SuccessNotify} from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 import NotificationAlert from "react-notification-alert";
 
@@ -22,6 +22,9 @@ const BlockBanner = ({ showModal, setShowModal, blockData, getBanner }) => {
         if (res?.data?.status) {
           setBlockBanner(res?.data?.data);
           getBanner();
+          notificationAlertRef.current.notificationAlert(
+            SuccessNotify(res?.data?.message)
+          );
         } else {
           notificationAlertRef.current.notificationAlert(
             ErrorNotify(res?.data?.message)
@@ -30,7 +33,7 @@ const BlockBanner = ({ showModal, setShowModal, blockData, getBanner }) => {
       })
       .catch((e) => {
         notificationAlertRef.current.notificationAlert(
-          ErrorNotify(res?.data?.message)
+          ErrorNotify("Something Went Wrong")
         );
       });
   };
@@ -66,6 +69,7 @@ const BlockBanner = ({ showModal, setShowModal, blockData, getBanner }) => {
             maxLength={200}
             value={blockReason}
             onChange={(event) => setBlockReason(event.target.value)}
+            required
           />
         </Modal.Body>
         <div className="modal-footer">

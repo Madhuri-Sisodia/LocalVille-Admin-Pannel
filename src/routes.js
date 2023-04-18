@@ -9,6 +9,7 @@ import Maps from "views/Maps.js";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Notifications from "views/Notifications.js";
 import AdminManager from "views/AdminManager";
+import Addmin from "views/Addmin";
 
 import Category from "views/categorySection/index.js";
 import StoreManager from "views/StoreManager/StoreManager";
@@ -36,6 +37,13 @@ const dashboardRoutes = [
     component: AdminManager,
     layout: "/admin",
   },
+  // {
+  //   path: "/addmin",
+  //   name: "Addmin",
+  //   icon: "nc-icon nc-single-02",
+  //   component: Addmin,
+  //   layout: "/admin",
+  // },
 
   {
     path: "/banner",

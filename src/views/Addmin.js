@@ -9,7 +9,7 @@ import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 import validationModel from "../components/Validation";
 
-const AdminManager = () => {
+const Addmin = () => {
   const [formValue, setFormValue] = useState({
     aName: "",
     email: "",
@@ -31,7 +31,7 @@ const AdminManager = () => {
 
     if (!formRef.current.check()) {
       console.log("FORM ERROR!");
-      //  setFormError(validationModel)
+
       return;
     } else {
       console.log("form....", formValue);
@@ -58,17 +58,15 @@ const AdminManager = () => {
             ErrorNotify("Something went wrong")
           );
         });
-      setFormValue({
-        aName: "",
-        email: "",
-        password: "",
-        rePassword: "",
-      });
-      // setFormError(validationModel)
 
-      //  formRef.current.reset();
-      // formRef.current.state.formValue = "";
+      //   setFormValue({
+      //     aName: "",
+      //     email: "",
+      //     password: "",
+      //     rePassword: "",
+      //   });
     }
+    formRef.current.state.formValue = "";
   };
 
   return (
@@ -141,4 +139,4 @@ const AdminManager = () => {
   );
 };
 
-export default AdminManager;
+export default Addmin;
