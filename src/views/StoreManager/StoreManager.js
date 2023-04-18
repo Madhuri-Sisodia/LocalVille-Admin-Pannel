@@ -135,54 +135,60 @@ const StoreManager = () => {
       <div className="rna-container">
         <NotificationAlert ref={notificationAlertRef} />
       </div>
-      {data.length === 0 ? (
-        <img width={400} height={400} src={image} alt="store data Image" />
-      ) : (
-        <Container fluid>
-          <Row>
-            <Col md="12">
-              <Card className="strpied-tabled-with-hover">
-                <Card.Header>
-                  <button
-                    type="submit"
-                    style={{
-                      backgroundColor: "blueviolet",
-                      border: "blueviolet",
-                      borderRadius: "4px",
-                      float: "right",
-                      padding: "9px 19px",
-                      color: "white",
+
+      <Container fluid>
+        <Row>
+          <Col md="12">
+            <Card className="strpied-tabled-with-hover">
+              <Card.Header>
+                <button
+                  type="submit"
+                  style={{
+                    backgroundColor: "blueviolet",
+                    border: "blueviolet",
+                    borderRadius: "4px",
+                    float: "right",
+                    padding: "9px 19px",
+                    color: "white",
+                  }}
+                  onClick={() => {
+                    setShowAddStore(true);
+                  }}
+                >
+                  Add Stores
+                </button>
+                <Card.Title as="h4">Store Manager</Card.Title>
+                <p className="card-category">Store details and action</p>
+                <br></br>
+                <InputGroup style={{ width: "250px" }}>
+                  <Input
+                    placeholder="Search"
+                    onChange={(e) => {
+                      search(e);
                     }}
-                    onClick={() => {
-                      setShowAddStore(true);
-                    }}
-                  >
-                    Add Stores
-                  </button>
-                  <Card.Title as="h4">Store Manager</Card.Title>
-                  <p className="card-category">Store details and action</p>
-                  <br></br>
-                  <InputGroup style={{ width: "250px" }}>
-                    <Input
-                      placeholder="Search"
-                      onChange={(e) => {
-                        search(e);
-                      }}
-                    />
-                    <InputGroup.Button>
-                      <SearchIcon />
-                    </InputGroup.Button>
-                  </InputGroup>
-                  <br></br>
-                </Card.Header>
-                {isLoading ? (
-                  <Loading
-                    isLoading={isLoading}
-                    noData={data?.length == 0}
-                    image={image}
                   />
-                ) : (
-                  <Card.Body className="table-full-width table-responsive px-0">
+                  <InputGroup.Button>
+                    <SearchIcon />
+                  </InputGroup.Button>
+                </InputGroup>
+                <br></br>
+              </Card.Header>
+              {isLoading ? (
+                <Loading
+                  isLoading={isLoading}
+                  noData={data?.length == 0}
+                  image={image}
+                />
+              ) : (
+                <Card.Body className="table-full-width table-responsive px-0">
+                  {data.length === 0 ? (
+                    <img
+                      width={400}
+                      height={400}
+                      src={image}
+                      alt="store data Image"
+                    />
+                  ) : (
                     <Table
                       responsive="xl"
                       style={{
@@ -365,26 +371,27 @@ const StoreManager = () => {
                         ))}
                       </tbody>
                     </Table>
-                  </Card.Body>
-                )}
-              </Card>
-            </Col>
-          </Row>
-          {isLoading ? (
-            ""
-          ) : (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                textAlign: "center",
-              }}
-            >
-              <Paginate pages={totalPages} />
-            </div>
-          )}
-        </Container>
-      )}
+                  )}
+                </Card.Body>
+              )}
+            </Card>
+          </Col>
+        </Row>
+        {isLoading ? (
+          ""
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              textAlign: "center",
+            }}
+          >
+            <Paginate pages={totalPages} />
+          </div>
+        )}
+      </Container>
+
       <UpdateStore
         showUpdateStore={showUpdateStore}
         setShowUpdateStore={setShowUpdateStore}

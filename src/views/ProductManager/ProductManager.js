@@ -151,51 +151,57 @@ const Products = () => {
       <div className="rna-container">
         <NotificationAlert ref={notificationAlertRef} />
       </div>
-      {data.length === 0 ? (
-        <img width={400} height={400} src={image} alt="product data Image" />
-      ) : (
-        <Container fluid>
-          <Row>
-            <Col md="12">
-              <Card className="strpied-tabled-with-hover">
-                <Card.Header>
-                  <Button
-                    className="btn-fill float-right"
-                    style={{
-                      backgroundColor: "blueviolet",
-                      borderColor: "blueviolet",
+
+      <Container fluid>
+        <Row>
+          <Col md="12">
+            <Card className="strpied-tabled-with-hover">
+              <Card.Header>
+                <Button
+                  className="btn-fill float-right"
+                  style={{
+                    backgroundColor: "blueviolet",
+                    borderColor: "blueviolet",
+                  }}
+                  type="submit"
+                  onClick={() => {
+                    setShowAddProduct(true);
+                  }}
+                >
+                  Add Products
+                </Button>
+                <Card.Title as="h4">Product Manager</Card.Title>
+                <p className="card-category">product details and action</p>
+                <br></br>
+                <InputGroup style={{ width: "250px" }}>
+                  <Input
+                    placeholder="Search"
+                    onChange={(e) => {
+                      search(e);
                     }}
-                    type="submit"
-                    onClick={() => {
-                      setShowAddProduct(true);
-                    }}
-                  >
-                    Add Products
-                  </Button>
-                  <Card.Title as="h4">Product Manager</Card.Title>
-                  <p className="card-category">product details and action</p>
-                  <br></br>
-                  <InputGroup style={{ width: "250px" }}>
-                    <Input
-                      placeholder="Search"
-                      onChange={(e) => {
-                        search(e);
-                      }}
-                    />
-                    <InputGroup.Button>
-                      <SearchIcon />
-                    </InputGroup.Button>
-                  </InputGroup>
-                  <br></br>
-                </Card.Header>
-                {isLoading ? (
-                  <Loading
-                    isLoading={isLoading}
-                    noData={data?.length == 0}
-                    image={image}
                   />
-                ) : (
-                  <Card.Body className="table-full-width table-responsive px-0">
+                  <InputGroup.Button>
+                    <SearchIcon />
+                  </InputGroup.Button>
+                </InputGroup>
+                <br></br>
+              </Card.Header>
+              {isLoading ? (
+                <Loading
+                  isLoading={isLoading}
+                  noData={data?.length == 0}
+                  image={image}
+                />
+              ) : (
+                <Card.Body className="table-full-width table-responsive px-0">
+                  {data.length === 0 ? (
+                    <img
+                      width={400}
+                      height={400}
+                      src={image}
+                      alt="product data Image"
+                    />
+                  ) : (
                     <Table
                       responsive="xl"
                       style={{
@@ -336,310 +342,308 @@ const Products = () => {
                         ))}
                       </tbody>
                     </Table>
-                  </Card.Body>
-                )}
-              </Card>
-              {isLoading ? (
-                ""
-              ) : (
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    textAlign: "center",
-                  }}
-                >
-                  <Pagenate
-                    currentPage={pageView}
-                    totalPages={totalPages}
-                    onPageChange={(page) => {
-                      setPageView(page);
-                    }}
-                  />
-                </div>
+                  )}
+                </Card.Body>
               )}
-            </Col>
-          </Row>
-          <UpdateProducts
-            showUpdateModal={showUpdateModal}
-            setShowUpdateModal={setShowUpdateModal}
-            item={selectedProducts}
-            getProducts={getProducts}
-          />
-          <AddProduct
-            showAddProduct={showAddProduct}
-            setShowAddProduct={setShowAddProduct}
-            getProducts={getProducts}
-          />
-          <Modal
-            className="modal-mini modal-primary"
-            show={showModal}
-            onHide={() => setShowModal(false)}
-          >
-            <Modal.Header className="justify-content-center">
-              <div className="modal-profile">
-                <BiBlock
-                  style={{
-                    fontSize: "30px",
-                    marginBottom: "14px",
-                    color: "gray",
+            </Card>
+            {isLoading ? (
+              ""
+            ) : (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  textAlign: "center",
+                }}
+              >
+                <Pagenate
+                  currentPage={pageView}
+                  totalPages={totalPages}
+                  onPageChange={(page) => {
+                    setPageView(page);
                   }}
                 />
               </div>
-            </Modal.Header>
-            <Modal.Body className="text-center">
-              <p>Are you sure you want to block this Product?</p>
-              <Form.Control
-                componentClass="textarea"
-                rows={3}
-                style={{ fontSize: "0.9rem", height: "70px" }}
-                placeholder="Enter Reason"
-                maxLength={200}
-                value={blockReason}
-                onChange={(event) => setBlockReason(event.target.value)}
-              />
-            </Modal.Body>
-            <div className="modal-footer">
-              <Button
-                //  id= {item.id}
-                className="btn-simple"
-                variant="danger"
-                onClick={() => {
-                  handleBlockProducts(blockData);
-                  setShowModal(false);
-                }}
-              >
-                Block
-              </Button>
-              <Button
-                className="btn-simple"
-                type="button"
-                variant="secondary"
-                onClick={() => setShowModal(false)}
-              >
-                Close
-              </Button>
-            </div>
-          </Modal>
-
-          <Modal
-            show={showDetailsModal}
-            onHide={() => setShowDetailsModal(false)}
-          >
-            <Modal.Header style={{ borderBottom: "1px solid gray" }}>
-              <Modal.Title className="title">View Product Details</Modal.Title>
-              <MdClose
-                className="close-icon"
-                onClick={() => setShowDetailsModal(false)}
-              />
-            </Modal.Header>
-
-            <Modal.Body className="body">
-              <Table striped bordered className="table">
-                <tbody>
-                  <tr>
-                    <td className="bold-col">Uploader Vendor ID:</td>
-                    <td>{rowData.uploader_vendor_id}</td>
-                  </tr>
-                  <tr>
-                    <td className="bold-col">Product Image:</td>
-                    <td>
-                      <img
-                        src={rowData.theme_img}
-                        alt={rowData.product_name}
-                        style={{
-                          width: "40px",
-                          height: "40px",
-                          borderRadius: "50%",
-                        }}
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="bold-col">Product Name:</td>
-                    <td>{rowData.product_name}</td>
-                  </tr>
-                  <tr>
-                    <td className="bold-col" style={{ whiteSpace: "nowrap" }}>
-                      Product Description:
-                    </td>
-                    <td>{rowData.product_desc}</td>
-                  </tr>
-                  <tr>
-                    <td className="bold-col" style={{ whiteSpace: "nowrap" }}>
-                      Category
-                    </td>
-                    <td>{rowData.category_name}</td>
-                  </tr>
-                  <tr>
-                    <td className="bold-col">SubCategory:</td>
-                    <td>{rowData.subcategory_name}</td>
-                  </tr>
-                  <tr>
-                    <td className="bold-col">Is buy:</td>
-                    <td>{rowData.is_buy == "1" ? "Yes" : "No"}</td>
-                  </tr>
-                  <tr>
-                    <td className="bold-col">Is Pickup:</td>
-                    <td>{rowData.is_pickup == "1" ? "Yes" : "No"}</td>
-                  </tr>
-                  <tr>
-                    <td className="bold-col">Total Clicks:</td>
-                    <td>{rowData.total_clicks}</td>
-                  </tr>
-                  <tr>
-                    <td className="bold-col">Product Status:</td>
-                    <td
-                      style={{
-                        backgroundColor:
-                          rowData.is_verified == "1"
-                            ? "green"
-                            : rowData.is_verified == "0"
-                            ? "orange"
-                            : "red",
-                        border: "none",
-                        fontSize: "0.75rem",
-                        color: "white",
-                        padding: "0px 7px",
-                        borderRadius: "17px",
-                        display: "inline-block",
-                      }}
-                    >
-                      {rowData.is_verified == "1"
-                        ? "verified"
-                        : rowData.is_verified == "0"
-                        ? "pending"
-                        : "rejected"}
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td className="bold-col">Status:</td>
-
-                    <td
-                      style={{
-                        backgroundColor:
-                          rowData.active == "1" ? "green" : "red",
-                        border: "none",
-                        fontSize: "0.75rem",
-                        color: "white",
-                        padding: "0px 7px",
-                        borderRadius: "17px",
-                        display: "inline-block",
-                      }}
-                    >
-                      {rowData.active == "1" ? "active" : "block"}
-                    </td>
-                  </tr>
-                </tbody>
-              </Table>
-              <div
+            )}
+          </Col>
+        </Row>
+        <UpdateProducts
+          showUpdateModal={showUpdateModal}
+          setShowUpdateModal={setShowUpdateModal}
+          item={selectedProducts}
+          getProducts={getProducts}
+        />
+        <AddProduct
+          showAddProduct={showAddProduct}
+          setShowAddProduct={setShowAddProduct}
+          getProducts={getProducts}
+        />
+        <Modal
+          className="modal-mini modal-primary"
+          show={showModal}
+          onHide={() => setShowModal(false)}
+        >
+          <Modal.Header className="justify-content-center">
+            <div className="modal-profile">
+              <BiBlock
                 style={{
-                  fontSize: "0.9rem",
-                  fontWeight: "bold",
-                  marginTop: "33px",
+                  fontSize: "30px",
+                  marginBottom: "14px",
+                  color: "gray",
                 }}
-              >
-                Attributes
-              </div>
-              {rowData?.attributes?.map((attr, index) => (
-                <React.Fragment key={index}>
-                  <Table striped bordered className="table">
-                    <tbody>
-                      <tr>
-                        <td className="bold-col">ID:</td>
-                        <td>{attr.id}</td>
-                      </tr>
+              />
+            </div>
+          </Modal.Header>
+          <Modal.Body className="text-center">
+            <p>Are you sure you want to block this Product?</p>
+            <Form.Control
+              componentClass="textarea"
+              rows={3}
+              style={{ fontSize: "0.9rem", height: "70px" }}
+              placeholder="Enter Reason"
+              maxLength={200}
+              value={blockReason}
+              onChange={(event) => setBlockReason(event.target.value)}
+            />
+          </Modal.Body>
+          <div className="modal-footer">
+            <Button
+              //  id= {item.id}
+              className="btn-simple"
+              variant="danger"
+              onClick={() => {
+                handleBlockProducts(blockData);
+                setShowModal(false);
+              }}
+            >
+              Block
+            </Button>
+            <Button
+              className="btn-simple"
+              type="button"
+              variant="secondary"
+              onClick={() => setShowModal(false)}
+            >
+              Close
+            </Button>
+          </div>
+        </Modal>
 
-                      <tr>
-                        <td className="bold-col">Quantity:</td>
-                        <td>{attr.qty}</td>
-                      </tr>
+        <Modal
+          show={showDetailsModal}
+          onHide={() => setShowDetailsModal(false)}
+        >
+          <Modal.Header style={{ borderBottom: "1px solid gray" }}>
+            <Modal.Title className="title">View Product Details</Modal.Title>
+            <MdClose
+              className="close-icon"
+              onClick={() => setShowDetailsModal(false)}
+            />
+          </Modal.Header>
 
-                      <tr>
-                        <td className="bold-col">Sku:</td>
-                        <td>{attr.sku}</td>
-                      </tr>
-
-                      <tr>
-                        <td className="bold-col">Color:</td>
-                        <td>{attr.color?.[index]?.name}</td>
-                      </tr>
-
-                      <tr>
-                        <td className="bold-col">Size:</td>
-                        <td>{attr.size?.[index]?.name}</td>
-                      </tr>
-
-                      <tr>
-                        <td className="bold-col">Price:</td>
-                        <td>{attr.price}</td>
-                      </tr>
-
-                      <tr>
-                        <td className="bold-col">DiscountPrice:</td>
-                        <td>{attr.discount_price}</td>
-                      </tr>
-
-                      <tr>
-                        <td className="bold-col">Stock:</td>
-                        <td>{attr.in_stock == "1" ? "Yes" : "No"}</td>
-                      </tr>
-
-                      <tr>
-                        <td className="bold-col">Created At:</td>
-                        <td>{attr.created_at}</td>
-                      </tr>
-
-                      <tr>
-                        <td className="bold-col">Modified At:</td>
-                        <td>{attr.modified_at}</td>
-                      </tr>
-
-                      <tr>
-                        <td className="bold-col"> Status:</td>
-                        <td
-                          style={{
-                            backgroundColor:
-                              attr.active == "1" ? "green" : "red",
-                            border: "none",
-                            fontSize: "0.75rem",
-                            color: "white",
-                            padding: "0px 7px",
-                            borderRadius: "17px",
-                            display: "inline-block",
-                          }}
-                        >
-                          {attr.active == "1" ? "active" : "block"}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </Table>
-                  <br></br>
-                </React.Fragment>
-              ))}
-
-              {rowData?.images && rowData?.images.length > 0 && (
-                <div>
-                  {rowData?.images.map((image, index) => (
+          <Modal.Body className="body">
+            <Table striped bordered className="table">
+              <tbody>
+                <tr>
+                  <td className="bold-col">Uploader Vendor ID:</td>
+                  <td>{rowData.uploader_vendor_id}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Product Image:</td>
+                  <td>
                     <img
-                      key={index}
-                      src={image?.images}
-                      alt="image"
+                      src={rowData.theme_img}
+                      alt={rowData.product_name}
                       style={{
-                        width: "70px",
-                        height: "70px",
-                        marginRight: "10px",
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "50%",
                       }}
                     />
-                  ))}
-                </div>
-              )}
-            </Modal.Body>
-            <Modal.Footer></Modal.Footer>
-          </Modal>
-        </Container>
-      )}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Product Name:</td>
+                  <td>{rowData.product_name}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col" style={{ whiteSpace: "nowrap" }}>
+                    Product Description:
+                  </td>
+                  <td>{rowData.product_desc}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col" style={{ whiteSpace: "nowrap" }}>
+                    Category
+                  </td>
+                  <td>{rowData.category_name}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">SubCategory:</td>
+                  <td>{rowData.subcategory_name}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Is buy:</td>
+                  <td>{rowData.is_buy == "1" ? "Yes" : "No"}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Is Pickup:</td>
+                  <td>{rowData.is_pickup == "1" ? "Yes" : "No"}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Total Clicks:</td>
+                  <td>{rowData.total_clicks}</td>
+                </tr>
+                <tr>
+                  <td className="bold-col">Product Status:</td>
+                  <td
+                    style={{
+                      backgroundColor:
+                        rowData.is_verified == "1"
+                          ? "green"
+                          : rowData.is_verified == "0"
+                          ? "orange"
+                          : "red",
+                      border: "none",
+                      fontSize: "0.75rem",
+                      color: "white",
+                      padding: "0px 7px",
+                      borderRadius: "17px",
+                      display: "inline-block",
+                    }}
+                  >
+                    {rowData.is_verified == "1"
+                      ? "verified"
+                      : rowData.is_verified == "0"
+                      ? "pending"
+                      : "rejected"}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td className="bold-col">Status:</td>
+
+                  <td
+                    style={{
+                      backgroundColor: rowData.active == "1" ? "green" : "red",
+                      border: "none",
+                      fontSize: "0.75rem",
+                      color: "white",
+                      padding: "0px 7px",
+                      borderRadius: "17px",
+                      display: "inline-block",
+                    }}
+                  >
+                    {rowData.active == "1" ? "active" : "block"}
+                  </td>
+                </tr>
+              </tbody>
+            </Table>
+            <div
+              style={{
+                fontSize: "0.9rem",
+                fontWeight: "bold",
+                marginTop: "33px",
+              }}
+            >
+              Attributes
+            </div>
+            {rowData?.attributes?.map((attr, index) => (
+              <React.Fragment key={index}>
+                <Table striped bordered className="table">
+                  <tbody>
+                    <tr>
+                      <td className="bold-col">ID:</td>
+                      <td>{attr.id}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col">Quantity:</td>
+                      <td>{attr.qty}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col">Sku:</td>
+                      <td>{attr.sku}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col">Color:</td>
+                      <td>{attr.color?.[index]?.name}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col">Size:</td>
+                      <td>{attr.size?.[index]?.name}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col">Price:</td>
+                      <td>{attr.price}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col">DiscountPrice:</td>
+                      <td>{attr.discount_price}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col">Stock:</td>
+                      <td>{attr.in_stock == "1" ? "Yes" : "No"}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col">Created At:</td>
+                      <td>{attr.created_at}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col">Modified At:</td>
+                      <td>{attr.modified_at}</td>
+                    </tr>
+
+                    <tr>
+                      <td className="bold-col"> Status:</td>
+                      <td
+                        style={{
+                          backgroundColor: attr.active == "1" ? "green" : "red",
+                          border: "none",
+                          fontSize: "0.75rem",
+                          color: "white",
+                          padding: "0px 7px",
+                          borderRadius: "17px",
+                          display: "inline-block",
+                        }}
+                      >
+                        {attr.active == "1" ? "active" : "block"}
+                      </td>
+                    </tr>
+                  </tbody>
+                </Table>
+                <br></br>
+              </React.Fragment>
+            ))}
+
+            {rowData?.images && rowData?.images.length > 0 && (
+              <div>
+                {rowData?.images.map((image, index) => (
+                  <img
+                    key={index}
+                    src={image?.images}
+                    alt="image"
+                    style={{
+                      width: "70px",
+                      height: "70px",
+                      marginRight: "10px",
+                    }}
+                  />
+                ))}
+              </div>
+            )}
+          </Modal.Body>
+          <Modal.Footer></Modal.Footer>
+        </Modal>
+      </Container>
     </>
   );
 };

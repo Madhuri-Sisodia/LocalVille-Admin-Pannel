@@ -118,56 +118,62 @@ const VendorsManager = () => {
       <div className="rna-container">
         <NotificationAlert ref={notificationAlertRef} />
       </div>
-      {data.length === 0 ? (
-        <img width={400} height={400} src={image} alt="vendor data Image" />
-      ) : (
-        <Container fluid>
-          <Row>
-            <Col md="12">
-              <Card className="strpied-tabled-with-hover">
-                <Card.Header>
-                  <button
-                    type="submit"
-                    style={{
-                      backgroundColor: "blueviolet",
-                      border: "blueviolet",
-                      borderRadius: "4px",
-                      float: "right",
-                      padding: "9px 19px",
-                      color: "white",
-                    }}
-                    onClick={() => {
-                      setShowAddVendor(true);
-                    }}
-                  >
-                    Add Vendors
-                  </button>
 
-                  <Card.Title as="h4">Vendors Manager</Card.Title>
+      <Container fluid>
+        <Row>
+          <Col md="12">
+            <Card className="strpied-tabled-with-hover">
+              <Card.Header>
+                <button
+                  type="submit"
+                  style={{
+                    backgroundColor: "blueviolet",
+                    border: "blueviolet",
+                    borderRadius: "4px",
+                    float: "right",
+                    padding: "9px 19px",
+                    color: "white",
+                  }}
+                  onClick={() => {
+                    setShowAddVendor(true);
+                  }}
+                >
+                  Add Vendors
+                </button>
 
-                  <p className="card-category">Vendors details and action</p>
-                  <br></br>
-                  <InputGroup style={{ width: "250px" }}>
-                    <Input
-                      placeholder="Search"
-                      onChange={(e) => {
-                        search(e);
-                      }}
-                    />
-                    <InputGroup.Button>
-                      <SearchIcon />
-                    </InputGroup.Button>
-                  </InputGroup>
-                  <br></br>
-                </Card.Header>
-                {isLoading ? (
-                  <Loading
-                    isLoading={isLoading}
-                    noData={data?.length == 0}
-                    image={image}
+                <Card.Title as="h4">Vendors Manager</Card.Title>
+
+                <p className="card-category">Vendors details and action</p>
+                <br></br>
+                <InputGroup style={{ width: "250px" }}>
+                  <Input
+                    placeholder="Search"
+                    onChange={(e) => {
+                      search(e);
+                    }}
                   />
-                ) : (
-                  <Card.Body className="table-full-width table-responsive px-0">
+                  <InputGroup.Button>
+                    <SearchIcon />
+                  </InputGroup.Button>
+                </InputGroup>
+                <br></br>
+              </Card.Header>
+              {isLoading ? (
+                <Loading
+                  isLoading={isLoading}
+                  noData={data?.length == 0}
+                  image={image}
+                />
+              ) : (
+                <Card.Body className="table-full-width table-responsive px-0">
+                  {data.length === 0 ? (
+                    <img
+                      width={400}
+                      height={400}
+                      src={image}
+                      alt="vendor data Image"
+                    />
+                  ) : (
                     <Table className="table-hover table-striped">
                       <thead>
                         <tr>
@@ -247,42 +253,42 @@ const VendorsManager = () => {
                         ))}
                       </tbody>
                     </Table>
-                  </Card.Body>
-                )}
-              </Card>
-              {isLoading ? (
-                ""
-              ) : (
-                <Pagenate
-                  currentPage={pageView}
-                  totalPages={totalPages}
-                  onPageChange={(page) => {
-                    setPageView(page);
-                  }}
-                />
+                  )}
+                </Card.Body>
               )}
-            </Col>
-          </Row>
+            </Card>
+            {isLoading ? (
+              ""
+            ) : (
+              <Pagenate
+                currentPage={pageView}
+                totalPages={totalPages}
+                onPageChange={(page) => {
+                  setPageView(page);
+                }}
+              />
+            )}
+          </Col>
+        </Row>
 
-          <UpdateVendor
-            showUpdateModal={showUpdateModal}
-            setShowUpdateModal={setShowUpdateModal}
-            item={selectedVendor}
-            getVendors={getVendors}
-          />
-          <AddVendor
-            showAddVendor={showAddVendor}
-            setShowAddVendor={setShowAddVendor}
-            getVendors={getVendors}
-          />
-          <BlockVendor
-            showModal={showModal}
-            setShowModal={setShowModal}
-            blockData={blockData}
-            getVendors={getVendors}
-          />
-        </Container>
-      )}
+        <UpdateVendor
+          showUpdateModal={showUpdateModal}
+          setShowUpdateModal={setShowUpdateModal}
+          item={selectedVendor}
+          getVendors={getVendors}
+        />
+        <AddVendor
+          showAddVendor={showAddVendor}
+          setShowAddVendor={setShowAddVendor}
+          getVendors={getVendors}
+        />
+        <BlockVendor
+          showModal={showModal}
+          setShowModal={setShowModal}
+          blockData={blockData}
+          getVendors={getVendors}
+        />
+      </Container>
     </>
   );
 };
