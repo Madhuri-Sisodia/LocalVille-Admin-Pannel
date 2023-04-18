@@ -214,8 +214,9 @@ const BannerManager = () => {
                                 {item?.active == "1" ? "active" : "block"}
                               </div>
                             </td>
+
                             <td>
-                              {item?.active == "1" && (
+                              {item?.active === "1" && (
                                 <Button
                                   className="btn-simple btn-link p-1"
                                   type="button"

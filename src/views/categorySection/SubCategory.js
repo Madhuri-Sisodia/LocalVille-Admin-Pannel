@@ -16,6 +16,7 @@ import { Utils } from "CommonUtils/Utils";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 import Modal from "rsuite/Modal";
+import { Uploader } from "rsuite";
 const SubCategory = () => {
   const [subCategoryName, setSubCategoryName] = useState("");
   const [selectCategory, setSelectCategory] = useState("");
@@ -276,22 +277,12 @@ const SubCategory = () => {
             >
               Add Image
             </Form.ControlLabel>
-            <Form.Group>
-              {/* <Avatar
-                onClick={handleOpen}
-                style={{ marginTop: "0.5rem", width: "3em", height: "3em" }}
-              ></Avatar> */}
-              <input
-                type="file"
-                name="imageUrl"
-                required
-                accept="image/jpeg, image/png, image/jpg"
-                onChange={(e) => {
-                  setImageUrl(e.target.files[0]);
-                }}
-              />
-            </Form.Group>
 
+            <Form.Group>
+              <Uploader listType="picture" action="">
+                <button></button>
+              </Uploader>
+            </Form.Group>
             <Form.Group>
               <ButtonToolbar>
                 <Button

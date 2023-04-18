@@ -104,8 +104,8 @@ const StoreManager = () => {
 
   const filtervendor = (e) => {
     Http.GetAPI(
-      process.env.REACT_APP_SEARCHSTORE + "?" + `search=${e}`,
-      "",
+      process.env.REACT_APP_SEARCHSTORE + "?" + `search=${e} & page=${pageNo}`,
+      data,
       null
     )
       .then((res) => {
@@ -183,6 +183,7 @@ const StoreManager = () => {
                 <Card.Body className="table-full-width table-responsive px-0">
                   {data.length === 0 ? (
                     <img
+                      style={{ marginLeft: "13em", marginBottom: "5em" }}
                       width={400}
                       height={400}
                       src={image}
@@ -205,8 +206,8 @@ const StoreManager = () => {
                           <th className="border-0">Vendor ID</th>
                           <th className="border-0">Store Image</th>
                           <th className="border-0">Store Name</th>
-                          <th className="border-0">Store Address</th>
                           <th className="border-0">Store Description</th>
+                          <th className="border-0">Store Address</th>
                           <th className="border-0">Pincode</th>
                           <th className="border-0">City</th>
                           <th className="border-0">State</th>
@@ -248,10 +249,10 @@ const StoreManager = () => {
                             <td title={item.store_name}>
                               {item.store_name.slice(0, 5)}
                             </td>
-                            <td title={item.store_desc}>
+                            <td title={item.store_address}>
                               {item.store_desc.slice(0, 8)}
                             </td>
-                            <td title={item.store_address}>
+                            <td title={item.store_desc}>
                               {item.store_address.slice(0, 10)}
                             </td>
                             <td>{item.pincode}</td>

@@ -7,6 +7,8 @@ import { useEffect, useContext } from "react";
 import { Utils } from "CommonUtils/Utils";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
+import { Uploader } from "rsuite";
+import CameraRetroIcon from "@rsuite/icons/legacy/CameraRetro";
 
 const Category = () => {
   const [categoryName, setCategoryName] = useState("");
@@ -16,6 +18,7 @@ const Category = () => {
   const { setCategoriesId } = useContext(Utils);
   const notificationAlertRef = React.useRef(null);
   const [imageUrl, setImageUrl] = useState("");
+  const [image, setImage] = useState(null);
 
   const handleSubmit = () => {
     const SelectedSection = data.filter((ele) => {
@@ -71,6 +74,26 @@ const Category = () => {
       });
   }, []);
 
+  const handleImageChange = async (event) => {
+    if (event.target.files && event.target.files[0]) {
+      const formData = new FormData();
+      formData.append("image", event.target.files[0]);
+      try {
+        const response = await fetch("/api/upload-image", {
+          method: "POST",
+          body: formData,
+        });
+        if (response.ok) {
+          const imageURL = await response.json();
+          setImage(imageURL);
+        } else {
+          console.error("Failed to upload image");
+        }
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
+    }
+  };
   return (
     <>
       <div className="rna-container">
@@ -147,25 +170,21 @@ const Category = () => {
               >
                 Add Image
               </Form.ControlLabel>
-              <ButtonToolbar>
-                {/* <Avatar
-                  onClick={handleOpen}
-                  style={{ marginTop: "0.5rem", width: "3em", height: "3em" }}
-                ></Avatar> */}
-              </ButtonToolbar>
+              <Form.Group>
+                <div>
+                  {image && <img src={image} alt="Preview" />}
+                  <input
+                    type="file"
+                    onChange={handleImageChange}
+                    accept="image/*"
+                  />
+                </div>
+                {/* <Uploader marginBottom={"10em"} listType="picture" action="">
+                  <button></button>
+                </Uploader> */}
+              </Form.Group>
             </Form.Group>
 
-            <Form.Group>
-              <input
-                type="file"
-                name="imageUrl"
-                required
-                accept="image/jpeg, image/png, image/jpg"
-                onChange={(e) => {
-                  setImageUrl(e.target.files[0]);
-                }}
-              />
-            </Form.Group>
             <Form.Group>
               <ButtonToolbar>
                 <Button
@@ -183,7 +202,6 @@ const Category = () => {
       </div>
     </>
   );
-  ReactDOM.render(<App />, document.getElementById("root"));
 };
 
 export default Category;

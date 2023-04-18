@@ -20,6 +20,7 @@ import NotificationManager from "views/NotificationManager";
 import EmailManager from "views/EmailManager/EmailManager";
 
 import BannerManager from "views/BannerManager/BannerManager";
+import InvoiceTable from "views/InvoiceManager/InvoiceTable";
 
 const dashboardRoutes = [
   {
@@ -111,6 +112,13 @@ const dashboardRoutes = [
     name: "Email Manager",
     icon: "far fa-envelope-open",
     component: EmailManager,
+    layout: "/admin",
+  },
+  {
+    path: "/Invoice",
+    name: "Invoice Manager",
+    icon: "nc-icon nc-single-02",
+    component: InvoiceTable,
     layout: "/admin",
   },
 

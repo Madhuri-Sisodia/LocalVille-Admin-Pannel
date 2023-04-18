@@ -80,7 +80,10 @@ const Section = () => {
               Add Image
             </Form.ControlLabel>
             <Form.Group>
-              <input
+              <Uploader listType="picture" action="">
+                <button></button>
+              </Uploader>
+              {/* <input
                 type="file"
                 name="imageUrl"
                 required
@@ -88,7 +91,7 @@ const Section = () => {
                 onChange={(e) => {
                   setImageUrl(e.target.files[0]);
                 }}
-              />
+              /> */}
             </Form.Group>
 
             <Form.Group>
