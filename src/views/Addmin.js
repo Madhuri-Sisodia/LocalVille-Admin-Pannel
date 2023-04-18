@@ -1,39 +1,124 @@
-import React, { useState } from "react";
-import { Form, Button, ButtonToolbar, Schema, model, Message } from "rsuite";
-import ErrorMessage from "customComponents/ErrorMessage";
+// import React from 'react';
+// import { Formik, Form, Field, ErrorMessage } from 'formik';
+// import * as Yup from 'yup';
+
+// const Addmin = () => {
+//   return (
+//     <div>
+//       <h1>My Form</h1>
+//       <Formik
+//         initialValues={{ name: '', email: '', message: '' }}
+//         validationSchema={Yup.object({
+//           name: Yup.string()
+//             .max(15, 'Must be 15 characters or less')
+//             .required('Required'),
+//           email: Yup.string()
+//             .email('Invalid email address')
+//             .required('Required'),
+//           message: Yup.string()
+//             .max(250, 'Must be 250 characters or less')
+//             .required('Required'),
+//         })}
+//         onSubmit={(values, { setSubmitting }) => {
+//           setTimeout(() => {
+//             alert(JSON.stringify(values, null, 2));
+//             setSubmitting(false);
+//           }, 400);
+//         }}
+//       >
+//         {({ isSubmitting }) => (
+//           <Form>
+//             <label htmlFor="name">Name</label>
+//             <Field type="text" name="name" />
+//             <ErrorMessage name="name" />
+
+//             <label htmlFor="email">Email</label>
+//             <Field type="email" name="email" />
+//             <ErrorMessage name="email" />
+
+//             <label htmlFor="message">Message</label>
+//             <Field as="textarea" name="message" />
+//             <ErrorMessage name="message" />
+
+//             <button type="submit" disabled={isSubmitting}>
+//               Submit
+//             </button>
+//           </Form>
+//         )}
+//       </Formik>
+//     </div>
+//   );
+// };
+
+// export default Addmin;
+
+
+
+import React from 'react';
+import ReactDOM from 'react-dom';
 import NotificationAlert from "react-notification-alert";
-import "../assets/css/admin.css";
-import { Http } from "../config/Service";
-import ButtonComponent from "views/ButtonComponent";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
-import validationModel from "../components/Validation";
+import { Http } from "../config/Service";
+
+
+import { Form, Button, ButtonToolbar, Schema, Panel, FlexboxGrid } from 'rsuite';
+
+
+
+  
+
+const { StringType, NumberType } = Schema.Types;
+
+const model = Schema.Model({
+  aName: StringType().isRequired('This field is required.'),
+  email: StringType()
+    .isEmail('Please enter a valid email address.')
+    .isRequired('This field is required.'),
+  
+  password: StringType().isRequired('This field is required.'),
+  rePassword: StringType()
+    .addRule((value, data) => {
+      console.log(data);
+
+      if (value !== data.password) {
+        return false;
+      }
+
+      return true;
+    }, 'The two passwords do not match')
+    .isRequired('This field is required.')
+});
+
+const TextField = React.forwardRef((props, ref) => {
+  const { name, label, accepter, ...rest } = props;
+  return (
+    <Form.Group controlId={`${name}-4`} ref={ref}>
+      <Form.ControlLabel>{label} </Form.ControlLabel>
+      <Form.Control name={name} accepter={accepter} {...rest} />
+    </Form.Group>
+  );
+});
 
 const Addmin = () => {
-  const [formValue, setFormValue] = useState({
-    aName: "",
-    email: "",
-    password: "",
-    rePassword: "",
+  const formRef = React.useRef();
+  const notificationAlertRef = React.useRef(null);
+  const [formError, setFormError] = React.useState({});
+  const [formValue, setFormValue] = React.useState({
+     aName: '',
+    email: '',
+  
+    password: '',
+    rePassword: ''
   });
 
-  const [user, setUser] = useState([]);
-  const [formError, setFormError] = useState({});
-  const notificationAlertRef = React.useRef(null);
-  const formRef = React.useRef();
-
   const handleSubmit = () => {
-    // e.preventDefault();
-    // if (Object.keys(formValue).every((key) => formValue[key] === "")) {
-    //   setFormError("this is required field.");
-    //   return;
-    // }
-
     if (!formRef.current.check()) {
-      console.log("FORM ERROR!");
-
+      console.error('Form Error');
       return;
-    } else {
+    }
+   
+    else {
       console.log("form....", formValue);
       var data = new FormData();
       data.append("name", formValue.aName);
@@ -58,85 +143,64 @@ const Addmin = () => {
             ErrorNotify("Something went wrong")
           );
         });
+      setFormValue({
+        aName: "",
+        email: "",
+        password: "",
+        rePassword: "",
+      });
+      // setFormError(validationModel)
 
-      //   setFormValue({
-      //     aName: "",
-      //     email: "",
-      //     password: "",
-      //     rePassword: "",
-      //   });
+      //  formRef.current.reset();
+      // formRef.current.state.formValue = "";
     }
-    formRef.current.state.formValue = "";
   };
+
+ 
 
   return (
     <>
       <div className="rna-container">
         <NotificationAlert ref={notificationAlertRef} />
       </div>
-      <div className="MainContainer">
-        <div className="Container">
-          <h5>ADD ADMIN</h5>
+    <FlexboxGrid>
+      <FlexboxGrid.Item colspan={12}>
+        <Form
+          ref={formRef}
+          onChange={setFormValue}
+          onCheck={setFormError}
+          formValue={formValue}
+          model={model}
+        >
+          <TextField name="aName" label="Username" />
+          <TextField name="email" label="Email" />
+      
+          <TextField name="password" label="Password" type="password" autoComplete="off" />
+          <TextField
+            name="rePassword"
+            label="Verify password"
+            type="password"
+            autoComplete="off"
+          />
 
-          <Form
-            fluid
-            ref={formRef}
-            model={validationModel}
-            onSubmit={handleSubmit}
-            onChange={setFormValue}
-          >
-            <div className="InnnerContainerAdmin">
-              <Form.Group>
-                <Form.ControlLabel style={{ color: "#808080" }}>
-                  ADMIN NAME
-                </Form.ControlLabel>
-                <Form.Control
-                  placeholder="Admin Name"
-                  name="aName"
-                  value={formValue.aName}
-                />
-              </Form.Group>
-              <Form.Group>
-                <Form.ControlLabel>ADMIN EMAIL</Form.ControlLabel>
-                <Form.Control
-                  placeholder="Admin Email"
-                  name="email"
-                  type="email"
-                  value={formValue.email}
-                />
-                {/* {formError.formValue.email && (
-                  <ErrorMessage>{formError.formValue.email}</ErrorMessage>
-                )} */}
-              </Form.Group>
+          <ButtonToolbar>
+            <Button appearance="primary" onClick={handleSubmit}>
+              Submit
+            </Button>
 
-              <Form.Group>
-                <Form.ControlLabel>CREATE PASSWORD</Form.ControlLabel>
-                <Form.Control
-                  name="password"
-                  type="password"
-                  placeholder="Enter Password"
-                  autoComplete="off"
-                  value={formValue.password}
-                />
-              </Form.Group>
-
-              <Form.Group>
-                <Form.ControlLabel>RE-ENTER PASSWORD</Form.ControlLabel>
-                <Form.Control
-                  name="rePassword"
-                  type="password"
-                  placeholder="Re-enter Password"
-                  autoComplete="off"
-                  value={formValue.rePassword}
-                />
-              </Form.Group>
-            </div>
-            <ButtonComponent block buttontext="Submit" />
-          </Form>
-        </div>
-      </div>
+   
+          </ButtonToolbar>
+        </Form>
+      </FlexboxGrid.Item>
+      
+    </FlexboxGrid>
     </>
   );
 };
-
 export default Addmin;
+
+
+  
+
+
+

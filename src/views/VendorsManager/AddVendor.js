@@ -134,7 +134,7 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
               )}
             </Form.Group>
 
-            {/* <Form.Group controlId="vendorName">
+            <Form.Group controlId="vendorName">
               <Form.Label className="add-label">Vendor Name</Form.Label>
               <Form.Control
                 type="text"
@@ -149,28 +149,9 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
                   {errors.vendorName}
                 </Form.Text>
               )}
-            </Form.Group> */}
-            <Form.Group controlId="vendorName">
-  <Form.Label className="add-label">Vendor Name</Form.Label>
-  <Form.Control
-    type="text"
-    name="vendorName"
-    placeholder="Enter vendor name"
-    onChange={(e) => {
-      const inputValue = e.target.value;
-      const alphabeticOnly = /^[a-zA-Z]*$/; // Regular expression to check for alphabetic characters only
-      if (inputValue.match(alphabeticOnly)) {
-        // If input contains only alphabetic characters, update the state or perform necessary actions
-        handleInput(e);
-      }
-    }}
-  />
-  {errors.vendorName && (
-    <Form.Text className="text-danger">
-      {errors.vendorName}
-    </Form.Text>
-  )}
-</Form.Group>
+            </Form.Group>
+          
+  
 
 
             <Form.Group controlId="email">

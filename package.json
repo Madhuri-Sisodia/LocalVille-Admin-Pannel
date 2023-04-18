@@ -12,6 +12,7 @@
     "bootstrap-icons": "^1.10.3",
     "chartist": "0.11.4",
     "dotenv": "^16.0.3",
+    "formik": "^2.2.9",
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.9",
     "html2canvas": "^1.4.1",
@@ -40,7 +41,8 @@
     "react-select-search": "^4.1.6",
     "reactstrap": "8.8.1",
     "rsuite": "^5.28.0",
-    "sass": "1.53.0"
+    "sass": "1.53.0",
+    "yup": "^1.1.1"
   },
   "optionalDependencies": {
     "jquery": "3.5.1",
