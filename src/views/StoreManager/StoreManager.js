@@ -105,7 +105,7 @@ const StoreManager = () => {
   const filtervendor = (e) => {
     Http.GetAPI(
       process.env.REACT_APP_SEARCHSTORE + "?" + `search=${e} & page=${pageNo}`,
-      data,
+      // data,
       null
     )
       .then((res) => {

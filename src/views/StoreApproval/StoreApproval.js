@@ -45,6 +45,17 @@ const StoreApproval = () => {
     window.open(url);
   };
 
+  const Debounce = (fun) => {
+    let timer;
+    return (...arg) => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+      timer = setTimeout(() => {
+        fun.call(this, arg);
+      }, 500);
+    };
+  };
   const getUnverifiedStore = () => {
     Http.GetAPI(
       process.env.REACT_APP_GETUNVERIFIEDSTORE + "?" + `page=${pageView}`,
@@ -75,6 +86,34 @@ const StoreApproval = () => {
     getUnverifiedStore();
   }, [pageView]);
 
+  const filtervendor = (e) => {
+    Http.GetAPI(
+      process.env.REACT_APP_REACT_APP_REACT_APP_STOREAPPROVALSEARCH +
+        "?" +
+        `search=${e} & page=${pageNo}`,
+      data,
+      null
+    )
+      .then((res) => {
+        if (res?.data?.status) {
+          if (res.data.data) {
+            setData(res?.data?.data);
+            setDisabledNext(true);
+          } else {
+            setDisabledNext(false);
+          }
+        } else {
+          // alert("Fields not matched");
+        }
+      })
+      .catch((e) => {
+        setIsLoading(false);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
+      });
+  };
+  const search = Debounce(filtervendor);
   return (
     <>
       <div className="rna-container">
@@ -90,7 +129,12 @@ const StoreApproval = () => {
                 <p className="card-category">Stores details and action</p>
                 <br></br>
                 <InputGroup style={{ width: "250px" }}>
-                  <Input placeholder="Search" />
+                  <Input
+                    placeholder="Search"
+                    onChange={(e) => {
+                      search(e);
+                    }}
+                  />
                   <InputGroup.Button>
                     <SearchIcon />
                   </InputGroup.Button>

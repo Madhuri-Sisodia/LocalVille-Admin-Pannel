@@ -9,7 +9,7 @@ import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 import { Uploader } from "rsuite";
 import CameraRetroIcon from "@rsuite/icons/legacy/CameraRetro";
-
+// import img from "./car.jpg";
 const Category = () => {
   const [categoryName, setCategoryName] = useState("");
   const [selectSection, setSelectSection] = useState("");
@@ -18,7 +18,8 @@ const Category = () => {
   const { setCategoriesId } = useContext(Utils);
   const notificationAlertRef = React.useRef(null);
   const [imageUrl, setImageUrl] = useState("");
-  const [image, setImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
 
   const handleSubmit = () => {
     const SelectedSection = data.filter((ele) => {
@@ -31,6 +32,8 @@ const Category = () => {
 
     formdata.append("section_id", `${id}`);
     formdata.append("category_name", categoryName);
+
+    formdata.append("section_name", sectionName);
 
     Http.PostAPI(process.env.REACT_APP_ADDPRODUCTCATEGORY, formdata, null)
       .then((res) => {
@@ -74,26 +77,35 @@ const Category = () => {
       });
   }, []);
 
-  const handleImageChange = async (event) => {
-    if (event.target.files && event.target.files[0]) {
-      const formData = new FormData();
-      formData.append("image", event.target.files[0]);
-      try {
-        const response = await fetch("/api/upload-image", {
-          method: "POST",
-          body: formData,
-        });
-        if (response.ok) {
-          const imageURL = await response.json();
-          setImage(imageURL);
-        } else {
-          console.error("Failed to upload image");
-        }
-      } catch (error) {
-        console.error("Error uploading image:", error);
-      }
+  function handleImageChange(event) {
+    const file = event.target.files[0];
+    if (file && file.type.substr(0, 5) === "image") {
+      setSelectedImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setSelectedImage(null);
+      setPreviewImage(null);
     }
-  };
+  }
+  // function handleImageUpload() {
+  //   const formData = new FormData();
+  //   formData.append("image", selectedImage);
+  //   fetch("/api/upload", {
+  //     method: "POST",
+  //     body: formData,
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log(data);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // }
   return (
     <>
       <div className="rna-container">
@@ -172,12 +184,27 @@ const Category = () => {
               </Form.ControlLabel>
               <Form.Group>
                 <div>
-                  {image && <img src={image} alt="Preview" />}
+                  <label htmlFor="image-upload" style={{ display: "block" }}>
+                    <img src={""} alt="Upload Icon" style={{ width: "50px" }} />
+                  </label>
                   <input
                     type="file"
-                    onChange={handleImageChange}
+                    id="image-upload"
                     accept="image/*"
+                    value={""}
+                    onChange={handleImageChange}
+                    style={{ display: "none" }}
                   />
+                  {previewImage && (
+                    <img
+                      src={previewImage}
+                      alt="Preview"
+                      style={{ maxWidth: "50%" }}
+                    />
+                  )}
+                  {/* {selectedImage && (
+                    <button onClick={handleImageUpload}>Upload Image</button>
+                  )} */}
                 </div>
                 {/* <Uploader marginBottom={"10em"} listType="picture" action="">
                   <button></button>

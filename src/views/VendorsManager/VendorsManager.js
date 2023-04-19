@@ -65,7 +65,6 @@ const VendorsManager = () => {
         if (res?.data?.status) {
           if (res.data.data.length > 0) {
             setData(res?.data?.data);
-
             setDisabledNext(true);
             setTotalPages(res.data.total_pages);
           } else {

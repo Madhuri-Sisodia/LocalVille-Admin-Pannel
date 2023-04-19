@@ -138,6 +138,8 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
               <Form.Label className="add-label">Vendor Name</Form.Label>
               <Form.Control
                 type="text"
+                pattern="[a-zA-Z]+"
+                required
                 name="vendorName"
                 placeholder="Enter vendor name"
                 onChange={(e) => {
