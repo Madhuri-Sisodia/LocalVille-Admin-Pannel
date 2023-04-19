@@ -218,17 +218,19 @@ const VendorsManager = () => {
                           </td>
                           <td>{item.login_count}</td>
                           <td>
-                            <Button
-                              className="btn-simple btn-link p-1"
-                              type="button"
-                              variant="primary"
-                              onClick={() => {
-                                setSelectedVendor(item);
-                                setShowUpdateModal(true);
-                              }}
-                            >
-                              <i className="fas fa-edit"></i>
-                            </Button>
+                            {item?.active == "1" && (
+                              <Button
+                                className="btn-simple btn-link p-1"
+                                type="button"
+                                variant="primary"
+                                onClick={() => {
+                                  setSelectedVendor(item);
+                                  setShowUpdateModal(true);
+                                }}
+                              >
+                                <i className="fas fa-edit"></i>
+                              </Button>
+                            )}
 
                             {item?.active == "1" && (
                               <Button

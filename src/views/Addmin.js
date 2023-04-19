@@ -52,103 +52,68 @@
 
 // export default Addmin;
 
+import React from "react";
 
-
-import React from 'react';
-import ReactDOM from 'react-dom';
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 import { Http } from "../config/Service";
-
-
-import { Form, Button, ButtonToolbar, Schema, Panel, FlexboxGrid } from 'rsuite';
-
-
-
-  
-
-const { StringType, NumberType } = Schema.Types;
-
-const model = Schema.Model({
-  aName: StringType().isRequired('This field is required.'),
-  email: StringType()
-    .isEmail('Please enter a valid email address.')
-    .isRequired('This field is required.'),
-  
-  password: StringType().isRequired('This field is required.'),
-  rePassword: StringType()
-    .addRule((value, data) => {
-      console.log(data);
-
-      if (value !== data.password) {
-        return false;
-      }
-
-      return true;
-    }, 'The two passwords do not match')
-    .isRequired('This field is required.')
-});
-
-const TextField = React.forwardRef((props, ref) => {
-  const { name, label, accepter, ...rest } = props;
-  return (
-    <Form.Group controlId={`${name}-4`} ref={ref}>
-      <Form.ControlLabel>{label} </Form.ControlLabel>
-      <Form.Control name={name} accepter={accepter} {...rest} />
-    </Form.Group>
-  );
-});
+import { validationModel, TextField } from "../components/Validation";
+import {
+  Form,
+  Button,
+  ButtonToolbar,
+  Schema,
+  Panel,
+  FlexboxGrid,
+} from "rsuite";
 
 const Addmin = () => {
   const formRef = React.useRef();
   const notificationAlertRef = React.useRef(null);
   const [formError, setFormError] = React.useState({});
   const [formValue, setFormValue] = React.useState({
-     aName: '',
-    email: '',
-  
-    password: '',
-    rePassword: ''
+    aName: "",
+    email: "",
+    password: "",
+    rePassword: "",
   });
 
   const handleSubmit = () => {
     if (!formRef.current.check()) {
-      console.error('Form Error');
+      console.error("Form Error");
       return;
-    }
-   
-    else {
+    } else {
       console.log("form....", formValue);
-      var data = new FormData();
-      data.append("name", formValue.aName);
-      data.append("email", formValue.email);
-      data.append("password", formValue.password);
+      // var data = new FormData();
+      // data.append("name", formValue.aName);
+      // data.append("email", formValue.email);
+      // data.append("password", formValue.password);
 
-      Http.PostAPI(process.env.REACT_APP_ADDADMINDATA, data, null)
-        .then((res) => {
-          if (res?.data?.status) {
-            setUser(res?.data?.data);
-            notificationAlertRef.current.notificationAlert(
-              SuccessNotify(res?.data?.message)
-            );
-          } else {
-            notificationAlertRef.current.notificationAlert(
-              ErrorNotify(res?.data?.message)
-            );
-          }
-        })
-        .catch((e) => {
-          notificationAlertRef.current.notificationAlert(
-            ErrorNotify("Something went wrong")
-          );
-        });
-      setFormValue({
-        aName: "",
-        email: "",
-        password: "",
-        rePassword: "",
-      });
+      // Http.PostAPI(process.env.REACT_APP_ADDADMINDATA, data, null)
+      //   .then((res) => {
+      //     if (res?.data?.status) {
+      //       setUser(res?.data?.data);
+      //       notificationAlertRef.current.notificationAlert(
+      //         SuccessNotify(res?.data?.message)
+      //       );
+      //     } else {
+      //       notificationAlertRef.current.notificationAlert(
+      //         ErrorNotify(res?.data?.message)
+      //       );
+      //     }
+      //   })
+      //   .catch((e) => {
+      //     notificationAlertRef.current.notificationAlert(
+      //       ErrorNotify("Something went wrong")
+      //     );
+      //   });
+      // setFormValue({
+      //   aName: "",
+      //   email: "",
+      //   password: "",
+      //   rePassword: "",
+      // });
       // setFormError(validationModel)
 
       //  formRef.current.reset();
@@ -156,51 +121,51 @@ const Addmin = () => {
     }
   };
 
- 
-
   return (
     <>
       <div className="rna-container">
         <NotificationAlert ref={notificationAlertRef} />
       </div>
-    <FlexboxGrid>
-      <FlexboxGrid.Item colspan={12}>
-        <Form
-          ref={formRef}
-          onChange={setFormValue}
-          onCheck={setFormError}
-          formValue={formValue}
-          model={model}
-        >
-          <TextField name="aName" label="Username" />
-          <TextField name="email" label="Email" />
-      
-          <TextField name="password" label="Password" type="password" autoComplete="off" />
-          <TextField
-            name="rePassword"
-            label="Verify password"
-            type="password"
-            autoComplete="off"
-          />
+      <FlexboxGrid>
+        <FlexboxGrid.Item colspan={12}>
+          <Form
+            ref={formRef}
+            onChange={setFormValue}
+            onCheck={setFormError}
+            formValue={formValue}
+            model={validationModel}
+          >
+            <TextField name="aName" label="Username" />
+            <TextField name="email" label="Email" />
+            {/* <TextField
+              name="image"
+              label="Image"
+              type="file"
+              autoComplete="off"
+            /> */}
 
-          <ButtonToolbar>
-            <Button appearance="primary" onClick={handleSubmit}>
-              Submit
-            </Button>
+            <TextField
+              name="password"
+              label="Password"
+              type="password"
+              autoComplete="off"
+            />
+            <TextField
+              name="rePassword"
+              label="Verify password"
+              type="password"
+              autoComplete="off"
+            />
 
-   
-          </ButtonToolbar>
-        </Form>
-      </FlexboxGrid.Item>
-      
-    </FlexboxGrid>
+            <ButtonToolbar>
+              <Button appearance="primary" onClick={handleSubmit}>
+                Submit
+              </Button>
+            </ButtonToolbar>
+          </Form>
+        </FlexboxGrid.Item>
+      </FlexboxGrid>
     </>
   );
 };
 export default Addmin;
-
-
-  
-
-
-

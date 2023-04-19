@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Http } from "../../config/Service";
+import { FaCamera } from "react-icons/fa";
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
@@ -22,6 +23,8 @@ const BannerManager = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [imageUrl, setImageUrl] = useState("");
+  const [image, setImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showActiveModal, setShowActiveModal] = useState(false);
   const [blockData, setBlockData] = useState([]);
@@ -61,8 +64,23 @@ const BannerManager = () => {
     });
 
     fileInputRef.current.value = "";
-    setImageUrl(null);
+    setImage(null);
   };
+
+  function handleImageChange(event) {
+    const file = event.target.files[0];
+    if (file && file.type.substr(0, 5) === "image") {
+      setImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setImage(null);
+      setPreviewImage(null);
+    }
+  }
 
   const handleSubmit = () => {
     //  e.preventDefault();
@@ -74,7 +92,7 @@ const BannerManager = () => {
     }
 
     var data = new FormData();
-    data.append("banner_image", imageUrl);
+    data.append("banner_image", image);
     data.append("is_redirect", redirectImg);
     data.append("url", formData.url);
     data.append("active", 1);
@@ -116,7 +134,51 @@ const BannerManager = () => {
         <div className="Container">
           <Form fluid onSubmit={handleSubmit}>
             <Form.Group>
-              <Form.ControlLabel htmlFor="file">IMAGE</Form.ControlLabel>
+              <Form.ControlLabel>UPLOAD IMAGE</Form.ControlLabel> 
+              {/* <div>Image</div> */}
+              {/* <div>
+            
+                <label htmlFor="image-upload" style={{ display: "block" }}>
+                  <img
+                    src={image}
+                    alt={<FaCamera/>}
+                    style={{ width: "50px" }}
+                  /> */}
+
+                {/* <div
+                    style={{
+                      border: "1px solid gray",
+                      padding: "10px",
+                      display: "inline-block",
+                      borderRadius: "5px",
+                      margin: "0px",
+                    }}
+                  >
+                    <FaCamera
+                      style={{
+                        fontSize: "30px",
+                      
+                        color: "gray",
+                      }}
+                    />
+                  </div> */}
+                {/* </label>
+                <input
+                  type="file"
+                  id="image-upload"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  ref={fileInputRef}
+                  style={{ display: "none" }}
+                />
+                {previewImage && (
+                  <img
+                    src={previewImage}
+                    alt="Preview"
+                    style={{ height: "70px", width: "70px" }}
+                  />
+                )}
+              </div> */}
 
               <input
                 type="file"
@@ -127,6 +189,7 @@ const BannerManager = () => {
                   setImageUrl(e.target.files[0]);
                 }}
                 ref={fileInputRef}
+                disabled
               />
             </Form.Group>
 
@@ -236,19 +299,6 @@ const BannerManager = () => {
                                   <i className="fas fa-times"></i>
                                 </Button>
                               )}
-                              {item?.active == "0" && (
-                                <Button
-                                  className="btn-simple btn-link p-1"
-                                  type="button"
-                                  variant="success"
-                                  onClick={() => {
-                                    setShowActiveModal(true);
-                                    setBlockData(item.id);
-                                  }}
-                                >
-                                  <i className="fa fa-check"></i>
-                                </Button>
-                              )}
                             </td>
                           </tr>
                         ))}
@@ -265,12 +315,6 @@ const BannerManager = () => {
       <BlockBanner
         showModal={showModal}
         setShowModal={setShowModal}
-        blockData={blockData}
-        getBanner={getBanner}
-      />
-      <ActiveBanner
-        showActiveModal={showActiveModal}
-        setShowActiveModal={setShowActiveModal}
         blockData={blockData}
         getBanner={getBanner}
       />
