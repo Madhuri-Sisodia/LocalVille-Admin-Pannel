@@ -11,30 +11,27 @@ import { Uploader, Message, Loader, useToaster } from "rsuite";
 import AvatarIcon from "@rsuite/icons/legacy/Avatar";
 import CameraRetroIcon from "@rsuite/icons/legacy/CameraRetro";
 
-// function previewFile(file, callback) {
-//   const reader = new FileReader();
-//   reader.onloadend = () => {
-//     callback(reader.result);
-//   };
-//   reader.readAsDataURL(file);
-// }
-
 const Section = () => {
   const [sectionName, setSectionName] = useState("");
   const [category, setCategory] = useState([]);
   const notificationAlertRef = React.useRef(null);
   const [imageUrl, setImageUrl] = useState("");
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [previewImage, setPreviewImage] = useState(null);
 
-  const toaster = useToaster();
-  const [uploading, setUploading] = React.useState(false);
-  const [fileInfo, setFileInfo] = React.useState(null);
+  const [imageFile, setImageFile] = useState(null);
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    setImageFile(file);
+  };
+
+  const handleRemoveImage = () => {
+    setImageFile(null);
+  };
 
   const handleSubmit = () => {
     var data = new FormData();
     data.append("section_name", sectionName);
-    data.append("section_image", imageUrl);
+    data.append("section_image", imageFile);
 
     Http.PostAPI(process.env.REACT_APP_ADDCATEGORYSECTION, data)
       .then((res) => {
@@ -48,8 +45,6 @@ const Section = () => {
           notificationAlertRef.current.notificationAlert(
             ErrorNotify(res?.data?.message)
           );
-          // setSectionName("");
-          // setImageUrl("");
         }
       })
       .catch((e) => {
@@ -58,9 +53,7 @@ const Section = () => {
         );
       });
     setSectionName("");
-    setImageUrl("");
-
-    // setSectionName("");
+    setImageFile("");
   };
 
   return (
@@ -70,9 +63,62 @@ const Section = () => {
       </div>
       <div className="MainContainer">
         <div className="Container">
+          <Form.ControlLabel
+            style={{
+              color: "#808080",
+              fontSize: "0.9rem",
+              marginTop: "1em",
+              PaddingTop: "20px",
+            }}
+          >
+            Add Section Image
+          </Form.ControlLabel>
+          <Form.Group>
+            <div>
+              {imageFile ? (
+                <div>
+                  <img
+                    src={URL.createObjectURL(imageFile)}
+                    alt="Avatar"
+                    style={{
+                      width: "80px",
+                      height: "80px",
+                      borderRadius: "50%",
+                    }}
+                  />
+                  <div style={{ marginTop: "1em" }}>
+                    <button onClick={handleRemoveImage}>Remove Image</button>
+                  </div>
+                </div>
+              ) : (
+                <div style={{ overflow: "hidden" }}>
+                  <label htmlFor="avatar-upload">
+                    <img
+                      src="https://via.placeholder.com/150"
+                      alt="Avatar Placeholder"
+                      style={{ borderRadius: "50%", width: "70px" }}
+                    />
+                  </label>
+                  <input
+                    id="avatar-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    style={{ display: "none" }}
+                  />
+                </div>
+              )}
+            </div>
+          </Form.Group>
           <Form fluid onSubmit={handleSubmit}>
             <Form.Group controlId="name-1">
-              <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
+              <Form.ControlLabel
+                style={{
+                  color: "#808080",
+                  fontSize: "1rem",
+                  marginTop: "10px",
+                }}
+              >
                 Add Category Section
               </Form.ControlLabel>
               <input
@@ -82,7 +128,6 @@ const Section = () => {
                 placeholder="Enter Category Section"
                 onChange={(e) => {
                   setSectionName(e.target.value);
-                  console.log("ggggggggggg", e.target.value);
                 }}
                 style={{
                   width: "100%",
@@ -90,92 +135,6 @@ const Section = () => {
                   borderRadius: "5px",
                   padding: "10px",
                   marginTop: "20px",
-                }}
-              />
-            </Form.Group>
-            <Form.ControlLabel
-              style={{
-                color: "#808080",
-                fontSize: "0.9rem",
-                marginTop: "1em",
-                PaddingTop: "20px",
-              }}
-            >
-              Add Image
-            </Form.ControlLabel>
-            <Form.Group>
-              {/* <Uploader
-                fileListVisible={false}
-                listType="picture"
-                action="//jsonplaceholder.typicode.com/posts/"
-                // action={imageUrl}
-                accept=".jpg,.jpeg,.png"
-                onChange={(fileList) => {
-                  if (fileList.length > 0) {
-                    const file = fileList[0];
-                    setUploading(true);
-                    previewFile(file.blobFile, (value) => {
-                      setImageUrl(value);
-                      setUploading(false);
-                    });
-                  } else {
-                    setImageUrl(null);
-                  }
-                }}
-                // onChange={(value) => {
-                //   const url = URL.createObjectURL(value[0].blobFile);
-                //   setImageUrl(url);
-                // }}
-                // onChange={(value) => {
-                //   setImageUrl(value[0]);
-                //   previewFile(value[0].blobFile, (preview) => {
-                //     setPreviewImage(preview);
-                //   });
-                // }}
-                // onChange={(value) => setImageUrl(value)}
-                onUpload={(file) => {
-                  setUploading(true);
-                  previewFile(file.blobFile, (value) => {
-                    setImageUrl(value);
-                  });
-                }}
-                onSuccess={(response, file) => {
-                  setUploading(false);
-                  toaster.push(
-                    <Message type="success">Uploaded successfully</Message>
-                  );
-                  console.log(response);
-                }}
-                onError={() => {
-                  setImageUrl(null);
-                  setUploading(false);
-                  toaster.push(<Message type="error">Upload failed</Message>);
-                }}
-              >
-                <button style={{ width: 60, height: 60 }}>
-                  {uploading && <Loader backdrop center />}
-                  {imageUrl ? (
-                    <img src={imageUrl} width="60%" height="60%" />
-                  ) : (
-                    <button style={{ marginLeft: 15 }}>
-                      <CameraRetroIcon />
-                    </button>
-                    // <AvatarIcon style={{ fontSize: 70 }} />
-                  )}
-                </button>
-              </Uploader> */}
-
-              {/* <Uploader multiple={false} listType="picture" action="">
-                <button></button>
-              </Uploader> */}
-              <input
-                type="file"
-                name="imageUrl"
-                required
-                accept="image/jpeg, image/png, image/jpg"
-                onChange={(e) => {
-                  setImageUrl(e.target.files[0]);
-                  console.log("file", e.target.files[0]);
                 }}
               />
             </Form.Group>

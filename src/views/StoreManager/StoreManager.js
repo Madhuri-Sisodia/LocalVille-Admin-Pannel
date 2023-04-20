@@ -183,9 +183,9 @@ const StoreManager = () => {
                 <Card.Body className="table-full-width table-responsive px-0">
                   {data.length === 0 ? (
                     <img
-                      style={{ marginLeft: "13em", marginBottom: "5em" }}
-                      width={400}
-                      height={400}
+                      style={{ marginLeft: "21em", marginBottom: "5em" }}
+                      width={200}
+                      height={200}
                       src={image}
                       alt="store data Image"
                     />
@@ -247,13 +247,13 @@ const StoreManager = () => {
                               />
                             </td>
                             <td title={item.store_name}>
-                              {item.store_name.slice(0, 5)}
+                              {item.store_name.slice(0, 20)}
                             </td>
                             <td title={item.store_address}>
-                              {item.store_desc.slice(0, 8)}
+                              {item.store_desc.slice(0, 50)}
                             </td>
                             <td title={item.store_desc}>
-                              {item.store_address.slice(0, 10)}
+                              {item.store_address.slice(0, 30)}
                             </td>
                             <td>{item.pincode}</td>
                             <td>{item.city}</td>

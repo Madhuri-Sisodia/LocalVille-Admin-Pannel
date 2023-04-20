@@ -167,9 +167,9 @@ const VendorsManager = () => {
                 <Card.Body className="table-full-width table-responsive px-0">
                   {data.length === 0 ? (
                     <img
-                      style={{ marginLeft: "13em", marginBottom: "5em" }}
-                      width={400}
-                      height={400}
+                      style={{ marginLeft: "21em", marginBottom: "5em" }}
+                      width={200}
+                      height={200}
                       src={image}
                       alt="vendor data Image"
                     />

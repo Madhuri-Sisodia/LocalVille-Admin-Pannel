@@ -30,6 +30,30 @@ const SubCategory = () => {
   const { Categoriesid } = useContext(Utils);
   const notificationAlertRef = React.useRef(null);
   const [imageUrl, setImageUrl] = useState("");
+  const [imageFile, setImageFile] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showNotification, setShowNotification] = useState(false);
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    // setImageFile(file);
+    if (file && file.type.startsWith("image/")) {
+      setImageFile(file);
+      setErrorMessage("image upload success");
+      setShowNotification(true);
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 2000); // set timer for 2 seconds
+    } else {
+      setImageFile(null);
+      setErrorMessage("Please select a valid image file.");
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setImageFile(null);
+    setErrorMessage("");
+  };
 
   useEffect(() => {
     Http.GetAPI(
@@ -64,6 +88,7 @@ const SubCategory = () => {
     var formdata = new FormData();
     formdata.append("category_id", `${id}`);
     formdata.append("subcategory_name", subCategoryName);
+    formdata.append("subcat_image", imageFile);
     formdata.append("color", color == "Yes" ? 1 : 0);
     formdata.append("size", size == "Yes" ? 1 : 0);
     formdata.append("size_att", attrId);
@@ -92,6 +117,7 @@ const SubCategory = () => {
 
     setSubCategoryName("");
     setSelectCategory("");
+    setImageFile("");
   };
 
   useEffect(() => {
@@ -127,6 +153,58 @@ const SubCategory = () => {
       </div>
       <div className="MainContainer">
         <div className="Container">
+          <Form.ControlLabel
+            style={{
+              color: "#808080",
+              fontSize: "0.9rem",
+              marginTop: "1em",
+              PaddingTop: "20px",
+            }}
+          >
+            Add Subcategory Image
+          </Form.ControlLabel>
+
+          <Form.Group>
+            <div>
+              {showNotification && errorMessage && (
+                <div style={{ color: "green" }}>{errorMessage}</div>
+              )}
+              {imageFile ? (
+                <div>
+                  <img
+                    src={URL.createObjectURL(imageFile)}
+                    alt="Avatar"
+                    style={{
+                      width: "80px",
+                      height: "80px",
+                      borderRadius: "50%",
+                    }}
+                  />
+                  <div style={{ marginTop: "1em" }}>
+                    <button onClick={handleRemoveImage}>Remove Image</button>
+                  </div>
+                </div>
+              ) : (
+                <div style={{ overflow: "hidden" }}>
+                  <label htmlFor="avatar-upload">
+                    <img
+                      src="https://via.placeholder.com/150"
+                      alt="Avatar Placeholder"
+                      style={{ borderRadius: "50%", width: "70px" }}
+                    />
+                    {/* <span>Select Image</span> */}
+                  </label>
+                  <input
+                    id="avatar-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    style={{ display: "none" }}
+                  />
+                </div>
+              )}
+            </div>
+          </Form.Group>
           <Form fluid>
             <Form.Group controlId="name-1" style={{ marginBottom: "20px" }}>
               <div
@@ -267,22 +345,7 @@ const SubCategory = () => {
                 </div>
               </div>
             </Form.Group>
-            <Form.ControlLabel
-              style={{
-                color: "#808080",
-                fontSize: "0.9rem",
-                marginTop: "1em",
-                PaddingTop: "20px",
-              }}
-            >
-              Add Image
-            </Form.ControlLabel>
 
-            <Form.Group>
-              <Uploader listType="picture" action="">
-                <button></button>
-              </Uploader>
-            </Form.Group>
             <Form.Group>
               <ButtonToolbar>
                 <Button

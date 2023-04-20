@@ -28,6 +28,15 @@ const BannerManager = () => {
   const [addBanner, setAddBanner] = useState([]);
   const notificationAlertRef = React.useRef(null);
 
+  const [imageFile, setImageFile] = useState(null);
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    setImageFile(file);
+  };
+
+  const handleRemoveImage = () => {
+    setImageFile(null);
+  };
   const getBanner = () => {
     Http.GetAPI(process.env.REACT_APP_GETBANNER + "?" + Math.random(), data)
       .then((res) => {
@@ -115,6 +124,12 @@ const BannerManager = () => {
             <Form.Group>
               <Form.ControlLabel htmlFor="file">IMAGE</Form.ControlLabel>
               <input
+                style={{
+                  width: "85.5px",
+                  height: "26.5px",
+                  border: "1px solid black",
+                  borderRadius: "5px",
+                }}
                 type="file"
                 name="imageUrl"
                 required

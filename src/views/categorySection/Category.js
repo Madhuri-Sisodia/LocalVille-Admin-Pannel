@@ -18,8 +18,17 @@ const Category = () => {
   const { setCategoriesId } = useContext(Utils);
   const notificationAlertRef = React.useRef(null);
   const [imageUrl, setImageUrl] = useState("");
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [previewImage, setPreviewImage] = useState(null);
+
+  const [imageFile, setImageFile] = useState(null);
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    setImageFile(file);
+  };
+
+  const handleRemoveImage = () => {
+    setImageFile(null);
+  };
 
   const handleSubmit = () => {
     const SelectedSection = data.filter((ele) => {
@@ -32,8 +41,7 @@ const Category = () => {
 
     formdata.append("section_id", `${id}`);
     formdata.append("category_name", categoryName);
-
-    formdata.append("section_name", sectionName);
+    formdata.append("category_image", imageFile);
 
     Http.PostAPI(process.env.REACT_APP_ADDPRODUCTCATEGORY, formdata, null)
       .then((res) => {
@@ -56,6 +64,7 @@ const Category = () => {
 
     setCategoryName("");
     setSelectSection("");
+    setImageFile("");
   };
 
   useEffect(() => {
@@ -77,35 +86,6 @@ const Category = () => {
       });
   }, []);
 
-  function handleImageChange(event) {
-    const file = event.target.files[0];
-    if (file && file.type.substr(0, 5) === "image") {
-      setSelectedImage(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImage(reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setSelectedImage(null);
-      setPreviewImage(null);
-    }
-  }
-  // function handleImageUpload() {
-  //   const formData = new FormData();
-  //   formData.append("image", selectedImage);
-  //   fetch("/api/upload", {
-  //     method: "POST",
-  //     body: formData,
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // }
   return (
     <>
       <div className="rna-container">
@@ -113,6 +93,54 @@ const Category = () => {
       </div>
       <div className="MainContainer">
         <div className="Container">
+          <Form.ControlLabel
+            style={{
+              color: "#808080",
+              fontSize: "0.9rem",
+              marginTop: "2em",
+              PaddingTop: "20px",
+            }}
+          >
+            Add Category Image
+          </Form.ControlLabel>
+          <Form.Group>
+            <div>
+              {imageFile ? (
+                <div>
+                  <img
+                    src={URL.createObjectURL(imageFile)}
+                    alt="Avatar"
+                    style={{
+                      width: "80px",
+                      height: "80px",
+                      borderRadius: "50%",
+                    }}
+                  />
+                  <div style={{ marginTop: "1em" }}>
+                    <button onClick={handleRemoveImage}>Remove Image</button>
+                  </div>
+                </div>
+              ) : (
+                <div style={{ overflow: "hidden" }}>
+                  <label htmlFor="avatar-upload">
+                    <img
+                      src="https://via.placeholder.com/150"
+                      alt="Avatar Placeholder"
+                      style={{ borderRadius: "50%", width: "70px" }}
+                    />
+                    {/* <span>Select Image</span> */}
+                  </label>
+                  <input
+                    id="avatar-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    style={{ display: "none" }}
+                  />
+                </div>
+              )}
+            </div>
+          </Form.Group>
           <Form fluid onSubmit={handleSubmit}>
             <Form.Group controlId="name-1">
               <div
@@ -172,44 +200,6 @@ const Category = () => {
                 required="setCategoryName"
                 onChange={(value) => setCategoryName(value)}
               />
-              <Form.ControlLabel
-                style={{
-                  color: "#808080",
-                  fontSize: "0.9rem",
-                  marginTop: "2em",
-                  PaddingTop: "20px",
-                }}
-              >
-                Add Image
-              </Form.ControlLabel>
-              <Form.Group>
-                <div>
-                  <label htmlFor="image-upload" style={{ display: "block" }}>
-                    <img src={""} alt="Upload Icon" style={{ width: "50px" }} />
-                  </label>
-                  <input
-                    type="file"
-                    id="image-upload"
-                    accept="image/*"
-                    value={""}
-                    onChange={handleImageChange}
-                    style={{ display: "none" }}
-                  />
-                  {previewImage && (
-                    <img
-                      src={previewImage}
-                      alt="Preview"
-                      style={{ maxWidth: "50%" }}
-                    />
-                  )}
-                  {/* {selectedImage && (
-                    <button onClick={handleImageUpload}>Upload Image</button>
-                  )} */}
-                </div>
-                {/* <Uploader marginBottom={"10em"} listType="picture" action="">
-                  <button></button>
-                </Uploader> */}
-              </Form.Group>
             </Form.Group>
 
             <Form.Group>

@@ -100,6 +100,12 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
       return { ...previous, [e.target.name]: e.target.value };
     });
   };
+  const preventNumberInput = (e) => {
+    var keycode = e.keyCode ? e.keyCode : e.which;
+    if ((keycode > 47 && keycode < 58) || (keycode > 95 && keycode < 107)) {
+      e.preventDefault();
+    }
+  };
 
   return (
     <>
@@ -136,9 +142,12 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
 
             <Form.Group controlId="vendorName">
               <Form.Label className="add-label">Vendor Name</Form.Label>
+
               <Form.Control
+                onKeyDown={(e) => preventNumberInput(e)}
+                onKeyUp={(e) => preventNumberInput(e)}
                 type="text"
-                pattern="[a-zA-Z]+"
+                pattern="[A-Za-z]+"
                 required
                 name="vendorName"
                 placeholder="Enter vendor name"

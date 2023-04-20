@@ -15,6 +15,7 @@ import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 import Loading from "customComponents/Loading";
 import image from "assets/img/noProduct.png";
+import ButtonComponent from "views/ButtonComponent";
 
 import {
   Modal,
@@ -196,9 +197,9 @@ const Products = () => {
                 <Card.Body className="table-full-width table-responsive px-0">
                   {data.length === 0 ? (
                     <img
-                      style={{ marginLeft: "13em", marginBottom: "2em" }}
-                      width={400}
-                      height={400}
+                      style={{ marginLeft: "21em", marginBottom: "2em" }}
+                      width={200}
+                      height={200}
                       src={image}
                       alt="product data Image"
                     />
@@ -259,11 +260,12 @@ const Products = () => {
                                 }}
                               />
                             </td>
+
                             <td title={item.product_name}>
-                              {item.product_name}
+                              {item.product_name.slice(0, 20)}
                             </td>
                             <td title={item.product_desc}>
-                              {item.product_desc}
+                              {item.product_desc.slice(0, 50)}
                             </td>
                             <td>{item.category_name}</td>
                             <td>{item.subcategory_name}</td>

@@ -88,7 +88,7 @@ const StoreApproval = () => {
 
   const filtervendor = (e) => {
     Http.GetAPI(
-      process.env.REACT_APP_REACT_APP_REACT_APP_STOREAPPROVALSEARCH +
+      process.env.REACT_APP_STOREAPPROVALSEARCH +
         "?" +
         `search=${e} & page=${pageNo}`,
       data,

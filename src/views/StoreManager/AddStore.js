@@ -24,6 +24,8 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
   const [storeImage, setStoreImage] = useState([]);
   const { location } = useContext(Utils);
   const [Data, setData] = useState([]);
+  const [pincode, setPincode] = useState("");
+
   const [storeData, setStoreData] = useState({
     storeName: "",
     storeDesc: "",
@@ -41,11 +43,12 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
   const notificationAlertRef = React.useRef(null);
 
   const [selectedDays, setSelectedDays] = useState([]);
+
   const toggleDaySelection = (index) => {
-    if (selectedDays.includes(index + 1)) {
-      setSelectedDays(selectedDays.filter((d) => d !== index + 1));
+    if (selectedDays.includes(index)) {
+      setSelectedDays(selectedDays.filter((d) => d !== index));
     } else {
-      setSelectedDays([...selectedDays, index + 1]);
+      setSelectedDays([...selectedDays, index]);
     }
   };
 
@@ -100,7 +103,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
     event.preventDefault();
 
     const vendorid = vendortData.filter((ele) => {
-      return ele.email == selectSection?.value;
+      return ele.email === selectSection?.value;
     });
 
     const id = vendorid[0].id;
@@ -114,10 +117,10 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
     data.append("lat", location.lat);
     data.append("long", location.lng);
     data.append("address", storeData.address);
-    data.append("pincode", storeData.pincode);
-    data.append("city", storeData.city);
-    data.append("state", storeData.state);
-    data.append("country", storeData.country);
+    data.append("pincode", storeData?.pincode);
+    data.append("city", storeData?.city);
+    data.append("state", storeData?.state);
+    data.append("country", storeData?.country);
     data.append("opening_days", selectedDays);
     data.append("opening_time", storeData.openingTime);
     data.append("closing_time", storeData.closingTime);
@@ -146,6 +149,11 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
   };
 
   const handleInput = (e) => {
+    const { value } = event.target;
+    const re = /^[0-9]{0,6}$/;
+    if (re.test(value)) {
+      setPincode(value);
+    }
     setStoreData((previous) => {
       return { ...previous, [e.target.name]: e.target.value };
     });
@@ -277,9 +285,11 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
             <Form.Group>
               <Form.Label className="add-label">Pincode</Form.Label>
               <Form.Control
-                type="number"
+                type="text"
                 name="pincode"
+                value={pincode}
                 required
+                maxLength={6}
                 onChange={(e) => {
                   handleInput(e);
                 }}
@@ -320,13 +330,13 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
               <Form.Label className="add-label">Opening Days</Form.Label>
               <br />
               {daysOfWeek.map((day, index) => {
-                const isSelected = selectedDays.includes(index + 1);
+                const isSelected = selectedDays.includes(index);
                 return (
                   <div
                     key={day}
                     className={`week-days ${isSelected ? "selected" : ""}`}
                     name="selectedDays"
-                    onClick={() => toggleDaySelection(index)}
+                    onClick={() => toggleDaySelection(index + "")}
                   >
                     {day}
                   </div>

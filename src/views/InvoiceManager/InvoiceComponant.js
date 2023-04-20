@@ -65,8 +65,9 @@ const InvoiceData = () => {
                       <th className="border-0">Store Name</th>
                       <th className="border-0">Total GST</th>
                       <th className="border-0">Total Amount</th>
-                      <th className="border-0">Action</th>
+                      <th className="border-0">Status</th>
                       <th className="border-0">PDF Icon</th>
+                      <th className="border-0">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -95,7 +96,7 @@ const InvoiceData = () => {
                       <td>Store Name</td>
                       <td>Total GST</td>
                       <td>Total Ammount</td>
-                      <td>Action</td>
+                      <td>status is here</td>
                       <td>pdf Icon</td>
 
                       <td>
@@ -121,12 +122,11 @@ const InvoiceData = () => {
                           </Button>
                           <Button
                             // index={item.id}
-                            className="btn-simple btn-link p-2"
+                            className="btn-simple btn-link p-1"
                             type="button"
-                            variant=""
+                            variant="danger"
                           >
-                            Download
-                            {/* <i className="fas fa-times"></i> */}
+                            <i className="fas fa-times"></i>
                           </Button>
                         </div>
                       </td>
