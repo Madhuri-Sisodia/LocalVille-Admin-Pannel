@@ -45,10 +45,10 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
   const [selectedDays, setSelectedDays] = useState([]);
 
   const toggleDaySelection = (index) => {
-    if (selectedDays.includes(index)) {
-      setSelectedDays(selectedDays.filter((d) => d !== index));
+    if (selectedDays.includes(index + 1)) {
+      setSelectedDays(selectedDays.filter((d) => d !== index + 1));
     } else {
-      setSelectedDays([...selectedDays, index]);
+      setSelectedDays([...selectedDays, index + 1]);
     }
   };
 
@@ -336,7 +336,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
                     key={day}
                     className={`week-days ${isSelected ? "selected" : ""}`}
                     name="selectedDays"
-                    onClick={() => toggleDaySelection(index + "")}
+                    onClick={() => toggleDaySelection(index + 1)}
                   >
                     {day}
                   </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Http } from "../../config/Service";
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
@@ -12,7 +12,7 @@ import BlockBanner from "./BlockBanner";
 import ButtonComponent from "views/ButtonComponent";
 import Loading from "customComponents/Loading";
 import ActiveBanner from "./ActiveBanner";
-
+import { Uploader } from "rsuite";
 const BannerManager = () => {
   const [formData, setFormData] = useState({
     image: "",
@@ -27,16 +27,21 @@ const BannerManager = () => {
   const [blockData, setBlockData] = useState([]);
   const [addBanner, setAddBanner] = useState([]);
   const notificationAlertRef = React.useRef(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const fileInputRef = useRef(null);
 
-  const [imageFile, setImageFile] = useState(null);
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    setImageFile(file);
+  const handleFileChange = (event) => {
+    setImageUrl(event.target.files[0]);
+  };
+  const handleButtonClick = () => {
+    fileInputRef.current.click();
   };
 
-  const handleRemoveImage = () => {
-    setImageFile(null);
-  };
+  // const handleUpload = () => {
+  //   // Handle file upload logic here
+  //   console.log(selectedFile);
+  // };
+
   const getBanner = () => {
     Http.GetAPI(process.env.REACT_APP_GETBANNER + "?" + Math.random(), data)
       .then((res) => {
@@ -123,13 +128,39 @@ const BannerManager = () => {
           <Form fluid onSubmit={handleSubmit}>
             <Form.Group>
               <Form.ControlLabel htmlFor="file">IMAGE</Form.ControlLabel>
-              <input
-                style={{
-                  width: "85.5px",
-                  height: "26.5px",
-                  border: "1px solid black",
-                  borderRadius: "5px",
-                }}
+              <div>
+                <input
+                  type="file"
+                  name="imageUrl"
+                  accept="image/jpeg, image/png, image/jpg"
+                  ref={fileInputRef}
+                  style={{ display: "none" }}
+                  onChange={handleFileChange}
+                />
+                <button onClick={handleButtonClick}>Choose File</button>
+                {imageUrl && (
+                  <div>
+                    <p>Selected file: {imageUrl.name}</p>
+                    {/* <button onClick={handleUpload}>Upload</button> */}
+                  </div>
+                )}
+              </div>
+              {/* <Uploader
+                action="//jsonplaceholder.typicode.com/posts/"
+                draggable
+              >
+                <div
+                  style={{
+                    height: 200,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <span>Click or Drag files to this area to upload</span>
+                </div>
+              </Uploader> */}
+              {/* <input
                 type="file"
                 name="imageUrl"
                 required
@@ -137,7 +168,7 @@ const BannerManager = () => {
                 onChange={(e) => {
                   setImageUrl(e.target.files[0]);
                 }}
-              />
+              /> */}
             </Form.Group>
             <Form.Group>
               <Form.ControlLabel>IMAGE REDIRECTION</Form.ControlLabel>

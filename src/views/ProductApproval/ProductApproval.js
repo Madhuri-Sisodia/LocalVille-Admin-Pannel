@@ -8,6 +8,7 @@ import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 import Loading from "customComponents/Loading";
+import image from "assets/img/noVendor.png";
 import {
   Modal,
   Form,
@@ -37,6 +38,18 @@ const ProductApproval = () => {
   const [rowData, setRowData] = useState([]);
   const [product, setProduct] = useState([]);
   const notificationAlertRef = React.useRef(null);
+
+  const Debounce = (fun) => {
+    let timer;
+    return (...arg) => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+      timer = setTimeout(() => {
+        fun.call(this, arg);
+      }, 500);
+    };
+  };
 
   const getUnverifiedProduct = () => {
     Http.GetAPI(
@@ -69,6 +82,32 @@ const ProductApproval = () => {
     getUnverifiedProduct();
   }, [pageView]);
 
+  const filtervendor = (e) => {
+    Http.GetAPI(
+      process.env.REACT_APP_SEARCHPRODUCTAPPOVAL +
+        "?" +
+        `search=${e} & page=${pageNo}`,
+      data,
+      null
+    )
+      .then((res) => {
+        setIsLoading(false);
+        if (res?.data?.status) {
+          setData(res?.data?.data);
+          setDisabledNext(true);
+          console.log("userr", res.data.data);
+        } else {
+          // alert("Fields not matched");
+        }
+      })
+      .catch((e) => {
+        setIsLoading(false);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
+      });
+  };
+  const search = Debounce(filtervendor);
   return (
     <>
       <div className="rna-container">
@@ -84,7 +123,12 @@ const ProductApproval = () => {
                 <p className="card-category">Products details and action</p>
                 <br></br>
                 <InputGroup style={{ width: "250px" }}>
-                  <Input placeholder="Search" />
+                  <Input
+                    placeholder="Search"
+                    onChange={(e) => {
+                      search(e);
+                    }}
+                  />
                   <InputGroup.Button>
                     <SearchIcon />
                   </InputGroup.Button>
@@ -92,7 +136,7 @@ const ProductApproval = () => {
                 <br></br>
               </Card.Header>
               {isLoading ? (
-                 <Loading isLoading={isLoading} noData={data?.length == 0} />
+                <Loading isLoading={isLoading} noData={data?.length == 0} />
               ) : (
                 <Card.Body className="table-full-width table-responsive px-0">
                   <Table className="table-hover table-striped">

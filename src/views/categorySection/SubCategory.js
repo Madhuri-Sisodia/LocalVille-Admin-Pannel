@@ -9,6 +9,7 @@ import {
   Dropdown,
   RadioGroup,
   Radio,
+  Schema,
 } from "rsuite";
 import { Http } from "../../config/Service";
 import { useEffect } from "react";
@@ -33,6 +34,7 @@ const SubCategory = () => {
   const [imageFile, setImageFile] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [showNotification, setShowNotification] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -118,6 +120,8 @@ const SubCategory = () => {
     setSubCategoryName("");
     setSelectCategory("");
     setImageFile("");
+    setErrors({});
+    setShowNotification("");
   };
 
   useEffect(() => {
@@ -145,6 +149,11 @@ const SubCategory = () => {
         );
       });
   }, []);
+
+  const { StringType } = Schema.Types;
+  const model = Schema.Model({
+    subCategoryName: StringType().isRequired("Admin field is required."),
+  });
 
   return (
     <>
@@ -205,7 +214,13 @@ const SubCategory = () => {
               )}
             </div>
           </Form.Group>
-          <Form fluid>
+          <Form
+            fluid
+            model={model}
+            onSubmit={(e) => {
+              handleSubmit(e);
+            }}
+          >
             <Form.Group controlId="name-1" style={{ marginBottom: "20px" }}>
               <div
                 className="InnnerContainerCategory"
@@ -229,6 +244,11 @@ const SubCategory = () => {
                 <select
                   name="selectCategory"
                   value={selectCategory}
+                  className={
+                    errors.selectCategory
+                      ? "form-control is-invalid"
+                      : "form-control"
+                  }
                   onChange={(event) => setSelectCategory(event.target.value)}
                   style={{
                     height: "35px",
@@ -246,6 +266,9 @@ const SubCategory = () => {
                     </option>
                   ))}
                 </select>
+                {errors.selectCategory && (
+                  <Message>{errors.selectCategory}</Message>
+                )}
               </div>
               <Form.ControlLabel
                 style={{
@@ -263,6 +286,7 @@ const SubCategory = () => {
                 required="setSubCategoryName"
                 onChange={(value) => setSubCategoryName(value)}
               />
+
               <div>
                 <div>
                   <div style={{ paddingLeft: "10px", marginTop: "20px" }}>
