@@ -12,7 +12,9 @@ import BlockBanner from "./BlockBanner";
 import ButtonComponent from "views/ButtonComponent";
 import Loading from "customComponents/Loading";
 import ActiveBanner from "./ActiveBanner";
-import { Uploader } from "rsuite";
+
+import { Uploader, Message, Loader, useToaster } from "rsuite";
+import AvatarIcon from "@rsuite/icons/legacy/Avatar";
 const BannerManager = () => {
   const [formData, setFormData] = useState({
     image: "",
@@ -28,7 +30,18 @@ const BannerManager = () => {
   const [addBanner, setAddBanner] = useState([]);
   const notificationAlertRef = React.useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
-  const fileInputRef = useRef(null);
+  // const fileInputRef = useRef(null);
+  const toaster = useToaster();
+  const [uploading, setUploading] = React.useState(false);
+  const [fileInfo, setFileInfo] = React.useState(null);
+
+  function previewFile(file, callback) {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      callback(reader.result);
+    };
+    reader.readAsDataURL(file);
+  }
 
   const handleFileChange = (event) => {
     setImageUrl(event.target.files[0]);
@@ -36,11 +49,6 @@ const BannerManager = () => {
   const handleButtonClick = () => {
     fileInputRef.current.click();
   };
-
-  // const handleUpload = () => {
-  //   // Handle file upload logic here
-  //   console.log(selectedFile);
-  // };
 
   const getBanner = () => {
     Http.GetAPI(process.env.REACT_APP_GETBANNER + "?" + Math.random(), data)
@@ -128,7 +136,43 @@ const BannerManager = () => {
           <Form fluid onSubmit={handleSubmit}>
             <Form.Group>
               <Form.ControlLabel htmlFor="file">IMAGE</Form.ControlLabel>
-              <div>
+              <Uploader
+                onChange={(e) => {
+                  setImageUrl(e.target.files[0]);
+                }}
+                fileListVisible={false}
+                listType="picture"
+                action="//jsonplaceholder.typicode.com/posts/"
+                onUpload={(file) => {
+                  setUploading(true);
+                  previewFile(file.blobFile, (value) => {
+                    setFileInfo(value);
+                  });
+                }}
+                onSuccess={(response, file) => {
+                  setUploading(false);
+                  toaster.push(
+                    <Message type="success">Uploaded successfully</Message>
+                  );
+                  console.log(response);
+                }}
+                // onError={() => {
+                //   setFileInfo(null);
+                //   setUploading(false);
+                //   toaster.push(<Message type="error">Upload failed</Message>);
+                // }}
+              >
+                <button style={{ width: 150, height: 150 }}>
+                  {uploading && <Loader backdrop center />}
+                  {fileInfo ? (
+                    <img src={fileInfo} width="100%" height="100%" />
+                  ) : (
+                    <AvatarIcon style={{ fontSize: 80 }} />
+                  )}
+                </button>
+              </Uploader>
+
+              {/* <div>
                 <input
                   type="file"
                   name="imageUrl"
@@ -141,10 +185,10 @@ const BannerManager = () => {
                 {imageUrl && (
                   <div>
                     <p>Selected file: {imageUrl.name}</p>
-                    {/* <button onClick={handleUpload}>Upload</button> */}
+                    <button onClick={handleUpload}>Upload</button>
                   </div>
                 )}
-              </div>
+              </div> */}
               {/* <Uploader
                 action="//jsonplaceholder.typicode.com/posts/"
                 draggable

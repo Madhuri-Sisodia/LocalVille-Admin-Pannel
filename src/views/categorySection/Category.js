@@ -18,16 +18,30 @@ const Category = () => {
   const { setCategoriesId } = useContext(Utils);
   const notificationAlertRef = React.useRef(null);
   const [imageUrl, setImageUrl] = useState("");
-
   const [imageFile, setImageFile] = useState(null);
+  const [showNotification, setShowNotification] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     setImageFile(file);
+    // setImageFile(file);
+    if (file && file.type.startsWith("image/")) {
+      setImageFile(file);
+      setErrorMessage("image upload success");
+      setShowNotification(true);
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 2000); // set timer for 2 seconds
+    } else {
+      setImageFile(null);
+      setErrorMessage("Please select a valid image file.");
+    }
   };
 
   const handleRemoveImage = () => {
     setImageFile(null);
+    setErrorMessage("");
   };
 
   const handleSubmit = () => {
@@ -105,6 +119,9 @@ const Category = () => {
           </Form.ControlLabel>
           <Form.Group>
             <div>
+              {showNotification && errorMessage && (
+                <div style={{ color: "green" }}>{errorMessage}</div>
+              )}
               {imageFile ? (
                 <div>
                   <img

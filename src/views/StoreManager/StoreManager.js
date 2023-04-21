@@ -268,24 +268,25 @@ const StoreManager = () => {
                                 textAlign: "center",
                               }}
                             >
-                              {item.opening_days
-                                .split(",")
-                                .map((ele, index) => (
-                                  <div
-                                    key={index}
-                                    className="day-circle"
-                                    style={{
-                                      marginTop: "20px",
-                                      width: "15px",
-                                      height: "15px",
-                                      background: "lightgray",
-                                      color: "black",
-                                    }}
-                                  >
-                                    {daysOfWeek[index] || ele}
-                                  </div>
-                                ))}
-                              {/* */}
+                              {daysOfWeek ||
+                                item.opening_days
+                                  .split(",")
+                                  .map((ele, index) => (
+                                    <div
+                                      key={index}
+                                      className="day-circle"
+                                      style={{
+                                        marginTop: "20px",
+                                        width: "15px",
+                                        height: "15px",
+                                        background: "lightgray",
+                                        color: "black",
+                                      }}
+                                    >
+                                      {daysOfWeek[index] || ele}
+                                    </div>
+                                  ))}
+                              {/* {item.opening_days} */}
                             </td>
                             <td>{item.opening_time}</td>
                             <td>{item.closing_time}</td>

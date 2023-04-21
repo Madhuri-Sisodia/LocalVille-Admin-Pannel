@@ -330,13 +330,13 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
               <Form.Label className="add-label">Opening Days</Form.Label>
               <br />
               {daysOfWeek.map((day, index) => {
-                const isSelected = selectedDays.includes(index);
+                const isSelected = selectedDays.includes(index + 1);
                 return (
                   <div
                     key={day}
                     className={`week-days ${isSelected ? "selected" : ""}`}
                     name="selectedDays"
-                    onClick={() => toggleDaySelection(index + 1)}
+                    onClick={() => toggleDaySelection(index)}
                   >
                     {day}
                   </div>

@@ -54,7 +54,7 @@ const ProductApproval = () => {
   const getUnverifiedProduct = () => {
     Http.GetAPI(
       process.env.REACT_APP_GETUNVERIFIEDPRODUCTS + "?" + `page=${pageView}`,
-      "",
+      data,
       null
     )
       .then((res) => {
@@ -84,7 +84,7 @@ const ProductApproval = () => {
 
   const filtervendor = (e) => {
     Http.GetAPI(
-      process.env.REACT_APP_SEARCHPRODUCTAPPOVAL +
+      process.env.REACT_APP_PRODUCTSAPPROVALSEARCH +
         "?" +
         `search=${e} & page=${pageNo}`,
       data,
@@ -92,12 +92,14 @@ const ProductApproval = () => {
     )
       .then((res) => {
         setIsLoading(false);
+        console.log("product", res?.data);
         if (res?.data?.status) {
           setData(res?.data?.data);
           setDisabledNext(true);
-          console.log("userr", res.data.data);
         } else {
-          // alert("Fields not matched");
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {
@@ -107,6 +109,7 @@ const ProductApproval = () => {
         );
       });
   };
+
   const search = Debounce(filtervendor);
   return (
     <>
@@ -139,72 +142,84 @@ const ProductApproval = () => {
                 <Loading isLoading={isLoading} noData={data?.length == 0} />
               ) : (
                 <Card.Body className="table-full-width table-responsive px-0">
-                  <Table className="table-hover table-striped">
-                    <thead>
-                      <tr style={{ dislay: "flex", justifyContent: "center" }}>
-                        <th className="border-0">ID</th>
-                        <th className="border-0">Product Image</th>
-                        <th className="border-0">Product Name</th>
-                        <th className="border-0 ">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {data.map((item, index) => (
-                        <tr style={{ fontSize: "0.95rem" }} key={item.id}>
-                          <td>{item.id}</td>
-                          <td>
-                            <img
-                              src={item.theme_img}
-                              alt="image"
-                              style={{
-                                width: "50px",
-                                height: "50px",
-                                borderRadius: "50%",
-                              }}
-                            />
-                          </td>
-                          <td>{item.product_name}</td>
-
-                          <td>
-                            <Button
-                              className="btn-simple btn-link p-1"
-                              type="button"
-                              variant="primary"
-                              onClick={() => {
-                                setShowProductDetail(true);
-                                setRowData(item);
-                              }}
-                            >
-                              <i className="fa fa-eye"></i>
-                            </Button>
-                            <Button
-                              className="btn-simple btn-link p-1"
-                              type="button"
-                              variant="success"
-                              onClick={() => {
-                                setShowVerifiedProduct(true);
-                                setProduct(item);
-                              }}
-                            >
-                              <i className="fas fa-check"></i>
-                            </Button>
-
-                            <Button
-                              className="btn-simple btn-link p-1"
-                              type="button"
-                              variant="danger"
-                              onClick={() => {
-                                setShowRejectProduct(true);
-                                setProduct(item);
-                              }}
-                            >
-                              <i className="fas fa-times"></i>
-                            </Button>
-                          </td>
+                  {data.length === 0 ? (
+                    <img
+                      style={{ marginLeft: "21em", marginBottom: "2em" }}
+                      width={200}
+                      height={200}
+                      src={image}
+                      alt="product data Image"
+                    />
+                  ) : (
+                    <Table className="table-hover table-striped">
+                      <thead>
+                        <tr
+                          style={{ dislay: "flex", justifyContent: "center" }}
+                        >
+                          <th className="border-0">ID</th>
+                          <th className="border-0">Product Image</th>
+                          <th className="border-0">Product Name</th>
+                          <th className="border-0 ">Action</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </Table>
+                      </thead>
+                      <tbody>
+                        {data.map((item, index) => (
+                          <tr style={{ fontSize: "0.95rem" }} key={item.id}>
+                            <td>{item.id}</td>
+                            <td>
+                              <img
+                                src={item.theme_img}
+                                alt="image"
+                                style={{
+                                  width: "50px",
+                                  height: "50px",
+                                  borderRadius: "50%",
+                                }}
+                              />
+                            </td>
+                            <td>{item.product_name}</td>
+
+                            <td>
+                              <Button
+                                className="btn-simple btn-link p-1"
+                                type="button"
+                                variant="primary"
+                                onClick={() => {
+                                  setShowProductDetail(true);
+                                  setRowData(item);
+                                }}
+                              >
+                                <i className="fa fa-eye"></i>
+                              </Button>
+                              <Button
+                                className="btn-simple btn-link p-1"
+                                type="button"
+                                variant="success"
+                                onClick={() => {
+                                  setShowVerifiedProduct(true);
+                                  setProduct(item);
+                                }}
+                              >
+                                <i className="fas fa-check"></i>
+                              </Button>
+
+                              <Button
+                                className="btn-simple btn-link p-1"
+                                type="button"
+                                variant="danger"
+                                onClick={() => {
+                                  setShowRejectProduct(true);
+                                  setProduct(item);
+                                }}
+                              >
+                                <i className="fas fa-times"></i>
+                              </Button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  )}
                 </Card.Body>
               )}
             </Card>
