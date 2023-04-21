@@ -1,8 +1,15 @@
 import React from "react";
 
-import { Form, Button, ButtonToolbar, Schema, Panel, FlexboxGrid } from 'rsuite';
+import {
+  Form,
+  Button,
+  ButtonToolbar,
+  Schema,
+  Panel,
+  FlexboxGrid,
+} from "rsuite";
 
-const { StringType} = Schema.Types;
+const { StringType } = Schema.Types;
 
 const validationModel = Schema.Model({
   aName: StringType().isRequired("Admin Name is required."),
@@ -22,12 +29,39 @@ const validationModel = Schema.Model({
       return true;
     }, "Password do not match")
     .isRequired("This field is required."),
-    // image: StringType()
-    // // .accept("image/png", "image/jpeg", "image/gif")
-    // // .maxSize(5 * 1024 * 1024, "File size is too large.")
-    // .isRequired("Please upload an image."),
+
 });
 
+const validationUpdateModel = Schema.Model({
+  vendorName: StringType().addRule((value) => {
+    const regex = /^[a-zA-Z ]+$/;
+    return regex.test(value);
+  }, "Please enter a valid name using only alphabets and space."),
+  vendorPhone: StringType().addRule((value) => {
+    const regex = /^\d{10}$/;
+    return regex.test(value);
+  }, "Please enter a valid 10 digit phone number."),
+});
+
+const validationAddModel = Schema.Model({
+  storeName: StringType()
+    .isRequired("Store Name is required")
+    .addRule((value) => {
+      const regex = /^[a-zA-Z ]+$/;
+      return regex.test(value);
+    }, "Please enter a valid name using only alphabets and space."),
+  storeDesc: StringType().isRequired("Store Description is required"),
+  address: StringType().isRequired("Store Address is required"),
+  pincode: StringType()
+    .isRequired("Pincode is required")
+    .addRule((value) => {
+      const regex = /^\d{6}$/;
+      return regex.test(value);
+    }, "Please enter a valid 6 digit pincode."),
+  openingTime: StringType().isRequired("OpeningTime is required"),
+  closingTime: StringType().isRequired("ClosingTime is required"),
+    
+});
 
 const TextField = React.forwardRef((props, ref) => {
   const { name, label, accepter, ...rest } = props;
@@ -39,4 +73,9 @@ const TextField = React.forwardRef((props, ref) => {
   );
 });
 
- export  {validationModel,TextField} ;
+export {
+  validationModel,
+  TextField,
+  validationUpdateModel,
+  validationAddModel,
+};

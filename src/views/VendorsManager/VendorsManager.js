@@ -93,30 +93,6 @@ const VendorsManager = () => {
     getVendors();
   };
 
-  // const filtervendor = (e) => {
-  //   Http.GetAPI(
-  //     process.env.REACT_APP_SEARCHVENDOR + "?" + `search=${e} & page=${pageNo}`,
-  //     data,
-  //     null
-  //   )
-  //     .then((res) => {
-  //       setIsLoading(false);
-  //       if (res?.data?.status) {
-  //         setData(res?.data?.data);
-  //         setDisabledNext(true);
-  //         console.log("userr", res.data.data);
-  //       } else {
-  //         // alert("Fields not matched");
-  //       }
-  //     })
-  //     .catch((e) => {
-  //       setIsLoading(false);
-  //       notificationAlertRef.current.notificationAlert(
-  //         ErrorNotify("Something went wrong")
-  //       );
-  //     });
-  // };
-
   return (
     <>
       <div className="rna-container">

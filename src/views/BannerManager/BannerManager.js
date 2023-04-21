@@ -67,20 +67,8 @@ const BannerManager = () => {
     setImage(null);
   };
 
-  function handleImageChange(event) {
-    const file = event.target.files[0];
-    if (file && file.type.substr(0, 5) === "image") {
-      setImage(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImage(reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setImage(null);
-      setPreviewImage(null);
-    }
-  }
+ 
+    
 
   const handleSubmit = () => {
     //  e.preventDefault();
@@ -134,51 +122,7 @@ const BannerManager = () => {
         <div className="Container">
           <Form fluid onSubmit={handleSubmit}>
             <Form.Group>
-              <Form.ControlLabel>UPLOAD IMAGE</Form.ControlLabel> 
-              {/* <div>Image</div> */}
-              {/* <div>
-            
-                <label htmlFor="image-upload" style={{ display: "block" }}>
-                  <img
-                    src={image}
-                    alt={<FaCamera/>}
-                    style={{ width: "50px" }}
-                  /> */}
-
-                {/* <div
-                    style={{
-                      border: "1px solid gray",
-                      padding: "10px",
-                      display: "inline-block",
-                      borderRadius: "5px",
-                      margin: "0px",
-                    }}
-                  >
-                    <FaCamera
-                      style={{
-                        fontSize: "30px",
-                      
-                        color: "gray",
-                      }}
-                    />
-                  </div> */}
-                {/* </label>
-                <input
-                  type="file"
-                  id="image-upload"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  ref={fileInputRef}
-                  style={{ display: "none" }}
-                />
-                {previewImage && (
-                  <img
-                    src={previewImage}
-                    alt="Preview"
-                    style={{ height: "70px", width: "70px" }}
-                  />
-                )}
-              </div> */}
+              <Form.ControlLabel>UPLOAD IMAGE</Form.ControlLabel>
 
               <input
                 type="file"

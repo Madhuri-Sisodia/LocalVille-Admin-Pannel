@@ -56,7 +56,7 @@ const UpdateStore = ({
       let parsedDays;
       if (Array.isArray(item.opening_days)) {
         parsedDays = item.opening_days;
-        parsedDays = JSON.parse(item.opening_days)
+        parsedDays = JSON.parse(item.opening_days);
       } else {
         try {
           parsedDays = item.opening_days.split(",");
@@ -75,7 +75,8 @@ const UpdateStore = ({
     });
   };
 
-  const handleUpdateStore = () => {
+  const handleUpdateStore = (e) => {
+    e.preventDefault();
     var data = new FormData();
 
     data.append("store_image", UpdateStoreImage);
@@ -122,6 +123,7 @@ const UpdateStore = ({
 
     Http.PostAPI(process.env.REACT_APP_UPDATESTORE, data, null)
       .then((res) => {
+        console.log("RESPONSE", res);
         if (res?.data?.status) {
           setStore(res?.data?.data);
           getStore();
@@ -139,6 +141,7 @@ const UpdateStore = ({
           ErrorNotify("Something went wrong")
         );
       });
+      setShowUpdateStore(false);
   };
 
   useEffect(() => {
@@ -188,7 +191,7 @@ const UpdateStore = ({
             />
           </Modal.Header>
           <Modal.Body className="update-body">
-            <Form>
+            <Form onSubmit={handleUpdateStore}>
               {!hideData && (
                 <Form.Group style={{ marginTop: "0rem", marginBottom: "1rem" }}>
                   <label className="update-label">Store ID</label>
@@ -388,17 +391,8 @@ const UpdateStore = ({
                 ></Form.Control>
               </Form.Group>
 
-              <ButtonComponent
-                buttontext="Update"
-                block
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleUpdateStore();
-                  setShowUpdateStore(false);
-                }}
-              />
+              <ButtonComponent buttontext="Update" block />
             </Form>
-           
           </Modal.Body>
         </Modal>
       )}
