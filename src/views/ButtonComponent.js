@@ -1,6 +1,7 @@
 import React from 'react';
 import "../assets/css/admin.css";
 
+
 const ButtonComponent = (props) => {
   return (
     
@@ -8,15 +9,16 @@ const ButtonComponent = (props) => {
         className="buttonComponent"
         type="submit"
          style={{
-                backgroundColor: "blueviolet",
+                backgroundColor: "#ac74e1",
                 border: "blueviolet",
-                borderRadius: "3px 3px 3px 3px",
-                width: "100%",
+                borderRadius: "10px",
+                width: "81%",
                 padding: "10px",
                 color: "white",
                 marginTop: "20px",
                 fontSize: "0.9rem",
-                fontWeight:"500"
+                fontWeight:"600",
+                textAlign:"center"
               }}  
         >
            {props.buttontext}  

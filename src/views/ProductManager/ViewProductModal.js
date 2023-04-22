@@ -13,7 +13,11 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-const ViewProduct = ({ showProductDetail, setShowProductDetail, rowData }) => {
+const ViewProductModal = ({
+  showProductDetail,
+  setShowProductDetail,
+  rowData,
+}) => {
   return (
     <>
       <Modal
@@ -190,7 +194,6 @@ const ViewProduct = ({ showProductDetail, setShowProductDetail, rowData }) => {
             </tbody>
           </Table>
 
-
           <div
             style={{
               fontSize: "0.9rem",
@@ -241,7 +244,7 @@ const ViewProduct = ({ showProductDetail, setShowProductDetail, rowData }) => {
 
                   <tr>
                     <td className="bold-col">Stock:</td>
-                    <td>{attr.in_stock== "1"?"Yes":"No"}</td>
+                    <td>{attr.in_stock == "1" ? "Yes" : "No"}</td>
                   </tr>
 
                   <tr>
@@ -297,4 +300,4 @@ const ViewProduct = ({ showProductDetail, setShowProductDetail, rowData }) => {
     </>
   );
 };
-export default ViewProduct;
+export default ViewProductModal;

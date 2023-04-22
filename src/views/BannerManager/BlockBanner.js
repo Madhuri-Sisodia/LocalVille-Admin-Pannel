@@ -1,27 +1,20 @@
 import React, { useState } from "react";
 import { BiBlock } from "react-icons/bi";
 import { Http } from "../../config/Service";
+import { SuccessNotify} from "components/NotificationShowPopUp";
+import { ErrorNotify } from "components/NotificationShowPopUp";
+import NotificationAlert from "react-notification-alert";
 
-import {
-  Modal,
-  Form,
-  Badge,
-  Button,
-  Card,
-  Navbar,
-  Nav,
-  Table,
-  Container,
-  Row,
-  Col,
-} from "react-bootstrap";
+import { Modal, Form, Badge, Button } from "react-bootstrap";
 const BlockBanner = ({ showModal, setShowModal, blockData, getBanner }) => {
   const [blockBanner, setBlockBanner] = useState([]);
   const [blockReason, setBlockReason] = useState("");
+  const notificationAlertRef = React.useRef(null);
 
   const handleBlockBanner = (id) => {
     var data = new FormData();
     data.append("banner_id", id);
+    data.append("status", 0 );
     data.append("reason", blockReason);
 
     Http.PostAPI(process.env.REACT_APP_BLOCKBANNER, data, null)
@@ -29,18 +22,27 @@ const BlockBanner = ({ showModal, setShowModal, blockData, getBanner }) => {
         if (res?.data?.status) {
           setBlockBanner(res?.data?.data);
           getBanner();
+          notificationAlertRef.current.notificationAlert(
+            SuccessNotify(res?.data?.message)
+          );
         } else {
-          alert("Fields not matched");
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something Went Wrong")
+        );
       });
   };
 
   return (
     <>
+      <div className="rna-container">
+        <NotificationAlert ref={notificationAlertRef} />
+      </div>
       <Modal
         className="modal-mini modal-primary"
         show={showModal}
@@ -67,6 +69,7 @@ const BlockBanner = ({ showModal, setShowModal, blockData, getBanner }) => {
             maxLength={200}
             value={blockReason}
             onChange={(event) => setBlockReason(event.target.value)}
+            required
           />
         </Modal.Body>
         <div className="modal-footer">

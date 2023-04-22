@@ -347,6 +347,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
                   onChange={(e) => {
                     handleInput(e);
                   }}
+                  required
                 />
               </Form.Group>
               <Form.Group style={{ width: "50%" }}>
@@ -358,6 +359,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore,addStore }) => {
                   onChange={(e) => {
                     handleInput(e);
                   }}
+                  required
                 />
               </Form.Group>
             </div>

@@ -84,7 +84,7 @@ const EmailManager = () => {
               <Form.ControlLabel>MESSAGE</Form.ControlLabel>
               <MyComponent />
             </Form.Group>
-            <ButtonComponent block buttontext="Submit" />
+            <ButtonComponent  buttontext="Submit" />
           </Form>
         </div>
       </div>

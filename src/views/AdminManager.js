@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Button, ButtonToolbar } from "rsuite";
+import { Form, Button, ButtonToolbar, Schema, model, Message } from "rsuite";
 import ErrorMessage from "customComponents/ErrorMessage";
 import NotificationAlert from "react-notification-alert";
 import "../assets/css/admin.css";
@@ -7,51 +7,41 @@ import { Http } from "../config/Service";
 import ButtonComponent from "views/ButtonComponent";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
+import validationModel from "../components/Validation";
 
 const AdminManager = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [rePassword, setRePassword] = useState("");
+  const [formValue, setFormValue] = useState({
+    aName: "",
+    email: "",
+    password: "",
+    rePassword: "",
+  });
+
   const [user, setUser] = useState([]);
-  const [errors, setErrors] = useState({});
-
+  const [formError, setFormError] = useState({});
   const notificationAlertRef = React.useRef(null);
+  const formRef = React.useRef();
 
-  const validate = () => {
-    let tempErrors = {};
-    if (!name) {
-      tempErrors.name = "Name is required";
-    }
-    if (!email) {
-      tempErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      tempErrors.email = "Email is invalid";
-    }
-    if (!password) {
-      tempErrors.password = "Password is required";
-    } else if (password.length < 5) {
-      tempErrors.password = "Password must be at least 5 characters long";
-    }
-    if (!rePassword) {
-      tempErrors.rePassword = "Re-entered password is required";
-    } else if (password !== rePassword) {
-      tempErrors.rePassword = "Password do not match";
-    }
-    setErrors(tempErrors);
-    return Object.keys(tempErrors).length === 0;
-  };
+  const handleSubmit = () => {
+    // e.preventDefault();
+    // if (Object.keys(formValue).every((key) => formValue[key] === "")) {
+    //   setFormError("this is required field.");
+    //   return;
+    // }
 
-  const handleSubmit = (e) => {
-    if (validate()) {
+    if (!formRef.current.check()) {
+      console.log("FORM ERROR!");
+      //  setFormError(validationModel)
+      return;
+    } else {
+      console.log("form....", formValue);
       var data = new FormData();
-      data.append("name", name);
-      data.append("email", email);
-      data.append("password", password);
+      data.append("name", formValue.aName);
+      data.append("email", formValue.email);
+      data.append("password", formValue.password);
 
       Http.PostAPI(process.env.REACT_APP_ADDADMINDATA, data, null)
         .then((res) => {
-          console.log("user", res.data.status);
           if (res?.data?.status) {
             setUser(res?.data?.data);
             notificationAlertRef.current.notificationAlert(
@@ -68,12 +58,16 @@ const AdminManager = () => {
             ErrorNotify("Something went wrong")
           );
         });
-      setName("");
-      setEmail("");
-      setPassword("");
-      setRePassword("");
-      setErrors({});
-      notify("tr");
+      setFormValue({
+        aName: "",
+        email: "",
+        password: "",
+        rePassword: "",
+      });
+      // setFormError(validationModel)
+
+      //  formRef.current.reset();
+      // formRef.current.state.formValue = "";
     }
   };
 
@@ -88,9 +82,10 @@ const AdminManager = () => {
 
           <Form
             fluid
-            onSubmit={(e) => {
-              handleSubmit(e);
-            }}
+            ref={formRef}
+            model={validationModel}
+            onSubmit={handleSubmit}
+            onChange={setFormValue}
           >
             <div className="InnnerContainerAdmin">
               <Form.Group>
@@ -99,11 +94,9 @@ const AdminManager = () => {
                 </Form.ControlLabel>
                 <Form.Control
                   placeholder="Admin Name"
-                  name="adminName"
-                  value={name}
-                  onChange={(value) => setName(value)}
+                  name="aName"
+                  value={formValue.aName}
                 />
-                {errors.name && <ErrorMessage message={errors.name} />}
               </Form.Group>
               <Form.Group>
                 <Form.ControlLabel>ADMIN EMAIL</Form.ControlLabel>
@@ -111,10 +104,11 @@ const AdminManager = () => {
                   placeholder="Admin Email"
                   name="email"
                   type="email"
-                  value={email}
-                  onChange={(value) => setEmail(value)}
+                  value={formValue.email}
                 />
-                {errors.email && <ErrorMessage message={errors.email} />}
+                {/* {formError.formValue.email && (
+                  <ErrorMessage>{formError.formValue.email}</ErrorMessage>
+                )} */}
               </Form.Group>
 
               <Form.Group>
@@ -124,10 +118,8 @@ const AdminManager = () => {
                   type="password"
                   placeholder="Enter Password"
                   autoComplete="off"
-                  value={password}
-                  onChange={(value) => setPassword(value)}
+                  value={formValue.password}
                 />
-                {errors.password && <ErrorMessage message={errors.password} />}
               </Form.Group>
 
               <Form.Group>
@@ -137,12 +129,8 @@ const AdminManager = () => {
                   type="password"
                   placeholder="Re-enter Password"
                   autoComplete="off"
-                  value={rePassword}
-                  onChange={(value) => setRePassword(value)}
+                  value={formValue.rePassword}
                 />
-                {errors.rePassword && (
-                  <ErrorMessage message={errors.rePassword} />
-                )}
               </Form.Group>
             </div>
             <ButtonComponent block buttontext="Submit" />
