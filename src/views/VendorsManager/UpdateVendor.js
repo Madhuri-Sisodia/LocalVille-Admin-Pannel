@@ -61,16 +61,15 @@ const UpdateVendor = ({
   //   const file = event.target.files[0];
   //   setVendorImage(URL.createObjectURL(file));
   // };
+
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
-    reader.onload = (event) => {
-      const base64Image = event.target.result.split(',')[1];
-     setVendorImage(base64Image);
+    reader.onloadend = () => {
+      setVendorImage(reader.result);
     };
     reader.readAsDataURL(file);
   };
-  
 
   const handleUpdateVendor = (event) => {
     // event.preventDefault();

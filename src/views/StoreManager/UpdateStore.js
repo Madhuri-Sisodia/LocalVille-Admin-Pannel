@@ -370,7 +370,7 @@ const UpdateStore = ({
                 <Form.Control
                   className="update-form"
                   defaultValue={item?.opening_time}
-                  type="text"
+                  type="time"
                   name="openingTime"
                   onChange={(e) => {
                     getInput(e);
@@ -383,7 +383,7 @@ const UpdateStore = ({
                 <Form.Control
                   className="update-form"
                   defaultValue={item?.closing_time}
-                  type="text"
+                  type="time"
                   name="closingTime"
                   onChange={(e) => {
                     getInput(e);

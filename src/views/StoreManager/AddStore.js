@@ -124,11 +124,12 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
 
       return;
     } else {
-      const vendorid = vendortData.filter((ele) => {
-        return ele.email == selectSection?.value;
-      });
+      // const vendorid = vendortData.filter((ele) => {
+      //   return ele.id == selectSection?.value;
+      // });
 
-      const id = vendorid[0].id;
+      const id = selectSection?.value;
+      console.log("id", id);
       var data = new FormData();
       data.append("vendor_id", id);
       data.append("store_image", image);
@@ -200,8 +201,8 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
     if (vendortData) {
       const Result = vendortData.map((ele, index) => {
         return {
-          label: `${index + 1})  ${ele.name} , ${ele.email}`,
-          value: ele.email,
+          label: `${index + 1})  ${ele.name} , ${ele.id}`,
+          value: ele.id,
         };
       });
       setData(Result);
