@@ -15,7 +15,7 @@ import { ErrorNotify } from "components/NotificationShowPopUp";
 const EmailManager = () => {
   const [selectedVendors, setSelectedVendors] = useState([]);
   const [image, setImage] = useState("");
-  const [title, setTitle] = useState("");
+  // const [title, setTitle] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [addemail, setAddemail] = useState([]);
@@ -61,7 +61,7 @@ const EmailManager = () => {
     }
 
     // data.append("vendors_field", selectedVendors && selectedVendors?.vendors);
-    data.append("title", title);
+    // data.append("title", title);
     data.append("subject", subject);
     data.append("message", message);
 
@@ -86,7 +86,7 @@ const EmailManager = () => {
         );
       });
     setSelectedVendors("");
-    setTitle("");
+    // setTitle("");
     setSubject("");
     setMessage("");
   };
@@ -112,7 +112,7 @@ const EmailManager = () => {
                 selectedVendors={selectedVendors}
               />
             </Form.Group>
-            <Form.Group>
+            {/* <Form.Group>
               <Form.ControlLabel>TITLE</Form.ControlLabel>
               <Form.Control
                 placeholder="Vendor Title"
@@ -121,7 +121,7 @@ const EmailManager = () => {
                 onChange={(value) => setTitle(value)}
                 required
               />
-            </Form.Group>
+            </Form.Group> */}
             <Form.Group>
               <Form.ControlLabel>SUBJECT</Form.ControlLabel>
               <Form.Control

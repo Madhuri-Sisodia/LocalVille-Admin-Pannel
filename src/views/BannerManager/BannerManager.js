@@ -15,6 +15,7 @@ import ActiveBanner from "./ActiveBanner";
 
 import { Uploader, Message, Loader, useToaster } from "rsuite";
 import AvatarIcon from "@rsuite/icons/legacy/Avatar";
+import CameraRetroIcon from "@rsuite/icons/legacy/CameraRetro";
 const BannerManager = () => {
   const [formData, setFormData] = useState({
     image: "",
@@ -30,26 +31,42 @@ const BannerManager = () => {
   const [addBanner, setAddBanner] = useState([]);
   const notificationAlertRef = React.useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [showNotification, setShowNotification] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   // const fileInputRef = useRef(null);
-  const toaster = useToaster();
-  const [uploading, setUploading] = React.useState(false);
-  const [fileInfo, setFileInfo] = React.useState(null);
+  // const toaster = useToaster();
+  // const [uploading, setUploading] = React.useState(false);
+  // const [fileInfo, setFileInfo] = React.useState(null);
 
-  function previewFile(file, callback) {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      callback(reader.result);
-    };
-    reader.readAsDataURL(file);
-  }
-
-  const handleFileChange = (event) => {
-    setImageUrl(event.target.files[0]);
+  // const handleFileChange = (event) => {
+  //   setImageUrl(event.target.files[0]);
+  // };
+  // const handleButtonClick = () => {
+  //   fileInputRef.current.click();
+  // };
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    setImageFile(file);
+    // setImageFile(file);
+    if (file && file.type.startsWith("image/")) {
+      setImageFile(file);
+      setErrorMessage("image upload success");
+      setShowNotification(true);
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 2000); // set timer for 2 seconds
+    } else {
+      setImageFile(null);
+      setErrorMessage("Please select a valid image file.");
+    }
   };
-  const handleButtonClick = () => {
-    fileInputRef.current.click();
-  };
 
+  const handleRemoveImage = () => {
+    setImageFile(null);
+    setErrorMessage("");
+  };
   const getBanner = () => {
     Http.GetAPI(process.env.REACT_APP_GETBANNER + "?" + Math.random(), data)
       .then((res) => {
@@ -80,7 +97,8 @@ const BannerManager = () => {
       redirect: "",
       url: "",
     });
-    setImageUrl("");
+    setImageFile("");
+    // setImageUrl("");
   };
 
   const handleSubmit = () => {
@@ -93,7 +111,7 @@ const BannerManager = () => {
     }
 
     var data = new FormData();
-    data.append("banner_image", imageUrl);
+    data.append("banner_image", imageFile);
     data.append("is_redirect", redirectImg);
     data.append("url", formData.url);
     data.append("active", 1);
@@ -136,74 +154,48 @@ const BannerManager = () => {
           <Form fluid onSubmit={handleSubmit}>
             <Form.Group>
               <Form.ControlLabel htmlFor="file">IMAGE</Form.ControlLabel>
-              <Uploader
-                onChange={(e) => {
-                  setImageUrl(e.target.files[0]);
-                }}
-                fileListVisible={false}
-                listType="picture"
-                action="//jsonplaceholder.typicode.com/posts/"
-                onUpload={(file) => {
-                  setUploading(true);
-                  previewFile(file.blobFile, (value) => {
-                    setFileInfo(value);
-                  });
-                }}
-                onSuccess={(response, file) => {
-                  setUploading(false);
-                  toaster.push(
-                    <Message type="success">Uploaded successfully</Message>
-                  );
-                  console.log(response);
-                }}
-                // onError={() => {
-                //   setFileInfo(null);
-                //   setUploading(false);
-                //   toaster.push(<Message type="error">Upload failed</Message>);
-                // }}
-              >
-                <button style={{ width: 150, height: 150 }}>
-                  {uploading && <Loader backdrop center />}
-                  {fileInfo ? (
-                    <img src={fileInfo} width="100%" height="100%" />
-                  ) : (
-                    <AvatarIcon style={{ fontSize: 80 }} />
-                  )}
-                </button>
-              </Uploader>
-
-              {/* <div>
-                <input
-                  type="file"
-                  name="imageUrl"
-                  accept="image/jpeg, image/png, image/jpg"
-                  ref={fileInputRef}
-                  style={{ display: "none" }}
-                  onChange={handleFileChange}
-                />
-                <button onClick={handleButtonClick}>Choose File</button>
-                {imageUrl && (
+              <div>
+                {showNotification && errorMessage && (
+                  <div style={{ color: "green" }}>{errorMessage}</div>
+                )}
+                {imageFile ? (
                   <div>
-                    <p>Selected file: {imageUrl.name}</p>
-                    <button onClick={handleUpload}>Upload</button>
+                    <img
+                      src={URL.createObjectURL(imageFile)}
+                      alt="Avatar"
+                      style={{
+                        width: "80px",
+                        height: "80px",
+                        borderRadius: "11px",
+                      }}
+                    />
+                    <div style={{ marginTop: "1em" }}>
+                      <button onClick={handleRemoveImage}>Remove Image</button>
+                    </div>
+                  </div>
+                ) : (
+                  <div style={{ overflow: "hidden" }}>
+                    <label htmlFor="avatar-upload">
+                      <CameraRetroIcon />
+                      <img
+                        src="https://media.istockphoto.com/id/1409881908/photo/yellow-retro-camera-on-white-background.jpg?b=1&s=170667a&w=0&k=20&c=QTEBd6s2FwD3elJ9dPg3XFwWrk6FcpT1o0WdmeRMzhg="
+                        alt="Avatar Placeholder"
+                        style={{
+                          borderRadius: "11px",
+                          width: "90px",
+                        }}
+                      />
+                    </label>
+                    <input
+                      id="avatar-upload"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      style={{ display: "none" }}
+                    />
                   </div>
                 )}
-              </div> */}
-              {/* <Uploader
-                action="//jsonplaceholder.typicode.com/posts/"
-                draggable
-              >
-                <div
-                  style={{
-                    height: 200,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <span>Click or Drag files to this area to upload</span>
-                </div>
-              </Uploader> */}
+              </div>
               {/* <input
                 type="file"
                 name="imageUrl"

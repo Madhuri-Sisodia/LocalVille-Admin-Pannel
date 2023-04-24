@@ -87,7 +87,7 @@ const ProductApproval = () => {
       process.env.REACT_APP_PRODUCTSAPPROVALSEARCH +
         "?" +
         `search=${e} & page=${pageNo}`,
-      data,
+      "",
       null
     )
       .then((res) => {
