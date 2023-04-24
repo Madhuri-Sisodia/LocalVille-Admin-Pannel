@@ -102,6 +102,10 @@ const StoreManager = () => {
     getStore();
   }, [pageView]);
 
+  useEffect(() => {
+    getStore();
+  }, []);
+
   const handlePageChange = (page) => {
     setPageView(page);
     getStore();

@@ -101,6 +101,10 @@ const Products = () => {
   useEffect(() => {
     getProducts();
   }, [pageView]);
+
+  useEffect(() => {
+    getProducts();
+  }, []);
   // console.log(blockData);
   const handleBlockProducts = (e) => {
     var data = new FormData();

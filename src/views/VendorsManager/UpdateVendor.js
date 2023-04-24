@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { MdClose } from "react-icons/md";
 import { Form } from "rsuite";
 import { FaCamera } from "react-icons/fa";
@@ -19,7 +19,7 @@ const UpdateVendor = ({
 }) => {
   const [vendors, setVendors] = useState([]);
   const [hideId, setHideId] = useState(true);
-  const [vendorImage, setVendorImage] = useState("");
+  const [vendorImage, setVendorImage] = useState();
   const [baseImage, setBaseImage] = useState("");
   const [formValue, setFormValue] = useState({
     vendorId: item?.id,
@@ -29,6 +29,7 @@ const UpdateVendor = ({
 
   const notificationAlertRef = React.useRef(null);
   const formRef = React.useRef();
+  const isMounted = useRef(false);
 
   const updateImage = () => {
     const data = new FormData();
@@ -41,11 +42,10 @@ const UpdateVendor = ({
       formValue.vendorName ? formValue.vendorName : item?.name
     );
     data.append("Vendor_image", vendorImage);
-    console.log("Image", vendorImage);
-
+  
     Http.PostAPI(process.env.REACT_APP_UPDATEVENDORIMAGE, data, null)
       .then((res) => {
-        console.log("imageresp", res);
+       
         if (res?.data?.status) {
           setVendors(res?.data?.data);
           getVendors();
@@ -77,8 +77,12 @@ const UpdateVendor = ({
     reader.readAsDataURL(file);
   };
   useEffect(() => {
-    updateImage();
-  }, [baseImage, vendorImage]);
+    if (isMounted.current) {
+      updateImage();
+    } else {
+      isMounted.current = true;
+    }
+  }, [vendorImage]);
 
   const handleUpdateVendor = (event) => {
     // event.preventDefault();
@@ -88,7 +92,7 @@ const UpdateVendor = ({
 
       return;
     } else {
-      console.log("formValue:", formValue);
+      
       var data = new FormData();
       data.append(
         "vendor_id",
@@ -105,7 +109,7 @@ const UpdateVendor = ({
 
       Http.PostAPI(process.env.REACT_APP_UPDATEVENDORS, data, null)
         .then((res) => {
-          console.log("resp", res);
+          
           if (res?.data?.status) {
             setVendors(res?.data?.data);
             getVendors();
@@ -187,6 +191,7 @@ const UpdateVendor = ({
                     borderRadius: "50%",
                   }}
                 />
+              
                 <div style={{ display: "flex", alignItems: "left" }}>
                   <label htmlFor="vendorImage">
                     <div style={{ position: "relative" }}>

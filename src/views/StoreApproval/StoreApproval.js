@@ -33,7 +33,6 @@ const StoreApproval = () => {
   const [showVerifiedStore, setShowVerifiedStore] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showRejectStore, setShowRejectStore] = useState(false);
-  const [storeApproval, setStoreApproval] = useState(false);
   const { pageView, setPageView } = useContext(Utils);
   const [totalPages, setTotalPages] = useState(1);
   const [rowData, setRowData] = useState([]);
@@ -57,7 +56,6 @@ const StoreApproval = () => {
         if (res?.data?.status) {
           setData(res?.data?.data);
           setTotalPages(res.data.total_pages);
-          setStoreApproval(false);
         } else {
           notificationAlertRef.current.notificationAlert(
             ErrorNotify(res?.data?.message)
@@ -75,6 +73,10 @@ const StoreApproval = () => {
   useEffect(() => {
     getUnverifiedStore();
   }, [pageView]);
+
+  useEffect(() => {
+    getUnverifiedStore();
+  }, []);
 
   const handlePageChange = (page) => {
     setPageView(page);

@@ -69,6 +69,10 @@ const ProductApproval = () => {
     getUnverifiedProduct();
   }, [pageView]);
 
+  useEffect(() => {
+    getUnverifiedProduct();
+  }, []);
+
   const handlePageChange = (page) => {
     setPageView(page);
     getUnverifiedProduct();

@@ -14,7 +14,7 @@ const Context = ({ children }) => {
 const [location, setLocation] = useState("");
 const [userEmail,setUserEmail] = useState("")
 const [password,setPassword] = useState("")
-const [pageView,setPageView]  = useState(0)
+const [pageView,setPageView]  = useState(1)
 const [updatedAtt, setUPdatedAtt] = useState([]);
  
   return (
