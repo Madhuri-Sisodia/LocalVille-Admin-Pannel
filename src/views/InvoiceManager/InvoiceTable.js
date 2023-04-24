@@ -142,6 +142,9 @@ const InvoiceTable = () => {
                               borderRadius: "50%",
                             }}
                           />
+                          <a href={item.invoice_url} target="_blank" download>
+                            <button>Download PDF</button>
+                          </a>
                         </td>
 
                         <td>

@@ -36,13 +36,13 @@ const dashboardRoutes = [
     component: AdminManager,
     layout: "/admin",
   },
-  {
-    path: "/addmin",
-    name: "Addmin",
-    icon: "nc-icon nc-single-02",
-    component: Addmin,
-    layout: "/admin",
-  },
+  // {
+  //   path: "/addmin",
+  //   name: "Addmin",
+  //   icon: "nc-icon nc-single-02",
+  //   component: Addmin,
+  //   layout: "/admin",
+  // },
 
   {
     path: "/banner",
@@ -112,7 +112,6 @@ const dashboardRoutes = [
     component: EmailManager,
     layout: "/admin",
   },
-<<<<<<< HEAD
   {
     path: "/Invoice",
     name: "Invoice Manager",
@@ -182,8 +181,6 @@ const dashboardRoutes = [
   //   component: Notifications,
   //   layout: "/admin"
   // },
-=======
->>>>>>> 76e3cf4d9613347bcb5533ac887d4d05558cd8e8
 ];
 
 export default dashboardRoutes;

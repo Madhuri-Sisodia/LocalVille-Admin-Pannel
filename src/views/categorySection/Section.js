@@ -23,7 +23,6 @@ const Section = () => {
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     setImageFile(file);
-    // setImageFile(file);
     if (file && file.type.startsWith("image/")) {
       setImageFile(file);
       setErrorMessage("image upload success");
@@ -42,15 +41,6 @@ const Section = () => {
     setErrorMessage("");
   };
 
-  // const handleImageChange = (event) => {
-  //   const file = event.target.files[0];
-  //   setImageFile(file);
-  // };
-
-  // const handleRemoveImage = () => {
-  //   setImageFile(null);
-  // };
-
   const handleSubmit = () => {
     var data = new FormData();
     data.append("section_name", sectionName);
@@ -58,7 +48,6 @@ const Section = () => {
 
     Http.PostAPI(process.env.REACT_APP_ADDCATEGORYSECTION, data)
       .then((res) => {
-        console.warn("jaldi aajaa ", res);
         if (res?.data?.status) {
           setCategory(res?.data?.data);
           notificationAlertRef.current.notificationAlert(

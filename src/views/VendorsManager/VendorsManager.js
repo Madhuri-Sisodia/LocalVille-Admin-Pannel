@@ -9,7 +9,7 @@ import NotificationAlert from "react-notification-alert";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 import Loading from "customComponents/Loading";
 import image from "assets/img/noVendor.png";
-
+import "../../assets/css/admin.css";
 import {
   Modal,
   Form,
@@ -40,17 +40,40 @@ const VendorsManager = () => {
   const [isLoading, setIsLoading] = useState(true);
   const notificationAlertRef = React.useRef(null);
 
-  // const Debounce = (fun) => {
-  //   let timer;
-  //   return (...arg) => {
-  //     if (timer) {
-  //       clearTimeout(timer);
-  //     }
-  //     timer = setTimeout(() => {
-  //       fun.call(this, arg);
-  //     }, 500);
-  //   };
-  // };
+  const Debounce = (fun) => {
+    let timer;
+    return (...arg) => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+      timer = setTimeout(() => {
+        fun.call(this, arg);
+      }, 500);
+    };
+  };
+  const filtervendor = (e) => {
+    Http.GetAPI(
+      process.env.REACT_APP_SEARCHVENDOR + "?" + `search=${e}`,
+      "",
+      null
+    )
+      .then((res) => {
+        if (res?.data?.status) {
+          setData(res?.data?.data);
+          console.log("users", res.data.data);
+        } else {
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
+        }
+      })
+      .catch((e) => {
+        setIsLoading(false);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
+      });
+  };
 
   const getVendors = () => {
     Http.GetAPI(
@@ -64,6 +87,7 @@ const VendorsManager = () => {
         if (res?.data?.status) {
           if (res.data.data.length > 0) {
             setData(res?.data?.data);
+
             setDisabledNext(true);
             setTotalPages(res.data.total_pages);
           } else {
@@ -97,7 +121,6 @@ const VendorsManager = () => {
       <div className="rna-container">
         <NotificationAlert ref={notificationAlertRef} />
       </div>
-
       <Container fluid>
         <Row>
           <Col md="12">
@@ -147,11 +170,11 @@ const VendorsManager = () => {
                 <Card.Body className="table-full-width table-responsive px-0">
                   {data.length === 0 ? (
                     <img
-                      style={{ marginLeft: "21em", marginBottom: "5em" }}
+                      style={{ marginLeft: "21em", marginBottom: "2em" }}
                       width={200}
                       height={200}
                       src={image}
-                      alt="vendor data Image"
+                      alt="product data Image"
                     />
                   ) : (
                     <Table className="table-hover table-striped">
@@ -203,17 +226,19 @@ const VendorsManager = () => {
                             </td>
                             <td>{item.login_count}</td>
                             <td>
-                              <Button
-                                className="btn-simple btn-link p-1"
-                                type="button"
-                                variant="primary"
-                                onClick={() => {
-                                  setSelectedVendor(item);
-                                  setShowUpdateModal(true);
-                                }}
-                              >
-                                <i className="fas fa-edit"></i>
-                              </Button>
+                              {item?.active == "1" && (
+                                <Button
+                                  className="btn-simple btn-link p-1"
+                                  type="button"
+                                  variant="primary"
+                                  onClick={() => {
+                                    setSelectedVendor(item);
+                                    setShowUpdateModal(true);
+                                  }}
+                                >
+                                  <i className="fas fa-edit"></i>
+                                </Button>
+                              )}
 
                               {item?.active == "1" && (
                                 <Button

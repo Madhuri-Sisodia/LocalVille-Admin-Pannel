@@ -5,7 +5,7 @@ import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 
-import { Form, Radio, RadioGroup, Button, Uploader } from "rsuite";
+import { Form, Radio, RadioGroup, Button } from "rsuite";
 import { Table, Card, Col } from "react-bootstrap";
 
 import "../../assets/css/admin.css";
@@ -13,10 +13,8 @@ import BlockBanner from "./BlockBanner";
 import ButtonComponent from "views/ButtonComponent";
 import Loading from "customComponents/Loading";
 import ActiveBanner from "./ActiveBanner";
-
-import { Uploader, Message, Loader, useToaster } from "rsuite";
-import AvatarIcon from "@rsuite/icons/legacy/Avatar";
 import CameraRetroIcon from "@rsuite/icons/legacy/CameraRetro";
+
 const BannerManager = () => {
   const [formData, setFormData] = useState({
     image: "",
@@ -38,22 +36,12 @@ const BannerManager = () => {
   const [showNotification, setShowNotification] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const fileInputRef = useRef(null);
+  // const [isChecked, setIsChecked] = useState(true);
 
-  // const fileInputRef = useRef(null);
-  // const toaster = useToaster();
-  // const [uploading, setUploading] = React.useState(false);
-  // const [fileInfo, setFileInfo] = React.useState(null);
-
-  // const handleFileChange = (event) => {
-  //   setImageUrl(event.target.files[0]);
-  // };
-  // const handleButtonClick = () => {
-  //   fileInputRef.current.click();
-  // };
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     setImageFile(file);
-    // setImageFile(file);
+
     if (file && file.type.startsWith("image/")) {
       setImageFile(file);
       setErrorMessage("image upload success");
@@ -105,11 +93,9 @@ const BannerManager = () => {
     // setImageUrl("");
   };
 
- 
-    
-
   const handleSubmit = () => {
-    //  e.preventDefault();
+    // e.preventDefault();
+
     let redirectImg;
     if (formData.redirect) {
       redirectImg = "1";
@@ -150,6 +136,9 @@ const BannerManager = () => {
       return { ...previous, [name]: value };
     });
   };
+  // const handleRadioChange = (value) => {
+  //   setIsChecked(value);
+  // };
 
   return (
     <>
@@ -183,20 +172,23 @@ const BannerManager = () => {
                 ) : (
                   <div style={{ overflow: "hidden" }}>
                     <label htmlFor="avatar-upload">
-                      <CameraRetroIcon />
-                      <img
-                        src="https://media.istockphoto.com/id/1409881908/photo/yellow-retro-camera-on-white-background.jpg?b=1&s=170667a&w=0&k=20&c=QTEBd6s2FwD3elJ9dPg3XFwWrk6FcpT1o0WdmeRMzhg="
-                        alt="Avatar Placeholder"
+                      <div
                         style={{
-                          borderRadius: "11px",
                           width: "90px",
+                          height: "90px",
+                          border: "1px dotted",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
                         }}
-                      />
+                      >
+                        <CameraRetroIcon style={{ fontSize: "64px" }} />
+                      </div>
                     </label>
                     <input
                       id="avatar-upload"
                       type="file"
-                      accept="image/*"
+                      accept="image/jpeg, image/png, image/jpg"
                       onChange={handleImageChange}
                       style={{ display: "none" }}
                     />
@@ -221,10 +213,33 @@ const BannerManager = () => {
                 inline
                 onChange={(value) => handleFieldChange(value, "redirect")}
                 value={formData.redirect}
+                defaultValue={false}
                 required
               >
+                {/* <div>
+                  <Radio
+                    value={true}
+                    checked={isChecked === true}
+                    onChange={() => handleRadioChange(true)}
+                    defaultValue={false}
+                  >
+                    Yes
+                  </Radio>
+
+                  <Radio
+                    value={false}
+                    checked={isChecked === false}
+                    onChange={() => handleRadioChange(false)}
+                    defaultValue={true}
+                  >
+                    No
+                  </Radio>
+                </div> */}
+
                 <Radio value={true}>Yes</Radio>
-                <Radio value={false}>No</Radio>
+                <Radio defaultChecked={true} value={false}>
+                  No
+                </Radio>
               </RadioGroup>
             </Form.Group>
 

@@ -18,9 +18,7 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-import NotificationAlert from "react-notification-alert";
-import { SuccessNotify } from "components/NotificationShowPopUp";
-import { ErrorNotify } from "components/NotificationShowPopUp";
+
 const RejectStore = ({
   showRejectStore,
   setShowRejectStore,

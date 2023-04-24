@@ -34,7 +34,7 @@ const ProductApproval = () => {
   const [showProductDetail, setShowProductDetail] = useState(false);
   const [showRejectProduct, setShowRejectProduct] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
-  const { pageView, setPageView } = useContext(Utils);
+  const { pageNo, setDisabledNext, pageView, setPageView } = useContext(Utils);
   const [rowData, setRowData] = useState([]);
   const [product, setProduct] = useState([]);
   const notificationAlertRef = React.useRef(null);

@@ -34,10 +34,11 @@ const StoreApproval = () => {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showRejectStore, setShowRejectStore] = useState(false);
   const [storeApproval, setStoreApproval] = useState(false);
-  const { pageView, setPageView } = useContext(Utils);
   const [totalPages, setTotalPages] = useState(1);
   const [rowData, setRowData] = useState([]);
   const [store, setStore] = useState([]);
+  const { pageNo, setDisabledNext, pageView, setPageView } = useContext(Utils);
+
   const notificationAlertRef = React.useRef(null);
   const daysOfWeek = ["M", "T", "W", "T", "F", "S", "S"];
   const getLocation = (latitude, longitude) => {
@@ -56,6 +57,12 @@ const StoreApproval = () => {
       }, 500);
     };
   };
+
+  const handlePageChange = (page) => {
+    setPageView(page);
+    getUnverifiedStore();
+  };
+
   const getUnverifiedStore = () => {
     Http.GetAPI(
       process.env.REACT_APP_GETUNVERIFIEDSTORE + "?" + `page=${pageView}`,
