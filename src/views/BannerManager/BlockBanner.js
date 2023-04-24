@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { BiBlock } from "react-icons/bi";
 import { Http } from "../../config/Service";
-
+import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 import NotificationAlert from "react-notification-alert";
-
+import ErrorMessage from "customComponents/ErrorMessage";
 import { Modal, Form, Badge, Button } from "react-bootstrap";
+
+import { TextField } from "components/Validation";
 const BlockBanner = ({ showModal, setShowModal, blockData, getBanner }) => {
   const [blockBanner, setBlockBanner] = useState([]);
   const [blockReason, setBlockReason] = useState("");
-  const notificationAlertRef = React.useRef(null);
+  const [errorMassage, setErrorMassage] = useState("");
+  const notificationAlertRef = useRef(null);
 
   const handleBlockBanner = (id) => {
     var data = new FormData();
@@ -26,16 +29,15 @@ const BlockBanner = ({ showModal, setShowModal, blockData, getBanner }) => {
             SuccessNotify(res?.data?.message)
           );
         } else {
-          notificationAlertRef.current.notificationAlert(
-            ErrorNotify(res?.data?.message)
-          );
+          setErrorMassage(res?.data?.message);
         }
       })
       .catch((e) => {
         notificationAlertRef.current.notificationAlert(
-          ErrorNotify(res?.data?.message)
+          ErrorNotify("Something Went Wrong")
         );
       });
+    setBlockReason("");
   };
 
   return (
@@ -61,23 +63,29 @@ const BlockBanner = ({ showModal, setShowModal, blockData, getBanner }) => {
         </Modal.Header>
         <Modal.Body className="text-center">
           <p>Are you sure you want to block this banner?</p>
+
           <Form.Control
-            componentClass="textarea"
+            as="textarea"
             rows={3}
-            style={{ fontSize: "0.9rem", height: "70px" }}
-            placeholder="Enter Reason"
+            placeholder="Enter Reason Here"
             maxLength={200}
             value={blockReason}
             onChange={(event) => setBlockReason(event.target.value)}
           />
+          {errorMassage && <ErrorMessage message={errorMassage} />}
         </Modal.Body>
         <div className="modal-footer">
           <Button
             className="btn-simple"
             variant="danger"
             onClick={() => {
-              handleBlockBanner(blockData);
-              setShowModal(false);
+              if (blockReason.trim().length === 0) {
+                setErrorMassage("Reason is required.");
+              } else {
+                handleBlockBanner(blockData);
+                setShowModal(false);
+                setErrorMassage("");
+              }
             }}
           >
             Block
@@ -89,6 +97,7 @@ const BlockBanner = ({ showModal, setShowModal, blockData, getBanner }) => {
             onClick={() => {
               setShowModal(false);
               setBlockReason("");
+              setErrorMassage("");
             }}
           >
             Close

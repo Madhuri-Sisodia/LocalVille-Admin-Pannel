@@ -9,7 +9,6 @@ import Maps from "views/Maps.js";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Notifications from "views/Notifications.js";
 import AdminManager from "views/AdminManager";
-
 import Category from "views/categorySection/index.js";
 import StoreManager from "views/StoreManager/StoreManager";
 import VendorsManager from "views/VendorsManager/VendorsManager";
@@ -37,6 +36,13 @@ const dashboardRoutes = [
     component: AdminManager,
     layout: "/admin",
   },
+  {
+    path: "/addmin",
+    name: "Addmin",
+    icon: "nc-icon nc-single-02",
+    component: Addmin,
+    layout: "/admin",
+  },
 
   {
     path: "/banner",
@@ -52,14 +58,6 @@ const dashboardRoutes = [
     component: Category,
     layout: "/admin",
   },
-
-  // {
-  //   path: "/subcategory",
-  //   name: "Sub-Categories",
-  //   icon: "nc-icon nc-circle-09",
-  //   component: SubCategory,
-  //   layout: "/admin"
-  // },
 
   {
     path: "/vendors",
@@ -114,6 +112,7 @@ const dashboardRoutes = [
     component: EmailManager,
     layout: "/admin",
   },
+<<<<<<< HEAD
   {
     path: "/Invoice",
     name: "Invoice Manager",
@@ -183,6 +182,8 @@ const dashboardRoutes = [
   //   component: Notifications,
   //   layout: "/admin"
   // },
+=======
+>>>>>>> 76e3cf4d9613347bcb5533ac887d4d05558cd8e8
 ];
 
 export default dashboardRoutes;

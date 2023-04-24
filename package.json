@@ -42,7 +42,11 @@
     "reactstrap": "8.8.1",
     "rsuite": "^5.28.0",
     "sass": "1.53.0",
+<<<<<<< HEAD
     "yup": "^1.0.2"
+=======
+    "yup": "^1.1.1"
+>>>>>>> 76e3cf4d9613347bcb5533ac887d4d05558cd8e8
   },
   "optionalDependencies": {
     "jquery": "3.5.1",

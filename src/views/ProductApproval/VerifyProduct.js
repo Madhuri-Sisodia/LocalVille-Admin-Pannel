@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { BiBlock } from "react-icons/bi";
 import { Http } from "../../config/Service";
 import NotificationAlert from "react-notification-alert";
-import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
-
+import { SuccessNotify } from "components/NotificationShowPopUp";
 import {
   Modal,
   Form,
@@ -37,23 +36,19 @@ const VerifyProduct = ({
         if (res?.data?.status) {
           setUpdateProduct(res?.data?.data);
           getUnverifiedProduct();
-          // notificationAlertRef.current.notificationAlert(
-          //   SuccessNotify(res?.data?.message)
-          // );
-          console.warn(res?.data?.message);
+          notificationAlertRef.current.notificationAlert(
+            SuccessNotify(res?.data?.message)
+          );
         } else {
           notificationAlertRef.current.notificationAlert(
             ErrorNotify(res?.data?.message)
           );
-          // alert("Fields not matched");
         }
       })
       .catch((e) => {
         notificationAlertRef.current.notificationAlert(
-          ErrorNotify("Something went wrong")
+          ErrorNotify("Something Went Wrong")
         );
-        // alert("Something went wrong.");
-        console.log("Error:", e);
       });
   };
 

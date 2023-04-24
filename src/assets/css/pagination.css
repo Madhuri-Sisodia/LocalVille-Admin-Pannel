@@ -1,0 +1,31 @@
+@media (max-width: 768px) {
+  .mobile-pagination {
+    padding: 7px 14px;
+    background-color: #f0f0f0;
+  }
+
+  .mobile-pagination .rs-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .mobile-pagination .rs-pagination a {
+    margin: 0.5px;
+    color: #333;
+  }
+
+  .mobile-pagination .rs-pagination .rs-pagination-btn {
+    padding: 3px;
+    margin: 0px;
+    background-color: #fff;
+    color: #333;
+  }
+
+  .mobile-pagination
+    .rs-pagination
+    .rs-pagination-btn.rs-pagination-btn-active {
+    background-color: #007bff;
+    color: #fff;
+  }
+}

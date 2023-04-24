@@ -32,13 +32,14 @@ import {
   Col,
 } from "react-bootstrap";
 import index from "views/categorySection";
+import ViewProductModal from "./ViewProductModal";
 
 const Products = () => {
   const [showModal, setShowModal] = useState(false);
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showAddProduct, setShowAddProduct] = useState(false);
-  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [showProductDetail, setShowProductDetail] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
   const [blockProducts, setBlockProducts] = useState([]);
   const [blockData, setBlockData] = useState([]);
@@ -80,6 +81,7 @@ const Products = () => {
     )
       .then((res) => {
         setIsLoading(false);
+
         if (res?.data?.status) {
           setTotalPages(res.data.total_pages);
           setData(res?.data?.data);
@@ -105,6 +107,7 @@ const Products = () => {
     var data = new FormData();
     data.append("product_id", blockData);
     data.append("reason", blockReason);
+    data.append("status", 0);
     Http.PostAPI(process.env.REACT_APP_BLOCKPRODUCTS, data, null)
       .then((res) => {
         if (res?.data?.status) {
@@ -147,6 +150,12 @@ const Products = () => {
       });
   };
   const search = Debounce(filtervendor);
+
+  const handlePageChange = (page) => {
+    setPageView(page);
+    getProducts();
+  };
+
   return (
     <>
       <div className="rna-container">
@@ -352,21 +361,7 @@ const Products = () => {
             {isLoading ? (
               ""
             ) : (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  textAlign: "center",
-                }}
-              >
-                <Pagenate
-                  currentPage={pageView}
-                  totalPages={totalPages}
-                  onPageChange={(page) => {
-                    setPageView(page);
-                  }}
-                />
-              </div>
+              <Pagenate totalPages={totalPages} onChange={handlePageChange} />
             )}
           </Col>
         </Row>
@@ -381,6 +376,12 @@ const Products = () => {
           setShowAddProduct={setShowAddProduct}
           getProducts={getProducts}
         />
+        <ViewProductModal
+          showProductDetail={showProductDetail}
+          setShowProductDetail={setShowProductDetail}
+          rowData={rowData}
+        />
+
         <Modal
           className="modal-mini modal-primary"
           show={showModal}
@@ -400,13 +401,13 @@ const Products = () => {
           <Modal.Body className="text-center">
             <p>Are you sure you want to block this Product?</p>
             <Form.Control
-              componentClass="textarea"
+              as="textarea"
               rows={3}
-              style={{ fontSize: "0.9rem", height: "70px" }}
-              placeholder="Enter Reason"
+              placeholder="Enter Reason Here"
               maxLength={200}
               value={blockReason}
               onChange={(event) => setBlockReason(event.target.value)}
+              required
             />
           </Modal.Body>
           <div className="modal-footer">
@@ -430,221 +431,6 @@ const Products = () => {
               Close
             </Button>
           </div>
-        </Modal>
-
-        <Modal
-          show={showDetailsModal}
-          onHide={() => setShowDetailsModal(false)}
-        >
-          <Modal.Header style={{ borderBottom: "1px solid gray" }}>
-            <Modal.Title className="title">View Product Details</Modal.Title>
-            <MdClose
-              className="close-icon"
-              onClick={() => setShowDetailsModal(false)}
-            />
-          </Modal.Header>
-
-          <Modal.Body className="body">
-            <Table striped bordered className="table">
-              <tbody>
-                <tr>
-                  <td className="bold-col">Uploader Vendor ID:</td>
-                  <td>{rowData.uploader_vendor_id}</td>
-                </tr>
-                <tr>
-                  <td className="bold-col">Product Image:</td>
-                  <td>
-                    <img
-                      src={rowData.theme_img}
-                      alt={rowData.product_name}
-                      style={{
-                        width: "40px",
-                        height: "40px",
-                        borderRadius: "50%",
-                      }}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td className="bold-col">Product Name:</td>
-                  <td>{rowData.product_name}</td>
-                </tr>
-                <tr>
-                  <td className="bold-col" style={{ whiteSpace: "nowrap" }}>
-                    Product Description:
-                  </td>
-                  <td>{rowData.product_desc}</td>
-                </tr>
-                <tr>
-                  <td className="bold-col" style={{ whiteSpace: "nowrap" }}>
-                    Category
-                  </td>
-                  <td>{rowData.category_name}</td>
-                </tr>
-                <tr>
-                  <td className="bold-col">SubCategory:</td>
-                  <td>{rowData.subcategory_name}</td>
-                </tr>
-                <tr>
-                  <td className="bold-col">Is buy:</td>
-                  <td>{rowData.is_buy == "1" ? "Yes" : "No"}</td>
-                </tr>
-                <tr>
-                  <td className="bold-col">Is Pickup:</td>
-                  <td>{rowData.is_pickup == "1" ? "Yes" : "No"}</td>
-                </tr>
-                <tr>
-                  <td className="bold-col">Total Clicks:</td>
-                  <td>{rowData.total_clicks}</td>
-                </tr>
-                <tr>
-                  <td className="bold-col">Product Status:</td>
-                  <td
-                    style={{
-                      backgroundColor:
-                        rowData.is_verified == "1"
-                          ? "green"
-                          : rowData.is_verified == "0"
-                          ? "orange"
-                          : "red",
-                      border: "none",
-                      fontSize: "0.75rem",
-                      color: "white",
-                      padding: "0px 7px",
-                      borderRadius: "17px",
-                      display: "inline-block",
-                    }}
-                  >
-                    {rowData.is_verified == "1"
-                      ? "verified"
-                      : rowData.is_verified == "0"
-                      ? "pending"
-                      : "rejected"}
-                  </td>
-                </tr>
-
-                <tr>
-                  <td className="bold-col">Status:</td>
-
-                  <td
-                    style={{
-                      backgroundColor: rowData.active == "1" ? "green" : "red",
-                      border: "none",
-                      fontSize: "0.75rem",
-                      color: "white",
-                      padding: "0px 7px",
-                      borderRadius: "17px",
-                      display: "inline-block",
-                    }}
-                  >
-                    {rowData.active == "1" ? "active" : "block"}
-                  </td>
-                </tr>
-              </tbody>
-            </Table>
-            <div
-              style={{
-                fontSize: "0.9rem",
-                fontWeight: "bold",
-                marginTop: "33px",
-              }}
-            >
-              Attributes
-            </div>
-            {rowData?.attributes?.map((attr, index) => (
-              <React.Fragment key={index}>
-                <Table striped bordered className="table">
-                  <tbody>
-                    <tr>
-                      <td className="bold-col">ID:</td>
-                      <td>{attr.id}</td>
-                    </tr>
-
-                    <tr>
-                      <td className="bold-col">Quantity:</td>
-                      <td>{attr.qty}</td>
-                    </tr>
-
-                    <tr>
-                      <td className="bold-col">Sku:</td>
-                      <td>{attr.sku}</td>
-                    </tr>
-
-                    <tr>
-                      <td className="bold-col">Color:</td>
-                      <td>{attr.color?.[index]?.name}</td>
-                    </tr>
-
-                    <tr>
-                      <td className="bold-col">Size:</td>
-                      <td>{attr.size?.[index]?.name}</td>
-                    </tr>
-
-                    <tr>
-                      <td className="bold-col">Price:</td>
-                      <td>{attr.price}</td>
-                    </tr>
-
-                    <tr>
-                      <td className="bold-col">DiscountPrice:</td>
-                      <td>{attr.discount_price}</td>
-                    </tr>
-
-                    <tr>
-                      <td className="bold-col">Stock:</td>
-                      <td>{attr.in_stock == "1" ? "Yes" : "No"}</td>
-                    </tr>
-
-                    <tr>
-                      <td className="bold-col">Created At:</td>
-                      <td>{attr.created_at}</td>
-                    </tr>
-
-                    <tr>
-                      <td className="bold-col">Modified At:</td>
-                      <td>{attr.modified_at}</td>
-                    </tr>
-
-                    <tr>
-                      <td className="bold-col"> Status:</td>
-                      <td
-                        style={{
-                          backgroundColor: attr.active == "1" ? "green" : "red",
-                          border: "none",
-                          fontSize: "0.75rem",
-                          color: "white",
-                          padding: "0px 7px",
-                          borderRadius: "17px",
-                          display: "inline-block",
-                        }}
-                      >
-                        {attr.active == "1" ? "active" : "block"}
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
-                <br></br>
-              </React.Fragment>
-            ))}
-
-            {rowData?.images && rowData?.images.length > 0 && (
-              <div>
-                {rowData?.images.map((image, index) => (
-                  <img
-                    key={index}
-                    src={image?.images}
-                    alt="image"
-                    style={{
-                      width: "70px",
-                      height: "70px",
-                      marginRight: "10px",
-                    }}
-                  />
-                ))}
-              </div>
-            )}
-          </Modal.Body>
-          <Modal.Footer></Modal.Footer>
         </Modal>
       </Container>
     </>

@@ -6,7 +6,6 @@ import UpdateVendor from "./UpdateVendor";
 import { Utils } from "CommonUtils/Utils";
 import AddVendor from "./AddVendor";
 import NotificationAlert from "react-notification-alert";
-import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 import Loading from "customComponents/Loading";
 import image from "assets/img/noVendor.png";
@@ -41,17 +40,17 @@ const VendorsManager = () => {
   const [isLoading, setIsLoading] = useState(true);
   const notificationAlertRef = React.useRef(null);
 
-  const Debounce = (fun) => {
-    let timer;
-    return (...arg) => {
-      if (timer) {
-        clearTimeout(timer);
-      }
-      timer = setTimeout(() => {
-        fun.call(this, arg);
-      }, 500);
-    };
-  };
+  // const Debounce = (fun) => {
+  //   let timer;
+  //   return (...arg) => {
+  //     if (timer) {
+  //       clearTimeout(timer);
+  //     }
+  //     timer = setTimeout(() => {
+  //       fun.call(this, arg);
+  //     }, 500);
+  //   };
+  // };
 
   const getVendors = () => {
     Http.GetAPI(
@@ -61,7 +60,7 @@ const VendorsManager = () => {
     )
       .then((res) => {
         setIsLoading(false);
-        console.log("respnse----->", res);
+
         if (res?.data?.status) {
           if (res.data.data.length > 0) {
             setData(res?.data?.data);
@@ -88,28 +87,9 @@ const VendorsManager = () => {
     getVendors();
   }, [pageView]);
 
-  const filtervendor = (e) => {
-    Http.GetAPI(
-      process.env.REACT_APP_SEARCHVENDOR + "?" + `search=${e} & page=${pageNo}`,
-      data,
-      null
-    )
-      .then((res) => {
-        setIsLoading(false);
-        if (res?.data?.status) {
-          setData(res?.data?.data);
-          setDisabledNext(true);
-          console.log("userr", res.data.data);
-        } else {
-          // alert("Fields not matched");
-        }
-      })
-      .catch((e) => {
-        setIsLoading(false);
-        notificationAlertRef.current.notificationAlert(
-          ErrorNotify("Something went wrong")
-        );
-      });
+  const handlePageChange = (page) => {
+    setPageView(page);
+    getVendors();
   };
   const search = Debounce(filtervendor);
   return (
@@ -260,13 +240,7 @@ const VendorsManager = () => {
             {isLoading ? (
               ""
             ) : (
-              <Pagenate
-                currentPage={pageView}
-                totalPages={totalPages}
-                onPageChange={(page) => {
-                  setPageView(page);
-                }}
-              />
+              <Pagenate totalPages={totalPages} onChange={handlePageChange} />
             )}
           </Col>
         </Row>

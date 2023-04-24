@@ -4,6 +4,7 @@ import { Http } from "../../config/Service";
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
+import ErrorMessage from "customComponents/ErrorMessage";
 
 import {
   Modal,
@@ -19,24 +20,28 @@ import {
   Col,
 } from "react-bootstrap";
 
+
 const BlockVendor = ({ showModal, setShowModal, blockData, getVendors }) => {
   const [blockUser, setBlockUser] = useState([]);
   const [blockReason, setBlockReason] = useState("");
+  const [errorMassage, setErrorMassage] = useState("");
   const notificationAlertRef = React.useRef(null);
 
   const handleBlockUser = (id) => {
     var data = new FormData();
-    data.append("id", id);
+    data.append("vendor_id", id);
+    data.append("status", 0);
     data.append("reason", blockReason);
     Http.PostAPI(process.env.REACT_APP_BLOCKUSER, data, null)
       .then((res) => {
         if (res?.data?.status) {
           setBlockUser(res?.data?.data);
           getVendors();
-        } else {
           notificationAlertRef.current.notificationAlert(
-            ErrorNotify(res?.data?.message)
+            SuccessNotify(res?.data?.message)
           );
+        } else {
+          setErrorMassage(res?.data?.message);
         }
       })
       .catch((e) => {
@@ -69,23 +74,30 @@ const BlockVendor = ({ showModal, setShowModal, blockData, getVendors }) => {
         </Modal.Header>
         <Modal.Body className="text-center">
           <p>Are you sure you want to block this vendor?</p>
+          
           <Form.Control
-            componentClass="textarea"
+            as="textarea"
             rows={3}
-            style={{ fontSize: "0.9rem", height: "70px" }}
-            placeholder="Enter Reason"
+            placeholder="Enter Reason Here"
             maxLength={200}
             value={blockReason}
             onChange={(event) => setBlockReason(event.target.value)}
+           
           />
+          {errorMassage && <ErrorMessage message={errorMassage}/>}
         </Modal.Body>
         <div className="modal-footer">
           <Button
             className="btn-simple"
             variant="danger"
             onClick={() => {
-              handleBlockUser(blockData);
-              setShowModal(false);
+              if (blockReason.trim().length === 0) {
+                setErrorMassage("Reason is required.");
+              } else {
+                handleBlockUser(blockData);
+                setShowModal(false);
+                setErrorMassage("");
+              }
             }}
           >
             Block
@@ -97,6 +109,7 @@ const BlockVendor = ({ showModal, setShowModal, blockData, getVendors }) => {
             onClick={() => {
               setShowModal(false);
               setBlockReason("");
+              setErrorMassage("");
             }}
           >
             Close

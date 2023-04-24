@@ -7,86 +7,57 @@ import { Http } from "../config/Service";
 import ButtonComponent from "views/ButtonComponent";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
+import {validationModel}  from "../components/Validation";
 
 const AdminManager = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [rePassword, setRePassword] = useState("");
-  const [user, setUser] = useState([]);
-  const [errors, setErrors] = useState({});
-  const notificationAlertRef = React.useRef(null);
-
-  const { StringType } = Schema.Types;
-  const model = Schema.Model({
-    adminName: StringType().isRequired("Admin field is required."),
-    email: StringType()
-      .isEmail("Please enter a valid email address.")
-      .isRequired("Email field is required."),
-    password: StringType()
-      .isRequired("Password field is required.")
-      .minLength(8, "Password must be at least 8 characters long."),
-    rePassword: StringType()
-      .isRequired("Re-enter Password field is required.")
-      .addRule((value, formData) => {
-        if (value !== formData.password) {
-          return "Passwords do not match.";
-        }
-      }, "Passwords do not match."),
+  const [formValue, setFormValue] = useState({
+    aName: "",
+    email: "",
+    password: "",
+    rePassword: "",
   });
 
-  // const handleBlur = (e) => {
-  //   // manually validate form if all fields have been touched
-  //   const touchedFields = Object.keys(name).filter(
-  //     (field) => field === e.target.name || name[field]
-  //   );
-  //   if (touchedFields.length === Object.keys(name).length) {
-  //     validate();
-  //   }
-  // };
+  const [user, setUser] = useState([]);
+  const notificationAlertRef = React.useRef(null);
+  const formRef = React.useRef();
 
-  const handleSubmit = (e) => {
-    // const validationErrors = model.validate({
-    //   adminName: name,
-    //   email,
-    //   password,
-    //   rePassword,
-    // });
+  const handleSubmit = () => {
+    if (!formRef.current.check()) {
+      console.log("FORM ERROR!");
 
-    // if (Object.keys(validationErrors).length === 0) {
-    var data = new FormData();
-    data.append("name", name);
-    data.append("email", email);
-    data.append("password", password);
+      return;
+    } else {
+      console.log("form....", formValue);
+      var data = new FormData();
+      data.append("name", formValue.aName);
+      data.append("email", formValue.email);
+      data.append("password", formValue.password);
 
-    Http.PostAPI(process.env.REACT_APP_ADDADMINDATA, data, null)
-
-      .then((res) => {
-        if (res?.data?.status) {
-          setUser(res?.data?.data);
-
+      Http.PostAPI(process.env.REACT_APP_ADDADMINDATA, data, null)
+        .then((res) => {
+          if (res?.data?.status) {
+            setUser(res?.data?.data);
+            notificationAlertRef.current.notificationAlert(
+              SuccessNotify(res?.data?.message)
+            );
+          } else {
+            notificationAlertRef.current.notificationAlert(
+              ErrorNotify(res?.data?.message)
+            );
+          }
+        })
+        .catch((e) => {
           notificationAlertRef.current.notificationAlert(
             SuccessNotify(res?.data?.message)
           );
-        } else {
-          notificationAlertRef.current.notificationAlert(
-            ErrorNotify(res?.data?.message)
-          );
-        }
-      })
-      .catch((e) => {
-        notificationAlertRef.current.notificationAlert(
-          ErrorNotify("Something went wrong")
-        );
+        });
+      setFormValue({
+        aName: "",
+        email: "",
+        password: "",
+        rePassword: "",
       });
-
-    // setErrors(validationErrors);
-
-    setName("");
-    setEmail("");
-    setPassword("");
-    setRePassword("");
-    setErrors({});
+    }
   };
   return (
     <>
@@ -99,10 +70,11 @@ const AdminManager = () => {
 
           <Form
             fluid
-            model={model}
-            onSubmit={(e) => {
-              handleSubmit(e);
-            }}
+            ref={formRef}
+            model={validationModel}
+            formValue={formValue}
+            onSubmit={handleSubmit}
+            onChange={setFormValue}
           >
             <div className="InnnerContainerAdmin">
               <Form.Group>
@@ -111,14 +83,9 @@ const AdminManager = () => {
                 </Form.ControlLabel>
                 <Form.Control
                   placeholder="Admin Name"
-                  name="adminName"
-                  value={name}
-                  onChange={(value) => setName(value)}
-                  className={
-                    errors.name ? "form-control is-invalid" : "form-control"
-                  }
+                  name="aName"
+                  value={formValue.aName}
                 />
-                {errors.adminName && <Message>{errors.adminName}</Message>}
               </Form.Group>
               <Form.Group>
                 <Form.ControlLabel>ADMIN EMAIL</Form.ControlLabel>
@@ -126,13 +93,8 @@ const AdminManager = () => {
                   placeholder="Admin Email"
                   name="email"
                   type="email"
-                  value={email}
-                  onChange={(value) => setEmail(value)}
-                  className={
-                    errors.email ? "form-control is-invalid" : "form-control"
-                  }
+                  value={formValue.email}
                 />
-                {errors.email && <Message>{errors.email}</Message>}
               </Form.Group>
 
               <Form.Group>
@@ -142,13 +104,8 @@ const AdminManager = () => {
                   type="password"
                   placeholder="Enter Password"
                   autoComplete="off"
-                  value={password}
-                  onChange={(value) => setPassword(value)}
-                  className={
-                    errors.password ? "form-control is-invalid" : "form-control"
-                  }
+                  value={formValue.password}
                 />
-                {errors.password && <Message>{errors.password}</Message>}
               </Form.Group>
 
               <Form.Group>
@@ -158,15 +115,8 @@ const AdminManager = () => {
                   type="password"
                   placeholder="Re-enter Password"
                   autoComplete="off"
-                  value={rePassword}
-                  onChange={(value) => setRePassword(value)}
-                  className={
-                    errors.rePassword
-                      ? "form-control is-invalid"
-                      : "form-control"
-                  }
+                  value={formValue.rePassword}
                 />
-                {errors.rePassword && <Message>{errors.rePassword}</Message>}
               </Form.Group>
             </div>
             <ButtonComponent block buttontext="Submit" />

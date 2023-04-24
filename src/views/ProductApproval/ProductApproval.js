@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Input, Whisper, Tooltip, InputGroup } from "rsuite";
 import SearchIcon from "@rsuite/icons/Search";
 import { Http } from "../../config/Service";
-import Paginte from "components/Paginate";
+import Pagenate from "components/Pagenate";
 import { Utils } from "CommonUtils/Utils";
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
@@ -34,7 +34,7 @@ const ProductApproval = () => {
   const [showProductDetail, setShowProductDetail] = useState(false);
   const [showRejectProduct, setShowRejectProduct] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
-  const { pageNo, setDisabledNext, pageView } = useContext(Utils);
+  const { pageView, setPageView } = useContext(Utils);
   const [rowData, setRowData] = useState([]);
   const [product, setProduct] = useState([]);
   const notificationAlertRef = React.useRef(null);
@@ -111,6 +111,11 @@ const ProductApproval = () => {
   };
 
   const search = Debounce(filtervendor);
+  const handlePageChange = (page) => {
+    setPageView(page);
+    getUnverifiedProduct();
+  };
+
   return (
     <>
       <div className="rna-container">
@@ -228,15 +233,7 @@ const ProductApproval = () => {
         {isLoading ? (
           ""
         ) : (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              textAlign: "center",
-            }}
-          >
-            <Paginte pages={totalPages} />
-          </div>
+          <Pagenate totalPages={totalPages} onChange={handlePageChange} />
         )}
 
         <VerifyProduct

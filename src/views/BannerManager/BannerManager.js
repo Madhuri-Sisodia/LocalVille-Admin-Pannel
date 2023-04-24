@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Http } from "../../config/Service";
+import { FaCamera } from "react-icons/fa";
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 
-import { Form, Radio, RadioGroup, Button } from "rsuite";
+import { Form, Radio, RadioGroup, Button, Uploader } from "rsuite";
 import { Table, Card, Col } from "react-bootstrap";
 
 import "../../assets/css/admin.css";
@@ -25,6 +26,8 @@ const BannerManager = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [imageUrl, setImageUrl] = useState("");
+  const [image, setImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showActiveModal, setShowActiveModal] = useState(false);
   const [blockData, setBlockData] = useState([]);
@@ -34,6 +37,7 @@ const BannerManager = () => {
   const [imageFile, setImageFile] = useState(null);
   const [showNotification, setShowNotification] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const fileInputRef = useRef(null);
 
   // const fileInputRef = useRef(null);
   // const toaster = useToaster();
@@ -101,10 +105,13 @@ const BannerManager = () => {
     // setImageUrl("");
   };
 
+ 
+    
+
   const handleSubmit = () => {
     //  e.preventDefault();
     let redirectImg;
-    if (formData.redirect == "Yes") {
+    if (formData.redirect) {
       redirectImg = "1";
     } else {
       redirectImg = "0";
@@ -124,7 +131,6 @@ const BannerManager = () => {
           notificationAlertRef.current.notificationAlert(
             SuccessNotify(res?.data?.message)
           );
-          resetForm();
         } else {
           notificationAlertRef.current.notificationAlert(
             ErrorNotify(res?.data?.message)
@@ -136,11 +142,12 @@ const BannerManager = () => {
           ErrorNotify("Something went wrong")
         );
       });
+    resetForm();
   };
 
-  const handleFieldChange = (e, name) => {
+  const handleFieldChange = (value, name) => {
     setFormData((previous) => {
-      return { ...previous, [name]: e };
+      return { ...previous, [name]: value };
     });
   };
 
@@ -206,16 +213,18 @@ const BannerManager = () => {
                 }}
               /> */}
             </Form.Group>
+
             <Form.Group>
               <Form.ControlLabel>IMAGE REDIRECTION</Form.ControlLabel>
               <RadioGroup
                 name="redirect"
                 inline
-                onChange={(e) => handleFieldChange(e, "redirect")}
+                onChange={(value) => handleFieldChange(value, "redirect")}
+                value={formData.redirect}
                 required
               >
-                <Radio value="1">Yes</Radio>
-                <Radio value="0">No</Radio>
+                <Radio value={true}>Yes</Radio>
+                <Radio value={false}>No</Radio>
               </RadioGroup>
             </Form.Group>
 
@@ -225,7 +234,8 @@ const BannerManager = () => {
                 <Form.Control
                   name="url"
                   type="url"
-                  onChange={(e) => handleFieldChange(e, "url")}
+                  value={formData.url}
+                  onChange={(value) => handleFieldChange(value, "url")}
                 />
               </Form.Group>
             )}
@@ -311,19 +321,6 @@ const BannerManager = () => {
                                   <i className="fas fa-times"></i>
                                 </Button>
                               )}
-                              {item?.active == "0" && (
-                                <Button
-                                  className="btn-simple btn-link p-1"
-                                  type="button"
-                                  variant="success"
-                                  onClick={() => {
-                                    setShowActiveModal(true);
-                                    setBlockData(item.id);
-                                  }}
-                                >
-                                  <i className="fa fa-check"></i>
-                                </Button>
-                              )}
                             </td>
                           </tr>
                         ))}
@@ -340,12 +337,6 @@ const BannerManager = () => {
       <BlockBanner
         showModal={showModal}
         setShowModal={setShowModal}
-        blockData={blockData}
-        getBanner={getBanner}
-      />
-      <ActiveBanner
-        showActiveModal={showActiveModal}
-        setShowActiveModal={setShowActiveModal}
         blockData={blockData}
         getBanner={getBanner}
       />
