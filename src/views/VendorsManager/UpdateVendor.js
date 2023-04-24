@@ -20,6 +20,7 @@ const UpdateVendor = ({
   const [vendors, setVendors] = useState([]);
   const [hideId, setHideId] = useState(true);
   const [vendorImage, setVendorImage] = useState("");
+  const [baseImage, setBaseImage] = useState("");
   const [formValue, setFormValue] = useState({
     vendorId: item?.id,
     vendorName: item?.name,
@@ -48,6 +49,13 @@ const UpdateVendor = ({
         if (res?.data?.status) {
           setVendors(res?.data?.data);
           getVendors();
+          notificationAlertRef.current.notificationAlert(
+            SuccessNotify(res?.data?.message)
+          );
+        } else {
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {
@@ -55,21 +63,22 @@ const UpdateVendor = ({
           ErrorNotify("Something went wrong")
         );
       });
-  };
 
-  // const handleImageUpload = (event) => {
-  //   const file = event.target.files[0];
-  //   setVendorImage(URL.createObjectURL(file));
-  // };
+    setShowUpdateModal(false);
+  };
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
+    setVendorImage(file);
     const reader = new FileReader();
     reader.onloadend = () => {
-      setVendorImage(reader.result);
+      setBaseImage(reader.result);
     };
     reader.readAsDataURL(file);
   };
+  useEffect(() => {
+    updateImage();
+  }, [baseImage, vendorImage]);
 
   const handleUpdateVendor = (event) => {
     // event.preventDefault();
@@ -170,14 +179,13 @@ const UpdateVendor = ({
                 </Form.ControlLabel>
 
                 <img
-                  src={vendorImage ? vendorImage : item?.user_image}
+                  src={vendorImage ? baseImage : item?.user_image}
                   alt="Image"
                   style={{
                     width: "50px",
                     height: "50px",
                     borderRadius: "50%",
                   }}
-                  onClick={updateImage}
                 />
                 <div style={{ display: "flex", alignItems: "left" }}>
                   <label htmlFor="vendorImage">
@@ -196,11 +204,6 @@ const UpdateVendor = ({
                         accept="image/*"
                         style={{ display: "none" }}
                         onChange={handleImageUpload}
-                        // onChange={(e) => {
-                        //   console.log("aaaaa",e.target.files);
-
-                        //   setVendorImage(e.target.files[0]);
-                        // }}
                       />
                     </div>
                   </label>
