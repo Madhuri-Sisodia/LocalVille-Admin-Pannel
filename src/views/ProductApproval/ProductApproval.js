@@ -29,6 +29,7 @@ import "../../assets/css/TableCss.css";
 const ProductApproval = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isPageViewSet, setIsPageViewSet] = useState(false);
   const [showVerifiedProduct, setShowVerifiedProduct] = useState(false);
   const [showProductDetail, setShowProductDetail] = useState(false);
   const [showRejectProduct, setShowRejectProduct] = useState(false);
@@ -65,13 +66,14 @@ const ProductApproval = () => {
       });
   };
 
-  useEffect(() => {
-    getUnverifiedProduct();
-  }, [pageView]);
 
-  useEffect(() => {
+    useEffect(() => {
+    if (!isPageViewSet) {
+      setPageView(1);
+      setIsPageViewSet(true);
+    }
     getUnverifiedProduct();
-  }, []);
+  }, [pageView, isPageViewSet]);
 
   const handlePageChange = (page) => {
     setPageView(page);

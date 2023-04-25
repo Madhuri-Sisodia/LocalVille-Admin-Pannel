@@ -35,6 +35,7 @@ import ViewProductModal from "./ViewProductModal";
 
 const Products = () => {
   const [showModal, setShowModal] = useState(false);
+  const [isPageViewSet, setIsPageViewSet] = useState(false);
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showAddProduct, setShowAddProduct] = useState(false);
@@ -45,7 +46,6 @@ const Products = () => {
   const [rowData, setRowData] = useState([]);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState(null);
-  const [showUpdateProduct, setShowUpdateProduct] = useState(false);
   const { pageNo, setDisabledNext, pageView, setPageView } = useContext(Utils);
   const [blockReason, setBlockReason] = useState("");
   const notificationAlertRef = React.useRef(null);
@@ -99,13 +99,13 @@ const Products = () => {
   };
 
   useEffect(() => {
+    if (!isPageViewSet) {
+      setPageView(1);
+      setIsPageViewSet(true);
+    }
     getProducts();
-  }, [pageView]);
+  }, [pageView, isPageViewSet]);
 
-  useEffect(() => {
-    getProducts();
-  }, []);
- 
   const handleBlockProducts = (e) => {
     var data = new FormData();
     data.append("product_id", blockData);
@@ -335,7 +335,6 @@ const Products = () => {
                                   variant="danger"
                                   onClick={(e) => {
                                     setShowModal(true);
-                                    // setShowDetailsModal(false);
                                     setBlockData(e.target.id);
                                   }}
                                 >

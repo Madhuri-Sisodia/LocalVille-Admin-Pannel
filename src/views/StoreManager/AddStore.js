@@ -110,7 +110,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
     const openingTime = new Date(`2000-01-01T${storeData.openingTime}:00Z`);
     const closingTime = new Date(`2000-01-01T${storeData.closingTime}:00Z`);
     const timeDiffInMinutes = (closingTime - openingTime) / (1000 * 60);
-    if (timeDiffInMinutes <= 60) {
+    if (timeDiffInMinutes <= 60 && timeDiffInMinutes >= 0) {
       setTimeError(
         "The difference between Opening Time and Closing Time should be at least 1 hour"
       );
@@ -167,6 +167,10 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
             notificationAlertRef.current.notificationAlert(
               SuccessNotify(res?.data?.message)
             );
+            resetForm();
+            setMessage("");
+            setError("");
+            setMessage("");
           } else {
             notificationAlertRef.current.notificationAlert(
               ErrorNotify(res?.data?.message)
@@ -178,7 +182,6 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
             ErrorNotify("Something went wrong")
           );
         });
-      resetForm();
 
       setShowAddStore(false);
     }
@@ -297,9 +300,9 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
             <TextField name="address" label="Store Address" />
 
             <TextField name="pincode" label="Store Pincode" type="text" />
-            <TextField name="city" label="City"disabled/>
-            <TextField name="state" label="State" disabled/>
-            <TextField name="country" label="Country" disabled/>
+            <TextField name="city" label="City" disabled />
+            <TextField name="state" label="State" disabled />
+            <TextField name="country" label="Country" disabled />
 
             <Form.Group>
               <Form.ControlLabel style={{ color: "#808080" }}>
