@@ -71,6 +71,7 @@
 .update-label{
   font-size:1rem;
  margin-bottom: 0rem ;
+ margin-top: 1rem ;
 }
 
 .update-form{
@@ -91,3 +92,58 @@
  
 }
 
+/* .........Update Model....... */
+
+
+.titleUpdateProduct{
+  color: blueviolet;
+  font-size: 20px;
+  font-weight: 600;
+}
+.UpdateProductForm{
+  border: 1px solid blueviolet;
+  border-radius: 10px;
+  padding: 1rem;
+  margin: 1rem;
+}
+.add-label-UpdateProduct{
+  color: blueviolet;
+  font-size: 16px;
+  font-weight: 600;
+}
+.UpdateButton{
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  background-color:blueviolet ;
+  width: auto;
+}
+.add-body.updateProductModel{
+   position: initial;
+}
+.fa.fa-camera{
+  color: #8052D5;
+  font-size: 3rem;
+  text-align: center;
+}
+.rs-uploader-picture .rs-uploader-trigger-btn {
+justify-content: unset;
+padding: revert;}
+.uploadImage{
+  width: 3rem;
+  height: 3rem;
+ }
+ .maxLimit{
+  font-size: 12px;
+  color: red;
+ }
+ sup .fa-trash{
+  color: rgb(222, 2, 31);
+ }
+ 
+ .uploadProductImage{
+  display: flex;
+  padding:  20px 0;
+  align-items: center;
+  justify-content: center;
+ }

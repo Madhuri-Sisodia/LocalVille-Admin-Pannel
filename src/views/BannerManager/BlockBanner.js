@@ -1,27 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { BiBlock } from "react-icons/bi";
 import { Http } from "../../config/Service";
+import { SuccessNotify } from "components/NotificationShowPopUp";
+import { ErrorNotify } from "components/NotificationShowPopUp";
+import NotificationAlert from "react-notification-alert";
+import ErrorMessage from "customComponents/ErrorMessage";
+import { Modal, Form, Badge, Button } from "react-bootstrap";
 
-import {
-  Modal,
-  Form,
-  Badge,
-  Button,
-  Card,
-  Navbar,
-  Nav,
-  Table,
-  Container,
-  Row,
-  Col,
-} from "react-bootstrap";
+import { TextField } from "components/Validation";
 const BlockBanner = ({ showModal, setShowModal, blockData, getBanner }) => {
   const [blockBanner, setBlockBanner] = useState([]);
   const [blockReason, setBlockReason] = useState("");
+  const [errorMassage, setErrorMassage] = useState("");
+  const notificationAlertRef = useRef(null);
 
   const handleBlockBanner = (id) => {
     var data = new FormData();
     data.append("banner_id", id);
+    data.append("status", 0);
     data.append("reason", blockReason);
 
     Http.PostAPI(process.env.REACT_APP_BLOCKBANNER, data, null)
@@ -29,18 +25,26 @@ const BlockBanner = ({ showModal, setShowModal, blockData, getBanner }) => {
         if (res?.data?.status) {
           setBlockBanner(res?.data?.data);
           getBanner();
+          notificationAlertRef.current.notificationAlert(
+            SuccessNotify(res?.data?.message)
+          );
         } else {
-          alert("Fields not matched");
+          setErrorMassage(res?.data?.message);
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something Went Wrong")
+        );
       });
+    setBlockReason("");
   };
 
   return (
     <>
+      <div className="rna-container">
+        <NotificationAlert ref={notificationAlertRef} />
+      </div>
       <Modal
         className="modal-mini modal-primary"
         show={showModal}
@@ -59,23 +63,29 @@ const BlockBanner = ({ showModal, setShowModal, blockData, getBanner }) => {
         </Modal.Header>
         <Modal.Body className="text-center">
           <p>Are you sure you want to block this banner?</p>
+
           <Form.Control
-            componentClass="textarea"
+            as="textarea"
             rows={3}
-            style={{ fontSize: "0.9rem", height: "70px" }}
-            placeholder="Enter Reason"
+            placeholder="Enter Reason Here"
             maxLength={200}
             value={blockReason}
             onChange={(event) => setBlockReason(event.target.value)}
           />
+          {errorMassage && <ErrorMessage message={errorMassage} />}
         </Modal.Body>
         <div className="modal-footer">
           <Button
             className="btn-simple"
             variant="danger"
             onClick={() => {
-              handleBlockBanner(blockData);
-              setShowModal(false);
+              if (blockReason.trim().length === 0) {
+                setErrorMassage("Reason is required.");
+              } else {
+                handleBlockBanner(blockData);
+                setShowModal(false);
+                setErrorMassage("");
+              }
             }}
           >
             Block
@@ -87,6 +97,7 @@ const BlockBanner = ({ showModal, setShowModal, blockData, getBanner }) => {
             onClick={() => {
               setShowModal(false);
               setBlockReason("");
+              setErrorMassage("");
             }}
           >
             Close

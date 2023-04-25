@@ -1,9 +1,10 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { Card, Col, Row, Button } from "react-bootstrap";
 import "../../assets/css/card.css";
 import { useHistory } from "react-router";
 import StoreDetailModal from "./StoreDetailModal";
-const imageVAr = "https://localville.in/apis/seller_api/../seller_api/stores/Madhuri Emporier - 1677848041.png"
+const imageVAr =
+  "https://localville.in/apis/seller_api/../seller_api/stores/Madhuri Emporier - 1677848041.png";
 // const cardsData = [
 //   {
 //     title: "Iphones",
@@ -57,6 +58,7 @@ const StoreCard = ({ latestStore }) => {
             <Card.Title as="h4">Latest Stores</Card.Title>
             <p className="card-category"></p>
           </Card.Header>
+
           <Card.Body>
             <div className="row">
               {latestStore.map((item, index) => (
@@ -95,7 +97,9 @@ const StoreCard = ({ latestStore }) => {
                         <p className="card-description paragraph">
                           {item.store_desc}
                         </p>
-                        <p className="card-description paragraph">{item.created_at}</p>
+                        <p className="card-description paragraph">
+                          {item.created_at}
+                        </p>
                       </div>
                     </div>
                   </Card>

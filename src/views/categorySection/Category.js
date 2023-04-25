@@ -14,8 +14,7 @@ const Category = () => {
   const [data, setData] = useState([]);
   const [category, setCategory] = useState([]);
   const { setCategoriesId } = useContext(Utils);
-  const [status, setStatus] = useState();
-  const [notifyMessage, setnotifyMessage] = useState();
+
   const notificationAlertRef = React.useRef(null);
 
   const handleSubmit = () => {

@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import { Form, Button, ButtonToolbar, SelectPicker, Checkbox } from "rsuite";
 import ErrorMessage from "customComponents/ErrorMessage";
 import "../assets/css/admin.css";
 import NotificationAlert from "react-notification-alert";
 import { Http } from "config/Service";
 import ButtonComponent from "./ButtonComponent";
-import MultipleSelect from "components/MultipleSelect";
+import MultipleSelect from "components/multipleSelect";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 
@@ -18,6 +18,7 @@ const NotificationManager = () => {
   const [vendorData, setVendorData] = useState([]);
 
   const notificationAlertRef = React.useRef(null);
+  const fileInputRef = useRef(null);
 
   const getVendors = () => {
     Http.GetAPI(process.env.REACT_APP_GETVENDORSDATA + "?" + Math.random(), "")
@@ -75,7 +76,10 @@ const NotificationManager = () => {
         );
       });
     setSelectedVendors("");
-    setImage("");
+    fileInputRef.current.value = "";
+    setImage(null);
+  
+    // setImage("");
     setTitle("");
     setMessage("");
     notify("tr");
@@ -115,10 +119,14 @@ const NotificationManager = () => {
             <Form.Group>
               <Form.ControlLabel>IMAGE</Form.ControlLabel>
               <input
-                name="image"
                 type="file"
-                accept="image/*"
-                onChange={(e) => setImage(e.target.files[0])}
+                name="image"
+                required
+                accept="image/jpeg, image/png, image/jpg"
+                onChange={(e) => {
+                  setImage(e.target.files[0]);
+                }}
+                ref={fileInputRef}
               />
             </Form.Group>
             <Form.Group>

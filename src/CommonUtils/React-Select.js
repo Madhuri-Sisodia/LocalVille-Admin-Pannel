@@ -7,14 +7,14 @@ export default function ReactSelect({data,setSelectSection}) {
   const [selectedOption, setSelectedOption] = useState(null);
 
   data.map((ele,index)=>{
-    options.push( { label:`${ele.name},  ${ele.email}`, value:ele.email })
+    options.push( { label:`${ele.name},  ${ele.id}`, value:ele.id })
  })
  
 
   return (
     <div className="App">
       <Select
-      isSearchable={true}
+        isSearchable={true}
         defaultValue={selectedOption}
         onChange={setSelectSection}
         options={options}

@@ -16,8 +16,10 @@ class Footer extends Component {
             </ul>
             <p className="copyright text-center">
               © {new Date().getFullYear()}{" "}
-              <a href="https://localville.in/">Localville</a> We make your
-              business online
+              <a href="https://localville.in/" target="_blank">
+                Localville
+              </a>{" "}
+              We make your business online
             </p>
           </nav>
         </Container>

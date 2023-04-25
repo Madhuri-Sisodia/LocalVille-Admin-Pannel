@@ -1,58 +1,49 @@
-import React, { useState,useContext } from 'react'
-import { Utils } from 'CommonUtils/Utils';
-
-
-import MapPicker from 'react-google-map-picker'
-import { useEffect } from 'react';
-
-
-
+import React, { useState, useContext, useEffect } from "react";
+import { Utils } from "CommonUtils/Utils";
+import MapPicker from "react-google-map-picker";
 
 const GooglePlacesPicker = () => {
-  let DefaultLocation={ lat: 10, lng: 106}
+  const DefaultLocation = { lat: 10, lng: 106 };
   const DefaultZoom = 15;
-  const {Selectedcoordinates,setLocation,location} = useContext(Utils)
+  const { Selectedcoordinates, setLocation, location } = useContext(Utils);
   const [defaultLocation, setDefaultLocation] = useState(DefaultLocation);
-    
-  useEffect(()=>{
-    if(Selectedcoordinates.lat){
-      setDefaultLocation({...Selectedcoordinates})
-      setLocation({...location}) 
-    }
-  },[Selectedcoordinates])
-
-
   const [zoom, setZoom] = useState(DefaultZoom);
 
-  function handleChangeLocation (lat, lng){
-    setLocation({lat:lat, lng:lng});
+  useEffect(() => {
+    if (Selectedcoordinates.lat) {
+      setDefaultLocation({ ...Selectedcoordinates });
+      setLocation({ ...location });
+    }
+  }, [Selectedcoordinates]);
+
+  function handleChangeLocation(lat, lng) {
+    setLocation({ lat: lat, lng: lng });
   }
-  
-  function handleChangeZoom (newZoom){
+
+  function handleChangeZoom(newZoom) {
     setZoom(newZoom);
   }
 
-  function handleResetLocation(){
-    setDefaultLocation({ ... DefaultLocation});
+  function handleResetLocation() {
+    setDefaultLocation({ ...DefaultLocation });
     setZoom(DefaultZoom);
   }
 
   return (
     <>
-  <button onClick={handleResetLocation}>Reset Location</button>
-  {/* <label>Latitute:</label><input type='text' value={location.lat} disabled/>
-  <label>Longitute:</label><input type='text' value={location.lng} disabled/> */}
-  {/* <label>Zoom:</label><input type='text' value={zoom} disabled/> */}
-  <MapPicker defaultLocation={defaultLocation}
-    zoom={zoom}
-    mapTypeId="roadmap"
-    style={{height:'300px',borderRadius:"10px"}}
-    onChangeLocation={handleChangeLocation} 
-    onChangeZoom={handleChangeZoom}
-    apiKey='AIzaSyCcH9_FqvLsZcwuiVryLp0mfgVIl6jL_S0&'
-    />
-  </>
+      <button onClick={handleResetLocation}>Reset Location</button>
+
+      <MapPicker
+        mapDivId="mapDiv"
+        defaultLocation={defaultLocation}
+        zoom={zoom}
+        mapTypeId="roadmap"
+        onChangeLocation={handleChangeLocation}
+        onChangeZoom={handleChangeZoom}
+        apiKey="AIzaSyCcH9_FqvLsZcwuiVryLp0mfgVIl6jL_S0&"
+      />
+    </>
   );
-}
+};
 
 export default GooglePlacesPicker;

@@ -1,41 +1,31 @@
 import React, { useState } from "react";
-import { BiBlock } from "react-icons/bi";
+// import {TfiReload } from "react-icons/bi";
 import { Http } from "../../config/Service";
-import NotificationAlert from "react-notification-alert";
-import { ErrorNotify } from "components/NotificationShowPopUp";
-import { SuccessNotify } from "components/NotificationShowPopUp";
-import {
-  Modal,
-  Form,
-  Badge,
-  Button,
-  Card,
-  Navbar,
-  Nav,
-  Table,
-  Container,
-  Row,
-  Col,
-} from "react-bootstrap";
 
-const VerifyProduct = ({
-  showVerifiedProduct,
-  setShowVerifiedProduct,
-  product,
-  getUnverifiedProduct,
+import { ErrorNotify } from "components/NotificationShowPopUp";
+import NotificationAlert from "react-notification-alert";
+
+import { Modal, Form, Badge, Button } from "react-bootstrap";
+const ActiveBanner = ({
+  showActiveModal,
+  setShowActiveModal,
+  blockData,
+  getBanner,
 }) => {
-  const [updateProduct, setUpdateProduct] = useState([]);
+  const [blockBanner, setBlockBanner] = useState([]);
+
   const notificationAlertRef = React.useRef(null);
 
-  const handleUpdateProduct = (product) => {
+  const handleBlockBanner = (id) => {
     var data = new FormData();
-    data.append("product_id", product.id);
-    data.append("verified_status", 1);
-    Http.PostAPI(process.env.REACT_APP_UPDATEVERIFIEDPRODUCT, data, null)
+    data.append("banner_id", id);
+    data.append("status", 1);
+
+    Http.PostAPI(process.env.REACT_APP_BLOCKBANNER, data, null)
       .then((res) => {
         if (res?.data?.status) {
-          setUpdateProduct(res?.data?.data);
-          getUnverifiedProduct();
+          setBlockBanner(res?.data?.data);
+          getBanner();
           notificationAlertRef.current.notificationAlert(
             SuccessNotify(res?.data?.message)
           );
@@ -59,33 +49,35 @@ const VerifyProduct = ({
       </div>
       <Modal
         className="modal-mini modal-primary"
-        show={showVerifiedProduct}
-        onHide={() => setShowVerifiedProduct(false)}
+        show={showActiveModal}
+        onHide={() => setShowActiveModal(false)}
       >
-        <Modal.Header className="justify-content-center">
+       <Modal.Header className="justify-content-center">
           <div className="modal-profile">
-            <i className="nc-icon nc-check-2"></i>
+          <i className="nc-icon nc-check-2"></i>
           </div>
         </Modal.Header>
         <Modal.Body className="text-center">
-          <p>Are you sure you want to verify this product?</p>
+          <p>Are you sure you want to active this banner?</p>
         </Modal.Body>
         <div className="modal-footer">
           <Button
             className="btn-simple"
             variant="danger"
             onClick={() => {
-              handleUpdateProduct(product);
-              setShowVerifiedProduct(false);
+              handleBlockBanner(blockData);
+              setShowActiveModal(false);
             }}
           >
-            Verify
+            Active
           </Button>
           <Button
             className="btn-simple"
             type="button"
             variant="secondary"
-            onClick={() => setShowVerifiedProduct(false)}
+            onClick={() => {
+              setShowActiveModal(false);
+            }}
           >
             Close
           </Button>
@@ -94,4 +86,4 @@ const VerifyProduct = ({
     </>
   );
 };
-export default VerifyProduct;
+export default ActiveBanner;
