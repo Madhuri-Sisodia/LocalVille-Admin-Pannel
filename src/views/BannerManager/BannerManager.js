@@ -33,32 +33,60 @@ const BannerManager = () => {
   const notificationAlertRef = React.useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [imageFile, setImageFile] = useState(null);
-  const [showNotification, setShowNotification] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   const fileInputRef = useRef(null);
+  const [showNotification, setShowNotification] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isImageValid, setIsImageValid] = useState(false);
   // const [isChecked, setIsChecked] = useState(true);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     setImageFile(file);
-
-    if (file && file.type.startsWith("image/")) {
-      setImageFile(file);
-      setErrorMessage("image upload success");
-      setShowNotification(true);
+    setIsImageValid(
+      file && file.type.startsWith("image/png", "image/jpg", "image/jpeg")
+    ); // Update image validity
+    if (isImageValid) {
+      // setErrorMessage("");
+      setTimeout(() => {}, 2000);
+    } else {
+      setShowNotification("Image Upload Successfull");
       setTimeout(() => {
         setShowNotification(false);
-      }, 2000); // set timer for 2 seconds
-    } else {
-      setImageFile(null);
-      setErrorMessage("Please select a valid image file.");
+      }, 2000);
     }
   };
 
   const handleRemoveImage = () => {
     setImageFile(null);
-    setErrorMessage("");
+    setErrorMessage("Image Removed");
+    setTimeout(() => {
+      setErrorMessage(false);
+      // setShowNotification(false);
+    }, 2000);
+    setIsImageValid(false); // Update image validity
   };
+
+  // const handleImageChange = (event) => {
+  //   const file = event.target.files[0];
+  //   setImageFile(file);
+
+  //   if (file && file.type.startsWith("image/")) {
+  //     setImageFile(file);
+  //     setErrorMessage("image upload success");
+  //     setShowNotification(true);
+  //     setTimeout(() => {
+  //       setShowNotification(false);
+  //     }, 2000); // set timer for 2 seconds
+  //   } else {
+  //     setImageFile(null);
+  //     setErrorMessage("Please select a valid image file.");
+  //   }
+  // };
+
+  // const handleRemoveImage = () => {
+  //   setImageFile(null);
+  //   setErrorMessage("");
+  // };
   const getBanner = () => {
     Http.GetAPI(process.env.REACT_APP_GETBANNER + "?" + Math.random(), data)
       .then((res) => {
@@ -94,41 +122,51 @@ const BannerManager = () => {
   };
 
   const handleSubmit = () => {
-    // e.preventDefault();
-
-    let redirectImg;
-    if (formData.redirect) {
-      redirectImg = "1";
-    } else {
-      redirectImg = "0";
-    }
-
-    var data = new FormData();
-    data.append("banner_image", imageFile);
-    data.append("is_redirect", redirectImg);
-    data.append("url", formData.url);
-    data.append("active", 1);
-
-    Http.PostAPI(process.env.REACT_APP_ADDBANNER, data)
-      .then((res) => {
-        if (res?.data?.status) {
-          setAddBanner(res?.data?.data);
-          getBanner();
-          notificationAlertRef.current.notificationAlert(
-            SuccessNotify(res?.data?.message)
-          );
-        } else {
-          notificationAlertRef.current.notificationAlert(
-            ErrorNotify(res?.data?.message)
-          );
-        }
-      })
-      .catch((e) => {
-        notificationAlertRef.current.notificationAlert(
-          ErrorNotify("Something went wrong")
-        );
+    if (isImageValid) {
+      const SelectedSection = data.filter((ele) => {
+        return ele.section_name == selectSection;
       });
-    resetForm();
+      // e.preventDefault();
+
+      let redirectImg;
+      if (formData.redirect) {
+        redirectImg = "1";
+      } else {
+        redirectImg = "0";
+      }
+
+      var data = new FormData();
+      data.append("banner_image", imageFile);
+      data.append("is_redirect", redirectImg);
+      data.append("url", formData.url);
+      data.append("active", 1);
+
+      Http.PostAPI(process.env.REACT_APP_ADDBANNER, data)
+        .then((res) => {
+          if (res?.data?.status) {
+            setAddBanner(res?.data?.data);
+            getBanner();
+            notificationAlertRef.current.notificationAlert(
+              SuccessNotify(res?.data?.message)
+            );
+          } else {
+            notificationAlertRef.current.notificationAlert(
+              ErrorNotify(res?.data?.message)
+            );
+          }
+        })
+        .catch((e) => {
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify("Something went wrong")
+          );
+        });
+      resetForm();
+    } else {
+      setErrorMessage("Please select an image.");
+      setTimeout(() => {
+        setErrorMessage(false);
+      }, 2000);
+    }
   };
 
   const handleFieldChange = (value, name) => {
@@ -148,8 +186,11 @@ const BannerManager = () => {
             <Form.Group>
               <Form.ControlLabel htmlFor="file">IMAGE</Form.ControlLabel>
               <div>
-                {showNotification && errorMessage && (
-                  <div style={{ color: "green" }}>{errorMessage}</div>
+                {errorMessage && (
+                  <div style={{ color: "red" }}>{errorMessage}</div>
+                )}
+                {showNotification && (
+                  <div style={{ color: "green" }}>{showNotification}</div>
                 )}
                 {imageFile ? (
                   <div>
