@@ -66,27 +66,6 @@ const BannerManager = () => {
     setIsImageValid(false); // Update image validity
   };
 
-  // const handleImageChange = (event) => {
-  //   const file = event.target.files[0];
-  //   setImageFile(file);
-
-  //   if (file && file.type.startsWith("image/")) {
-  //     setImageFile(file);
-  //     setErrorMessage("image upload success");
-  //     setShowNotification(true);
-  //     setTimeout(() => {
-  //       setShowNotification(false);
-  //     }, 2000); // set timer for 2 seconds
-  //   } else {
-  //     setImageFile(null);
-  //     setErrorMessage("Please select a valid image file.");
-  //   }
-  // };
-
-  // const handleRemoveImage = () => {
-  //   setImageFile(null);
-  //   setErrorMessage("");
-  // };
   const getBanner = () => {
     Http.GetAPI(process.env.REACT_APP_GETBANNER + "?" + Math.random(), data)
       .then((res) => {
