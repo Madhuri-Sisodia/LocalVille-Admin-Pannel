@@ -205,13 +205,14 @@ const Products = () => {
               ) : (
                 <Card.Body className="table-full-width table-responsive px-0">
                   {data.length === 0 ? (
-                    <img
-                      style={{ marginLeft: "21em", marginBottom: "2em" }}
-                      width={200}
-                      height={200}
-                      src={image}
-                      alt="product data Image"
-                    />
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                      <img
+                        width={200}
+                        height={200}
+                        src={image}
+                        alt="product data Image"
+                      />
+                    </div>
                   ) : (
                     <Table
                       responsive="xl"
@@ -322,7 +323,6 @@ const Products = () => {
                                   }}
                                 >
                                   <i className="fa fa-eye"></i>
-                                  {/* {console.log("aaa",rowData)} */}
                                 </Button>
                                 <Button
                                   className="btn-simple btn-link p-1"

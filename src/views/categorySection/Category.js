@@ -19,66 +19,79 @@ const Category = () => {
   const notificationAlertRef = React.useRef(null);
   const [imageUrl, setImageUrl] = useState("");
   const [imageFile, setImageFile] = useState(null);
-  const [showNotification, setShowNotification] = useState(false);
+  const [showNotification, setShowNotification] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isImageValid, setIsImageValid] = useState(false);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     setImageFile(file);
-    // setImageFile(file);
-    if (file && file.type.startsWith("image/")) {
-      setImageFile(file);
-      setErrorMessage("image upload success");
-      setShowNotification(true);
+    setIsImageValid(
+      file && file.type.startsWith("image/png", "image/jpg", "image/jpeg")
+    ); // Update image validity
+    if (isImageValid) {
+      // setErrorMessage("");
+      setTimeout(() => {}, 2000);
+    } else {
+      setShowNotification("Image Upload Successfull");
       setTimeout(() => {
         setShowNotification(false);
-      }, 2000); // set timer for 2 seconds
-    } else {
-      setImageFile(null);
-      setErrorMessage("Please select a valid image file.");
+      }, 2000);
     }
   };
 
   const handleRemoveImage = () => {
     setImageFile(null);
-    setErrorMessage("");
+    setErrorMessage("Image Removed");
+    setTimeout(() => {
+      setErrorMessage(false);
+      // setShowNotification(false);
+    }, 2000);
+    setIsImageValid(false); // Update image validity
   };
 
   const handleSubmit = () => {
-    const SelectedSection = data.filter((ele) => {
-      return ele.section_name == selectSection;
-    });
-    const id = SelectedSection[0].id;
-    setCategoriesId(id);
-
-    var formdata = new FormData();
-
-    formdata.append("section_id", `${id}`);
-    formdata.append("category_name", categoryName);
-    formdata.append("category_image", imageFile);
-
-    Http.PostAPI(process.env.REACT_APP_ADDPRODUCTCATEGORY, formdata, null)
-      .then((res) => {
-        if (res?.data?.status) {
-          setCategory(res?.data?.data);
-          notificationAlertRef.current.notificationAlert(
-            SuccessNotify(res?.data?.message)
-          );
-        } else {
-          notificationAlertRef.current.notificationAlert(
-            ErrorNotify(res?.data?.message)
-          );
-        }
-      })
-      .catch((e) => {
-        notificationAlertRef.current.notificationAlert(
-          ErrorNotify("Something went wrong")
-        );
+    if (isImageValid) {
+      const SelectedSection = data.filter((ele) => {
+        return ele.section_name == selectSection;
       });
+      const id = SelectedSection[0].id;
+      setCategoriesId(id);
 
-    setCategoryName("");
-    setSelectSection("");
-    setImageFile("");
+      var formdata = new FormData();
+
+      formdata.append("section_id", `${id}`);
+      formdata.append("category_name", categoryName);
+      formdata.append("category_image", imageFile);
+
+      Http.PostAPI(process.env.REACT_APP_ADDPRODUCTCATEGORY, formdata, null)
+        .then((res) => {
+          if (res?.data?.status) {
+            setCategory(res?.data?.data);
+            notificationAlertRef.current.notificationAlert(
+              SuccessNotify(res?.data?.message)
+            );
+          } else {
+            notificationAlertRef.current.notificationAlert(
+              ErrorNotify(res?.data?.message)
+            );
+          }
+        })
+        .catch((e) => {
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify("Something went wrong")
+          );
+        });
+
+      setCategoryName("");
+      setSelectSection("");
+      setImageFile("");
+    } else {
+      setErrorMessage("Please select an image.");
+      setTimeout(() => {
+        setErrorMessage(false);
+      }, 2000);
+    }
   };
 
   useEffect(() => {
@@ -88,7 +101,6 @@ const Category = () => {
       null
     )
       .then((res) => {
-        console.log(res?.data?.data);
         if (res?.data?.status) {
           setData(res?.data?.data);
         }
@@ -118,10 +130,11 @@ const Category = () => {
             Add Category Image
           </Form.ControlLabel>
           <Form.Group>
+            {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
+            {showNotification && (
+              <div style={{ color: "green" }}>{showNotification}</div>
+            )}
             <div>
-              {showNotification && errorMessage && (
-                <div style={{ color: "green" }}>{errorMessage}</div>
-              )}
               {imageFile ? (
                 <div>
                   <img
@@ -145,7 +158,6 @@ const Category = () => {
                       alt="Avatar Placeholder"
                       style={{ borderRadius: "50%", width: "70px" }}
                     />
-                    {/* <span>Select Image</span> */}
                   </label>
                   <input
                     id="avatar-upload"

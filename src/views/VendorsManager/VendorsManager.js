@@ -60,7 +60,6 @@ const VendorsManager = () => {
       .then((res) => {
         if (res?.data?.status) {
           setData(res?.data?.data);
-          console.log("users", res.data.data);
         } else {
           notificationAlertRef.current.notificationAlert(
             ErrorNotify(res?.data?.message)
@@ -169,13 +168,14 @@ const VendorsManager = () => {
               ) : (
                 <Card.Body className="table-full-width table-responsive px-0">
                   {data.length === 0 ? (
-                    <img
-                      style={{ marginLeft: "21em", marginBottom: "2em" }}
-                      width={200}
-                      height={200}
-                      src={image}
-                      alt="product data Image"
-                    />
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                      <img
+                        width={200}
+                        height={200}
+                        src={image}
+                        alt="product data Image"
+                      />
+                    </div>
                   ) : (
                     <Table className="table-hover table-striped">
                       <thead>

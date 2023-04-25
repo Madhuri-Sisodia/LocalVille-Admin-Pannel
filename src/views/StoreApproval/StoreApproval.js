@@ -151,13 +151,14 @@ const StoreApproval = () => {
               ) : (
                 <Card.Body className="table-full-width table-responsive px-0">
                   {data.length === 0 ? (
-                    <img
-                      style={{ marginLeft: "21em", marginBottom: "5em" }}
-                      width={200}
-                      height={200}
-                      src={image}
-                      alt="store data Image"
-                    />
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                      <img
+                        width={200}
+                        height={200}
+                        src={image}
+                        alt="store data Image"
+                      />
+                    </div>
                   ) : (
                     <Table
                       className="table-hover table-striped"

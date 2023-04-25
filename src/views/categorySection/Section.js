@@ -17,55 +17,90 @@ const Section = () => {
   const notificationAlertRef = React.useRef(null);
   const [imageUrl, setImageUrl] = useState("");
   const [imageFile, setImageFile] = useState(null);
-  const [showNotification, setShowNotification] = useState(false);
+  const [showNotification, setShowNotification] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isImageValid, setIsImageValid] = useState(false); // Add image validity state
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     setImageFile(file);
-    if (file && file.type.startsWith("image/")) {
-      setImageFile(file);
-      setErrorMessage("image upload success");
-      setShowNotification(true);
+    setIsImageValid(
+      file && file.type.startsWith("image/png", "image/jpg", "image/jpeg")
+    ); // Update image validity
+    if (isImageValid) {
+      // setErrorMessage("");
+      setTimeout(() => {}, 2000);
+    } else {
+      setShowNotification("Image Upload Successfull");
       setTimeout(() => {
         setShowNotification(false);
-      }, 2000); // set timer for 2 seconds
-    } else {
-      setImageFile(null);
-      setErrorMessage("Please select a valid image file.");
+      }, 2000);
     }
   };
 
   const handleRemoveImage = () => {
     setImageFile(null);
-    setErrorMessage("");
+    setErrorMessage("Image Removed");
+    setTimeout(() => {
+      setErrorMessage(false);
+      // setShowNotification(false);
+    }, 2000);
+    setIsImageValid(false); // Update image validity
   };
 
-  const handleSubmit = () => {
-    var data = new FormData();
-    data.append("section_name", sectionName);
-    data.append("section_image", imageFile);
+  // const handleImageChange = (event) => {
+  //   const file = event.target.files[0];
+  //   setImageFile(file);
+  //   if (file && file.type.startsWith("image/")) {
+  //     setImageFile(file);
+  //     setErrorMessage("image upload success");
+  //     setShowNotification(true);
+  //     setTimeout(() => {
+  //       setShowNotification(false);
+  //     }, 2000); // set timer for 2 seconds
+  //   } else {
+  //     setImageFile(null);
+  //     setErrorMessage("Please select a valid image file.");
+  //   }
+  // };
 
-    Http.PostAPI(process.env.REACT_APP_ADDCATEGORYSECTION, data)
-      .then((res) => {
-        if (res?.data?.status) {
-          setCategory(res?.data?.data);
+  // const handleRemoveImage = () => {
+  //   setImageFile(null);
+  //   setErrorMessage("");
+  // };
+
+  const handleSubmit = () => {
+    if (isImageValid) {
+      var data = new FormData();
+      data.append("section_name", sectionName);
+      data.append("section_image", imageFile);
+
+      Http.PostAPI(process.env.REACT_APP_ADDCATEGORYSECTION, data)
+        .then((res) => {
+          if (res?.data?.status) {
+            setCategory(res?.data?.data);
+            notificationAlertRef.current.notificationAlert(
+              SuccessNotify(res?.data?.message)
+            );
+          } else {
+            notificationAlertRef.current.notificationAlert(
+              ErrorNotify(res?.data?.message)
+            );
+          }
+        })
+        .catch((e) => {
           notificationAlertRef.current.notificationAlert(
-            SuccessNotify(res?.data?.message)
+            ErrorNotify("Something went wrong")
           );
-        } else {
-          notificationAlertRef.current.notificationAlert(
-            ErrorNotify(res?.data?.message)
-          );
-        }
-      })
-      .catch((e) => {
-        notificationAlertRef.current.notificationAlert(
-          ErrorNotify("Something went wrong")
-        );
-      });
-    setSectionName("");
-    setImageFile("");
+        });
+      setSectionName("");
+      setImageFile("");
+    } else {
+      setErrorMessage("Please select an image.");
+      setTimeout(() => {
+        setErrorMessage(false);
+      }, 2000);
+    }
   };
 
   return (
@@ -86,10 +121,11 @@ const Section = () => {
             Add Section Image
           </Form.ControlLabel>
           <Form.Group>
+            {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
+            {showNotification && (
+              <div style={{ color: "green" }}>{showNotification}</div>
+            )}
             <div>
-              {showNotification && errorMessage && (
-                <div style={{ color: "green" }}>{errorMessage}</div>
-              )}
               {imageFile ? (
                 <div>
                   <img

@@ -136,9 +136,6 @@ const BannerManager = () => {
       return { ...previous, [name]: value };
     });
   };
-  // const handleRadioChange = (value) => {
-  //   setIsChecked(value);
-  // };
 
   return (
     <>
@@ -195,15 +192,6 @@ const BannerManager = () => {
                   </div>
                 )}
               </div>
-              {/* <input
-                type="file"
-                name="imageUrl"
-                required
-                accept="image/jpeg, image/png, image/jpg"
-                onChange={(e) => {
-                  setImageUrl(e.target.files[0]);
-                }}
-              /> */}
             </Form.Group>
 
             <Form.Group>
@@ -216,28 +204,8 @@ const BannerManager = () => {
                 defaultValue={false}
                 required
               >
-                {/* <div>
-                  <Radio
-                    value={true}
-                    checked={isChecked === true}
-                    onChange={() => handleRadioChange(true)}
-                    defaultValue={false}
-                  >
-                    Yes
-                  </Radio>
-
-                  <Radio
-                    value={false}
-                    checked={isChecked === false}
-                    onChange={() => handleRadioChange(false)}
-                    defaultValue={true}
-                  >
-                    No
-                  </Radio>
-                </div> */}
-
                 <Radio value={true}>Yes</Radio>
-                <Radio defaultChecked={true} value={false}>
+                <Radio checked value={false}>
                   No
                 </Radio>
               </RadioGroup>

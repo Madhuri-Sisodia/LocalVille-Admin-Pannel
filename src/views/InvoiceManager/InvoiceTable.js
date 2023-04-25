@@ -10,7 +10,6 @@ import NotificationAlert from "react-notification-alert";
 import Loading from "customComponents/Loading";
 import image from "assets/img/pdf-icon.png";
 import ButtonComponent from "views/ButtonComponent";
-// import Pagenate from "components/Pagenate";
 import Pagenate from "../../components/Pagenate";
 
 import {
@@ -28,6 +27,7 @@ import {
   Col,
 } from "react-bootstrap";
 import { MdClose } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const InvoiceTable = () => {
   const [data, setData] = useState([]);
@@ -75,47 +75,6 @@ const InvoiceTable = () => {
     getInvioce();
   };
 
-  const handleDownload = () => {
-    fetch(rowData)
-      .then((response) => {
-        return response.blob();
-      })
-      .then((blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", "file.pdf");
-        document.body.appendChild(link);
-        link.click();
-      })
-      .catch((error) => {
-        console.error("Error downloading file:", error);
-      });
-  };
-
-  // const handleDownload = () => {
-  //   const url = "https://cors-anywhere.herokuapp.com/" + rowData.invoice_url;
-  //   fetch(url)
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         throw new Error("Network response was not ok");
-  //       }
-  //       return response.blob();
-  //     })
-  //     .then((blob) => {
-  //       const url = URL.createObjectURL(blob);
-  //       const link = document.createElement("a");
-  //       link.href = url;
-  //       link.setAttribute("download", "file.pdf");
-  //       document.body.appendChild(link);
-  //       link.click();
-  //       link.remove();
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error downloading file:", error);
-  //     });
-  // };
-
   return (
     <>
       <div className="rna-container">
@@ -126,16 +85,6 @@ const InvoiceTable = () => {
           <Col md={"12"}>
             <Card className="strpied-tabled-with-hover">
               <Card.Header>
-                {/* <Button
-                  className="btn-fill float-right"
-                  style={{
-                    backgroundColor: "blueviolet",
-                    borderColor: "blueviolet",
-                  }}
-                  type="submit"
-                >
-                  Add Invoice
-                </Button> */}
                 <Card.Title as="h4">Invoice Manager</Card.Title>
                 <p className="card-category">Invoice details and action</p>
                 <br></br>
@@ -241,18 +190,9 @@ const InvoiceTable = () => {
                                 }}
                               >
                                 <i className="fa fa-eye"></i>
-                                {/* {console.log("aaa",rowData)} */}
                               </Button>
 
-                              {/* <Button
-                            className="btn-simple btn-link p-1"
-                            type="button"
-                            variant="primary"
-                          >
-                            <i className="fa fa-edit"></i>
-                          </Button> */}
                               <Button
-                                // index={item.id}
                                 className="btn-simple btn-link p-1"
                                 type="button"
                                 variant="danger"
@@ -296,18 +236,7 @@ const InvoiceTable = () => {
                 </tr>
                 <tr>
                   <td className="bold-col">Product_Id:</td>
-                  <td>
-                    {rowData?.products?.[0]?.product_id}
-                    {/* <img
-                      src={rowData.theme_img}
-                      alt={rowData.product_name}
-                      style={{
-                        width: "40px",
-                        height: "40px",
-                        borderRadius: "50%",
-                      }}
-                    /> */}
-                  </td>
+                  <td>{rowData?.products?.[0]?.product_id}</td>
                 </tr>
                 <tr>
                   <td className="bold-col">Product Name:</td>
@@ -351,8 +280,7 @@ const InvoiceTable = () => {
                 </tr>
               </tbody>
             </Table>
-
-            <button
+            <a
               style={{
                 display: "inline-block",
                 padding: "6px 8px",
@@ -364,30 +292,16 @@ const InvoiceTable = () => {
                 backgroundColor: "#8a2be2",
                 borderRadius: "5px",
               }}
-              value={rowData.invoice_url}
-              onClick={handleDownload}
+              target="_self"
+              // download
+              download={`${rowData.invoice_url}.pdf`}
+              // href={`${rowData.invoice_url}`}
+              href="https://localville.in/apis/seller_api/invoice_pdf/1680861388V1S134.pdf"
+              rel="noopener noreferrer"
+              type="application/pdf"
             >
-              Download pdf
-            </button>
-            {/* <a
-              style={{
-                display: "inline-block",
-                padding: "6px 8px",
-                fontSize: "12px",
-                fontWeight: "bold",
-                textAlign: "center",
-                textDecoration: "none",
-                color: "#fff",
-                backgroundColor: "#8a2be2",
-                borderRadius: "5px",
-              }}
-              href={rowData.invoice_url}
-              download={"file.pdf"}
-              // download={rowData.invoice_url}
-              className="download-button"
-            >
-              Download PDF
-            </a> */}
+              Download Pdf
+            </a>
           </Modal.Body>
           <Modal.Footer></Modal.Footer>
         </Modal>

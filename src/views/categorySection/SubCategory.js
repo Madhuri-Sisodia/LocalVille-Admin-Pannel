@@ -32,30 +32,58 @@ const SubCategory = () => {
   const notificationAlertRef = React.useRef(null);
   const [imageUrl, setImageUrl] = useState("");
   const [imageFile, setImageFile] = useState(null);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [showNotification, setShowNotification] = useState(false);
   const [errors, setErrors] = useState({});
+  const [showNotification, setShowNotification] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isImageValid, setIsImageValid] = useState(false);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
-    // setImageFile(file);
-    if (file && file.type.startsWith("image/")) {
-      setImageFile(file);
-      setErrorMessage("image upload success");
-      setShowNotification(true);
+    setImageFile(file);
+    setIsImageValid(
+      file && file.type.startsWith("image/png", "image/jpg", "image/jpeg")
+    ); // Update image validity
+    if (isImageValid) {
+      // setErrorMessage("");
+      setTimeout(() => {}, 2000);
+    } else {
+      setShowNotification("Image Upload Successfull");
       setTimeout(() => {
         setShowNotification(false);
-      }, 2000); // set timer for 2 seconds
-    } else {
-      setImageFile(null);
-      setErrorMessage("Please select a valid image file.");
+      }, 2000);
     }
   };
 
   const handleRemoveImage = () => {
     setImageFile(null);
-    setErrorMessage("");
+    setErrorMessage("Image Removed");
+    setTimeout(() => {
+      setErrorMessage(false);
+      // setShowNotification(false);
+    }, 2000);
+    setIsImageValid(false); // Update image validity
   };
+
+  // const handleImageChange = (event) => {
+  //   const file = event.target.files[0];
+  //   // setImageFile(file);
+  //   if (file && file.type.startsWith("image/")) {
+  //     setImageFile(file);
+  //     setErrorMessage("image upload success");
+  //     setShowNotification(true);
+  //     setTimeout(() => {
+  //       setShowNotification(false);
+  //     }, 2000); // set timer for 2 seconds
+  //   } else {
+  //     setImageFile(null);
+  //     setErrorMessage("Please select a valid image file.");
+  //   }
+  // };
+
+  // const handleRemoveImage = () => {
+  //   setImageFile(null);
+  //   setErrorMessage("");
+  // };
 
   useEffect(() => {
     Http.GetAPI(
@@ -76,52 +104,59 @@ const SubCategory = () => {
   }, []);
 
   const handleSubmit = () => {
-    const SelectedCategory = data.filter((ele) => {
-      return ele.name == selectCategory;
-    });
-
-    const selectedAttribute = sizeData.filter((ele) => {
-      return ele.attr_name == selectSizeAttribute;
-    });
-
-    const id = SelectedCategory[0]?.id ? SelectedCategory[0]?.id : 0;
-    const attrId = selectedAttribute[0]?.id ? selectedAttribute[0]?.id : 0;
-
-    var formdata = new FormData();
-    formdata.append("category_id", `${id}`);
-    formdata.append("subcategory_name", subCategoryName);
-    formdata.append("subcat_image", imageFile);
-    formdata.append("color", color == "Yes" ? 1 : 0);
-    formdata.append("size", size == "Yes" ? 1 : 0);
-    formdata.append("size_att", attrId);
-    Http.PostAPI(
-      process.env.REACT_APP_ADDPRODSUBCATEGORY + "?" + Math.random(),
-      formdata,
-      null
-    )
-      .then((res) => {
-        if (res?.data?.status) {
-          setSubCategory(res?.data?.data);
-          notificationAlertRef.current.notificationAlert(
-            SuccessNotify(res?.data?.message)
-          );
-        } else {
-          notificationAlertRef.current.notificationAlert(
-            ErrorNotify(res?.data?.message)
-          );
-        }
-      })
-      .catch((e) => {
-        notificationAlertRef.current.notificationAlert(
-          ErrorNotify("Something went wrong")
-        );
+    if (isImageValid) {
+      const SelectedCategory = data.filter((ele) => {
+        return ele.name == selectCategory;
       });
 
-    setSubCategoryName("");
-    setSelectCategory("");
-    setImageFile("");
-    setErrors({});
-    setShowNotification("");
+      const selectedAttribute = sizeData.filter((ele) => {
+        return ele.attr_name == selectSizeAttribute;
+      });
+
+      const id = SelectedCategory[0]?.id ? SelectedCategory[0]?.id : 0;
+      const attrId = selectedAttribute[0]?.id ? selectedAttribute[0]?.id : 0;
+
+      var formdata = new FormData();
+      formdata.append("category_id", `${id}`);
+      formdata.append("subcategory_name", subCategoryName);
+      formdata.append("subcat_image", imageFile);
+      formdata.append("color", color == "Yes" ? 1 : 0);
+      formdata.append("size", size == "Yes" ? 1 : 0);
+      formdata.append("size_att", attrId);
+      Http.PostAPI(
+        process.env.REACT_APP_ADDPRODSUBCATEGORY + "?" + Math.random(),
+        formdata,
+        null
+      )
+        .then((res) => {
+          if (res?.data?.status) {
+            setSubCategory(res?.data?.data);
+            notificationAlertRef.current.notificationAlert(
+              SuccessNotify(res?.data?.message)
+            );
+          } else {
+            notificationAlertRef.current.notificationAlert(
+              ErrorNotify(res?.data?.message)
+            );
+          }
+        })
+        .catch((e) => {
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify("Something went wrong")
+          );
+        });
+
+      setSubCategoryName("");
+      setSelectCategory("");
+      setImageFile("");
+      setErrors({});
+      setShowNotification("");
+    } else {
+      setErrorMessage("Please select an image.");
+      setTimeout(() => {
+        setErrorMessage(false);
+      }, 2000);
+    }
   };
 
   useEffect(() => {
@@ -174,10 +209,11 @@ const SubCategory = () => {
           </Form.ControlLabel>
 
           <Form.Group>
+            {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
+            {showNotification && (
+              <div style={{ color: "green" }}>{showNotification}</div>
+            )}
             <div>
-              {showNotification && errorMessage && (
-                <div style={{ color: "green" }}>{errorMessage}</div>
-              )}
               {imageFile ? (
                 <div>
                   <img
@@ -201,7 +237,6 @@ const SubCategory = () => {
                       alt="Avatar Placeholder"
                       style={{ borderRadius: "50%", width: "70px" }}
                     />
-                    {/* <span>Select Image</span> */}
                   </label>
                   <input
                     id="avatar-upload"
