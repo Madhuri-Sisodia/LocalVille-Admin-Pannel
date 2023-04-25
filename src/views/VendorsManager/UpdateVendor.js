@@ -66,25 +66,11 @@ const UpdateVendor = ({
     setShowUpdateModal(false);
   };
 
-<<<<<<< HEAD
-  // const handleImageUpload = (event) => {
-  //   const file = event.target.files[0];
-  //   setVendorImage(URL.createObjectURL(file));
-  // };
-
-=======
->>>>>>> 1d998f1c7b7d29d8d225507c4026758e244117f4
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     setVendorImage(file);
     const reader = new FileReader();
     reader.onloadend = () => {
-<<<<<<< HEAD
-      setVendorImage(reader.result);
-    };
-    reader.readAsDataURL(file);
-  };
-=======
       setBaseImage(reader.result);
     };
     reader.readAsDataURL(file);
@@ -96,7 +82,6 @@ const UpdateVendor = ({
       isMounted.current = true;
     }
   }, [vendorImage]);
->>>>>>> 1d998f1c7b7d29d8d225507c4026758e244117f4
 
   const handleUpdateVendor = (event) => {
     // event.preventDefault();
