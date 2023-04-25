@@ -115,11 +115,10 @@ const dashboardRoutes = [
   {
     path: "/Invoice",
     name: "Invoice Manager",
-    icon: "nc-icon nc-single-02",
+    icon: "fas fa-file-invoice",
     component: InvoiceTable,
     layout: "/admin",
   },
-
   // {
   //   path: "/user",
   //   name: "User Profile",
