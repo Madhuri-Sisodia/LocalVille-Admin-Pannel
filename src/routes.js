@@ -36,13 +36,6 @@ const dashboardRoutes = [
     component: AdminManager,
     layout: "/admin",
   },
-  // {
-  //   path: "/addmin",
-  //   name: "Addmin",
-  //   icon: "nc-icon nc-single-02",
-  //   component: Addmin,
-  //   layout: "/admin",
-  // },
 
   {
     path: "/banner",

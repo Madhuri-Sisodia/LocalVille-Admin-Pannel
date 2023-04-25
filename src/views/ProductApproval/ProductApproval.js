@@ -110,6 +110,10 @@ const ProductApproval = () => {
   };
 
   const search = Debounce(filtervendor);
+  useEffect(() => {
+    getUnverifiedProduct();
+  }, []);
+
   const handlePageChange = (page) => {
     setPageView(page);
     getUnverifiedProduct();

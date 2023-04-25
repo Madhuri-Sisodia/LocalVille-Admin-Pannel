@@ -109,6 +109,10 @@ const VendorsManager = () => {
   useEffect(() => {
     getVendors();
   }, [pageView]);
+  
+  useEffect(() => {
+    getVendors();
+  }, []);
 
   const handlePageChange = (page) => {
     setPageView(page);

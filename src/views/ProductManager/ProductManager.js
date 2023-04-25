@@ -102,7 +102,11 @@ const Products = () => {
   useEffect(() => {
     getProducts();
   }, [pageView]);
-  // console.log(blockData);
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+ 
   const handleBlockProducts = (e) => {
     var data = new FormData();
     data.append("product_id", blockData);
