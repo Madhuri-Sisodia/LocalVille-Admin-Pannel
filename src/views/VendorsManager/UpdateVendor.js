@@ -42,10 +42,9 @@ const UpdateVendor = ({
       formValue.vendorName ? formValue.vendorName : item?.name
     );
     data.append("Vendor_image", vendorImage);
-  
+
     Http.PostAPI(process.env.REACT_APP_UPDATEVENDORIMAGE, data, null)
       .then((res) => {
-       
         if (res?.data?.status) {
           setVendors(res?.data?.data);
           getVendors();
@@ -92,7 +91,6 @@ const UpdateVendor = ({
 
       return;
     } else {
-      
       var data = new FormData();
       data.append(
         "vendor_id",
@@ -109,7 +107,6 @@ const UpdateVendor = ({
 
       Http.PostAPI(process.env.REACT_APP_UPDATEVENDORS, data, null)
         .then((res) => {
-          
           if (res?.data?.status) {
             setVendors(res?.data?.data);
             getVendors();
@@ -127,11 +124,7 @@ const UpdateVendor = ({
             ErrorNotify("Something went wrong")
           );
         });
-      // setFormValue({
-      //   vendorId: "",
-      //   vendorName: "",
-      //   vendorPhone: "",
-      // });
+
       setShowUpdateModal(false);
     }
   };
@@ -151,6 +144,12 @@ const UpdateVendor = ({
               className="update-close-icon"
               onClick={() => {
                 setShowUpdateModal(false);
+                setVendorImage(""),
+                  setFormValue({
+                    vendorId: "",
+                    vendorName: "",
+                    vendorPhone: "",
+                  });
               }}
             />
           </Modal.Header>
@@ -158,7 +157,7 @@ const UpdateVendor = ({
             <Form
               fluid
               ref={formRef}
-              formValue={formValue}
+              formValue={formValue?.defaultValue}
               onSubmit={handleUpdateVendor}
               onChange={setFormValue}
               model={validationUpdateModel}
@@ -191,7 +190,7 @@ const UpdateVendor = ({
                     borderRadius: "50%",
                   }}
                 />
-              
+
                 <div style={{ display: "flex", alignItems: "left" }}>
                   <label htmlFor="vendorImage">
                     <div style={{ position: "relative" }}>
@@ -236,9 +235,9 @@ const UpdateVendor = ({
                     type="text"
                     name="vendorName"
                     defaultValue={
-                      formValue.vendorName ? formValue.vendorName : item?.name
+                      formValue.vendorPhone ? formValue.vendorPhone : item?.name
                     }
-                  ></Form.Control>
+                  />
                 </Form.Group>
 
                 <Form.Group>

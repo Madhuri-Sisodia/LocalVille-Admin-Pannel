@@ -74,10 +74,7 @@ const StoreApproval = () => {
     getUnverifiedStore();
   }, [pageView]);
 
-  useEffect(() => {
-    getUnverifiedStore();
-  }, []);
-
+ 
   const handlePageChange = (page) => {
     setPageView(page);
     getUnverifiedStore();

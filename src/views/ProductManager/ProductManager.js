@@ -105,7 +105,7 @@ const Products = () => {
   useEffect(() => {
     getProducts();
   }, []);
-  // console.log(blockData);
+ 
   const handleBlockProducts = (e) => {
     var data = new FormData();
     data.append("product_id", blockData);
