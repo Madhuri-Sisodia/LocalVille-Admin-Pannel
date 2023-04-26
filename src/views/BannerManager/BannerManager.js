@@ -5,7 +5,7 @@ import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 
-import { Form, Radio, RadioGroup, Button, Uploader } from "rsuite";
+import { Form, Radio, RadioGroup, Button } from "rsuite";
 import { Table, Card, Col } from "react-bootstrap";
 
 import "../../assets/css/admin.css";
@@ -13,6 +13,7 @@ import BlockBanner from "./BlockBanner";
 import ButtonComponent from "views/ButtonComponent";
 import Loading from "customComponents/Loading";
 import ActiveBanner from "./ActiveBanner";
+import CameraRetroIcon from "@rsuite/icons/legacy/CameraRetro";
 
 const BannerManager = () => {
   const [formData, setFormData] = useState({
@@ -30,7 +31,40 @@ const BannerManager = () => {
   const [blockData, setBlockData] = useState([]);
   const [addBanner, setAddBanner] = useState([]);
   const notificationAlertRef = React.useRef(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
   const fileInputRef = useRef(null);
+  const [showNotification, setShowNotification] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isImageValid, setIsImageValid] = useState(false);
+  // const [isChecked, setIsChecked] = useState(true);
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    setImageFile(file);
+    setIsImageValid(
+      file && file.type.startsWith("image/png", "image/jpg", "image/jpeg")
+    ); // Update image validity
+    if (isImageValid) {
+      // setErrorMessage("");
+      setTimeout(() => {}, 2000);
+    } else {
+      setShowNotification("Image Upload Successfull");
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 2000);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setImageFile(null);
+    setErrorMessage("Image Removed");
+    setTimeout(() => {
+      setErrorMessage(false);
+      // setShowNotification(false);
+    }, 2000);
+    setIsImageValid(false); // Update image validity
+  };
 
   const getBanner = () => {
     Http.GetAPI(process.env.REACT_APP_GETBANNER + "?" + Math.random(), data)
@@ -62,49 +96,56 @@ const BannerManager = () => {
       redirect: "",
       url: "",
     });
-
-    fileInputRef.current.value = "";
-    setImage(null);
+    setImageFile("");
+    // setImageUrl("");
   };
 
- 
-    
-
   const handleSubmit = () => {
-    //  e.preventDefault();
-    let redirectImg;
-    if (formData.redirect) {
-      redirectImg = "1";
-    } else {
-      redirectImg = "0";
-    }
-
-    var data = new FormData();
-    data.append("banner_image", image);
-    data.append("is_redirect", redirectImg);
-    data.append("url", formData.url);
-    data.append("active", 1);
-
-    Http.PostAPI(process.env.REACT_APP_ADDBANNER, data)
-      .then((res) => {
-        if (res?.data?.status) {
-          setAddBanner(res?.data?.data);
-          getBanner();
-          notificationAlertRef.current.notificationAlert(
-            SuccessNotify(res?.data?.message)
-          );
-        } else {
-          notificationAlertRef.current.notificationAlert(
-            ErrorNotify(res?.data?.message)
-          );
-        }
-      })
-      .catch((e) => {
-        notificationAlertRef.current.notificationAlert(
-          ErrorNotify("Something went wrong")
-        );
+    if (isImageValid) {
+      const SelectedSection = data.filter((ele) => {
+        return ele.section_name == selectSection;
       });
-    resetForm();
+      // e.preventDefault();
+
+      let redirectImg;
+      if (formData.redirect) {
+        redirectImg = "1";
+      } else {
+        redirectImg = "0";
+      }
+
+      var data = new FormData();
+      data.append("banner_image", imageFile);
+      data.append("is_redirect", redirectImg);
+      data.append("url", formData.url);
+      data.append("active", 1);
+
+      Http.PostAPI(process.env.REACT_APP_ADDBANNER, data)
+        .then((res) => {
+          if (res?.data?.status) {
+            setAddBanner(res?.data?.data);
+            getBanner();
+            notificationAlertRef.current.notificationAlert(
+              SuccessNotify(res?.data?.message)
+            );
+          } else {
+            notificationAlertRef.current.notificationAlert(
+              ErrorNotify(res?.data?.message)
+            );
+          }
+        })
+        .catch((e) => {
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify("Something went wrong")
+          );
+        });
+      resetForm();
+    } else {
+      setErrorMessage("Please select an image.");
+      setTimeout(() => {
+        setErrorMessage(false);
+      }, 2000);
+    }
   };
 
   const handleFieldChange = (value, name) => {
@@ -122,19 +163,55 @@ const BannerManager = () => {
         <div className="Container">
           <Form fluid onSubmit={handleSubmit}>
             <Form.Group>
-              <Form.ControlLabel>UPLOAD IMAGE</Form.ControlLabel>
-
-              <input
-                type="file"
-                name="imageUrl"
-                required
-                accept="image/jpeg, image/png, image/jpg"
-                onChange={(e) => {
-                  setImageUrl(e.target.files[0]);
-                }}
-                ref={fileInputRef}
-                disabled
-              />
+              <Form.ControlLabel htmlFor="file">IMAGE</Form.ControlLabel>
+              <div>
+                {errorMessage && (
+                  <div style={{ color: "red" }}>{errorMessage}</div>
+                )}
+                {showNotification && (
+                  <div style={{ color: "green" }}>{showNotification}</div>
+                )}
+                {imageFile ? (
+                  <div>
+                    <img
+                      src={URL.createObjectURL(imageFile)}
+                      alt="Avatar"
+                      style={{
+                        width: "80px",
+                        height: "80px",
+                        borderRadius: "11px",
+                      }}
+                    />
+                    <div style={{ marginTop: "1em" }}>
+                      <button onClick={handleRemoveImage}>Remove Image</button>
+                    </div>
+                  </div>
+                ) : (
+                  <div style={{ overflow: "hidden" }}>
+                    <label htmlFor="avatar-upload">
+                      <div
+                        style={{
+                          width: "90px",
+                          height: "90px",
+                          border: "1px dotted",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <CameraRetroIcon style={{ fontSize: "64px" }} />
+                      </div>
+                    </label>
+                    <input
+                      id="avatar-upload"
+                      type="file"
+                      accept="image/jpeg, image/png, image/jpg"
+                      onChange={handleImageChange}
+                      style={{ display: "none" }}
+                    />
+                  </div>
+                )}
+              </div>
             </Form.Group>
 
             <Form.Group>
@@ -144,10 +221,13 @@ const BannerManager = () => {
                 inline
                 onChange={(value) => handleFieldChange(value, "redirect")}
                 value={formData.redirect}
+                defaultValue={false}
                 required
               >
                 <Radio value={true}>Yes</Radio>
-                <Radio value={false}>No</Radio>
+                <Radio checked value={false}>
+                  No
+                </Radio>
               </RadioGroup>
             </Form.Group>
 
@@ -229,8 +309,9 @@ const BannerManager = () => {
                                 {item?.active == "1" ? "active" : "block"}
                               </div>
                             </td>
+
                             <td>
-                              {item?.active == "1" && (
+                              {item?.active === "1" && (
                                 <Button
                                   className="btn-simple btn-link p-1"
                                   type="button"

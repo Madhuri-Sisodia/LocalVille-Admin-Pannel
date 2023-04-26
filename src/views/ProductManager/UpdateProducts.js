@@ -542,7 +542,7 @@ const AddProduct = ({
               </div>
             </Form>
 
-            <Form className="UpdateProductForm">
+            <Form fluid className="UpdateProductForm">
               <Form.Group >
                 {/* <Form.ControlLabel className="add-label">
                   UpdateAttribute

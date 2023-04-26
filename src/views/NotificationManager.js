@@ -5,7 +5,7 @@ import "../assets/css/admin.css";
 import NotificationAlert from "react-notification-alert";
 import { Http } from "config/Service";
 import ButtonComponent from "./ButtonComponent";
-import MultipleSelect from "components/multipleSelect";
+import MultipleSelect from "components/MultipleSelect";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 
@@ -16,7 +16,6 @@ const NotificationManager = () => {
   const [message, setMessage] = useState("");
   const [addNotification, setAddNotification] = useState([]);
   const [vendorData, setVendorData] = useState([]);
-
   const notificationAlertRef = React.useRef(null);
   const fileInputRef = useRef(null);
 
@@ -43,7 +42,11 @@ const NotificationManager = () => {
     let arr = [];
 
     // const id = vendorid[0].id;
-
+    // if (formData.image == "Yes") {
+    //   image = "1";
+    // } else {
+    //   image = "0";
+    // }
     var data = new FormData();
     for (let i = 0; i < vendorData.length; i++) {
       for (let j = 0; j < selectedVendors.length; j++) {
@@ -61,6 +64,7 @@ const NotificationManager = () => {
       .then((res) => {
         if (res?.data?.status) {
           setAddNotification(res?.data?.data);
+          getVendors();
           notificationAlertRef.current.notificationAlert(
             SuccessNotify(res?.data?.message)
           );
@@ -82,7 +86,6 @@ const NotificationManager = () => {
     // setImage("");
     setTitle("");
     setMessage("");
-    notify("tr");
   };
 
   return (
@@ -120,12 +123,13 @@ const NotificationManager = () => {
               <Form.ControlLabel>IMAGE</Form.ControlLabel>
               <input
                 type="file"
+                onChange={(e) => setImage(e.target.files[0])}
                 name="image"
                 required
                 accept="image/jpeg, image/png, image/jpg"
-                onChange={(e) => {
-                  setImage(e.target.files[0]);
-                }}
+                // onChange={(e) => {
+                //   setImage(e.target.files[0]);
+                // }}
                 ref={fileInputRef}
               />
             </Form.Group>
@@ -154,10 +158,7 @@ const NotificationManager = () => {
                 required
               />
             </Form.Group>
-            <ButtonComponent
-              block
-              buttontext="Submit"
-            />
+            <ButtonComponent block buttontext="Submit" />
           </Form>
         </div>
       </div>

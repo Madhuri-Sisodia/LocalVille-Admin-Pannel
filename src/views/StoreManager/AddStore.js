@@ -9,9 +9,8 @@ import { Utils } from "CommonUtils/Utils";
 import { TextField, validationAddModel } from "components/Validation";
 
 import axios from "axios";
-import { Form, Button, ButtonToolbar, Schema, model, Message } from "rsuite";
+import { Form } from "rsuite";
 
-import { visitIterationBody } from "typescript";
 import ButtonComponent from "views/ButtonComponent";
 import ReactSelect from "CommonUtils/React-Select";
 import NotificationAlert from "react-notification-alert";
@@ -26,7 +25,6 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
   const [timeError, setTimeError] = useState("");
   const [selectSection, setSelectSection] = useState("");
   const [vendortData, setVendorData] = useState([]);
-  const [storeImage, setStoreImage] = useState([]);
 
   const { location } = useContext(Utils);
   const [Data, setData] = useState([]);
@@ -99,7 +97,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
             });
           }
         } catch (error) {
-          console.log(error);
+          
         }
       };
       getCity();
@@ -135,12 +133,11 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
     }
 
     if (!formRef.current.check()) {
-      console.log("FORM ERROR!");
-
+     
       return;
     } else {
       const id = selectSection?.value;
-      console.log("id", selectSection);
+    
       var data = new FormData();
       data.append("vendor_id", id);
       data.append("store_image", image);

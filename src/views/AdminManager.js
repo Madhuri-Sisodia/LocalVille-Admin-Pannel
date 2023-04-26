@@ -48,7 +48,7 @@ const AdminManager = () => {
         })
         .catch((e) => {
           notificationAlertRef.current.notificationAlert(
-            ErrorNotify("Something went wrong")
+            SuccessNotify(res?.data?.message)
           );
         });
       setFormValue({
@@ -59,7 +59,6 @@ const AdminManager = () => {
       });
     }
   };
-
   return (
     <>
       <div className="rna-container">

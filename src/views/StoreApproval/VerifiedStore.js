@@ -17,7 +17,6 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-
 const VerifiedStore = ({
   showVerifiedStore,
   setShowVerifiedStore,

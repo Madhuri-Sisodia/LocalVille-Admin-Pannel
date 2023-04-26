@@ -20,7 +20,6 @@ import {
   Col,
 } from "react-bootstrap";
 
-
 const BlockVendor = ({ showModal, setShowModal, blockData, getVendors }) => {
   const [blockUser, setBlockUser] = useState([]);
   const [blockReason, setBlockReason] = useState("");
@@ -74,7 +73,7 @@ const BlockVendor = ({ showModal, setShowModal, blockData, getVendors }) => {
         </Modal.Header>
         <Modal.Body className="text-center">
           <p>Are you sure you want to block this vendor?</p>
-          
+
           <Form.Control
             as="textarea"
             rows={3}
@@ -82,9 +81,8 @@ const BlockVendor = ({ showModal, setShowModal, blockData, getVendors }) => {
             maxLength={200}
             value={blockReason}
             onChange={(event) => setBlockReason(event.target.value)}
-           
           />
-          {errorMassage && <ErrorMessage message={errorMassage}/>}
+          {errorMassage && <ErrorMessage message={errorMassage} />}
         </Modal.Body>
         <div className="modal-footer">
           <Button

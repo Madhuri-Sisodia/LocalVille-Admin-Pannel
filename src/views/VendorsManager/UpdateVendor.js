@@ -81,7 +81,7 @@ const UpdateVendor = ({
     } else {
       isMounted.current = true;
     }
-  }, [vendorImage]);
+  }, [baseImage]);
 
   const handleUpdateVendor = (event) => {
     // event.preventDefault();
@@ -235,7 +235,7 @@ const UpdateVendor = ({
                     type="text"
                     name="vendorName"
                     defaultValue={
-                      formValue.vendorPhone ? formValue.vendorPhone : item?.name
+                      formValue.vendorName ? formValue.vendorName : item?.name
                     }
                   />
                 </Form.Group>
