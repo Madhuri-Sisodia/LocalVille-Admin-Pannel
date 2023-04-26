@@ -97,7 +97,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
             });
           }
         } catch (error) {
-          console.log(error);
+          
         }
       };
       getCity();
@@ -133,12 +133,11 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
     }
 
     if (!formRef.current.check()) {
-      console.log("FORM ERROR!");
-
+     
       return;
     } else {
       const id = selectSection?.value;
-      console.log("id", selectSection);
+    
       var data = new FormData();
       data.append("vendor_id", id);
       data.append("store_image", image);
