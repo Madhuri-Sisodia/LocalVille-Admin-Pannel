@@ -29,6 +29,7 @@ import RejectStore from "./RejectStore";
 
 const StoreApproval = () => {
   const [data, setData] = useState([]);
+  const [isPageViewSet, setIsPageViewSet] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showVerifiedStore, setShowVerifiedStore] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
@@ -90,8 +91,13 @@ const StoreApproval = () => {
   };
 
   useEffect(() => {
+    if (!isPageViewSet) {
+      setPageView(1);
+      setIsPageViewSet(true);
+    }
     getUnverifiedStore();
-  }, [pageView]);
+  }, [pageView, isPageViewSet]);
+ 
 
   const filtervendor = (e) => {
     Http.GetAPI(

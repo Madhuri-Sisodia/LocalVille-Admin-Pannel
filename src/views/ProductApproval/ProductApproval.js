@@ -30,6 +30,7 @@ import "../../assets/css/TableCss.css";
 const ProductApproval = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isPageViewSet, setIsPageViewSet] = useState(false);
   const [showVerifiedProduct, setShowVerifiedProduct] = useState(false);
   const [showProductDetail, setShowProductDetail] = useState(false);
   const [showRejectProduct, setShowRejectProduct] = useState(false);
@@ -78,10 +79,6 @@ const ProductApproval = () => {
       });
   };
 
-  useEffect(() => {
-    getUnverifiedProduct();
-  }, [pageView]);
-
   const filtervendor = (e) => {
     Http.GetAPI(
       process.env.REACT_APP_PRODUCTSAPPROVALSEARCH +
@@ -112,7 +109,7 @@ const ProductApproval = () => {
   const search = Debounce(filtervendor);
   useEffect(() => {
     getUnverifiedProduct();
-  }, []);
+  }, [pageView, isPageViewSet]);
 
   const handlePageChange = (page) => {
     setPageView(page);

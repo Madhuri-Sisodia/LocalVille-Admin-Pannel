@@ -28,12 +28,12 @@ import Pagenate from "components/Pagenate";
 
 const VendorsManager = () => {
   const [showModal, setShowModal] = useState(false);
+  const [isPageViewSet, setIsPageViewSet] = useState(false);
   const [data, setData] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [blockData, setBlockData] = useState([]);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showAddVendor, setShowAddVendor] = useState(false);
-  const [currentModalIdx, setCurrentModalIdx] = useState(null);
   const [selectedVendor, setSelectedVendor] = useState(null);
   const { pageNo, setDisabledNext, pageView, setPageView } = useContext(Utils);
 
@@ -107,12 +107,12 @@ const VendorsManager = () => {
   };
 
   useEffect(() => {
+    if (!isPageViewSet) {
+      setPageView(1);
+      setIsPageViewSet(true);
+    }
     getVendors();
-  }, [pageView]);
-  
-  useEffect(() => {
-    getVendors();
-  }, []);
+  }, [pageView, isPageViewSet]);
 
   const handlePageChange = (page) => {
     setPageView(page);

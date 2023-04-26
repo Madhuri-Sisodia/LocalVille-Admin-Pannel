@@ -7,12 +7,10 @@ import "../../assets/css/modal.css";
 import "../../assets/css/day.css";
 import UpdateStore from "./UpdateStore";
 import AddStore from "./AddStore";
-import MAPDays from "./MAPDays";
 import Pagenate from "../../components/Pagenate";
 import { Utils } from "CommonUtils/Utils";
 import "./Store.css";
 import NotificationAlert from "react-notification-alert";
-import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 import image from "assets/img/noStore.png";
 
@@ -29,29 +27,26 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-import ViewProduct from "views/ProductApproval/ViewProduct";
+
 import ViewStore from "./ViewStore";
 import BlockStore from "./BlockStore";
 const daysOfWeek = ["M", "T", "W", "T", "F", "S", "S"];
 
 const StoreManager = () => {
   const [showModal, setShowModal] = useState(false);
+  const [isPageViewSet, setIsPageViewSet] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [data, setData] = useState([]);
   const [showAddStore, setShowAddStore] = useState(false);
   const [rowData, setRowData] = useState([]);
   const [blockData, setBlockData] = useState([]);
-  const [blockStore, setBlockStore] = useState([]);
   const [showUpdateStore, setShowUpdateStore] = useState(false);
   const [selectedStore, setSelectedStore] = useState(null);
   const [storeAdded, setAddStored] = useState(false);
-  const [days, setDays] = useState([]);
   const { pageNo, setDisabledNext, pageView, setPageView } = useContext(Utils);
   const [totalPages, setTotalPages] = useState(1);
   const notificationAlertRef = React.useRef(null);
-  let parseDays;
-  let VendorData;
 
   const Debounce = (fun) => {
     let timer;
@@ -99,16 +94,16 @@ const StoreManager = () => {
       });
   };
   useEffect(() => {
+    if (!isPageViewSet) {
+      setPageView(1);
+      setIsPageViewSet(true);
+    }
     getStore();
-  }, [pageView]);
-
-  useEffect(() => {
-    getStore();
-  }, []);
+  }, [pageView, isPageViewSet]);
 
   const handlePageChange = (page) => {
     setPageView(page);
-    getStore();
+getStore();
   };
 
   const filtervendor = (e) => {
@@ -126,7 +121,9 @@ const StoreManager = () => {
             setDisabledNext(false);
           }
         } else {
-          // alert("Fields not matched");
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {

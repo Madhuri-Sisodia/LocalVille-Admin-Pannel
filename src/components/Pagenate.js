@@ -33,7 +33,6 @@ const Pagenate = ({ totalPages, onChange }) => {
         onSelect={handlePageChange}
         className="mobile-pagination"
       />
-  
     </div>
   );
 };
