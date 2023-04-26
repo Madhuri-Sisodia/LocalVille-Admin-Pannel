@@ -3,7 +3,7 @@ const options = [];
 
 const MultipleSelect = ({ data, selectedVendors, setSelectedVendors }) => {
   data.map((ele, index) => {
-    options.push({ label: `${ele.name},  ${ele.email}`, value: ele.email });
+    options.push({ label: `${ele.name},  ${ele.id}`, value: ele.id });
   });
 
   return (
