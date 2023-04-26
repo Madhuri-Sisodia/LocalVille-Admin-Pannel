@@ -112,6 +112,7 @@ justify-content: space-around;
   border-radius: 50%;
   box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.3);
   margin-right: 10px;
+  top: -20px;
  }
  .uploadProductImage{
   display: flex;
@@ -329,5 +330,12 @@ padding: revert;}
   display: flex;
   padding:  20px 0;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly
  }
+ .UpdateProducts .rs-modal-header .rs-modal-header-close .rs-btn-close .rs-icon{
+  display: none;
+ }
+ .UpdateProducts.rs-modal-header {
+  padding-right: 10px;
+  display: flex;
+}
