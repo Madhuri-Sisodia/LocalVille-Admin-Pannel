@@ -108,8 +108,8 @@ getStore();
 
   const filtervendor = (e) => {
     Http.GetAPI(
-      process.env.REACT_APP_SEARCHSTORE + "?" + `search=${e}`,
-      "",
+      process.env.REACT_APP_SEARCHSTORE + "?" + `search=${e} & page=${pageNo}`,
+      // data,
       null
     )
       .then((res) => {
@@ -141,6 +141,7 @@ getStore();
       <div className="rna-container">
         <NotificationAlert ref={notificationAlertRef} />
       </div>
+
       <Container fluid>
         <Row>
           <Col md="12">
@@ -186,147 +187,161 @@ getStore();
                 />
               ) : (
                 <Card.Body className="table-full-width table-responsive px-0">
-                  <Table
-                    responsive="xl"
-                    style={{
-                      tableLayout: "fixed",
-                      width: "100%",
-                      display: "block",
-                      overflowX: "scroll",
-                    }}
-                    className="table-hover table-striped"
-                  >
-                    <thead>
-                      <tr>
-                        <th className="border-0">Store ID</th>
-                        <th className="border-0">Vendor ID</th>
-                        <th className="border-0">Store Image</th>
-                        <th className="border-0">Store Name</th>
-                        <th className="border-0">Store Description</th>
-                        <th className="border-0">Store Address</th>
-                        <th className="border-0">Pincode</th>
-                        <th className="border-0">City</th>
-                        <th className="border-0">State</th>
-                        <th className="border-0">Country</th>
-                        <th className="border-0">Opening Days</th>
-                        <th className="border-0">Opening Time</th>
-                        <th className="border-0">Closing Time</th>
-                        <th className="border-0">Total Clicks</th>
-                        <th className="border-0">Store Created</th>
-                        <th className="border-0">Store Updated</th>
-                        <th className="border-0">Status</th>
-                        <th className="border-0">Get Location</th>
-                        <th className="border-0">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {data.map((item) => (
-                        <tr
-                          style={{
-                            fontSize: "0.90rem",
-                            maxHeight: "1em",
-                            overflow: "hidden",
-                          }}
-                          key={item.id}
-                        >
-                          <td>{item.id}</td>
-                          <td title={item.store_name}>{item.vendor_id}</td>
-                          <td>
-                            <img
-                              src={item.store_image}
-                              alt={item.store_name}
-                              style={{
-                                width: "50px",
-                                height: "50px",
-                                borderRadius: "50%",
-                              }}
-                            />
-                          </td>
-                          <td title={item.store_name}>
-                            {item.store_name.slice(0, 10)}
-                          </td>
-                          <td title={item.store_desc}>
-                            {item.store_desc.slice(0, 14)}
-                          </td>
-                          <td title={item.store_address}>
-                            {item.store_address.slice(0, 14)}
-                          </td>
-                          <td>{item.pincode}</td>
-                          <td>{item.city}</td>
-                          <td>{item.state}</td>
-                          <td>{item.country}</td>
-                          <td
+                  {data.length === 0 ? (
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                      <img
+                        width={200}
+                        height={200}
+                        src={image}
+                        alt="Store data Image"
+                      />
+                    </div>
+                  ) : (
+                    <Table
+                      responsive="xl"
+                      style={{
+                        tableLayout: "fixed",
+                        width: "100%",
+                        display: "block",
+                        overflowX: "scroll",
+                      }}
+                      className="table-hover table-striped"
+                    >
+                      <thead>
+                        <tr>
+                          <th className="border-0">Store ID</th>
+                          <th className="border-0">Vendor ID</th>
+                          <th className="border-0">Store Image</th>
+                          <th className="border-0">Store Name</th>
+                          <th className="border-0">Store Description</th>
+                          <th className="border-0">Store Address</th>
+                          <th className="border-0">Pincode</th>
+                          <th className="border-0">City</th>
+                          <th className="border-0">State</th>
+                          <th className="border-0">Country</th>
+                          <th className="border-0">Opening Days</th>
+                          <th className="border-0">Opening Time</th>
+                          <th className="border-0">Closing Time</th>
+                          <th className="border-0">Total Clicks</th>
+                          <th className="border-0">Store Created</th>
+                          <th className="border-0">Store Updated</th>
+                          <th className="border-0">Status</th>
+                          <th className="border-0">Get Location</th>
+                          <th className="border-0">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {data.map((item) => (
+                          <tr
                             style={{
-                              display: "flex",
-                              flexDirection: "row",
-                              justifyContent: "Center",
-                              alignItems: "center",
-                              textAlign: "center",
+                              fontSize: "0.90rem",
+                              maxHeight: "1em",
+                              overflow: "hidden",
                             }}
+                            key={item.id}
                           >
-                            {item.opening_days.split(",").map((ele, index) => (
-                              <div
-                                key={index}
-                                className="day-circle"
+                            <td>{item.id}</td>
+                            <td title={item.store_name}>{item.vendor_id}</td>
+                            <td>
+                              <img
+                                src={item.store_image}
+                                alt={item.store_name}
                                 style={{
-                                  marginTop: "20px",
-                                  width: "15px",
-                                  height: "15px",
-                                  background: "lightgray",
-                                  color: "black",
+                                  width: "50px",
+                                  height: "50px",
+                                  borderRadius: "50%",
                                 }}
-                              >
-                                {daysOfWeek[index] || ele}
-                              </div>
-                            ))}
-                            {/* */}
-                          </td>
-                          <td>{item.opening_time}</td>
-                          <td>{item.closing_time}</td>
-                          <td>{item.total_clicks}</td>
-                          <td>{item.created_at}</td>
-                          <td>{item.updated_at}</td>
-
-                          <td>
-                            <div
-                              style={{
-                                backgroundColor:
-                                  item.active == "1" ? "green" : "red",
-                                border: "none",
-                                fontSize: "0.75rem",
-                                color: "white",
-                                padding: "3px 9px",
-                                borderRadius: "17px",
-                                display: "inline-block",
-                              }}
-                            >
-                              {item.active == "1" ? "active" : "block"}
-                            </div>
-                          </td>
-                          <td>
-                            <Button
-                              className="btn-simple btn-link p-1"
-                              type="button"
-                              style={{ color: "gray" }}
-                              onClick={() =>
-                                getLocation(item.latitude, item.longitude)
-                              }
-                            >
-                              <i className="fa fa-location-arrow"></i>
-                            </Button>
-                          </td>
-                          <td>
-                            <div
+                              />
+                            </td>
+                            <td title={item.store_name}>
+                              {item.store_name.slice(0, 20)}
+                            </td>
+                            <td title={item.store_address}>
+                              {item.store_desc.slice(0, 50)}
+                            </td>
+                            <td title={item.store_desc}>
+                              {item.store_address.slice(0, 30)}
+                            </td>
+                            <td>{item.pincode}</td>
+                            <td>{item.city}</td>
+                            <td>{item.state}</td>
+                            <td>{item.country}</td>
+                            <td
                               style={{
                                 display: "flex",
                                 flexDirection: "row",
+                                justifyContent: "Center",
+                                alignItems: "center",
+                                textAlign: "center",
                               }}
                             >
-                              {item?.active == "1" && (
+                              {daysOfWeek.map((day, index) => (
+                                <div
+                                  key={index}
+                                  className="day-circle"
+                                  style={{
+                                    marginTop: "20px",
+                                    width: "15px",
+                                    height: "15px",
+                                    background: item.opening_days.includes(
+                                      index + 1
+                                    )
+                                      ? "blue"
+                                      : "lightgray",
+                                  }}
+                                >
+                                  {daysOfWeek[index] || day}
+                                  {/* {daysOfWeek[index] || ele} */}
+                                </div>
+                              ))}
+                              {/* {item.opening_days} */}
+                            </td>
+                            <td>{item.opening_time}</td>
+                            <td>{item.closing_time}</td>
+                            <td>{item.total_clicks}</td>
+                            <td>{item.created_at}</td>
+                            <td>{item.updated_at}</td>
+
+                            <td>
+                              <div
+                                style={{
+                                  backgroundColor:
+                                    item.active == "1" ? "green" : "red",
+                                  border: "none",
+                                  fontSize: "0.75rem",
+                                  color: "white",
+                                  padding: "3px 9px",
+                                  borderRadius: "17px",
+                                  display: "inline-block",
+                                }}
+                              >
+                                {item.active == "1" ? "active" : "block"}
+                              </div>
+                            </td>
+                            <td>
+                              <Button
+                                className="btn-simple btn-link p-1"
+                                type="button"
+                                style={{ color: "gray" }}
+                                onClick={() =>
+                                  getLocation(item.latitude, item.longitude)
+                                }
+                              >
+                                <i className="fa fa-location-arrow"></i>
+                              </Button>
+                            </td>
+                            <td>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "row",
+                                }}
+                              >
                                 <Button
                                   className="btn-simple btn-link p-1"
                                   type="button"
                                   style={{ color: "blue" }}
+                                  variant="danger"
                                   onClick={() => {
                                     setShowDetailsModal(true);
                                     setRowData(item);
@@ -334,8 +349,6 @@ getStore();
                                 >
                                   <i className="fa fa-eye"></i>
                                 </Button>
-                              )}
-                              {item?.active == "1" && (
                                 <Button
                                   className="btn-simple btn-link p-1"
                                   type="button"
@@ -347,27 +360,29 @@ getStore();
                                 >
                                   <i className="fa fa-edit"></i>
                                 </Button>
-                              )}
 
-                              {item?.active == "1" && (
-                                <Button
-                                  className="btn-simple btn-link p-1"
-                                  type="button"
-                                  variant="danger"
-                                  onClick={() => {
-                                    setShowModal(true);
-                                    setBlockData(item.id);
-                                  }}
-                                >
-                                  <i className="fas fa-times"></i>
-                                </Button>
-                              )}
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
+                                {item?.active == "1" && (
+                                  <Button
+                                    className="btn-simple btn-link p-1"
+                                    type="button"
+                                    variant="danger"
+                                    // disabled={storeBlocked
+
+                                    onClick={() => {
+                                      setShowModal(true);
+                                      setBlockData(item.id);
+                                    }}
+                                  >
+                                    <i className="fas fa-times"></i>
+                                  </Button>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  )}
                 </Card.Body>
               )}
             </Card>
@@ -379,6 +394,7 @@ getStore();
           <Pagenate totalPages={totalPages} onChange={handlePageChange} />
         )}
       </Container>
+
       <UpdateStore
         showUpdateStore={showUpdateStore}
         setShowUpdateStore={setShowUpdateStore}

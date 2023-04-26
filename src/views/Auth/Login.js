@@ -63,6 +63,7 @@ const Login = () => {
         .then((res) => {
           if (res?.data?.status) {
             setUser(res?.data?.data);
+            console.log(res?.data?.data);
             notificationAlertRef.current.notificationAlert(
               SuccessNotify(res?.data?.message)
             );
