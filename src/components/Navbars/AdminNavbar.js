@@ -67,7 +67,9 @@ function Header() {
             <span className="navbar-toggler-bar burger-lines"></span>
             <span className="navbar-toggler-bar burger-lines"></span>
           </Navbar.Toggle>
-          <Navbar.Collapse id="basic-navbar-nav">
+          <Navbar.Collapse id="basic-navbar-nav"
+          style={{flexDirection:"row-reverse"}}
+          >
             <Nav className="nav mr-auto" navbar>
               {/* <Nav.Item>
               <Nav.Link

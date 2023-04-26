@@ -106,6 +106,7 @@ const Products = () => {
     var data = new FormData();
     data.append("product_id", blockData);
     data.append("reason", blockReason);
+    data.append("status", 0);
     Http.PostAPI(process.env.REACT_APP_BLOCKPRODUCTS, data, null)
       .then((res) => {
         if (res?.data?.status) {
@@ -170,6 +171,7 @@ const Products = () => {
                   style={{
                     backgroundColor: "blueviolet",
                     borderColor: "blueviolet",
+                    float:"right",
                   }}
                   type="submit"
                   onClick={() => {
@@ -294,49 +296,50 @@ const Products = () => {
                           </td>
 
                           <td>
-                            <div
-                              style={{
-                                display: "flex",
-                                flexDirection: "row",
-                              }}
-                            >
-                              <Button
-                                className="btn-simple btn-link p-1"
-                                type="button"
-                                variant="primary"
-                                onClick={() => {
-                                  setShowProductDetail(true);
-                                  setRowData(item);
+                            {item?.active == "1" && (
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "row",
                                 }}
                               >
-                                <i className="fa fa-eye"></i>
-                              
-                              </Button>
-                              <Button
-                                className="btn-simple btn-link p-1"
-                                type="button"
-                                variant="primary"
-                                onClick={() => {
-                                  setSelectedProducts(item);
-                                  setShowUpdateModal(true);
-                                }}
-                              >
-                                <i className="fa fa-edit"></i>
-                              </Button>
-                              <Button
-                                index={item.id}
-                                className="btn-simple btn-link p-1"
-                                type="button"
-                                variant="danger"
-                                onClick={(e) => {
-                                  setShowModal(true);
-                                  // setShowDetailsModal(false);
-                                  setBlockData(e.target.id);
-                                }}
-                              >
-                                <i className="fas fa-times" id={item.id}></i>
-                              </Button>
-                            </div>
+                                <Button
+                                  className="btn-simple btn-link p-1"
+                                  type="button"
+                                  variant="primary"
+                                  onClick={() => {
+                                    setShowProductDetail(true);
+                                    setRowData(item);
+                                  }}
+                                >
+                                  <i className="fa fa-eye"></i>
+                                </Button>
+                                <Button
+                                  className="btn-simple btn-link p-1"
+                                  type="button"
+                                  variant="primary"
+                                  onClick={() => {
+                                    setSelectedProducts(item);
+                                    setShowUpdateModal(true);
+                                  }}
+                                >
+                                  <i className="fa fa-edit"></i>
+                                </Button>
+                                <Button
+                                  index={item.id}
+                                  className="btn-simple btn-link p-1"
+                                  type="button"
+                                  variant="danger"
+                                  onClick={(e) => {
+                                    setShowModal(true);
+                                    // setShowDetailsModal(false);
+                                    setBlockData(e.target.id);
+                                  }}
+                                >
+                                  <i className="fas fa-times" id={item.id}></i>
+                                </Button>
+                              </div>
+                            )}
                           </td>
                         </tr>
                       ))}
@@ -388,13 +391,13 @@ const Products = () => {
           <Modal.Body className="text-center">
             <p>Are you sure you want to block this Product?</p>
             <Form.Control
-              componentClass="textarea"
+              as="textarea"
               rows={3}
-              style={{ fontSize: "0.9rem", height: "70px" }}
-              placeholder="Enter Reason"
+              placeholder="Enter Reason Here"
               maxLength={200}
               value={blockReason}
               onChange={(event) => setBlockReason(event.target.value)}
+              required
             />
           </Modal.Body>
           <div className="modal-footer">

@@ -7,7 +7,7 @@ import { Http } from "../config/Service";
 import ButtonComponent from "views/ButtonComponent";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
-import validationModel from "../components/Validation";
+import {validationModel}  from "../components/Validation";
 
 const AdminManager = () => {
   const [formValue, setFormValue] = useState({
@@ -18,20 +18,13 @@ const AdminManager = () => {
   });
 
   const [user, setUser] = useState([]);
-  const [formError, setFormError] = useState({});
   const notificationAlertRef = React.useRef(null);
   const formRef = React.useRef();
 
   const handleSubmit = () => {
-    // e.preventDefault();
-    // if (Object.keys(formValue).every((key) => formValue[key] === "")) {
-    //   setFormError("this is required field.");
-    //   return;
-    // }
-
     if (!formRef.current.check()) {
       console.log("FORM ERROR!");
-      //  setFormError(validationModel)
+
       return;
     } else {
       console.log("form....", formValue);
@@ -64,10 +57,6 @@ const AdminManager = () => {
         password: "",
         rePassword: "",
       });
-      // setFormError(validationModel)
-
-      //  formRef.current.reset();
-      // formRef.current.state.formValue = "";
     }
   };
 
@@ -84,6 +73,7 @@ const AdminManager = () => {
             fluid
             ref={formRef}
             model={validationModel}
+            formValue={formValue}
             onSubmit={handleSubmit}
             onChange={setFormValue}
           >
@@ -106,9 +96,6 @@ const AdminManager = () => {
                   type="email"
                   value={formValue.email}
                 />
-                {/* {formError.formValue.email && (
-                  <ErrorMessage>{formError.formValue.email}</ErrorMessage>
-                )} */}
               </Form.Group>
 
               <Form.Group>

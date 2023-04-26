@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { MdClose } from "react-icons/md";
-import { Modal, Form, Button } from "react-bootstrap";
+import { Form } from "rsuite";
+import { FaCamera } from "react-icons/fa";
+import { Modal, Button } from "react-bootstrap";
 import { Http } from "../../config/Service";
 import "../../assets/css/modal.css";
 import ButtonComponent from "views/ButtonComponent";
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
+import { validationUpdateModel } from "components/Validation";
 
 const UpdateVendor = ({
   showUpdateModal,
@@ -15,22 +18,29 @@ const UpdateVendor = ({
   getVendors,
 }) => {
   const [vendors, setVendors] = useState([]);
-  const [data, setData] = useState([]);
-  const [errors, setErrors] = useState({});
   const [hideId, setHideId] = useState(true);
-  const [vendorId, setVendorId] = useState("");
-  const [vendorName, setVendorName] = useState("");
-  const [vendorPhone, setVendorPhone] = useState("");
   const [vendorImage, setVendorImage] = useState("");
-  const [vendorEmail, setVendorEmail] = useState("");
+  const [formValue, setFormValue] = useState({
+    vendorId: item?.id,
+    vendorName: item?.name,
+    vendorPhone: item?.phone,
+  });
+
   const notificationAlertRef = React.useRef(null);
+  const formRef = React.useRef();
 
   const updateImage = () => {
     const data = new FormData();
-    data.append("vendor_id", vendorId ? vendorId : item.id);
-    data.append("Vendor_name", vendorName ? vendorName : item.name);
+    data.append(
+      "vendor_id",
+      formValue.vendorId ? formValue.vendorId : item?.id
+    );
+    data.append(
+      "Vendor_name",
+      formValue.vendorName ? formValue.vendorName : item?.name
+    );
     data.append("Vendor_image", vendorImage);
-    console.log("vvv", vendorImage);
+    console.log("Image", vendorImage);
 
     Http.PostAPI(process.env.REACT_APP_UPDATEVENDORIMAGE, data, null)
       .then((res) => {
@@ -38,8 +48,8 @@ const UpdateVendor = ({
         if (res?.data?.status) {
           setVendors(res?.data?.data);
           getVendors();
-          } 
-        })
+        }
+      })
       .catch((e) => {
         notificationAlertRef.current.notificationAlert(
           ErrorNotify("Something went wrong")
@@ -47,14 +57,42 @@ const UpdateVendor = ({
       });
   };
 
+  // const handleImageUpload = (event) => {
+  //   const file = event.target.files[0];
+  //   setVendorImage(URL.createObjectURL(file));
+  // };
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setVendorImage(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleUpdateVendor = (event) => {
-    event.preventDefault();
-    if (validate()) {
-      updateImage();
+    // event.preventDefault();
+
+    if (!formRef.current.check()) {
+      console.log("FORM ERROR!");
+
+      return;
+    } else {
+      console.log("formValue:", formValue);
       var data = new FormData();
-      data.append("vendor_id", vendorId ? vendorId : item.id);
-      data.append("v_name", vendorName ? vendorName : item.name);
-      data.append("phone_number", vendorPhone ? vendorPhone : item.phone);
+      data.append(
+        "vendor_id",
+        formValue.vendorId ? formValue.vendorId : item?.id
+      );
+      data.append(
+        "v_name",
+        formValue.vendorName ? formValue.vendorName : item?.name
+      );
+      data.append(
+        "phone_number",
+        formValue.vendorPhone ? formValue.vendorPhone : item?.phone
+      );
 
       Http.PostAPI(process.env.REACT_APP_UPDATEVENDORS, data, null)
         .then((res) => {
@@ -76,34 +114,13 @@ const UpdateVendor = ({
             ErrorNotify("Something went wrong")
           );
         });
+      // setFormValue({
+      //   vendorId: "",
+      //   vendorName: "",
+      //   vendorPhone: "",
+      // });
       setShowUpdateModal(false);
-      setErrors("");
     }
-  };
-
-  const validate = () => {
-    let tempErrors = {};
-
-    // if (!vendorEmail) {
-    //   tempErrors.email = "Email is required";
-    // } else if (!/\S+@\S+\.\S+/.test(vendorEmail)) {
-    //   tempErrors.email = "Email is invalid";
-    // }
-    // if (!image) {
-    //   tempErrors.image = "Image is required";
-    // } else if (
-    //   image.type !== "image/png" &&
-    //   image.type !== "image/jpg" &&
-    //   image.type !== "image/jpeg"
-    // ) {
-    //   tempErrors.image = "Please select a valid image file (png, jpg, jpeg)";
-    // }
-    if (!/^\d{10}$/.test(vendorPhone)) {
-      tempErrors.vendorPhone = "Phone number must be 10 digits";
-    }
-    setErrors(tempErrors);
-
-    return Object.keys(tempErrors).length === 0;
   };
 
   return (
@@ -114,7 +131,9 @@ const UpdateVendor = ({
       {item != null && (
         <Modal show={showUpdateModal} onHide={() => setShowUpdateModal(false)}>
           <Modal.Header>
-            <Modal.Title className="update-title">Update Vendors</Modal.Title>
+            <Modal.Title className="titleUpdateProduct">
+              Update Vendors
+            </Modal.Title>
             <MdClose
               className="update-close-icon"
               onClick={() => {
@@ -122,91 +141,114 @@ const UpdateVendor = ({
               }}
             />
           </Modal.Header>
-          <Modal.Body className="update-body">
-            <Form onSubmit={handleUpdateVendor}>
+          <Modal.Body className="add-body updateProductModel">
+            <Form
+              fluid
+              ref={formRef}
+              formValue={formValue}
+              onSubmit={handleUpdateVendor}
+              onChange={setFormValue}
+              model={validationUpdateModel}
+            >
               {!hideId && (
                 <Form.Group style={{ marginTop: "0rem", marginBottom: "1rem" }}>
                   <label className="update-label">Vendor ID</label>
-                  <Form.Control
-                    className="update-form"
-                    defaultValue={item?.id}
+                  <Form.ControlLabel
                     name="vendorId"
-                    onChange={(value) => setVendorId(value)}
-                    type="text"
-                  ></Form.Control>
+                    defaultValue={
+                      formValue.vendorId ? formValue.vendorId : item?.vendorId
+                    }
+                    type="Id"
+                  ></Form.ControlLabel>
                 </Form.Group>
               )}
 
-              <Form.Group controlId="vendorName">
-                <Form.Label className="update-label">Vendor Image</Form.Label>
-                <div>
-                  <img
-                    src={vendorImage ? vendorImage : item?.user_image}
-                    alt="image"
+              <Form.Group className="UpdateProductForm">
+                <Form.ControlLabel className="add-label-UpdateProduct">
+                  {" "}
+                  Update Vendor
+                </Form.ControlLabel>
+
+                <img
+                  src={vendorImage ? vendorImage : item?.user_image}
+                  alt="Image"
+                  style={{
+                    width: "50px",
+                    height: "50px",
+                    borderRadius: "50%",
+                  }}
+                  onClick={updateImage}
+                />
+                <div style={{ display: "flex", alignItems: "left" }}>
+                  <label htmlFor="vendorImage">
+                    <div style={{ position: "relative" }}>
+                      <FaCamera
+                        style={{
+                          fontSize: "15px",
+                          cursor: "pointer",
+                          color: "blueviolet",
+                        }}
+                      />
+                      <input
+                        id="vendorImage"
+                        type="file"
+                        name="vendorImage"
+                        accept="image/*"
+                        style={{ display: "none" }}
+                        onChange={handleImageUpload}
+                        // onChange={(e) => {
+                        //   console.log("aaaaa",e.target.files);
+
+                        //   setVendorImage(e.target.files[0]);
+                        // }}
+                      />
+                    </div>
+                  </label>
+                  <span
                     style={{
-                      width: "50px",
-                      height: "50px",
-                      borderRadius: "50%",
+                      margin: "4px",
+                      fontSize: "0.8rem",
                     }}
-                  />
+                  >
+                    Upload Image
+                  </span>
                 </div>
-                <Form.Control
-                  className="update-form"
-                  type="file"
-                  name="vendorImage"
-                  accept="image/*"
-                  onChange={(e) => {
-                    setVendorImage(e.target.files[0]);
-                  }}
-                />
               </Form.Group>
 
-              <Form.Group controlId="vendorName">
-                <Form.Label className="update-label">Vendor Name</Form.Label>
-                <Form.Control
-                  className="update-form"
-                  type="text"
-                  name="vendorName"
-                  defaultValue={item?.name}
-                  onChange={(e) => {
-                    setVendorName(e.target.value);
-                  }}
-                />
+              <Form.Group className="UpdateProductForm">
+                <Form.ControlLabel className="add-label-UpdateProduct">
+                  {" "}
+                  Update Vendor
+                </Form.ControlLabel>
+
+                <Form.Group>
+                  <Form.ControlLabel>Vendor Name</Form.ControlLabel>
+                  <Form.Control
+                    style={{ width: "100%" }}
+                    type="text"
+                    name="vendorName"
+                    defaultValue={
+                      formValue.vendorName ? formValue.vendorName : item?.name
+                    }
+                  ></Form.Control>
+                </Form.Group>
+
+                <Form.Group>
+                  <Form.ControlLabel>Vendor Phone</Form.ControlLabel>
+                  <Form.Control
+                    style={{ width: "100%" }}
+                    type="text"
+                    name="vendorPhone"
+                    defaultValue={
+                      formValue.vendorPhone
+                        ? formValue.vendorPhone
+                        : item?.phone
+                    }
+                  />
+                </Form.Group>
+
+                <ButtonComponent buttontext="Update Product" />
               </Form.Group>
-              <Form.Group controlId="vendorName">
-                <Form.Label className="update-label">Vendor Phone</Form.Label>
-                <Form.Control
-                  className="update-form"
-                  type="text"
-                  name="vendorPhone"
-                  defaultValue={item?.phone}
-                  onChange={(e) => {
-                    setVendorPhone(e.target.value);
-                  }}
-                />
-                {errors.vendorPhone && (
-                  <Form.Text className="text-danger">
-                    {errors.vendorPhone}
-                  </Form.Text>
-                )}
-              </Form.Group>
-
-              {/* <Form.Group controlId="vendorName">
-              <Form.Label className="update-label">Vendor Email</Form.Label>
-              <Form.Control
-               className="update-form"
-                type="text"
-                name="vendorPhone"
-                defaultValue={item?.email}
-                onChange={(e) => {
-                  setVendorEmail(e.target.value);
-                }}
-              />
-               </Form.Group> */}
-
-              <br></br>
-
-              <ButtonComponent buttontext="Update" />
             </Form>
           </Modal.Body>
         </Modal>

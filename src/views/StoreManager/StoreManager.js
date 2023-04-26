@@ -321,36 +321,38 @@ const StoreManager = () => {
                                 flexDirection: "row",
                               }}
                             >
-                              <Button
-                                className="btn-simple btn-link p-1"
-                                type="button"
-                                style={{ color: "blue" }}
-                                onClick={() => {
-                                  setShowDetailsModal(true);
-                                  setRowData(item);
-                                }}
-                              >
-                                <i className="fa fa-eye"></i>
-                              </Button>
-                              <Button
-                                className="btn-simple btn-link p-1"
-                                type="button"
-                                variant="primary"
-                                onClick={() => {
-                                  setSelectedStore(item);
-                                  setShowUpdateStore(true);
-                                }}
-                              >
-                                <i className="fa fa-edit"></i>
-                              </Button>
+                              {item?.active == "1" && (
+                                <Button
+                                  className="btn-simple btn-link p-1"
+                                  type="button"
+                                  style={{ color: "blue" }}
+                                  onClick={() => {
+                                    setShowDetailsModal(true);
+                                    setRowData(item);
+                                  }}
+                                >
+                                  <i className="fa fa-eye"></i>
+                                </Button>
+                              )}
+                              {item?.active == "1" && (
+                                <Button
+                                  className="btn-simple btn-link p-1"
+                                  type="button"
+                                  variant="primary"
+                                  onClick={() => {
+                                    setSelectedStore(item);
+                                    setShowUpdateStore(true);
+                                  }}
+                                >
+                                  <i className="fa fa-edit"></i>
+                                </Button>
+                              )}
 
                               {item?.active == "1" && (
                                 <Button
                                   className="btn-simple btn-link p-1"
                                   type="button"
                                   variant="danger"
-                                  // disabled={storeBlocked
-
                                   onClick={() => {
                                     setShowModal(true);
                                     setBlockData(item.id);

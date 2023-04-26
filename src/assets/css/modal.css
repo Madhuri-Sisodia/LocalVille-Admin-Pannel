@@ -31,28 +31,7 @@
  .modal-body::-webkit-scrollbar {
     width: 8px;
  }
- .uploadImage{
-  width: 3rem;
-  height: 4rem;
- }
- .maxLimit{
-  font-size: 12px;
-  color: red;
- }
- sup .fa-trash{
-  color: rgb(222, 2, 31);
- }
- .deleteButton{
-  padding: 5px;
-  border-radius: 50%;
-  box-shadow: 0px 1px 20px 0px rgba(0, 0, 0, 0.3);
- }
- .uploadProductImage{
-  display: flex;
-  padding:  20px 0;
-  align-items: center;
-  justify-content: center;
- }
+
   .modal-body::-webkit-scrollbar-track {
     background-color: rgb(234, 228, 228);
   }
@@ -142,7 +121,7 @@ justify-content: space-around;
   justify-content: flex-start;
  }
 
- .rs-col-md-6.cardModel{
+ .cardModel{
   margin: 1rem;
   padding: 0.5rem;
   width: -webkit-fill-available;
@@ -163,6 +142,28 @@ justify-content: space-around;
   font-size: 12px;
   
   
+ }
+ .uploadImage{
+  width: 3rem;
+  height: 4rem;
+ }
+ .maxLimit{
+  font-size: 12px;
+  color: red;
+ }
+ .fa-trash{
+  color: rgb(222, 2, 31);
+ }
+ .deleteButton{
+  padding: 5px;
+  border-radius: 50%;
+  box-shadow: 0px 1px 20px 0px rgba(0, 0, 0, 0.3);
+ }
+ .uploadProductImage{
+  display: flex;
+  padding:  20px 0;
+  align-items: center;
+  justify-content: center;
  }
  .CardPriceArea{
   display: flex;
@@ -191,9 +192,20 @@ justify-content: space-around;
  .editbutton{
   width: 17px;
   margin-right: 10px;
+
+ }
+ .btn-primary.editButton{
+  padding: initial ;
+  border: none;
  }
 .updateModelButton{
-  text-align: center;
+  width: 80% !important;
+  color: #ac74e1 !important;
+  text-align: center !important;
+  display: flex;
+  margin-left: 3rem;
+  
+
 }
 
 .collapseAttribute {
@@ -204,6 +216,7 @@ justify-content: space-around;
   top: -22px !important;
   padding: 1rem;
 }
+
 
 
 
@@ -263,3 +276,58 @@ justify-content: space-around;
  
 }
 
+/* .........Update Model....... */
+
+
+.titleUpdateProduct{
+  color: blueviolet;
+  font-size: 20px;
+  font-weight: 600;
+}
+.UpdateProductForm{
+  border: 1px solid blueviolet;
+  border-radius: 10px;
+  padding: 1rem;
+  margin: 1rem;
+}
+.add-label-UpdateProduct{
+  color: blueviolet;
+  font-size: 16px;
+  font-weight: 600;
+}
+.UpdateButton{
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  background-color:blueviolet ;
+  width: auto;
+}
+.add-body.updateProductModel{
+   position: initial;
+}
+.fa.fa-camera{
+  color: #8052D5;
+  font-size: 3rem;
+  text-align: center;
+}
+.rs-uploader-picture .rs-uploader-trigger-btn {
+justify-content: unset;
+padding: revert;}
+.uploadImage{
+  width: 3rem;
+  height: 3rem;
+ }
+ .maxLimit{
+  font-size: 12px;
+  color: red;
+ }
+ sup .fa-trash{
+  color: rgb(222, 2, 31);
+ }
+ 
+ .uploadProductImage{
+  display: flex;
+  padding:  20px 0;
+  align-items: center;
+  justify-content: center;
+ }

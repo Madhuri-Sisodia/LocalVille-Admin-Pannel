@@ -9,10 +9,10 @@ const ButtonComponent = (props) => {
         className="buttonComponent"
         type="submit"
          style={{
-                backgroundColor: "#ac74e1",
+                backgroundColor: "blueviolet",
                 border: "blueviolet",
-                borderRadius: "10px",
-                width: "81%",
+                borderRadius: "3px",
+                width: "100%",
                 padding: "10px",
                 color: "white",
                 marginTop: "20px",
@@ -21,7 +21,8 @@ const ButtonComponent = (props) => {
                 textAlign:"center"
               }}  
         >
-           {props.buttontext}  
+           {props.buttontext} 
+            
         </button>
   
   )

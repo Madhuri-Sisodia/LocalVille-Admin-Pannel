@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Ref } from "react";
 import { MdClose } from "react-icons/md";
 // import { Modal, Form, Button } from "react-bootstrap";
 import { Modal, Form, Uploader, Row, Col, Placeholder, Button, ButtonToolbar } from 'rsuite';
@@ -15,8 +15,8 @@ import Image from "../../assets/img/dummyproduct.jpeg";
 import CameraRetroIcon from '@rsuite/icons/legacy/CameraRetro';
 import ViewProductModal from "./ViewProductModal";
 import editButton from "../../assets/img/editButton.png";
-import UpdateAttribute from "./UpdateAttribute";
-import { Collapse } from 'react-collapse';
+import { validationUpdateModel } from "components/Validation";
+
 
 const AddProduct = ({
   showUpdateModal,
@@ -25,67 +25,74 @@ const AddProduct = ({
   getProducts,
   item,
 }) => {
+  console.log(getProducts);
   const [product, setProduct] = useState([]);
-  const [image, setImage] = useState(null);
-  const [vendortData, setVendorData] = useState([]);
-  const [selectSection, setSelectSection] = useState("");
-  const [getStoreData, setGetStoreData] = useState([]);
-  const [getProcat, setGetProCat] = useState([]);
-  const [getProSubcat, setGetProSubCat] = useState([]);
-  const [selectProCat, setSelectProCat] = useState("");
-  const [selectProSubCat, setSelectProSubCat] = useState("");
-  const [getsize, setGetSize] = useState([]);
-  const [color, setColor] = useState([]);
-  const [bay, setBay] = useState("No");
-  const [Pickup, setPickup] = useState("No");
-  const [productPrice, setProductPrice] = useState([]);
-  const [productDiscountPrice, setProductDiscountPrice] = useState([]);
+  // const [image, setImage] = useState(null);
+  // const [vendortData, setVendorData] = useState([]);
+  // const [selectSection, setSelectSection] = useState("");
+  // const [getStoreData, setGetStoreData] = useState([]);
+  // const [getProcat, setGetProCat] = useState([]);
+  // const [getProSubcat, setGetProSubCat] = useState([]);
+  // const [selectProCat, setSelectProCat] = useState("");
+  // const [selectProSubCat, setSelectProSubCat] = useState("");
+  // const [getsize, setGetSize] = useState([]);
+  // const [color, setColor] = useState([]);
+  // const [bay, setBay] = useState("No");
+  // const [Pickup, setPickup] = useState("No");
+  // const [productPrice, setProductPrice] = useState([]);
+  // const [productDiscountPrice, setProductDiscountPrice] = useState([]);
   const [attributes, setAttributes] = useState([]);
   const [isAddProdcut, setIsAddProduct] = useState(false);
   const [showAddProduct, setShowAddProduct] = useState(false);
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
-
-  // const Card = props => (
-
-  //   <Placeholder.Paragraph />
-
-  // );
-  const [productData, setProductData] = useState({
-    productName: "",
-    productDesc: "",
-    category: "",
-    sub_category: "",
-    is_buy: "",
-    is_pickup: "",
-    color: false,
-    size: false,
-    price: "",
-    dis_price: "",
-    in_stock: 1,
-    productImage: "",
+  const [formValue, setFormValue] = useState({
+   
+    productName: item?.product_name,
+    productDesc: item?.product_desc,
+    buy:item?.is_buy,
+    pickup:item?.is_pickup,
+    category: item?.category_name,
+    sub_category: item?.subcategory_name,
+    
   });
+  
+  console.log(item?.product_name);
+
+  const formRef = React.useRef();
+
+
+  // const [productData, setProductData] = useState({
+  //   productName: "",
+  //   productDesc: "",
+  //   category: "",
+  //   sub_category: "",
+  //   is_buy: "",
+  //   is_pickup: "",
+  //   color: false,
+  //   size: false,
+  //   price: "",
+  //   dis_price: "",
+  //   in_stock: 1,
+  //   productImage: "",
+  // });
   const notificationAlertRef = React.useRef(null);
 
-  const resetForm = () => {
-    setProductData({
-      // productImage: "",
-      productName: "",
-      productDesc: "",
-      category: "",
-      sub_category: "",
-      is_buy: "",
-      is_pickup: "",
-      in_stock: "",
-    });
-    setImage(null);
-  };
+  // const resetForm = () => {
+  //   setProductData({
+  //     // productImage: "",
+  //     productName: "",
+  //     productDesc: "",
+  //     category: "",
+  //     sub_category: "",
+  //     is_buy: "",
+  //     is_pickup: "",
+  //     in_stock: "",
+  //   });
+  //   setImage(null);
+  // };
 
   const increaseIngridents = (e) => {
     console.log('calling', showAddProduct)
-    e.preventDefault()
+    // e.preventDefault()
     // setingridents([...ingridents, ""]);
     setShowAddProduct(true);
   };
@@ -98,12 +105,12 @@ const AddProduct = ({
 
   const updateImage = () => {
     const data = new FormData();
-    data.append("product_image", productData?.productImage?.[0]);
-    data.append(
-      "product_name",
-      productData?.productName ? productData.productName : item.product_name
-    );
-    data.append("product_id", item.id);
+    data.append("product_image", formValue?.productImage?.[0]);
+    // data.append(
+    //   "product_name",
+    //   formValue?.productName ? formValue.productName : item.product_name
+    // );
+    // data.append("product_id", item.id);
     Http.PostAPI(process.env.REACT_APP_UPDATEPRODUCTIMAGE, data, null)
       .then((res) => {
         if (res?.data?.status) {
@@ -123,36 +130,43 @@ const AddProduct = ({
         );
       });
   };
-
+  console.log(formValue.productName);
   const handleSubmit = (event) => {
-    event.preventDefault();
-    updateImage();
+    
+    // event.preventDefault();
+    // updateImage();
     var data = new FormData();
     data.append("pid", item.id);
     data.append(
       "product_name",
-      productData?.productName ? productData.productName : item.product_name
+      formValue.productName ? formValue.productName: item?.product_name
+      
     );
+    console.log()
     data.append(
       "product_desc",
-      productData?.productDesc ? productData.productDesc : item.product_desc
+      formValue.productDesc ? formValue.productDesc : item?.product_desc
     );
     data.append(
       "category_name",
-      productData?.category ? productData.category : item.category
+      formValue.category ? formValue.category : item?.category_name
     );
     data.append(
       "subcategory_name",
-      productData?.sub_category ? productData.sub_category : item.sub_category
+      formValue.sub_category ? formValue.sub_category: item?.subcategory_name,
     );
-    data.append("is_buy", bay ? (bay == "Yes" ? 1 : 0) : item?.is_buy);
+
+    data.append("is_buy", formValue.buy ? (buy == "Yes" ? 1 : 0) : item?.is_buy);
     data.append(
       "is_pickup",
-      Pickup ? (Pickup == "Yes" ? 1 : 0) : item?.is_pickup
+      formValue.pickup ? (pickup == "Yes" ? 1 : 0) : item?.is_pickup
     );
+
+    // console.log("response....",handleSubmit);
 
     Http.PostAPI(process.env.REACT_APP_UPDATEPRODUCTS, data, null)
       .then((res) => {
+        alert("Hello");
         console.log("response....", res);
         if (res?.data?.status) {
           setProduct(res?.data?.data);
@@ -171,20 +185,24 @@ const AddProduct = ({
           ErrorNotify("Something went wrong")
         );
       });
+      
 
-    resetForm();
-    setShowUpdateModal(false);
-    setGetSize([]);
-    setColor([]);
-    setProductPrice([]);
-    setProductDiscountPrice([]);
+    // resetForm();
+    // setShowUpdateModal(false);
+    // setGetSize([]);
+    // setColor([]);
+    // setProductPrice([]);
+    // setProductDiscountPrice([]);
   };
 
-  const handleInput = (e) => {
-    setProductData((previous) => {
-      return { ...previous, [e.target.name]: e.target.value };
-    });
-  };
+  // const handleInput = (e) => {
+  //   setProductData((previous) => {
+  //     return { ...previous, [e.target.name]: e.target.value };
+  //   });
+  // };
+
+
+
 
   return (
     <>
@@ -195,17 +213,17 @@ const AddProduct = ({
         <Modal open={showUpdateModal} onClose={() => setShowUpdateModal(false)}>
           <Modal.Header>
             <Modal.Title className="titleUpdateProduct">UPDATE PRODUCT</Modal.Title>
-            {/* <MdClose
-              className="close-icon"
-              onClick={() => {
-                setShowUpdateModal(false);
-                resetForm();
-              }}
-            />  */}
+           {/* <MdClose className="close-icon" onClick={() => {setShowUpdateModal(false);resetForm()}}/>   */}
           </Modal.Header>
           <Modal.Body className="add-body updateProductModel">
-            <Form>
-              <Form.Group className="UpdateProductForm">
+            <Form
+              
+                ref={formRef}
+                formValue={formValue}
+                onSubmit={handleSubmit}
+                onChange={setFormValue}
+                className="UpdateProductForm">
+                  <div className="UpdateProductForm">
                 <Form.ControlLabel className="add-label-UpdateProduct"> Upload Product Image</Form.ControlLabel>
                 {/* <div>
                   <img
@@ -222,7 +240,7 @@ const AddProduct = ({
                     }}
                   />
                 </div>  */}
-                <div className="uploadProductImage">
+               <div className="uploadProductImage">
                   <div>
                     <img src={Image} className="uploadImage" />
                     <sup className="deleteButton"><i className="fa fa-trash"></i></sup>
@@ -234,11 +252,11 @@ const AddProduct = ({
                   <div>
                     <img src={Image} className="uploadImage" />
                     <sup className="deleteButton"><i className="fa fa-trash"></i></sup>
-                  </div>
+                  </div> 
 
 
 
-                  <Uploader multiple listType="picture" action="//jsonplaceholder.typicode.com/posts/">
+                  <Uploader multiple listType="picture" maxButton={4}>
                     <button>
                       <i className="fa fa-camera"></i>
                     </button>
@@ -246,6 +264,7 @@ const AddProduct = ({
                 </div>
 
                 <p className="maxLimit">You can upload maximum 4 images</p>
+                </div>
                 {/* <Form.Control
                   name="productImage"
                   multiple
@@ -256,22 +275,20 @@ const AddProduct = ({
                   }}
                   type="file"
                 ></Form.Control> */}
-              </Form.Group>
+              
 
-              <Form.Group className="UpdateProductForm">
+              <div className="UpdateProductForm">
                 <Form.ControlLabel className="add-label-UpdateProduct"> Update Product</Form.ControlLabel>
-
-               
-
-                <Form fluid className="UpadateProductFormInner">
+                 <div className="UpadateProductFormInner">
                   <Form.Group>
                     <Form.ControlLabel className="formLabelText">Product Name</Form.ControlLabel>
                     <Form.Control
                       name="productName"
-                      onChange={(e) => {
-                        handleInput(e);
-                      }}
-                      defaultValue={item?.product_name}
+                      // onChange={(e) => {
+                      //   handleInput(e);
+                      // }}
+                      // defaultValue={item?.product_name}
+                      defaultValue={formValue.productName ? formValue.productName : item?.product_name}
                       type="text"
                       required
                     >
@@ -284,20 +301,18 @@ const AddProduct = ({
                       type="text"
                       name="productDesc"
                       required
-                      onChange={(e) => {
-                        handleInput(e);
-                      }}
-                      defaultValue={item?.product_desc}
+                      defaultValue={formValue.productDesc ? formValue.productDesc: item?.product_desc}
                     ></Form.Control>
                   </Form.Group>
                   <Form.Group>
                     <Form.ControlLabel className="formLabelText">category</Form.ControlLabel>
                     <Form.Control
                       name="category"
-                      onChange={(e) => {
-                        handleInput(e);
-                      }}
-                      defaultValue={item?.category_name}
+                      defaultValue={formValue.category ? formValue.category : item?.category_name}
+                      // onChange={(e) => {
+                      //   handleInput(e);
+                      // }}
+                      // defaultValue={item?.category_name}
                       type="text"
                       disabled
                     >
@@ -308,28 +323,125 @@ const AddProduct = ({
                     <Form.ControlLabel className="formLabelText">Sub category</Form.ControlLabel>
                     <Form.Control
                       name="sub_category"
-                      onChange={(e) => {
-                        handleInput(e);
-                      }}
-                      defaultValue={item?.subcategory_name}
+                      // onChange={(e) => {
+                      //   handleInput(e);
+                      // }}
+                     defaultValue={formValue.sub_category ? formValue.sub_category: item?.subcategory_name}
                       type="text"
+
                       disabled
                     >
                     </Form.Control>
                   </Form.Group>
-                </Form>
 
+                  <Form.Group>
+                 <Form.ControlLabel className="add-label">Pickup</Form.ControlLabel> 
+                 <div
+                  style={{
+                    width: "50%",
+                    marginTop: "5px",
+                    marginBottom: "15px",
+                  }}
+                >
+                  <select
+                    name="selectSection"
+                    // value={pickup}
+                    // onChange={(event) => setPickup(event.target.value)}
 
+                    style={{
+                      height: "35px",
+                      borderRadius: "5px",
+                      paddingLeft: "5px",
+                      paddingRight: "5px",
+                      borderColor: "#808020",
+                      width: "80%",
+                    }}
+                  >
+                    <option
+                      style={{
+                        fontSize: "14px",
+                        paddingBottom: "10px",
+                        paddintTop: "10px",
+                      }}
+                    >
+                      <li>Yes</li>
+                    </option>
+                    <option
+                      style={{
+                        fontSize: "14px",
+                        paddingBottom: "10px",
+                        paddintTop: "10px",
+                      }}
+                    >
+                      <li>No</li>
+                    </option>
+                  </select>
+                </div> 
+              </Form.Group> 
+
+              <Form.Group>
+                 <Form.ControlLabel className="add-label">Buy</Form.ControlLabel> 
+                 <div
+                  style={{
+                    width: "50%",
+                    marginTop: "5px",
+                    marginBottom: "15px",
+                  }}
+                >
+                  <select
+                    name="selectSection"
+                    // value={buy}
+                    // onChange={(event) => setBay(event.target.value)}
+                    style={{
+                      height: "35px",
+                      borderRadius: "5px",
+                      paddingLeft: "5px",
+                      paddingRight: "5px",
+                      borderColor: "#808020",
+                      width: "80%",
+                    }}
+                  >
+                    <option
+                      style={{
+                        fontSize: "14px",
+                        paddingBottom: "10px",
+                        paddintTop: "10px",
+                      }}
+                    >
+                      <li>Yes</li>
+                    </option>
+                    <option
+                      style={{
+                        fontSize: "14px",
+                        paddingBottom: "10px",
+                        paddintTop: "10px",
+                      }}
+                    >
+                      <li>No</li>
+                    </option>
+                  </select>
+                </div> 
+              </Form.Group> 
+                
+                  </div>
                 <div className="updateModelButton">
-                  <ButtonComponent buttontext="UPDATE PRODUCT" /></div>
-              </Form.Group>
 
-              <Form.Group className="UpdateProductForm">
-                {/* <Form.ControlLabel className="add-label">
+                  <ButtonComponent
+                    // onClick={handleSubmit}
+                    buttontext="UPDATE PRODUCT" /></div>
+
+              </div>
+              </Form>
+
+
+
+
+              {/* <Form.Group className="UpdateProductForm">  */}
+               <Form.ControlLabel className="add-label">
                  
-                </Form.ControlLabel> */}
+                </Form.ControlLabel> 
 
-                <Row>
+                {/* <Row>
                   <Col className="cardModel" md={6} sm={12}>
                     <div className="leftSectionCard">
                       <h6> SKU234567892345</h6>
@@ -339,7 +451,9 @@ const AddProduct = ({
                         <h6 className="priceAfter"> ₹ 2100</h6> </div>
                     </div>
                     <div className="RightSectionCard">
-                      <img src={editButton} className="editbutton" />
+                    <button className="btn btn-primary editButton" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                       <img src={editButton} className="editbutton" />
+                      </button>
                       <i className="fa fa-trash"></i>
                     </div>
                   </Col></Row>
@@ -353,126 +467,125 @@ const AddProduct = ({
                         <h6 className="priceAfter"> ₹ 2100</h6> </div>
                     </div>
                     <div className="RightSectionCard">
-                    <button className="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-            
-              
-              <img src={editButton} className="editbutton" />
+                      <button className="btn btn-primary editButton" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                       <img src={editButton} className="editbutton" />
                       </button>
-                      
-
-
 
                       <i className="fa fa-trash"></i>
                     </div>
                   </Col> </Row>
+                <div className="collapseAttribute" id="collapseExample">
+                  <Form layout="inline" style={{
+                    display: "flex",
+                    justifyContent: "space-between"
+                  }}>
+                    <Form.Group  >
+                      <Form.ControlLabel className="formLabelText">Size</Form.ControlLabel>
+                      <Form.Control
 
 
+                        type="text"
+                        style={{
+                          width: 170,
 
-                  <div className="collapseAttribute" id="collapseExample">
-                    
-                  
-                 
-                  <Form  layout="inline" style={{ display:"flex",
-                    justifyContent:"space-between"}}>
-                  <Form.Group  >
-                  <Form.ControlLabel className="formLabelText">Size</Form.ControlLabel>
-                  <Form.Control
-                      
-                     
-                      type="text"
-                      style={{ width: 170,
-                        marginBottom:"-10px"
-                       }}
-                    >
-                    </Form.Control>
+                        }}
+                      >
+                      </Form.Control>
                     </Form.Group>
-                    <Form.Group style={{ textAlign:"left"}} >
-                  
-                  <Form.ControlLabel className="formLabelText">Color</Form.ControlLabel>
-                  <Form.Control
-                      
-                      onChange={(e) => {
-                        handleInput(e);
-                      }}
-                      
-                      type="text"
-                      style={{ width: 170 ,marginBottom:"-10px"
-                      }}
-                    >
-                    </Form.Control>
+                    <Form.Group  >
+
+                      <Form.ControlLabel className="formLabelText">Color</Form.ControlLabel>
+                      <Form.Control
+
+                        onChange={(e) => {
+                          handleInput(e);
+                        }}
+
+                        type="text"
+                        style={{
+                          width: 170, marginBottom: "-10px"
+                        }}
+                      >
+                      </Form.Control>
                     </Form.Group>
                   </Form>
 
-                  <Form  layout="inline" style={{display:"flex", justifyContent:"space-between"}}>
-                  <Form.Group  >
-                  <Form.ControlLabel className="formLabelText">Price</Form.ControlLabel>
-                  <Form.Control
-                      
-                      
-                      type="text"
-                      style={{ width: 170, marginBottom:"-10px" }}
-                    >
-                    </Form.Control>
+                  <Form layout="inline" style={{ display: "flex", justifyContent: "space-between" }}>
+                    <Form.Group  >
+                      <Form.ControlLabel className="formLabelText">Price</Form.ControlLabel>
+                      <Form.Control
+
+
+                        type="text"
+                        style={{ width: 170, marginBottom: "-10px" }}
+                      >
+                      </Form.Control>
                     </Form.Group>
-                    <Form.Group style={{ textAlign:"left"}} >
-                  
-                  <Form.ControlLabel className="formLabelText">Discounted Price</Form.ControlLabel>
-                  <Form.Control
-                      
-                      onChange={(e) => {
-                        handleInput(e);
-                      }}
-                     
-                      type="text"
-                      style={{ width: 170,marginBottom:"-15px" }}
-                    >
-                    </Form.Control>
+                    <Form.Group  >
+
+                      <Form.ControlLabel className="formLabelText">Discounted Price</Form.ControlLabel>
+                      <Form.Control
+
+                        onChange={(e) => {
+                          handleInput(e);
+                        }}
+
+                        type="text"
+                        style={{ width: 170, marginBottom: "-15px" }}
+                      >
+                      </Form.Control>
                     </Form.Group>
                   </Form>
-                  <Form  layout="inline" style={{ display:"flex",justifyContent:"space-between"}}>
-                  <Form.Group  >
-                  <Form.ControlLabel className="formLabelText"> GST</Form.ControlLabel>
-                  <Form.Control
-                      
-                      
-                      type="text"
-                      style={{ width: 170, marginBottom:"-15px" }}
-                    >
-                    </Form.Control>
-                    </Form.Group>
-                    <Form.Group style={{ textAlign:"left"}} >
-                  
-                  <Form.ControlLabel className="formLabelText">OTY</Form.ControlLabel>
-                  <Form.Control
-                      
-                      onChange={(e) => {
-                        handleInput(e);
-                      }}
-                      
-                      type="text"
-                      style={{ width: 170, marginBottom:"-15px" }}
-                    >
-                    </Form.Control>
-                    </Form.Group>
-                  </Form>
+                  <Form layout="inline" style={{ display: "flex", justifyContent: "space-between" }}>
+                    <Form.Group  >
+                      <Form.ControlLabel className="formLabelText"> GST</Form.ControlLabel>
+                      <Form.Control
 
-                  <Form  fluid>
-                  <Form.ControlLabel className="formLabelText">SKU</Form.ControlLabel>
-                  <Form.Control>
 
-                  </Form.Control>
-                  <div className="updateModelButton">
-                  <ButtonComponent buttontext="UPDATE ATTRIBUTE" /></div>
+                        type="text"
+                        style={{ width: 170, marginBottom: "-15px" }}
+                      >
+                      </Form.Control>
+                    </Form.Group>
+                    <Form.Group  >
+
+                      <Form.ControlLabel className="formLabelText">QTY</Form.ControlLabel>
+                      <Form.Control
+
+                        onChange={(e) => {
+                          handleInput(e);
+                        }}
+
+                        type="text"
+                        style={{ width: 170, marginBottom: "-15px" }}
+                      >
+                      </Form.Control>
+                    </Form.Group>
                   </Form>
 
 
-                 
-                      </div>
+
+
+
+                  <Form fluid>
+                    <Form.ControlLabel className="formLabelText">SKU</Form.ControlLabel>
+                    <Form.Control>
+
+                    </Form.Control>
+                    <div className="updateModelButton">
+                      <ButtonComponent
+                        // onClick={handleSubmit}
+                        buttontext="UPDATE ATTRIBUTE" /></div>
+                  </Form>
+
+
+
+                </div>
 
               </Form.Group>
-              
 
-              {/* 
+
+            
               <Form.Group>
                 <Form.ControlLabel className="add-label">Update Attributes</Form.ControlLabel>
                 {item?.attributes?.map((ele, index) => (
@@ -492,105 +605,12 @@ const AddProduct = ({
                   len={item.attributes.length}
                   id={item.id}
                 />
-              </div>    */}
+              </div>    
 
 
 
 
-              {/* <Form.Group>
-                 <Form.ControlLabel className="add-label">Buy</Form.ControlLabel> 
-                 <div
-                  style={{
-                    width: "50%",
-                    marginTop: "5px",
-                    marginBottom: "15px",
-                  }}
-                >
-                  <select
-                    name="selectSection"
-                    value={bay}
-                    onChange={(event) => setBay(event.target.value)}
-                    style={{
-                      height: "35px",
-                      borderRadius: "5px",
-                      paddingLeft: "5px",
-                      paddingRight: "5px",
-                      borderColor: "#808020",
-                      width: "80%",
-                    }}
-                  >
-                    <option
-                      style={{
-                        fontSize: "14px",
-                        paddingBottom: "10px",
-                        paddintTop: "10px",
-                      }}
-                    >
-                      <li>Yes</li>
-                    </option>
-                    <option
-                      style={{
-                        fontSize: "14px",
-                        paddingBottom: "10px",
-                        paddintTop: "10px",
-                      }}
-                    >
-                      <li>No</li>
-                    </option>
-                  </select>
-                </div> 
-              </Form.Group> */}
-
-              {/* <Form.Group>
-                 <Form.ControlLabel className="add-label">Pickup</Form.ControlLabel> 
-                 <div
-                  style={{
-                    width: "50%",
-                    marginTop: "5px",
-                    marginBottom: "15px",
-                  }}
-                >
-                  <select
-                    name="selectSection"
-                    value={Pickup}
-                    onChange={(event) => setPickup(event.target.value)}
-                    style={{
-                      height: "35px",
-                      borderRadius: "5px",
-                      paddingLeft: "5px",
-                      paddingRight: "5px",
-                      borderColor: "#808020",
-                      width: "80%",
-                    }}
-                  >
-                    <option
-                      style={{
-                        fontSize: "14px",
-                        paddingBottom: "10px",
-                        paddintTop: "10px",
-                      }}
-                    >
-                      <li>Yes</li>
-                    </option>
-                    <option
-                      style={{
-                        fontSize: "14px",
-                        paddingBottom: "10px",
-                        paddintTop: "10px",
-                      }}
-                    >
-                      <li>No</li>
-                    </option>
-                  </select>
-                </div> 
-              </Form.Group> */}
-
-              {/* <button onClick={handleSubmit}>submit</button>
-              <ButtonComponent buttontext="Update" /> */}
-
-
-
-            </Form>
+            {/ </Form> */}
           </Modal.Body>
         </Modal >
       )}

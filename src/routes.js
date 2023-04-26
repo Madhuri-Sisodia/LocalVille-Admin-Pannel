@@ -9,8 +9,6 @@ import Maps from "views/Maps.js";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Notifications from "views/Notifications.js";
 import AdminManager from "views/AdminManager";
-import Addmin from "views/Addmin";
-
 import Category from "views/categorySection/index.js";
 import StoreManager from "views/StoreManager/StoreManager";
 import VendorsManager from "views/VendorsManager/VendorsManager";
@@ -37,13 +35,6 @@ const dashboardRoutes = [
     component: AdminManager,
     layout: "/admin",
   },
-  {
-    path: "/addmin",
-    name: "Addmin",
-    icon: "nc-icon nc-single-02",
-    component: Addmin,
-    layout: "/admin",
-  },
 
   {
     path: "/banner",
@@ -59,14 +50,6 @@ const dashboardRoutes = [
     component: Category,
     layout: "/admin",
   },
-
-  // {
-  //   path: "/subcategory",
-  //   name: "Sub-Categories",
-  //   icon: "nc-icon nc-circle-09",
-  //   component: SubCategory,
-  //   layout: "/admin"
-  // },
 
   {
     path: "/vendors",
@@ -121,68 +104,6 @@ const dashboardRoutes = [
     component: EmailManager,
     layout: "/admin",
   },
-
-  // {
-  //   path: "/user",
-  //   name: "User Profile",
-  //   icon: "nc-icon nc-circle-09",
-  //   component: UserProfile,
-  //   layout: "/admin"
-  // },
-
-  // {
-
-  //   path: "/user",
-  //   name: "User Profile",
-  //   icon: "nc-icon nc-circle-09",
-  //   component: UserProfile,
-  //   layout: "/admin"
-  // },
-  // {
-  //   path: "/table",
-  //   name: "Table List",
-  //   icon: "nc-icon nc-notes",
-  //   component: TableList,
-  //   layout: "/admin"
-  // },
-  // {
-  //   path: "/typography",
-  //   name: "Typography",
-  //   icon: "nc-icon nc-paper-2",
-  //   component: Typography,
-  //   layout: "/admin"
-  // },
-
-  // {
-  //   path: "/icons",
-  //   name: "Icons",
-  //   icon: "nc-icon nc-atom",
-  //   component: Icons,
-  //   layout: "/admin"
-  // },
-
-  // {
-  //   path: "/icons",
-  //   name: "Icons",
-  //   icon: "nc-icon nc-atom",
-  //   component: Icons,
-  //   layout: "/admin"
-  // },
-
-  // {
-  //   path: "/maps",
-  //   name: "Maps",
-  //   icon: "nc-icon nc-pin-3",
-  //   component: Maps,
-  //   layout: "/admin"
-  // },
-  // {
-  //   path: "/notifications",
-  //   name: "Notifications",
-  //   icon: "nc-icon nc-bell-55",
-  //   component: Notifications,
-  //   layout: "/admin"
-  // },
 ];
 
 export default dashboardRoutes;
