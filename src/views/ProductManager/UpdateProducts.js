@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Ref } from "react";
+import React, { useState, useEffect, useRef} from "react";
 import { MdClose } from "react-icons/md";
 // import { Modal, Form, Button } from "react-bootstrap";
 import { Modal, Form, Uploader, Row, Col, Placeholder, Button, ButtonToolbar } from 'rsuite';
@@ -44,7 +44,9 @@ const AddProduct = ({
   const [attributes, setAttributes] = useState([]);
   const [isAddProdcut, setIsAddProduct] = useState(false);
   const [showAddProduct, setShowAddProduct] = useState(false);
+  const [UpdateProduct, setUpdateProduct] = useState();
   const [formValue, setFormValue] = useState({
+
    
     productName: item?.product_name,
     productDesc: item?.product_desc,
@@ -58,6 +60,7 @@ const AddProduct = ({
   console.log(item?.product_name);
 
   const formRef = React.useRef();
+  const isMounted = useRef(false);
 
 
   // const [productData, setProductData] = useState({
@@ -184,6 +187,7 @@ const AddProduct = ({
         notificationAlertRef.current.notificationAlert(
           ErrorNotify("Something went wrong")
         );
+        setShowUpdateModal(false);
       });
       
 
@@ -213,13 +217,26 @@ const AddProduct = ({
         <Modal open={showUpdateModal} onClose={() => setShowUpdateModal(false)}>
           <Modal.Header>
             <Modal.Title className="titleUpdateProduct">UPDATE PRODUCT</Modal.Title>
-           {/* <MdClose className="close-icon" onClick={() => {setShowUpdateModal(false);resetForm()}}/>   */}
+           <MdClose className="update-close-icon"
+            onClick={() => {setShowUpdateModal(false);
+                setFormValue({
+                  productName: item?.product_name,
+                  productDesc: item?.product_desc,
+                  buy:item?.is_buy,
+                  pickup:item?.is_pickup,
+                  category: item?.category_name,
+                  sub_category: item?.subcategory_name,
+                });
+            
+            // resetForm()
+          }}
+            />  
           </Modal.Header>
           <Modal.Body className="add-body updateProductModel">
             <Form
-              
+               fluid
                 ref={formRef}
-                formValue={formValue}
+                formValue={formValue?.defaultValue}
                 onSubmit={handleSubmit}
                 onChange={setFormValue}
                 className="UpdateProductForm">
@@ -291,8 +308,7 @@ const AddProduct = ({
                       defaultValue={formValue.productName ? formValue.productName : item?.product_name}
                       type="text"
                       required
-                    >
-                    </Form.Control>
+                      />
 
                   </Form.Group>
                   <Form.Group>
@@ -302,7 +318,7 @@ const AddProduct = ({
                       name="productDesc"
                       required
                       defaultValue={formValue.productDesc ? formValue.productDesc: item?.product_desc}
-                    ></Form.Control>
+                      />
                   </Form.Group>
                   <Form.Group>
                     <Form.ControlLabel className="formLabelText">category</Form.ControlLabel>
@@ -315,8 +331,8 @@ const AddProduct = ({
                       // defaultValue={item?.category_name}
                       type="text"
                       disabled
-                    >
-                    </Form.Control>
+                    
+                   />
                   </Form.Group>
 
                   <Form.Group>
@@ -330,8 +346,8 @@ const AddProduct = ({
                       type="text"
 
                       disabled
-                    >
-                    </Form.Control>
+                    
+                    />
                   </Form.Group>
 
                   <Form.Group>

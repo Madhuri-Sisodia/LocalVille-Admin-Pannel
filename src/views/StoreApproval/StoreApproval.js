@@ -29,11 +29,11 @@ import RejectStore from "./RejectStore";
 
 const StoreApproval = () => {
   const [data, setData] = useState([]);
+  const [isPageViewSet, setIsPageViewSet] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showVerifiedStore, setShowVerifiedStore] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showRejectStore, setShowRejectStore] = useState(false);
-  const [storeApproval, setStoreApproval] = useState(false);
   const { pageView, setPageView } = useContext(Utils);
   const [totalPages, setTotalPages] = useState(1);
   const [rowData, setRowData] = useState([]);
@@ -57,7 +57,6 @@ const StoreApproval = () => {
         if (res?.data?.status) {
           setData(res?.data?.data);
           setTotalPages(res.data.total_pages);
-          setStoreApproval(false);
         } else {
           notificationAlertRef.current.notificationAlert(
             ErrorNotify(res?.data?.message)
@@ -73,9 +72,15 @@ const StoreApproval = () => {
   };
 
   useEffect(() => {
+    if (!isPageViewSet) {
+      setPageView(1);
+      setIsPageViewSet(true);
+    }
     getUnverifiedStore();
-  }, [pageView]);
+  }, [pageView, isPageViewSet]);
+ 
 
+ 
   const handlePageChange = (page) => {
     setPageView(page);
     getUnverifiedStore();

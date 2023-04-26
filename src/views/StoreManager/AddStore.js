@@ -23,6 +23,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
   const [image, setImage] = useState(null);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [timeError, setTimeError] = useState("");
   const [selectSection, setSelectSection] = useState("");
   const [vendortData, setVendorData] = useState([]);
   const [storeImage, setStoreImage] = useState([]);
@@ -105,8 +106,22 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
     }
   }, [storeData.pincode]);
 
+  const validateOpeningClosingTime = () => {
+    const openingTime = new Date(`2000-01-01T${storeData.openingTime}:00Z`);
+    const closingTime = new Date(`2000-01-01T${storeData.closingTime}:00Z`);
+    const timeDiffInMinutes = (closingTime - openingTime) / (1000 * 60);
+    if (timeDiffInMinutes <= 60 && timeDiffInMinutes >= 0) {
+      setTimeError(
+        "The difference between Opening Time and Closing Time should be at least 1 hour"
+      );
+    } else {
+      setTimeError("");
+    }
+  };
+
   const handleSubmit = () => {
     // event.preventDefault();
+    validateOpeningClosingTime();
     if (selectedDays.length === 0) {
       setMessage("Opening Day is required");
     } else {
@@ -124,12 +139,8 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
 
       return;
     } else {
-      // const vendorid = vendortData.filter((ele) => {
-      //   return ele.id == selectSection?.value;
-      // });
-
       const id = selectSection?.value;
-      console.log("id", id);
+      console.log("id", selectSection);
       var data = new FormData();
       data.append("vendor_id", id);
       data.append("store_image", image);
@@ -156,6 +167,10 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
             notificationAlertRef.current.notificationAlert(
               SuccessNotify(res?.data?.message)
             );
+            resetForm();
+            setMessage("");
+            setError("");
+            setMessage("");
           } else {
             notificationAlertRef.current.notificationAlert(
               ErrorNotify(res?.data?.message)
@@ -167,8 +182,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
             ErrorNotify("Something went wrong")
           );
         });
-      resetForm();
-      setMessage("");
+
       setShowAddStore(false);
     }
   };
@@ -224,6 +238,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
               setSelectedDays("");
               setMessage("");
               setError("");
+              setTimeError("");
               resetForm();
             }}
           />
@@ -285,9 +300,9 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
             <TextField name="address" label="Store Address" />
 
             <TextField name="pincode" label="Store Pincode" type="text" />
-            <TextField name="city" label="City" />
-            <TextField name="state" label="State" />
-            <TextField name="country" label="Country" />
+            <TextField name="city" label="City" disabled />
+            <TextField name="state" label="State" disabled />
+            <TextField name="country" label="Country" disabled />
 
             <Form.Group>
               <Form.ControlLabel style={{ color: "#808080" }}>
@@ -312,27 +327,27 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
               <div style={{ color: "red", fontSize: "0.7rem" }}>{message}</div>
             )}
 
-            <div
-              style={{
-                display: "flex",
-                flexDirectionL: "rows",
-                marginTop: "20px",
-                marginBottom: "right",
-              }}
-            >
+            <div style={{ display: "flex", flexDirection: "row" }}>
               <TextField
-                style={{ width: "50%", marginLeft: "25px" }}
                 name="openingTime"
                 label="Opening Time"
                 type="time"
+                onchange={validateOpeningClosingTime}
+                style={{ marginRight: "24px" }}
               />
               <TextField
-                style={{ width: "50%", marginLeft: "25px" }}
                 name="closingTime"
                 label="Closing Time"
                 type="time"
+                onchange={validateOpeningClosingTime}
+                style={{ marginLeft: "24px" }}
               />
             </div>
+            {timeError && (
+              <div style={{ color: "red", fontSize: "0.7rem" }}>
+                {timeError}
+              </div>
+            )}
 
             <ButtonComponent buttontext="Add" />
           </Form>

@@ -28,29 +28,19 @@ import Pagenate from "components/Pagenate";
 
 const VendorsManager = () => {
   const [showModal, setShowModal] = useState(false);
+  const [isPageViewSet, setIsPageViewSet] = useState(false);
   const [data, setData] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [blockData, setBlockData] = useState([]);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showAddVendor, setShowAddVendor] = useState(false);
-  const [currentModalIdx, setCurrentModalIdx] = useState(null);
   const [selectedVendor, setSelectedVendor] = useState(null);
   const { pageNo, setDisabledNext, pageView, setPageView } = useContext(Utils);
 
   const [isLoading, setIsLoading] = useState(true);
   const notificationAlertRef = React.useRef(null);
 
-  // const Debounce = (fun) => {
-  //   let timer;
-  //   return (...arg) => {
-  //     if (timer) {
-  //       clearTimeout(timer);
-  //     }
-  //     timer = setTimeout(() => {
-  //       fun.call(this, arg);
-  //     }, 500);
-  //   };
-  // };
+ 
 
   const getVendors = () => {
     Http.GetAPI(
@@ -85,9 +75,13 @@ const VendorsManager = () => {
   };
 
   useEffect(() => {
+    if (!isPageViewSet) {
+      setPageView(1);
+      setIsPageViewSet(true);
+    }
     getVendors();
-  }, [pageView]);
-
+  }, [pageView, isPageViewSet]);
+ 
   const handlePageChange = (page) => {
     setPageView(page);
     getVendors();

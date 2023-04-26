@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { MdClose } from "react-icons/md";
 import { Form } from "rsuite";
 import { FaCamera } from "react-icons/fa";
@@ -19,7 +19,8 @@ const UpdateVendor = ({
 }) => {
   const [vendors, setVendors] = useState([]);
   const [hideId, setHideId] = useState(true);
-  const [vendorImage, setVendorImage] = useState("");
+  const [vendorImage, setVendorImage] = useState();
+  const [baseImage, setBaseImage] = useState("");
   const [formValue, setFormValue] = useState({
     vendorId: item?.id,
     vendorName: item?.name,
@@ -28,6 +29,7 @@ const UpdateVendor = ({
 
   const notificationAlertRef = React.useRef(null);
   const formRef = React.useRef();
+  const isMounted = useRef(false);
 
   const updateImage = () => {
     const data = new FormData();
@@ -40,14 +42,19 @@ const UpdateVendor = ({
       formValue.vendorName ? formValue.vendorName : item?.name
     );
     data.append("Vendor_image", vendorImage);
-    console.log("Image", vendorImage);
 
     Http.PostAPI(process.env.REACT_APP_UPDATEVENDORIMAGE, data, null)
       .then((res) => {
-        console.log("imageresp", res);
         if (res?.data?.status) {
           setVendors(res?.data?.data);
           getVendors();
+          notificationAlertRef.current.notificationAlert(
+            SuccessNotify(res?.data?.message)
+          );
+        } else {
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {
@@ -55,21 +62,26 @@ const UpdateVendor = ({
           ErrorNotify("Something went wrong")
         );
       });
-  };
 
-  // const handleImageUpload = (event) => {
-  //   const file = event.target.files[0];
-  //   setVendorImage(URL.createObjectURL(file));
-  // };
+    setShowUpdateModal(false);
+  };
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
+    setVendorImage(file);
     const reader = new FileReader();
     reader.onloadend = () => {
-      setVendorImage(reader.result);
+      setBaseImage(reader.result);
     };
     reader.readAsDataURL(file);
   };
+  useEffect(() => {
+    if (isMounted.current) {
+      updateImage();
+    } else {
+      isMounted.current = true;
+    }
+  }, [vendorImage]);
 
   const handleUpdateVendor = (event) => {
     // event.preventDefault();
@@ -79,7 +91,6 @@ const UpdateVendor = ({
 
       return;
     } else {
-      console.log("formValue:", formValue);
       var data = new FormData();
       data.append(
         "vendor_id",
@@ -96,7 +107,6 @@ const UpdateVendor = ({
 
       Http.PostAPI(process.env.REACT_APP_UPDATEVENDORS, data, null)
         .then((res) => {
-          console.log("resp", res);
           if (res?.data?.status) {
             setVendors(res?.data?.data);
             getVendors();
@@ -114,11 +124,7 @@ const UpdateVendor = ({
             ErrorNotify("Something went wrong")
           );
         });
-      // setFormValue({
-      //   vendorId: "",
-      //   vendorName: "",
-      //   vendorPhone: "",
-      // });
+
       setShowUpdateModal(false);
     }
   };
@@ -138,6 +144,12 @@ const UpdateVendor = ({
               className="update-close-icon"
               onClick={() => {
                 setShowUpdateModal(false);
+                setVendorImage(""),
+                  setFormValue({
+                    vendorId: "",
+                    vendorName: "",
+                    vendorPhone: "",
+                  });
               }}
             />
           </Modal.Header>
@@ -145,7 +157,7 @@ const UpdateVendor = ({
             <Form
               fluid
               ref={formRef}
-              formValue={formValue}
+              formValue={formValue?.defaultValue}
               onSubmit={handleUpdateVendor}
               onChange={setFormValue}
               model={validationUpdateModel}
@@ -170,15 +182,15 @@ const UpdateVendor = ({
                 </Form.ControlLabel>
 
                 <img
-                  src={vendorImage ? vendorImage : item?.user_image}
+                  src={vendorImage ? baseImage : item?.user_image}
                   alt="Image"
                   style={{
                     width: "50px",
                     height: "50px",
                     borderRadius: "50%",
                   }}
-                  onClick={updateImage}
                 />
+
                 <div style={{ display: "flex", alignItems: "left" }}>
                   <label htmlFor="vendorImage">
                     <div style={{ position: "relative" }}>
@@ -196,11 +208,6 @@ const UpdateVendor = ({
                         accept="image/*"
                         style={{ display: "none" }}
                         onChange={handleImageUpload}
-                        // onChange={(e) => {
-                        //   console.log("aaaaa",e.target.files);
-
-                        //   setVendorImage(e.target.files[0]);
-                        // }}
                       />
                     </div>
                   </label>
@@ -228,9 +235,9 @@ const UpdateVendor = ({
                     type="text"
                     name="vendorName"
                     defaultValue={
-                      formValue.vendorName ? formValue.vendorName : item?.name
+                      formValue.vendorPhone ? formValue.vendorPhone : item?.name
                     }
-                  ></Form.Control>
+                  />
                 </Form.Group>
 
                 <Form.Group>
