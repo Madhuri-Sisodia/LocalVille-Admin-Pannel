@@ -7,7 +7,7 @@ import NotificationAlert from "react-notification-alert";
 import ErrorMessage from "customComponents/ErrorMessage";
 import { Modal, Form, Badge, Button } from "react-bootstrap";
 
-import { TextField } from "components/Validation";
+
 const BlockBanner = ({ showModal, setShowModal, blockData, getBanner }) => {
   const [blockBanner, setBlockBanner] = useState([]);
   const [blockReason, setBlockReason] = useState("");

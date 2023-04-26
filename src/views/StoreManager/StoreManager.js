@@ -291,10 +291,10 @@ getStore();
                                   }}
                                 >
                                   {daysOfWeek[index] || day}
-                                  {/* {daysOfWeek[index] || ele} */}
+                                  
                                 </div>
                               ))}
-                              {/* {item.opening_days} */}
+                            
                             </td>
                             <td>{item.opening_time}</td>
                             <td>{item.closing_time}</td>
@@ -366,8 +366,7 @@ getStore();
                                     className="btn-simple btn-link p-1"
                                     type="button"
                                     variant="danger"
-                                    // disabled={storeBlocked
-
+                                    
                                     onClick={() => {
                                       setShowModal(true);
                                       setBlockData(item.id);

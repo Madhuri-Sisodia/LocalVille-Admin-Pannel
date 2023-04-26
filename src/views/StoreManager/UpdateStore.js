@@ -406,6 +406,31 @@ const UpdateStore = ({
                   })}
                 </div>
               </Form.Group>
+
+              <Form.Group>
+                <Form.Label className="update-label">Opening Days</Form.Label>
+                <div className="update-form">
+                  {daysOfWeek.map((day, index) => {
+                    const isSelected = selectedDays.includes(index + 1)
+                      ? selectedDays.includes(index + 1)
+                      : days.includes(index + 1);
+                    const defaultValue = isSelected ? item?.openingDays : "";
+                    return (
+                      <div
+                        className={`week-days ${isSelected ? "selected" : ""}`}
+                        name="selectedDays"
+                        onClick={() => toggleDaySelection(index)}
+                      >
+                        {day}
+                        {isSelected && (
+                          <span style={{color:"blueviolet"}}>{defaultValue}</span>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </Form.Group>
+
               <Form.Group>
                 <label className="update-label">Opening Time</label>
                 <Form.Control
