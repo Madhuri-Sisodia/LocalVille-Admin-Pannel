@@ -81,7 +81,7 @@ const UpdateVendor = ({
     } else {
       isMounted.current = true;
     }
-  }, [vendorImage]);
+  }, [baseImage]);
 
   const handleUpdateVendor = (event) => {
     // event.preventDefault();

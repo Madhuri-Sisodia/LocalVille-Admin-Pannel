@@ -63,7 +63,7 @@ const dashboardRoutes = [
   {
     path: "/store",
     name: "Store Manager",
-    icon: "fas fa-store",
+    icon: "fa-light fa-cart-plus",
     component: StoreManager,
     layout: "/admin",
   },

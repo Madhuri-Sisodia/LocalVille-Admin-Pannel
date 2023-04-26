@@ -134,9 +134,10 @@ const UpdateStore = ({
 
     Http.PostAPI(process.env.REACT_APP_UPDATESTORE, data, null)
       .then((res) => {
-        console.log("RESPONSE", res);
+       
         if (res?.data?.status) {
           setStore(res?.data?.data);
+          setSelectedDays("");
           getStore();
           notificationAlertRef.current.notificationAlert(
             SuccessNotify(res?.data?.message)
@@ -386,8 +387,40 @@ const UpdateStore = ({
                   value={storeData.country ? storeData.country : item.country}
                 ></Form.Control>
               </Form.Group>
-
               <Form.Group>
+  <Form.Label className="update-label">Opening Days</Form.Label>
+  <div className="update-form">
+    {daysOfWeek.map((day, index) => {
+      const isSelected = selectedDays.includes(index + 1)
+        ? selectedDays.includes(index + 1)
+        : days.includes(index + 1);
+      return (
+        <Form.Control
+          type="hidden"
+          name={`openingDays[${index}]`}
+          value={isSelected ? index + 1 : ""}
+        />
+      );
+    })}
+    {daysOfWeek.map((day, index) => {
+      const isSelected = selectedDays.includes(index + 1)
+        ? selectedDays.includes(index + 1)
+        : days.includes(index + 1);
+      return (
+        <div
+          className={`week-days ${isSelected ? "selected" : ""}`}
+          name="selectedDays"
+          onClick={() => toggleDaySelection(index)}
+        >
+          {day}
+        </div>
+      );
+    })}
+  </div>
+</Form.Group>
+
+
+              {/* <Form.Group >
                 <Form.Label className="update-label">Opening Days</Form.Label>
                 <div className="update-form">
                   {daysOfWeek.map((day, index) => {
@@ -405,7 +438,8 @@ const UpdateStore = ({
                     );
                   })}
                 </div>
-              </Form.Group>
+                
+              </Form.Group> */}
 
              
               <Form.Group>
