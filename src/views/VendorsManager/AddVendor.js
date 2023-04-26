@@ -150,9 +150,6 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
                 </Form.Text>
               )}
             </Form.Group>
-          
-  
-
 
             <Form.Group controlId="email">
               <Form.Label className="add-label">Email</Form.Label>
