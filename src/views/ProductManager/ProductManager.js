@@ -176,6 +176,7 @@ const Products = () => {
                   style={{
                     backgroundColor: "blueviolet",
                     borderColor: "blueviolet",
+                    float:"right",
                   }}
                   type="submit"
                   onClick={() => {

@@ -18,6 +18,11 @@ import {
 import ProductCard from "./ProductCard";
 
 const Dashboard = () => {
+
+  const initDashboardGraphData = {
+    labels: [],
+    series: []
+  }
   const [data, setData] = useState([]);
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalStores, setTotalStores] = useState(0);
@@ -25,15 +30,18 @@ const Dashboard = () => {
   const [totalActiveUsers, setTotalActiveUsers] = useState(0);
   const [latestStore, setLatestStore] = useState([]);
   const [latestProduct, setLatestProduct] = useState([]);
+  const [dashboardGraphData, setDashboardGraphData] = useState(initDashboardGraphData);
+
+
 
   useEffect(() => {
     const CallApi = () => {
-      Http.GetAPI(
-        process.env.REACT_APP_GETDASHBOARD + "?" + Math.random(),
-        data
-      )
+      Http.GetAPI(process.env.REACT_APP_GETDASHBOARD + "?" + Math.random(), data)
         .then((res) => {
+          console.log(res?.data?.details?.dashboard_graph);
+  
           if (res?.data?.status) {
+
             setData(res?.data?.details);
             setTotalUsers(res?.data?.details?.total_users || 0);
             setTotalStores(res?.data?.details?.no_of_Stores || 0);
@@ -45,6 +53,21 @@ const Dashboard = () => {
             setLatestProduct(
               res?.data?.details?.stores_products_data?.recent_added_products
             );
+            setDashboardGraphData( () => {
+                console.log(res.data)
+                const labelsData = res.data.details.dashboard_graph.months;
+                const seriesData = [];
+                seriesData.push(res.data.details.dashboard_graph.revenue);
+                seriesData.push(res.data.details.dashboard_graph.cancelled);
+                seriesData.push(res.data.details.dashboard_graph.completed);
+                
+                return {
+                  labels: labelsData,
+                  series: seriesData
+                }
+            });
+
+
           } else {
             alert("Fields not matched");
           }
@@ -53,8 +76,8 @@ const Dashboard = () => {
           alert("Something went wrong.");
           console.log("Error:", e);
         });
-    };
-    CallApi();
+    }
+    CallApi()
   }, []);
 
   return (
@@ -173,6 +196,7 @@ const Dashboard = () => {
           </Col>
         </Row>
         <Row>
+          {/*--------------------------- Dashboard Graph start---------------------------- */}
           <Col md="8">
             <Card>
               <Card.Header>
@@ -182,42 +206,13 @@ const Dashboard = () => {
               <Card.Body>
                 <div className="ct-chart" id="chartHours">
                   <ChartistGraph
-                    data={{
-                      labels: [
-                        "Jan",
-                        "Feb",
-                        "Mar",
-                        "Apr",
-                        "May",
-                        "June",
-                        "July",
-                        "Aug",
-                        "Sep",
-                        "Oct",
-                        "Nov",
-                        "Dec",
-                      ],
-                      series: [
-                        [
-                          287, 385, 490, 492, 554, 560, 598, 600, 650, 660, 700,
-                          800,
-                        ],
-                        [
-                          67, 152, 143, 240, 287, 335, 435, 437, 480, 500, 600,
-                          610,
-                        ],
-                        [
-                          23, 113, 67, 108, 190, 239, 280, 290, 340, 400, 420,
-                          500,
-                        ],
-                      ],
-                    }}
+                    data={dashboardGraphData}
                     type="Line"
                     options={{
                       low: 0,
-                      high: 800,
+                      high: 1000,
                       showArea: false,
-                      height: "245px",
+                      height: "300px",
                       axisX: {
                         showGrid: false,
                       },
@@ -247,9 +242,9 @@ const Dashboard = () => {
               <Card.Footer>
                 <div className="legend">
                   <i className="fas fa-circle text-info"></i>
-                  Revenue <i className="fas fa-circle text-danger"></i>
-                  Cancel Order <i className="fas fa-circle text-warning"></i>
-                  Complete Order
+                  Revenue  <i className="fas fa-circle text-warning"></i>
+                  Complete Order <i className="fas fa-circle text-danger"></i>
+                  Cancel Order
                 </div>
                 <hr></hr>
                 <div className="stats">
@@ -259,10 +254,12 @@ const Dashboard = () => {
               </Card.Footer>
             </Card>
           </Col>
+          {/*--------------------------- Dashboard Graph end---------------------------- */}
           <Col md="4">
             <Card>
               <Card.Header>
                 <Card.Title as="h4">Users Statistics</Card.Title>
+                <p></p>
               </Card.Header>
               <Card.Body>
                 <div
@@ -273,11 +270,12 @@ const Dashboard = () => {
                     data={{
                       labels: [
                         `${parseInt((totalActiveUsers / totalUsers) * 100)}%`,
-                        `${parseInt(
-                          ((totalUsers - totalActiveUsers) / totalUsers) * 100
-                        )}%`,
+                        `${parseInt(((totalUsers - totalActiveUsers) / totalUsers) * 100)}%`,
                       ],
-                      series: [totalActiveUsers, totalUsers - totalActiveUsers],
+                      series: [
+                        totalActiveUsers,
+                        totalUsers - totalActiveUsers,
+                      ],
                     }}
                     type="Pie"
                   />
@@ -675,12 +673,8 @@ const Dashboard = () => {
             </Card>
           </Col>
         </Row> */}
-        {latestProduct.length == 0 ? (
-          ""
-        ) : (
-          <ProductCard latestProduct={latestProduct} />
-        )}
-        {latestStore.length == 0 ? "" : <StoreCard latestStore={latestStore} />}
+        <ProductCard latestProduct={latestProduct} />
+        <StoreCard latestStore={latestStore} />
       </Container>
     </>
   );
