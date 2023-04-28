@@ -210,7 +210,7 @@ const AddProduct = ({
               formValue={formValue?.defaultValue}
               onSubmit={handleSubmit}
               onChange={setFormValue}
-              className="UpdateProductForm"
+              
             >
               {/* <div>
                   <img
@@ -492,14 +492,16 @@ const AddProduct = ({
                   />
                 </div>
               </div>
-              <div>
+             
+            </Form>
+            <div>
                 <AddAttributes
                   showUpdateModal={showUpdateModal}
                   setShowUpdateModal={setShowUpdateModal}
                   getProducts={getProducts}
+                  item={item}
                 />
               </div>
-            </Form>
             <div>
               <UpdateAttribute
                 item={item}

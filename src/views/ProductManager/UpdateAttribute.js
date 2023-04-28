@@ -231,7 +231,7 @@ const UpdateAttribute = ({
             </Form.ControlLabel>
             <div
               style={{
-                width: "100%",
+                width: "10rem",
                 margin: "auto",
                 marginTop: "5px",
                 marginBottom: "5px",
@@ -273,7 +273,7 @@ const UpdateAttribute = ({
             <Form.ControlLabel
               className="formLabelText"
               style={{
-                width: "100%",
+                width: "10rem",
                 marginTop: "5px",
                 marginBottom: "5px",
                 paddingLeft: "10px",
@@ -312,11 +312,11 @@ const UpdateAttribute = ({
                     : item?.attributes?.[0]?.size?.[0]?.name}>Select</option>
                 {sizeData?.map((ele) => (
                   <option
-                    style={{
-                      fontSize: "14px",
-                      paddingBottom: "10px",
-                      paddintTop: "10px",
-                    }}
+                  style={{
+                    fontSize: "14px",
+                    paddingBottom: "10px",
+                    paddintTop: "10px",
+                  }}
                   >
                     {ele.name}
                   </option>
@@ -373,7 +373,7 @@ const UpdateAttribute = ({
               </Form.ControlLabel>
               <Form.Control
                style={{
-                width: "155px",
+                width: "156px",
             
               }}
                 name="price"
@@ -392,7 +392,7 @@ const UpdateAttribute = ({
               </Form.ControlLabel>
               <Form.Control
                style={{
-                width: "155px",
+                width: "156px",
                
               }}
                 defaultValue={

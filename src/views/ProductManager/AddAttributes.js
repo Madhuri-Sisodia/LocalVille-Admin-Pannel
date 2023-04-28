@@ -14,7 +14,12 @@ import { ErrorNotify } from "components/NotificationShowPopUp";
 import editButton from "../../assets/img/editButton.png";
 import { validationUpdateModel } from "components/Validation";
 
-const AddAttributes = ({ setShowUpdateModal, showUpdateModal,getProducts}) => {
+const AddAttributes = ({
+  setShowUpdateModal,
+  showUpdateModal,
+  getProducts,
+  item,
+}) => {
   const [AddAttribute, setAddAttribute] = useState([]);
   const [sizeData, setSizeData] = useState([]);
   const [colorData, setColorData] = useState([]);
@@ -25,8 +30,6 @@ const AddAttributes = ({ setShowUpdateModal, showUpdateModal,getProducts}) => {
     price: "",
     discountPrice: "",
     sku: "",
-    inStock: "",
-    productId: "",
   });
 
   const formRef = React.useRef();
@@ -74,54 +77,54 @@ const AddAttributes = ({ setShowUpdateModal, showUpdateModal,getProducts}) => {
   }, []);
 
   const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log("sss");
+    // event.preventDefault();
+    // console.log("sss");
     if (!formRef.current.check()) {
-        console.log("FORM ERROR!");
-  
-        return;
-      } else {
-        console.log("form....", formValue);
+      console.log("FORM ERROR!");
 
-    var data = new FormData();
+      return;
+    } else {
+      console.log("form....", formValue);
 
-    data.append("size", size);
-    data.append("color", color);
-    data.append("price", formValue.price);
-    data.append("dis_price", formValue.discountPrice);
-    data.append("sku", formValue.sku);
-    data.append("instock", formValue.inStock);
-    data.append("product_id", formValue.productId);
+      var data = new FormData();
 
-    Http.PostAPI(process.env.REACT_APP_ADDATRIBUTE, data, null)
-      .then((res) => {
-        console.log("response....", res);
-        if (res?.data?.status) {
-          setAddAttribute(res?.data?.data);
+      data.append("size", size);
+      data.append("color", color);
+      data.append("price", formValue.price);
+      data.append("dis_price", formValue.discountPrice);
+      data.append("sku", formValue.sku);
+      data.append("instock", item?.attributes?.[0]?.in_stock);
+      data.append("product_id", item?.attributes?.[0]?.pid);
 
-          getProducts();
-         
+      Http.PostAPI(process.env.REACT_APP_ADDATRIBUTE, data, null)
+        .then((res) => {
+          console.log("response....", res);
+          if (res?.data?.status) {
+            setAddAttribute(res?.data?.data);
+
+            getProducts();
+
+            notificationAlertRef.current.notificationAlert(
+              SuccessNotify(res?.data?.message)
+            );
+          } else {
+            notificationAlertRef.current.notificationAlert(
+              ErrorNotify(res?.data?.message)
+            );
+          }
+        })
+        .catch((e) => {
           notificationAlertRef.current.notificationAlert(
-            SuccessNotify(res?.data?.message)
+            ErrorNotify("Something went wrong")
           );
-        } else {
-          notificationAlertRef.current.notificationAlert(
-            ErrorNotify(res?.data?.message)
-          );
-        }
-      })
-      .catch((e) => {
-        notificationAlertRef.current.notificationAlert(
-          ErrorNotify("Something went wrong")
-        );
         });
-      }
-      setShowUpdateModal(false);
+    }
+    setShowUpdateModal(false);
   };
 
-//   const handleReset = () => {
-//     formRef.current.reset();
-//   };
+  //   const handleReset = () => {
+  //     formRef.current.reset();
+  //   };
 
   return (
     <>
@@ -256,7 +259,7 @@ const AddAttributes = ({ setShowUpdateModal, showUpdateModal,getProducts}) => {
               Price
             </Form.ControlLabel>
             <Form.Control
-              style={{ width: "150px" }}
+              style={{ width: "177px" }}
               name="price"
               type="text"
               value={formValue.price}
@@ -268,7 +271,7 @@ const AddAttributes = ({ setShowUpdateModal, showUpdateModal,getProducts}) => {
               Discounted Price
             </Form.ControlLabel>
             <Form.Control
-              style={{ width: "150px" }}
+              style={{ width: "177px" }}
               value={formValue.discountPrice}
               name="discountPrice"
               type="text"
