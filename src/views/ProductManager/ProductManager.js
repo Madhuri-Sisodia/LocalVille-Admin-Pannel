@@ -81,6 +81,7 @@ const Products = () => {
     )
       .then((res) => {
         setIsLoading(false);
+        console.log("getProducts",res)
 
         if (res?.data?.status) {
           setTotalPages(res.data.total_pages);
@@ -323,7 +324,7 @@ const Products = () => {
                                   type="button"
                                   variant="primary"
                                   onClick={() => {
-                                    setShowDetailsModal(true);
+                                    setShowProductDetail(true);
                                     setRowData(item);
                                   }}
                                 >

@@ -87,8 +87,6 @@ const UpdateVendor = ({
     // event.preventDefault();
 
     if (!formRef.current.check()) {
-      console.log("FORM ERROR!");
-
       return;
     } else {
       var data = new FormData();

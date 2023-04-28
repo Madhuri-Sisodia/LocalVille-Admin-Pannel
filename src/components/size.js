@@ -148,48 +148,48 @@ const Size = ({ setAttributes, attributes, isAddProduct, len, id }) => {
 
   console.log('log once', isAdded)
 
-  // useEffect(() => {
-  //   if (isAdded) {
-  //     if (len) {
-  //       console.log("succes", attIndex)
-  //       const data = new FormData()
-  //       const idx = attIndex;
+  useEffect(() => {
+    if (isAdded) {
+      if (len) {
+        console.log("succes", attIndex)
+        const data = new FormData()
+        const idx = attIndex;
 
-  //       data.append(`color[${idx}]`, getAttributes?.Color?.id)
-  //       data.append(`size[${idx}]`, getAttributes?.Size?.id)
-  //       data.append(`price[${idx}]`, getAttributes?.Price)
-  //       data.append(`dis_price[${idx}]`, getAttributes?.dis_Price)
-  //       data.append(`sku[${idx}]`, getAttributes?.sku)
-  //       data.append(`product_id`, id)
+        data.append(`color[${idx}]`, getAttributes?.Color?.id)
+        data.append(`size[${idx}]`, getAttributes?.Size?.id)
+        data.append(`price[${idx}]`, getAttributes?.Price)
+        data.append(`dis_price[${idx}]`, getAttributes?.dis_Price)
+        data.append(`sku[${idx}]`, getAttributes?.sku)
+        data.append(`product_id`, id)
 
-  //       Http.PostAPI(process.env.REACT_APP_ADDATRIBUTE, data, null)
-  //         .then((res) => {
-  //           console.log("hello2")
-  //           if (res?.data?.status) {
-  //             console.log("status")
-  //             setAttributes((previous) => {
-  //               return [...previous, getAttributes];
-  //             })
-  //             setIsAdded(false)
-  //           } else {
-  //             alert("Fields not matched");
-  //           }
-  //         })
-  //         .catch((e) => {
-  //           alert("Something went wrong.");
-  //           console.log("Error:", e);
-  //         });
-  //     }
-  //     else {
-  //       console.log("hello222")
-  //       console.log(getAttributes)
-  //       setAttributes((previous) => {
-  //         return [...previous, getAttributes];
-  //       });
-  //       setIsAdded(false);
-  //     }
-  //   }
-  // }, [isAdded]);
+        Http.PostAPI(process.env.REACT_APP_ADDATRIBUTE, data, null)
+          .then((res) => {
+            console.log("hello2")
+            if (res?.data?.status) {
+              console.log("status")
+              setAttributes((previous) => {
+                return [...previous, getAttributes];
+              })
+              setIsAdded(false)
+            } else {
+              alert("Fields not matched");
+            }
+          })
+          .catch((e) => {
+            alert("Something went wrong.");
+            console.log("Error:", e);
+          });
+      }
+      else {
+        console.log("hello222")
+        console.log(getAttributes)
+        setAttributes((previous) => {
+          return [...previous, getAttributes];
+        });
+        setIsAdded(false);
+      }
+    }
+  }, [isAdded]);
 
 
 
@@ -419,7 +419,7 @@ const Size = ({ setAttributes, attributes, isAddProduct, len, id }) => {
           );
         })}
 
-        <div align="center">
+        {/* <div align="center">
           <button
             onClick={
               increaseIngridents
@@ -436,7 +436,7 @@ const Size = ({ setAttributes, attributes, isAddProduct, len, id }) => {
           >
             Add Attributes
           </button>
-        </div>
+        </div> */}
       </div>
     </>
   );
