@@ -25,9 +25,11 @@ import {
 } from "react-bootstrap";
 import BlockVendor from "./BlockVendor";
 import Pagenate from "components/Pagenate";
+import ActiveVendor from "../VendorsManager/ActiveVendor";
 
 const VendorsManager = () => {
   const [showModal, setShowModal] = useState(false);
+  const [showActiveModal, setShowActiveModal] = useState(false);
   const [isPageViewSet, setIsPageViewSet] = useState(false);
   const [data, setData] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
@@ -257,6 +259,20 @@ const VendorsManager = () => {
                                   <i className="fas fa-times"></i>
                                 </Button>
                               )}
+
+                            {item?.active == "0" && (
+                                <Button
+                                  className="btn-simple btn-link p-1"
+                                  type="button"
+                                  variant="danger"
+                                  onClick={() => {
+                                    setShowActiveModal(true);
+                                    setBlockData(item.id);
+                                  }}
+                                >
+                                  <i className="fas fa-check"></i>
+                                </Button>
+                              )} 
                             </td>
                           </tr>
                         ))}
@@ -288,6 +304,12 @@ const VendorsManager = () => {
         <BlockVendor
           showModal={showModal}
           setShowModal={setShowModal}
+          blockData={blockData}
+          getVendors={getVendors}
+        />
+         <ActiveVendor
+          showActiveModal={showActiveModal}
+          setShowActiveModal={setShowActiveModal}
           blockData={blockData}
           getVendors={getVendors}
         />

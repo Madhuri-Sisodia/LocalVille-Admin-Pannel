@@ -164,10 +164,12 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
             notificationAlertRef.current.notificationAlert(
               SuccessNotify(res?.data?.message)
             );
-            resetForm();
+            setShowAddStore(false);
+            setSelectedDays("");
             setMessage("");
             setError("");
-            setMessage("");
+            setTimeError("");
+            resetForm();
           } else {
             notificationAlertRef.current.notificationAlert(
               ErrorNotify(res?.data?.message)
@@ -212,8 +214,8 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
     if (vendortData) {
       const Result = vendortData.map((ele, index) => {
         return {
-          label: `${index + 1})  ${ele.name} , ${ele.id}`,
-          value: ele.id,
+          label: `${index + 1})  ${ele.name} , ${ele.email}`,
+          value: ele.email,
         };
       });
       setData(Result);

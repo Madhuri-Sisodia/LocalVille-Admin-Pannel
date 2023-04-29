@@ -13,6 +13,7 @@ import "./Store.css";
 import NotificationAlert from "react-notification-alert";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 import image from "assets/img/noStore.png";
+import ActiveStore from "./ActiveStore";
 
 import {
   Modal,
@@ -34,6 +35,7 @@ const daysOfWeek = ["M", "T", "W", "T", "F", "S", "S"];
 
 const StoreManager = () => {
   const [showModal, setShowModal] = useState(false);
+  const [showActiveModal, setShowActiveModal] = useState(false);
   const [isPageViewSet, setIsPageViewSet] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
@@ -103,7 +105,7 @@ const StoreManager = () => {
 
   const handlePageChange = (page) => {
     setPageView(page);
-getStore();
+    getStore();
   };
 
   const filtervendor = (e) => {
@@ -286,15 +288,13 @@ getStore();
                                     background: item.opening_days.includes(
                                       index + 1
                                     )
-                                      ? "blue"
+                                      ? "blueviolet"
                                       : "lightgray",
                                   }}
                                 >
                                   {daysOfWeek[index] || day}
-                                  
                                 </div>
                               ))}
-                            
                             </td>
                             <td>{item.opening_time}</td>
                             <td>{item.closing_time}</td>
@@ -337,42 +337,58 @@ getStore();
                                   flexDirection: "row",
                                 }}
                               >
-                                <Button
-                                  className="btn-simple btn-link p-1"
-                                  type="button"
-                                  style={{ color: "blue" }}
-                                  variant="danger"
-                                  onClick={() => {
-                                    setShowDetailsModal(true);
-                                    setRowData(item);
-                                  }}
-                                >
-                                  <i className="fa fa-eye"></i>
-                                </Button>
-                                <Button
-                                  className="btn-simple btn-link p-1"
-                                  type="button"
-                                  variant="primary"
-                                  onClick={() => {
-                                    setSelectedStore(item);
-                                    setShowUpdateStore(true);
-                                  }}
-                                >
-                                  <i className="fa fa-edit"></i>
-                                </Button>
-
+                                {" "}
+                                {item?.active == "1" && (
+                                  <Button
+                                    className="btn-simple btn-link p-1"
+                                    type="button"
+                                    style={{ color: "blue" }}
+                                    variant="danger"
+                                    onClick={() => {
+                                      setShowDetailsModal(true);
+                                      setRowData(item);
+                                    }}
+                                  >
+                                    <i className="fa fa-eye"></i>
+                                  </Button>
+                                )}
+                                {item?.active == "1" && (
+                                  <Button
+                                    className="btn-simple btn-link p-1"
+                                    type="button"
+                                    variant="primary"
+                                    onClick={() => {
+                                      setSelectedStore(item);
+                                      setShowUpdateStore(true);
+                                    }}
+                                  >
+                                    <i className="fa fa-edit"></i>
+                                  </Button>
+                                )}
                                 {item?.active == "1" && (
                                   <Button
                                     className="btn-simple btn-link p-1"
                                     type="button"
                                     variant="danger"
-                                    
                                     onClick={() => {
                                       setShowModal(true);
                                       setBlockData(item.id);
                                     }}
                                   >
                                     <i className="fas fa-times"></i>
+                                  </Button>
+                                )}
+                                {item?.active == "0" && (
+                                  <Button
+                                    className="btn-simple btn-link p-1"
+                                    type="button"
+                                    variant="danger"
+                                    onClick={() => {
+                                      setShowActiveModal(true);
+                                      setBlockData(item.id);
+                                    }}
+                                  >
+                                    <i className="fas fa-check"></i>
                                   </Button>
                                 )}
                               </div>
@@ -414,6 +430,12 @@ getStore();
       <BlockStore
         showModal={showModal}
         setShowModal={setShowModal}
+        blockData={blockData}
+        getStore={getStore}
+      />
+      <ActiveStore
+        showActiveModal={showActiveModal}
+        setShowActiveModal={setShowActiveModal}
         blockData={blockData}
         getStore={getStore}
       />

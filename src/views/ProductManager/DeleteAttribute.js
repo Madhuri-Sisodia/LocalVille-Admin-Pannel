@@ -8,8 +8,6 @@ import { Modal, Form, Badge, Button } from "react-bootstrap";
 
 const DeleteAttribute = ({ showModal, setShowModal, item, getProducts }) => {
   const [deleteData, setDeleteData] = useState([]);
-  const [blockReason, setBlockReason] = useState("");
-  const [errorMassage, setErrorMassage] = useState("");
   const notificationAlertRef = useRef(null);
 
   const deleteAttribute = () => {
@@ -28,7 +26,9 @@ const DeleteAttribute = ({ showModal, setShowModal, item, getProducts }) => {
             SuccessNotify(res?.data?.message)
           );
         } else {
-          setErrorMassage(res?.data?.message);
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {
@@ -36,7 +36,7 @@ const DeleteAttribute = ({ showModal, setShowModal, item, getProducts }) => {
           ErrorNotify("Something Went Wrong")
         );
       });
-    setBlockReason("");
+    
   };
 
   return (
@@ -74,8 +74,7 @@ const DeleteAttribute = ({ showModal, setShowModal, item, getProducts }) => {
             variant="secondary"
             onClick={() => {
               setShowModal(false);
-              setBlockReason("");
-              setErrorMassage("");
+            
             }}
           >
             Close

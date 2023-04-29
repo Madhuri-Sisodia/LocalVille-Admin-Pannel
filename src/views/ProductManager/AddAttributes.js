@@ -1,17 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-
 import { Form, Row, Col } from "rsuite";
 import { Http } from "../../config/Service";
-
 import "../../assets/css/modal.css";
-
-import ButtonComponent from "views/ButtonComponent";
-
+import ButtonComponent from "views/ButtonComponent"
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
-import { ErrorNotify } from "components/NotificationShowPopUp";
-
-import editButton from "../../assets/img/editButton.png";
+import { ErrorNotify } from "components/NotificationShowPopUp"
 import { validationUpdateModel } from "components/Validation";
 
 const AddAttributes = ({
@@ -62,7 +56,7 @@ const AddAttributes = ({
         .then((res) => {
           if (res?.data?.status) {
             setColorData(res?.data?.data);
-            console.log(res.data.data);
+            console.log("ccc",res.data.data);
           } else {
             alert("Fields not matched");
           }
@@ -101,10 +95,8 @@ const AddAttributes = ({
           console.log("response....", res);
           if (res?.data?.status) {
             setAddAttribute(res?.data?.data);
-
-            getProducts();
-
-            notificationAlertRef.current.notificationAlert(
+             getProducts();
+           notificationAlertRef.current.notificationAlert(
               SuccessNotify(res?.data?.message)
             );
           } else {
@@ -190,6 +182,7 @@ const AddAttributes = ({
                       paddingBottom: "10px",
                       paddintTop: "10px",
                     }}
+                    value={ele.id} 
                   >
                     {ele.name}
                   </option>
@@ -241,6 +234,7 @@ const AddAttributes = ({
                       paddingBottom: "10px",
                       paddintTop: "10px",
                     }}
+                    value={ele.id} 
                   >
                     {ele.name}
                   </option>

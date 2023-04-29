@@ -16,6 +16,7 @@ import { ErrorNotify } from "components/NotificationShowPopUp";
 import Loading from "customComponents/Loading";
 import image from "assets/img/noProduct.png";
 import ButtonComponent from "views/ButtonComponent";
+import ActiveProduct from "./ActiveProduct";
 
 import {
   Modal,
@@ -36,6 +37,7 @@ import ViewProductModal from "./ViewProductModal";
 
 const Products = () => {
   const [showModal, setShowModal] = useState(false);
+  const [showActiveModal, setShowActiveModal] = useState(false);
   const [isPageViewSet, setIsPageViewSet] = useState(false);
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -81,7 +83,7 @@ const Products = () => {
     )
       .then((res) => {
         setIsLoading(false);
-        console.log("getProducts",res)
+        console.log("getProducts", res);
 
         if (res?.data?.status) {
           setTotalPages(res.data.total_pages);
@@ -177,7 +179,7 @@ const Products = () => {
                   style={{
                     backgroundColor: "blueviolet",
                     borderColor: "blueviolet",
-                    float:"right",
+                    float: "right",
                   }}
                   type="submit"
                   onClick={() => {
@@ -242,14 +244,15 @@ const Products = () => {
                           <th className="border-0"> buy</th>
                           <th className="border-0">Pickup</th>
                           <th className="border-0">Total Clicks</th>
-                          <th className="border-0">Verified</th>
-                          <th className="border-0">Status</th>
+                          
                           <th className="border-0">Category Name</th>
                           <th className="border-0">SubCategory Name</th>
                           <th className="border-0">Color</th>
                           <th className="border-0">Size</th>
                           <th className="border-0">Price</th>
                           <th className="border-0">Discounted Price</th>
+                          <th className="border-0">Verified</th>
+                          <th className="border-0">Status</th>
                           <th className="border-0">Action</th>
                         </tr>
                       </thead>
@@ -288,6 +291,13 @@ const Products = () => {
                             <td>{item.is_buy == 1 ? "Yes" : "No"}</td>
                             <td>{item.is_pickup == 1 ? "Yes" : "No"}</td>
                             <td>{item.total_clicks}</td>
+                            
+                            <td>{item.category_name}</td>
+                            <td>{item.subcategory_name}</td>
+                            <td>{item.is_color == 1 ? "Yes" : "No"}</td>
+                            <td>{item.is_size == 1 ? "Yes" : "No"}</td>
+                            <td>{item.price}</td>
+                            <td>{item.discount_price}</td>
                             <td>{verifiedProduct(item.is_verified)}</td>
                             <td>
                               <div
@@ -305,12 +315,6 @@ const Products = () => {
                                 {item.active == "1" ? "active" : "block"}
                               </div>
                             </td>
-                            <td>{item.category_name}</td>
-                            <td>{item.subcategory_name}</td>
-                            <td>{item.is_color == 1 ? "Yes" : "No"}</td>
-                            <td>{item.is_size == 1 ? "Yes" : "No"}</td>
-                            <td>{item.price}</td>
-                            <td>{item.discount_price}</td>
 
                             <td>
                               <div
@@ -319,40 +323,67 @@ const Products = () => {
                                   flexDirection: "row",
                                 }}
                               >
-                                <Button
-                                  className="btn-simple btn-link p-1"
-                                  type="button"
-                                  variant="primary"
-                                  onClick={() => {
-                                    setShowProductDetail(true);
-                                    setRowData(item);
-                                  }}
-                                >
-                                  <i className="fa fa-eye"></i>
-                                </Button>
-                                <Button
-                                  className="btn-simple btn-link p-1"
-                                  type="button"
-                                  variant="primary"
-                                  onClick={() => {
-                                    setSelectedProducts(item);
-                                    setShowUpdateModal(true);
-                                  }}
-                                >
-                                  <i className="fa fa-edit"></i>
-                                </Button>
-                                <Button
-                                  index={item.id}
-                                  className="btn-simple btn-link p-1"
-                                  type="button"
-                                  variant="danger"
-                                  onClick={(e) => {
-                                    setShowModal(true);
-                                    setBlockData(e.target.id);
-                                  }}
-                                >
-                                  <i className="fas fa-times" id={item.id}></i>
-                                </Button>
+                                {item?.active == "1" && (
+                                  <Button
+                                    className="btn-simple btn-link p-1"
+                                    type="button"
+                                    variant="primary"
+                                    onClick={() => {
+                                      setShowProductDetail(true);
+                                      setRowData(item);
+                                    }}
+                                  >
+                                    <i className="fa fa-eye"></i>
+                                  </Button>
+                                )}
+                                {item?.active == "1" && (
+                                  <Button
+                                    className="btn-simple btn-link p-1"
+                                    type="button"
+                                    variant="primary"
+                                    onClick={() => {
+                                      setSelectedProducts(item);
+                                      setShowUpdateModal(true);
+                                    }}
+                                  >
+                                    <i className="fa fa-edit"></i>
+                                  </Button>
+                                )}
+
+                                {item?.active == "1" && (
+                                  <Button
+                                    index={item.id}
+                                    className="btn-simple btn-link p-1"
+                                    type="button"
+                                    variant="danger"
+                                    onClick={(e) => {
+                                      setShowModal(true);
+                                      setBlockData(e.target.id);
+                                    }}
+                                  >
+                                    <i
+                                      className="fas fa-times"
+                                      id={item.id}
+                                    ></i>
+                                  </Button>
+                                )}
+                                {item?.active == "0" && (
+                                  <Button
+                                    index={item.id}
+                                    className="btn-simple btn-link p-1"
+                                    type="button"
+                                    variant="success"
+                                    onClick={(e) => {
+                                      setShowActiveModal(true);
+                                      setBlockData(e.target.id);
+                                    }}
+                                  >
+                                    <i
+                                      className="fas fa-check"
+                                      id={item.id}
+                                    ></i>
+                                  </Button>
+                                )}
                               </div>
                             </td>
                           </tr>
@@ -385,6 +416,12 @@ const Products = () => {
           showProductDetail={showProductDetail}
           setShowProductDetail={setShowProductDetail}
           rowData={rowData}
+        />
+        <ActiveProduct
+          showActiveModal={showActiveModal}
+          setShowActiveModal={setShowActiveModal}
+          blockData={blockData}
+          getProducts={getProducts}
         />
 
         <Modal

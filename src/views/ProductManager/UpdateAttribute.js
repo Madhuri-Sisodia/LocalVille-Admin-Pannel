@@ -9,26 +9,22 @@ import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 import editButton from "../../assets/img/editButton.png";
 import { validationUpdateModel } from "components/Validation";
-import AddAttributes from "./AddAttributes";
-import DeleteAttribute from "./DeleteAttribute";
 
 const UpdateAttribute = ({
   item,
   getProducts,
   setShowUpdateModal,
-  showUpdateModal,
+ 
 }) => {
   console.log("itemmm", item?.attributes[0]);
 
   const [updateProduct, setUpdateProduct] = useState([]);
-  const [showModal, setShowModal] = useState(false);
   const [sizeData, setSizeData] = useState([]);
   const [colorData, setColorData] = useState([]);
   const [size, setSize] = useState("");
   const [color, setColor] = useState("");
 
   const [formValue, setFormValue] = useState({
-    
     price: "",
     discountPrice: "",
     attributeId: "",
@@ -85,16 +81,11 @@ const UpdateAttribute = ({
 
     var data = new FormData();
 
-    data.append(
-      "size",
-      size ? size : item?.attributes?.[0]?.size?.[0]?.name
-    );
+    data.append("size", size ? size : item?.attributes?.[0]?.size?.[0]?.name);
     console.log();
     data.append(
       "color",
-      color
-        ? color
-        : item?.attributes?.[0]?.color?.[0]?.name
+      color ? color : item?.attributes?.[0]?.color?.[0]?.name
     );
     data.append(
       "price",
@@ -130,11 +121,11 @@ const UpdateAttribute = ({
         if (res?.data?.status) {
           setUpdateProduct(res?.data?.data);
           getProducts();
-          
+          resetForm();
+
           notificationAlertRef.current.notificationAlert(
             SuccessNotify(res?.data?.message)
           );
-        
         } else {
           notificationAlertRef.current.notificationAlert(
             ErrorNotify(res?.data?.message)
@@ -146,8 +137,21 @@ const UpdateAttribute = ({
           ErrorNotify("Something went wrong")
         );
       });
-      setShowUpdateModal(false);
-      
+    setShowUpdateModal(false);
+  };
+
+
+  const resetForm = () => {
+    setFormValue({
+      price: "",
+      discountPrice: "",
+      attributeId: "",
+      sku: "",
+      inStock: "",
+      productId: "",
+    });
+    setColor("")
+    setSize("");
   };
 
   // const handleReset = () => {
@@ -165,50 +169,8 @@ const UpdateAttribute = ({
         ref={formRef}
         formValue={formValue?.defaultValue}
         onSubmit={handleSubmit}
-       
         onChange={setFormValue}
-        className="UpdateProductForm"
       >
-        <Form.Group>
-          <Row>
-            {item?.attributes?.map((attribute, index) => (
-              <Col className="cardModel" md={6} sm={12} key={index}>
-                <div className="leftSectionCard">
-                  <h6>{attribute?.sku}</h6>
-                  <h5>
-                    {attribute?.size?.[0]?.name}, {attribute?.color?.[0]?.name}
-                  </h5>
-                  <div className="CardPriceArea">
-                    <p className="priceBefore"> ₹ {attribute?.price}</p> <b></b>
-                    <h6 className="priceAfter">
-                      {" "}
-                      ₹ {attribute?.discount_price}
-                    </h6>{" "}
-                  </div>
-                </div>
-                <div className="RightSectionCard">
-                  <button
-                    className="btn btn-primary editButton"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#collapseExample"
-                    aria-expanded="false"
-                    aria-controls="collapseExample"
-                  >
-                    <img src={editButton} className="editbutton" />
-                  </button>
-                  <i
-                    className="fa fa-trash"
-                    onClick={() => {
-                      setShowModal(true);
-                    }}
-                  ></i>
-                </div>
-              </Col>
-            ))}
-          </Row>
-        </Form.Group>
-
         <div className="collapseAttribute" id="collapseExample">
           <Form.Group
             layout="inline"
@@ -218,113 +180,112 @@ const UpdateAttribute = ({
             }}
           >
             <div style={{ display: "flex" }}>
-          <Form.Group style={{ width: "100%" }}>
-            <Form.ControlLabel
-              className="formLabelText"
-              style={{
-                width: "100%",
-                marginTop: "5px",
-                marginBottom: "5px",
-              }}
-            >
-              Color
-            </Form.ControlLabel>
-            <div
-              style={{
-                width: "10rem",
-                margin: "auto",
-                marginTop: "5px",
-                marginBottom: "5px",
-                paddingRight: "10px",
-              }}
-            >
-              <select
-                required
-                value={color}
-                name="color"
-                onChange={(e) => {
-                  setColor(e.target.value);
-                }}
-                style={{
-                  height: "35px",
-                  borderRadius: "5px",
-                  paddingLeft: "5px",
-                  paddingRight: "5px",
-                  borderColor: "#808020",
-                  width: "100%",
-                }}
-              >
-                <option value="">Select</option>
-                {colorData?.map((ele) => (
-                  <option
+              <Form.Group style={{ width: "100%" }}>
+                <Form.ControlLabel
+                  className="formLabelText"
+                  style={{
+                    width: "100%",
+                    marginTop: "5px",
+                    marginBottom: "5px",
+                  }}
+                >
+                  Color
+                </Form.ControlLabel>
+                <div
+                  style={{
+                    width: "10rem",
+                    margin: "auto",
+                    marginTop: "5px",
+                    marginBottom: "5px",
+                    paddingRight: "10px",
+                  }}
+                >
+                  <select
+                    required
+                    name="color"
+                    onChange={(e) => {
+                      setColor(e.target.value);
+                    }}
                     style={{
-                      fontSize: "14px",
-                      paddingBottom: "10px",
-                      paddintTop: "10px",
+                      height: "35px",
+                      borderRadius: "5px",
+                      paddingLeft: "5px",
+                      paddingRight: "5px",
+                      borderColor: "#808020",
+                      width: "100%",
                     }}
                   >
-                    {ele.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </Form.Group>
-          <Form.Group style={{ width: "100%" }}>
-            <Form.ControlLabel
-              className="formLabelText"
-              style={{
-                width: "10rem",
-                marginTop: "5px",
-                marginBottom: "5px",
-                paddingLeft: "10px",
-              }}
-            >
-              Size
-            </Form.ControlLabel>
-            <div
-              style={{
-                width: "100%",
-                margin: "auto",
-                marginTop: "5px",
-                marginBottom: "5px",
-                paddingLeft: "10px",
-              }}
-            >
-              <select
-                required
-                name="size"
-                value={size}
-                onChange={(e) => {
-                  setSize(e.target.value);
-                }}
-                style={{
-                  height: "35px",
-                  borderRadius: "5px",
-                  paddingLeft: "5px",
-                  paddingRight: "5px",
-                  borderColor: "#808020",
-                  width: "100%",
-                }}
-              >
-                <option  defaultValue={
-                  color
-                    ? color
-                    : item?.attributes?.[0]?.size?.[0]?.name}>Select</option>
-                {sizeData?.map((ele) => (
-                  <option
+                    <option value="">Select</option>
+                    {colorData?.map((ele) => (
+                      <option
+                        style={{
+                          fontSize: "14px",
+                          paddingBottom: "10px",
+                          paddintTop: "10px",
+                        }}
+                        value={ele.id}
+                      >
+                        {ele.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </Form.Group>
+              <Form.Group style={{ width: "100%" }}>
+                <Form.ControlLabel
+                  className="formLabelText"
                   style={{
-                    fontSize: "14px",
-                    paddingBottom: "10px",
-                    paddintTop: "10px",
+                    width: "10rem",
+                    marginTop: "5px",
+                    marginBottom: "5px",
+                    paddingLeft: "10px",
                   }}
+                >
+                  Size
+                </Form.ControlLabel>
+                <div
+                  style={{
+                    width: "100%",
+                    margin: "auto",
+                    marginTop: "5px",
+                    marginBottom: "5px",
+                    paddingLeft: "10px",
+                  }}
+                >
+                  <select
+                    required
+                    name="size"
+                    value={size}
+                    onChange={(e) => {
+                      setSize(e.target.value);
+                    }}
+                    style={{
+                      height: "35px",
+                      borderRadius: "5px",
+                      paddingLeft: "5px",
+                      paddingRight: "5px",
+                      borderColor: "#808020",
+                      width: "100%",
+                    }}
                   >
-                    {ele.name}
-                  </option>
-                ))}
-              </select>
+                    <option value="">Select</option>
+
+                    {sizeData?.map((ele) => (
+                      <option
+                        style={{
+                          fontSize: "14px",
+                          paddingBottom: "10px",
+                          paddintTop: "10px",
+                        }}
+                        value={ele.id}
+                      >
+                        {ele.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </Form.Group>
             </div>
-          </Form.Group>
-          </div>
             {/* <Form.Group>
               <Form.ControlLabel className="formLabelText">
                 Size
@@ -372,10 +333,9 @@ const UpdateAttribute = ({
                 Price
               </Form.ControlLabel>
               <Form.Control
-               style={{
-                width: "156px",
-            
-              }}
+                style={{
+                  width: "156px",
+                }}
                 name="price"
                 type="text"
                 defaultValue={
@@ -391,20 +351,16 @@ const UpdateAttribute = ({
                 Discounted Price
               </Form.ControlLabel>
               <Form.Control
-               style={{
-                width: "156px",
-               
-              }}
+                style={{
+                  width: "156px",
+                }}
                 defaultValue={
                   formValue.discountPrice
                     ? formValue.discountPrice
                     : item?.attributes?.[0]?.discount_price
                 }
                 name="discountPrice"
-            
-
                 type="text"
-                
               ></Form.Control>
               {console.log("AAAAAA", item?.attributes?.[0]?.discount_price)}
             </Form.Group>
@@ -452,7 +408,6 @@ const UpdateAttribute = ({
               // }}
 
               type="text"
-             
             ></Form.Control>
           </Form.Group>
           <div className="updateModelButton">
@@ -460,12 +415,6 @@ const UpdateAttribute = ({
           </div>
         </div>
       </Form>
-      <DeleteAttribute
-        showModal={showModal}
-        setShowModal={setShowModal}
-        item={item}
-        getProducts={getProducts}
-      />
     </>
   );
 };

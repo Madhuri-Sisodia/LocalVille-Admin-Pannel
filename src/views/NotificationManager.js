@@ -22,6 +22,7 @@ const NotificationManager = () => {
   const getVendors = () => {
     Http.GetAPI(process.env.REACT_APP_GETVENDORSDATA + "?" + Math.random(), "")
       .then((res) => {
+       
         if (res?.data?.status) {
           setVendorData(res?.data?.data);
         }
@@ -41,12 +42,7 @@ const NotificationManager = () => {
     // e.preventDefault();
     let arr = [];
 
-    // const id = vendorid[0].id;
-    // if (formData.image == "Yes") {
-    //   image = "1";
-    // } else {
-    //   image = "0";
-    // }
+   
     var data = new FormData();
     for (let i = 0; i < vendorData.length; i++) {
       for (let j = 0; j < selectedVendors.length; j++) {
@@ -62,6 +58,7 @@ const NotificationManager = () => {
 
     Http.PostAPI(process.env.REACT_APP_ADDNOTICATIONMANAGER, data)
       .then((res) => {
+        console.log("Notification",res)
         if (res?.data?.status) {
           setAddNotification(res?.data?.data);
           getVendors();
@@ -79,13 +76,11 @@ const NotificationManager = () => {
           ErrorNotify("Something went wrong")
         );
       });
-    setSelectedVendors("");
-    fileInputRef.current.value = "";
-    setImage(null);
-  
-    // setImage("");
-    setTitle("");
-    setMessage("");
+    // setSelectedVendors("");
+    // fileInputRef.current.value = "";
+    // setImage(null);
+    // setTitle("");
+    // setMessage("");
   };
 
   return (

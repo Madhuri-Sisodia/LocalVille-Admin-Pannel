@@ -102,9 +102,7 @@ const BannerManager = () => {
 
   const handleSubmit = () => {
     if (isImageValid) {
-      const SelectedSection = data.filter((ele) => {
-        return ele.section_name == selectSection;
-      });
+    
       // e.preventDefault();
 
       let redirectImg;
@@ -142,9 +140,7 @@ const BannerManager = () => {
       resetForm();
     } else {
       setErrorMessage("Please select an image.");
-      setTimeout(() => {
-        setErrorMessage(false);
-      }, 2000);
+      
     }
   };
 

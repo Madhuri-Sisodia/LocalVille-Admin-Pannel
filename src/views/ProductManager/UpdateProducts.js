@@ -19,6 +19,7 @@ import editButton from "../../assets/img/editButton.png";
 import { validationUpdateModel } from "components/Validation";
 import AddAttributes from "./AddAttributes";
 import UpdateAttribute from "./UpdateAttribute";
+import DeleteAttribute from "./DeleteAttribute";
 
 const AddProduct = ({
   showUpdateModal,
@@ -30,6 +31,9 @@ const AddProduct = ({
   console.log(getProducts);
 
   const [product, setProduct] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [edit, setEdit] = useState(-1);
+
   // const [image, setImage] = useState(null);
   // const [vendortData, setVendorData] = useState([]);
   // const [selectSection, setSelectSection] = useState("");
@@ -210,7 +214,6 @@ const AddProduct = ({
               formValue={formValue?.defaultValue}
               onSubmit={handleSubmit}
               onChange={setFormValue}
-              
             >
               {/* <div>
                   <img
@@ -234,9 +237,34 @@ const AddProduct = ({
                 </Form.ControlLabel>
 
                 <div className="uploadProductImage">
-                  <div>
+                  <div style={{ display: "flex" }}>
+                    {item?.images?.map((image, index) => (
+                      <div
+                        key={index}
+                        style={{ display: "inline-block", marginRight: "5px" }}
+                      >
+                        <img
+                          src={productImage ? baseImage : image}
+                          alt={`Image ${index}`}
+                          style={{
+                            width: "50px",
+                            height: "60px",
+                            borderRadius: "5px",
+                          }}
+                        />
+                        <sup
+                          className="deleteButton"
+                          style={{ display: "inline-block", marginLeft: "5px" }}
+                        >
+                          <i className="fa fa-trash"></i>
+                        </sup>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                {/* <div>
                     <img
-                      src={productImage ? baseImage : item?.user_image}
+                      src={productImage ? baseImage : item?.images?.[0]?.images}
                       alt="Image"
                       style={{
                         width: "50px",
@@ -244,10 +272,12 @@ const AddProduct = ({
                         borderRadius: "5px",
                       }}
                     />
+                    {console.log("aaaaaa",item?.images?.[0]?.images)}
                     <sup className="deleteButton">
                       <i className="fa fa-trash"></i>
                     </sup>
-                  </div>
+                  </div> */}
+                <div>
                   <div
                     className="uploadProductImage"
                     style={{ display: "flex", alignItems: "left" }}
@@ -492,24 +522,77 @@ const AddProduct = ({
                   />
                 </div>
               </div>
-             
             </Form>
             <div>
-                <AddAttributes
-                  showUpdateModal={showUpdateModal}
-                  setShowUpdateModal={setShowUpdateModal}
-                  getProducts={getProducts}
-                  item={item}
-                />
-              </div>
-            <div>
-              <UpdateAttribute
-                item={item}
-                getProducts={getProducts}
+              <AddAttributes
                 showUpdateModal={showUpdateModal}
                 setShowUpdateModal={setShowUpdateModal}
+                getProducts={getProducts}
+                item={item}
               />
             </div>
+            {/* {item?.attributes?.length > 0 ? ( */}
+
+            {item?.attributes?.map((attribute, index) => (
+              <div>
+                <Row>
+                  <Col className="cardModel" md={6} sm={12} key={index}>
+                    <div className="leftSectionCard">
+                      <h6>{attribute?.sku}</h6>
+                      <h5>
+                        {attribute?.size?.[0]?.name},{" "}
+                        {attribute?.color?.[0]?.name}
+                      </h5>
+                      <div className="CardPriceArea">
+                        <p className="priceBefore"> ₹ {attribute?.price}</p>{" "}
+                        <b></b>
+                        <h6 className="priceAfter">
+                          {" "}
+                          ₹ {attribute?.discount_price}
+                        </h6>{" "}
+                      </div>
+                    </div>
+                    <div className="RightSectionCard">
+                      <button
+                        className="btn btn-primary editButton"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseExample"
+                        aria-expanded="false"
+                        aria-controls="collapseExample"
+                        onClick={() => setEdit(index)}
+                      >
+                        <img src={editButton} className="editbutton" />
+                      </button>
+                      <i
+                        className="fa fa-trash"
+                        onClick={() => {
+                          setShowModal(true);
+                        }}
+                      ></i>
+                    </div>
+                  </Col>
+                </Row>
+                {edit === index && (
+                  <div>
+                    <UpdateAttribute
+                      item={item}
+                      getProducts={getProducts}
+                      showUpdateModal={showUpdateModal}
+                      setShowUpdateModal={setShowUpdateModal}
+                    />
+                  </div>
+                )}
+              </div>
+            ))}
+
+            <DeleteAttribute
+              showModal={showModal}
+              setShowModal={setShowModal}
+              item={item}
+              getProducts={getProducts}
+            />
+            {/* </div>):("")} */}
           </Modal.Body>
         </Modal>
       )}

@@ -12,7 +12,12 @@ import {
 const { StringType } = Schema.Types;
 
 const validationModel = Schema.Model({
-  aName: StringType().isRequired("Admin Name is required."),
+  aName: StringType()
+    .isRequired("Admin Name is required.")
+    .addRule((value) => {
+      const regex = /^[a-zA-Z ]+$/;
+      return regex.test(value);
+    }, "Please enter a valid name using only alphabets and space."),
 
   email: StringType()
     .isEmail("Please enter a valid email address.")
@@ -29,7 +34,6 @@ const validationModel = Schema.Model({
       return true;
     }, "Password do not match")
     .isRequired("This field is required."),
-
 });
 
 const validationUpdateModel = Schema.Model({
@@ -60,7 +64,6 @@ const validationAddModel = Schema.Model({
     }, "Please enter a valid 6 digit pincode."),
   openingTime: StringType().isRequired("OpeningTime is required"),
   closingTime: StringType().isRequired("ClosingTime is required"),
-    
 });
 
 const TextField = React.forwardRef((props, ref) => {
