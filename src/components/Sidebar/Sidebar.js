@@ -21,9 +21,9 @@ function Sidebar({ color, image, routes }) {
     <div className="sidebar" data-image={image} data-color={color}>
       <div
         className="sidebar-background"
-        style={{
-          backgroundImage: "url(" + image + ")"
-        }}
+        // style={{
+        //   backgroundImage: "url(" + image + ")"
+        // }}
       />
       <div className="sidebar-wrapper">
         <div className="logo d-flex align-items-center justify-content-start">

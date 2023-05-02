@@ -5,20 +5,23 @@ import {
   Form,
   Button,
   ButtonToolbar,
+  Avatar,
   Dropdown,
   RadioGroup,
   Radio,
+  Schema,
 } from "rsuite";
-import { Http } from "../../config/Service"; 
+import { Http } from "../../config/Service";
 import { useEffect } from "react";
 import { Utils } from "CommonUtils/Utils";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
-
+import Modal from "rsuite/Modal";
+import { Uploader } from "rsuite";
 const SubCategory = () => {
   const [subCategoryName, setSubCategoryName] = useState("");
   const [selectCategory, setSelectCategory] = useState("");
-  const [selectSizeAttribute,setSelectSizeAttribute]=useState("");
+  const [selectSizeAttribute, setSelectSizeAttribute] = useState("");
   const [color, setColor] = useState(1);
   const [size, setSize] = useState(1);
   const [sizeData, setSizeData] = useState([]);
@@ -27,6 +30,60 @@ const SubCategory = () => {
   const [subCategory, setSubCategory] = useState([]);
   const { Categoriesid } = useContext(Utils);
   const notificationAlertRef = React.useRef(null);
+  const [imageUrl, setImageUrl] = useState("");
+  const [imageFile, setImageFile] = useState(null);
+  const [errors, setErrors] = useState({});
+  const [showNotification, setShowNotification] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isImageValid, setIsImageValid] = useState(false);
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    setImageFile(file);
+    setIsImageValid(
+      file && file.type.startsWith("image/png", "image/jpg", "image/jpeg")
+    ); // Update image validity
+    if (isImageValid) {
+      // setErrorMessage("");
+      setTimeout(() => {}, 2000);
+    } else {
+      setShowNotification("Image Upload Successfull");
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 2000);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setImageFile(null);
+    setErrorMessage("Image Removed");
+    setTimeout(() => {
+      setErrorMessage(false);
+      // setShowNotification(false);
+    }, 2000);
+    setIsImageValid(false); // Update image validity
+  };
+
+  // const handleImageChange = (event) => {
+  //   const file = event.target.files[0];
+  //   // setImageFile(file);
+  //   if (file && file.type.startsWith("image/")) {
+  //     setImageFile(file);
+  //     setErrorMessage("image upload success");
+  //     setShowNotification(true);
+  //     setTimeout(() => {
+  //       setShowNotification(false);
+  //     }, 2000); // set timer for 2 seconds
+  //   } else {
+  //     setImageFile(null);
+  //     setErrorMessage("Please select a valid image file.");
+  //   }
+  // };
+
+  // const handleRemoveImage = () => {
+  //   setImageFile(null);
+  //   setErrorMessage("");
+  // };
 
   useEffect(() => {
     Http.GetAPI(
@@ -47,48 +104,59 @@ const SubCategory = () => {
   }, []);
 
   const handleSubmit = () => {
-    const SelectedCategory = data.filter((ele) => {
-      return ele.name == selectCategory;
-    });
-    
-    const selectedAttribute = sizeData.filter((ele) => {
-      return ele.attr_name == selectSizeAttribute;
-    });
-
-    const id = SelectedCategory[0]?.id ? SelectedCategory[0]?.id:0;
-    const attrId = selectedAttribute[0]?.id ? selectedAttribute[0]?.id:0;
-
-    var formdata = new FormData();
-    formdata.append("category_id", `${id}`);
-    formdata.append("subcategory_name", subCategoryName);
-    formdata.append("color", color == "Yes" ? 1 : 0);
-    formdata.append("size", size == "Yes" ? 1 : 0);
-    formdata.append("size_att", attrId);
-    Http.PostAPI(
-      process.env.REACT_APP_ADDPRODSUBCATEGORY + "?" + Math.random(),
-      formdata,
-      null
-    )
-      .then((res) => {
-        if (res?.data?.status) {
-          setSubCategory(res?.data?.data);
-          notificationAlertRef.current.notificationAlert(
-            SuccessNotify(res?.data?.message)
-          );
-        } else {
-          notificationAlertRef.current.notificationAlert(
-            ErrorNotify(res?.data?.message)
-          );
-        }
-      })
-      .catch((e) => {
-        notificationAlertRef.current.notificationAlert(
-          ErrorNotify("Something went wrong")
-        );
+    if (isImageValid) {
+      const SelectedCategory = data.filter((ele) => {
+        return ele.name == selectCategory;
       });
 
-    setSubCategoryName("");
-    setSelectCategory("");
+      const selectedAttribute = sizeData.filter((ele) => {
+        return ele.attr_name == selectSizeAttribute;
+      });
+
+      const id = SelectedCategory[0]?.id ? SelectedCategory[0]?.id : 0;
+      const attrId = selectedAttribute[0]?.id ? selectedAttribute[0]?.id : 0;
+
+      var formdata = new FormData();
+      formdata.append("category_id", `${id}`);
+      formdata.append("subcategory_name", subCategoryName);
+      formdata.append("subcat_image", imageFile);
+      formdata.append("color", color == "Yes" ? 1 : 0);
+      formdata.append("size", size == "Yes" ? 1 : 0);
+      formdata.append("size_att", attrId);
+      Http.PostAPI(
+        process.env.REACT_APP_ADDPRODSUBCATEGORY + "?" + Math.random(),
+        formdata,
+        null
+      )
+        .then((res) => {
+          if (res?.data?.status) {
+            setSubCategory(res?.data?.data);
+            notificationAlertRef.current.notificationAlert(
+              SuccessNotify(res?.data?.message)
+            );
+          } else {
+            notificationAlertRef.current.notificationAlert(
+              ErrorNotify(res?.data?.message)
+            );
+          }
+        })
+        .catch((e) => {
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify("Something went wrong")
+          );
+        });
+
+      setSubCategoryName("");
+      setSelectCategory("");
+      setImageFile("");
+      setErrors({});
+      setShowNotification("");
+    } else {
+      setErrorMessage("Please select an image.");
+      setTimeout(() => {
+        setErrorMessage(false);
+      }, 2000);
+    }
   };
 
   useEffect(() => {
@@ -104,12 +172,23 @@ const SubCategory = () => {
           setData(res?.data?.data);
         }
       })
+      // .catch((e) => {
+      //   notifySecond("tr");
+      //   // alert("Something went wrong.");
+      //   console.log("Error:", e);
+      //   }
+      // })
       .catch((e) => {
         notificationAlertRef.current.notificationAlert(
           ErrorNotify("Something went wrong")
         );
       });
   }, []);
+
+  const { StringType } = Schema.Types;
+  const model = Schema.Model({
+    subCategoryName: StringType().isRequired("Admin field is required."),
+  });
 
   return (
     <>
@@ -118,7 +197,65 @@ const SubCategory = () => {
       </div>
       <div className="MainContainer">
         <div className="Container">
-          <Form fluid>
+          <Form.ControlLabel
+            style={{
+              color: "#808080",
+              fontSize: "0.9rem",
+              marginTop: "1em",
+              PaddingTop: "20px",
+            }}
+          >
+            Add Subcategory Image
+          </Form.ControlLabel>
+
+          <Form.Group>
+            {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
+            {showNotification && (
+              <div style={{ color: "green" }}>{showNotification}</div>
+            )}
+            <div>
+              {imageFile ? (
+                <div>
+                  <img
+                    src={URL.createObjectURL(imageFile)}
+                    alt="Avatar"
+                    style={{
+                      width: "80px",
+                      height: "80px",
+                      borderRadius: "50%",
+                    }}
+                  />
+                  <div style={{ marginTop: "1em" }}>
+                    <button onClick={handleRemoveImage}>Remove Image</button>
+                  </div>
+                </div>
+              ) : (
+                <div style={{ overflow: "hidden" }}>
+                  <label htmlFor="avatar-upload">
+                    <img
+                      src="https://via.placeholder.com/150"
+                      alt="Avatar Placeholder"
+                      style={{ borderRadius: "50%", width: "70px" }}
+                    />
+                  </label>
+                  <input
+                    id="avatar-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    style={{ display: "none" }}
+                  />
+                </div>
+              )}
+            </div>
+          </Form.Group>
+          <Form
+            fluid
+            model={model}
+            onSubmit={(e) => {
+              handleSubmit(e);
+            }}
+          >
             <Form.Group controlId="name-1" style={{ marginBottom: "20px" }}>
               <div
                 className="InnnerContainerCategory"
@@ -142,6 +279,11 @@ const SubCategory = () => {
                 <select
                   name="selectCategory"
                   value={selectCategory}
+                  className={
+                    errors.selectCategory
+                      ? "form-control is-invalid"
+                      : "form-control"
+                  }
                   onChange={(event) => setSelectCategory(event.target.value)}
                   style={{
                     height: "35px",
@@ -159,6 +301,9 @@ const SubCategory = () => {
                     </option>
                   ))}
                 </select>
+                {errors.selectCategory && (
+                  <Message>{errors.selectCategory}</Message>
+                )}
               </div>
               <Form.ControlLabel
                 style={{
@@ -176,6 +321,7 @@ const SubCategory = () => {
                 required="setSubCategoryName"
                 onChange={(value) => setSubCategoryName(value)}
               />
+
               <div>
                 <div>
                   <div style={{ paddingLeft: "10px", marginTop: "20px" }}>
@@ -230,8 +376,8 @@ const SubCategory = () => {
                           <select
                             name="selectSizeAttribute"
                             value={selectSizeAttribute}
-                            onChange={(event) =>{
-                              setSelectSizeAttribute(event.target.value)
+                            onChange={(event) => {
+                              setSelectSizeAttribute(event.target.value);
                             }}
                             style={{
                               height: "30px",
@@ -258,12 +404,13 @@ const SubCategory = () => {
                 </div>
               </div>
             </Form.Group>
+
             <Form.Group>
               <ButtonToolbar>
                 <Button
                   appearance="primary"
                   type="submit"
-                  style={{ marginTop: "3rem", marginBottom: "0.5rem" }}
+                  style={{ marginTop: "1rem", marginBottom: "0.5rem" }}
                   block
                   onClick={handleSubmit}
                 >

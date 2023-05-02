@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import { Http } from "../../config/Service";
+import NotificationAlert from "react-notification-alert";
+import { ErrorNotify } from "components/NotificationShowPopUp";
+import { SuccessNotify } from "components/NotificationShowPopUp";
+import ErrorMessage from "customComponents/ErrorMessage";
 
 import {
   Modal,
@@ -19,10 +23,13 @@ const RejectStore = ({
   showRejectStore,
   setShowRejectStore,
   store,
-  getUnverifiedStore
+  getUnverifiedStore,
 }) => {
   const [updateStore, setUpdateStore] = useState([]);
+  const notificationAlertRef = React.useRef(null);
+
   const [blockReason, setBlockReason] = useState("");
+  const [errorMassage, setErrorMassage] = useState("");
   const handleRejectStore = (store) => {
     var data = new FormData();
     data.append("store_id", store.id);
@@ -33,18 +40,25 @@ const RejectStore = ({
         if (res?.data?.status) {
           setUpdateStore(res?.data?.data);
           getUnverifiedStore();
+          notificationAlertRef.current.notificationAlert(
+            SuccessNotify(res?.data?.message)
+          );
         } else {
-          alert("Fields not matched");
+          setErrorMassage(res?.data?.message);
         }
       })
       .catch((e) => {
-        alert("Something went wrong.");
-        console.log("Error:", e);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something Went Wrong")
+        );
       });
   };
 
   return (
     <>
+      <div className="rna-container">
+        <NotificationAlert ref={notificationAlertRef} />
+      </div>
       <Modal
         className="modal-mini modal-primary"
         show={showRejectStore}
@@ -58,22 +72,27 @@ const RejectStore = ({
         <Modal.Body className="text-center">
           <p>Are you sure you want to reject this store?</p>
           <Form.Control
-            componentClass="textarea"
+            as="textarea"
             rows={3}
-            style={{ fontSize: "0.9rem", height: "70px" }}
-            placeholder="Enter Reason"
+            placeholder="Enter Reason Here"
             maxLength={200}
             value={blockReason}
             onChange={(event) => setBlockReason(event.target.value)}
           />
+          {errorMassage && <ErrorMessage message={errorMassage} />}
         </Modal.Body>
         <div className="modal-footer">
           <Button
             className="btn-simple"
             variant="danger"
             onClick={() => {
-              handleRejectStore(store);
-              setShowRejectStore(false);
+              if (blockReason.trim().length === 0) {
+                setErrorMassage("Reason is required.");
+              } else {
+                handleRejectStore(store);
+                setShowRejectStore(false);
+                setErrorMassage("");
+              }
             }}
           >
             Reject
@@ -82,7 +101,11 @@ const RejectStore = ({
             className="btn-simple"
             type="button"
             variant="secondary"
-            onClick={() => setShowRejectStore(false)}
+            onClick={() => {
+              setShowRejectStore(false);
+              setBlockReason("");
+              setErrorMassage("");
+            }}
           >
             Close
           </Button>

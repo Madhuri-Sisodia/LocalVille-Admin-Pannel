@@ -7,6 +7,7 @@
 }
 
 
+
 .bold-col {
   font-weight: bold;
 }
@@ -30,14 +31,198 @@
  .modal-body::-webkit-scrollbar {
     width: 8px;
  }
+
   .modal-body::-webkit-scrollbar-track {
     background-color: rgb(234, 228, 228);
   }
-  .modal-body::-webkit-scrollbar-thumb {
+  /* .modal-body::-webkit-scrollbar-thumb {
     box-shadow: inset 0 0 6px rgba(156, 7, 231, 0.93);
     border-radius: 5px;
-    /* color:rgba(156, 7, 231, 0.93) !important ; */
-  }
+   
+  } */
+
+/*--------------------------- Update Product Model--------------------------*/
+.titleUpdateProduct{
+  color: blueviolet;
+  font-size: 20px;
+  font-weight: 600;
+}
+.UpdateProductForm{
+  border: 1px solid blueviolet;
+  border-radius: 10px;
+  padding: 1rem;
+  margin: 1rem;
+}
+.add-label-UpdateProduct{
+  color: blueviolet;
+  font-size: 16px;
+  font-weight: 600;
+ 
+}
+.UpdateButton{
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  background-color:blueviolet ;
+  width: auto;
+}
+.add-body.updateProductModel{
+   position: initial;
+
+}
+.fa.fa-camera {
+  color: #956ae6;
+  font-size: 2rem;
+  text-align: center;
+  margin-right: 10px;
+}
+.rs-uploader-picture .rs-uploader-trigger-btn {
+justify-content: space-around;
+
+}
+.productDeatils{
+  padding: 1rem;
+  justify-content: space-evenly;
+}
+
+.uploadImage{
+  width: 3rem;
+  height: 3rem auto;
+  
+ }
+ .formLabelText{
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(98, 97, 97);
+ }
+ .UpadateProductFormInner{
+  padding: 0.7rem;
+ }
+ .maxLimit{
+  font-size: 12px;
+  color: red;
+  margin-bottom: 0;
+ }
+ .fa-trash{
+  color: rgb(222, 2, 31);
+  /* font-size: x-small; */
+ }
+ .deleteButton{
+  padding: 4px;
+  border-radius: 50%;
+  box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.3);
+  margin-right: 10px;
+  top: -20px;
+ }
+ .uploadProductImage{
+  display: flex;
+  padding:  5px 0;
+  align-items: center;
+  padding-right: 10px;
+  justify-content: flex-start;
+ }
+
+ .cardModel{
+  margin: 1rem;
+  padding: 0.5rem;
+  width: -webkit-fill-available;
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+ }
+.priceBefore{
+  text-decoration: line-through;
+  color: darkgrey;
+  font-size: 13px;
+  margin-right: 10px;
+ }
+ .priceAfter{
+  color: black;
+  font-size: 12px;
+  
+  
+ }
+ .uploadImage{
+  width: 3rem;
+  height: 4rem;
+ }
+ .maxLimit{
+  font-size: 12px;
+  color: red;
+ }
+ .fa-trash{
+  color: rgb(222, 2, 31);
+ }
+ .deleteButton{
+  padding: 5px;
+  border-radius: 50%;
+  box-shadow: 0px 1px 20px 0px rgba(0, 0, 0, 0.3);
+ }
+ .uploadProductImage{
+  display: flex;
+  padding:  20px 0;
+  align-items: center;
+  justify-content: center;
+ }
+ .CardPriceArea{
+  display: flex;
+  align-items: baseline;
+
+ }
+ .testForm{
+  width: -webkit-fill-available;
+  background-color: rgb(217, 209, 209);
+  color: darkgray;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  border-radius: 3px;
+  padding: 2rem;
+  margin: 1rem 1rem 0rem 1rem
+ }
+
+ .test{
+  font-size: 15px;
+  font-weight: 600;
+  color: rgb(134, 132, 132);
+  margin-bottom: 0;
+ }
+
+ .editbutton{
+  width: 17px;
+  margin-right: 10px;
+
+ }
+ .btn-primary.editButton{
+  padding: initial ;
+  border: none;
+ }
+.updateModelButton{
+  width: 80% !important;
+  color: #ac74e1 !important;
+  text-align: center !important;
+  display: flex;
+  margin-left: 3rem;
+  
+
+}
+
+.collapseAttribute {
+  border-radius: 5px;
+  box-shadow: 0px 1px 4px 0px rgb(0 0 0 / 30%);
+  border: 1px solid #959494;
+  margin: 0 0.6rem;
+  top: -22px !important;
+  padding: 1rem;
+}
+
+
+
+
+
+
 @media (max-width: 768px) {
   .table tbody tr td {
     padding: 1px 5px;
@@ -71,6 +256,7 @@
 .update-label{
   font-size:1rem;
  margin-bottom: 0rem ;
+ margin-top: 1rem ;
 }
 
 .update-form{
@@ -86,8 +272,70 @@
 }
 
 .add-body {
-  height: 400px;
+  height: 500px;
   overflow-y: scroll;
  
 }
 
+/* .........Update Model....... */
+
+
+.titleUpdateProduct{
+  color: blueviolet;
+  font-size: 20px;
+  font-weight: 600;
+}
+.UpdateProductForm{
+  border: 1px solid blueviolet;
+  border-radius: 10px;
+  padding: 1rem;
+  margin: 1rem;
+}
+.add-label-UpdateProduct{
+  color: blueviolet;
+  font-size: 16px;
+  font-weight: 600;
+}
+.UpdateButton{
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  background-color:blueviolet ;
+  width: auto;
+}
+.add-body.updateProductModel{
+   position: initial;
+}
+.fa.fa-camera{
+  color: #8052D5;
+  font-size: 3rem;
+  text-align: center;
+}
+.rs-uploader-picture .rs-uploader-trigger-btn {
+justify-content: unset;
+padding: revert;}
+.uploadImage{
+  width: 3rem;
+  height: 3rem;
+ }
+ .maxLimit{
+  font-size: 12px;
+  color: red;
+ }
+ sup .fa-trash{
+  color: rgb(222, 2, 31);
+ }
+ 
+ .uploadProductImage{
+  display: flex;
+  padding:  20px 0;
+  align-items: center;
+  justify-content: space-evenly
+ }
+ .UpdateProducts .rs-modal-header .rs-modal-header-close .rs-btn-close .rs-icon{
+  display: none;
+ }
+ .UpdateProducts.rs-modal-header {
+  padding-right: 10px;
+  display: flex;
+}

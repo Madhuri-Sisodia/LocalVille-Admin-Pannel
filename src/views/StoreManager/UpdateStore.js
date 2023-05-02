@@ -3,6 +3,7 @@ import { MdClose } from "react-icons/md";
 import { Modal, Form, Button } from "react-bootstrap";
 import { Http } from "../../config/Service";
 import "../../assets/css/day.css";
+import { FaCamera } from "react-icons/fa";
 import GoogleAutocomplete from "components/googleAutoComplete";
 import GooglePlacesPicker from "components/googlePlacesPicker";
 import axios from "axios";
@@ -37,6 +38,7 @@ const UpdateStore = ({
   const [store, setStore] = useState([]);
   const [hideData, setHideData] = useState(true);
   const [UpdateStoreImage, SetUpdateStoreImage] = useState("");
+  const [baseImage, setBaseImage] = useState("");
   const [selectedDays, setSelectedDays] = useState([]);
   const notificationAlertRef = React.useRef(null);
 
@@ -56,7 +58,7 @@ const UpdateStore = ({
       let parsedDays;
       if (Array.isArray(item.opening_days)) {
         parsedDays = item.opening_days;
-        parsedDays = JSON.parse(item.opening_days)
+        parsedDays = JSON.parse(item.opening_days);
       } else {
         try {
           parsedDays = item.opening_days.split(",");
@@ -74,8 +76,18 @@ const UpdateStore = ({
       return { ...previous, [e.target.name]: e.target.value };
     });
   };
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    SetUpdateStoreImage(file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setBaseImage(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
 
-  const handleUpdateStore = () => {
+  const handleUpdateStore = (e) => {
+    e.preventDefault();
     var data = new FormData();
 
     data.append("store_image", UpdateStoreImage);
@@ -124,6 +136,7 @@ const UpdateStore = ({
       .then((res) => {
         if (res?.data?.status) {
           setStore(res?.data?.data);
+          setSelectedDays("");
           getStore();
           notificationAlertRef.current.notificationAlert(
             SuccessNotify(res?.data?.message)
@@ -139,6 +152,7 @@ const UpdateStore = ({
           ErrorNotify("Something went wrong")
         );
       });
+    setShowUpdateStore(false);
   };
 
   useEffect(() => {
@@ -177,7 +191,7 @@ const UpdateStore = ({
         <Modal show={showUpdateStore} onHide={() => setShowUpdateStore(false)}>
           <Modal.Header>
             <Modal.Title className="update-title">
-              Update Stores data
+              Update Store data
             </Modal.Title>
             <MdClose
               className="update-close-icon"
@@ -188,7 +202,7 @@ const UpdateStore = ({
             />
           </Modal.Header>
           <Modal.Body className="update-body">
-            <Form>
+            <Form onSubmit={handleUpdateStore}>
               {!hideData && (
                 <Form.Group style={{ marginTop: "0rem", marginBottom: "1rem" }}>
                   <label className="update-label">Store ID</label>
@@ -235,15 +249,45 @@ const UpdateStore = ({
               )}
 
               <Form.Group style={{ marginBottom: "1rem" }}>
-                <label className="update-label">Store File</label>
-                <Form.Control
-                  className="update-form"
-                  name="storeName"
-                  onChange={(e) => {
-                    SetUpdateStoreImage(e.target.files[0]);
+                <div>Store Image</div>
+                <img
+                  src={UpdateStoreImage ? baseImage : item?.store_image}
+                  alt="Image"
+                  style={{
+                    width: "50px",
+                    height: "50px",
+                    borderRadius: "50%",
                   }}
-                  type="file"
-                ></Form.Control>
+                />
+                <div style={{ display: "flex", alignItems: "left" }}>
+                  <label htmlFor="UpdateStoreImage">
+                    <div style={{ position: "relative" }}>
+                      <FaCamera
+                        style={{
+                          fontSize: "15px",
+                          cursor: "pointer",
+                          color: "blueviolet",
+                        }}
+                      />
+                      <input
+                        id="UpdateStoreImage"
+                        type="file"
+                        name="UpdateStoreImage"
+                        accept="image/*"
+                        style={{ display: "none" }}
+                        onChange={handleImageUpload}
+                      />
+                    </div>
+                  </label>
+                  <span
+                    style={{
+                      margin: "4px",
+                      fontSize: "0.8rem",
+                    }}
+                  >
+                    Upload Image
+                  </span>
+                </div>
               </Form.Group>
 
               <Form.Group>
@@ -342,10 +386,21 @@ const UpdateStore = ({
                   value={storeData.country ? storeData.country : item.country}
                 ></Form.Control>
               </Form.Group>
-
               <Form.Group>
                 <Form.Label className="update-label">Opening Days</Form.Label>
                 <div className="update-form">
+                  {daysOfWeek.map((day, index) => {
+                    const isSelected = selectedDays.includes(index + 1)
+                      ? selectedDays.includes(index + 1)
+                      : days.includes(index + 1);
+                    return (
+                      <Form.Control
+                        type="hidden"
+                        name={`openingDays[${index}]`}
+                        value={isSelected ? index + 1 : ""}
+                      />
+                    );
+                  })}
                   {daysOfWeek.map((day, index) => {
                     const isSelected = selectedDays.includes(index + 1)
                       ? selectedDays.includes(index + 1)
@@ -362,12 +417,13 @@ const UpdateStore = ({
                   })}
                 </div>
               </Form.Group>
+
               <Form.Group>
                 <label className="update-label">Opening Time</label>
                 <Form.Control
                   className="update-form"
                   defaultValue={item?.opening_time}
-                  type="text"
+                  type="time"
                   name="openingTime"
                   onChange={(e) => {
                     getInput(e);
@@ -380,7 +436,7 @@ const UpdateStore = ({
                 <Form.Control
                   className="update-form"
                   defaultValue={item?.closing_time}
-                  type="text"
+                  type="time"
                   name="closingTime"
                   onChange={(e) => {
                     getInput(e);
@@ -388,17 +444,8 @@ const UpdateStore = ({
                 ></Form.Control>
               </Form.Group>
 
-              <ButtonComponent
-                buttontext="Update"
-                block
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleUpdateStore();
-                  setShowUpdateStore(false);
-                }}
-              />
+              <ButtonComponent buttontext="Update" block />
             </Form>
-           
           </Modal.Body>
         </Modal>
       )}

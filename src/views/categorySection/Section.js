@@ -1,30 +1,81 @@
-import React, { useState,useContext } from "react";
+import React, { useState, useRef } from "react";
 import NotificationAlert from "react-notification-alert";
 import "../../assets/css/admin.css";
-import { Form, Button, ButtonToolbar, Dropdown } from "rsuite";
+import { Form, Button, ButtonToolbar, Avatar, Dropdown } from "rsuite";
 import { Http } from "../../config/Service";
-import { useEffect } from "react";
-import { Utils } from "CommonUtils/Utils";
-import {SuccessNotify} from "components/NotificationShowPopUp";
-import {ErrorNotify} from "components/NotificationShowPopUp";
+import { SuccessNotify } from "components/NotificationShowPopUp";
+import { ErrorNotify } from "components/NotificationShowPopUp";
+import Modal from "rsuite/Modal";
+import { event } from "jquery";
+import { Uploader, Message, Loader, useToaster } from "rsuite";
+import AvatarIcon from "@rsuite/icons/legacy/Avatar";
+import CameraRetroIcon from "@rsuite/icons/legacy/CameraRetro";
 
 const Section = () => {
   const [sectionName, setSectionName] = useState("");
-  const [selectSection, setSelectSection] = useState("");
-  const {setCategoriesId} = useContext(Utils)
-//   const [selectCategory, setSelectCategory] = useState("");
-  const [data, setData] = useState([]);
   const [category, setCategory] = useState([]);
-
   const notificationAlertRef = React.useRef(null);
+  const [imageUrl, setImageUrl] = useState("");
+  const [imageFile, setImageFile] = useState(null);
+  const [showNotification, setShowNotification] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isImageValid, setIsImageValid] = useState(false); // Add image validity state
 
-  
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    setImageFile(file);
+    setIsImageValid(
+      file && file.type.startsWith("image/png", "image/jpg", "image/jpeg")
+    ); // Update image validity
+    if (isImageValid) {
+      // setErrorMessage("");
+      setTimeout(() => {}, 2000);
+    } else {
+      setShowNotification("Image Upload Successfull");
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 2000);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setImageFile(null);
+    setErrorMessage("Image Removed");
+    setTimeout(() => {
+      setErrorMessage(false);
+      // setShowNotification(false);
+    }, 2000);
+    setIsImageValid(false); // Update image validity
+  };
+
+  // const handleImageChange = (event) => {
+  //   const file = event.target.files[0];
+  //   setImageFile(file);
+  //   if (file && file.type.startsWith("image/")) {
+  //     setImageFile(file);
+  //     setErrorMessage("image upload success");
+  //     setShowNotification(true);
+  //     setTimeout(() => {
+  //       setShowNotification(false);
+  //     }, 2000); // set timer for 2 seconds
+  //   } else {
+  //     setImageFile(null);
+  //     setErrorMessage("Please select a valid image file.");
+  //   }
+  // };
+
+  // const handleRemoveImage = () => {
+  //   setImageFile(null);
+  //   setErrorMessage("");
+  // };
+
   const handleSubmit = () => {
+    if (isImageValid) {
+      var data = new FormData();
+      data.append("section_name", sectionName);
+      data.append("section_image", imageFile);
 
-        var formdata = new FormData();
-        formdata.append("section_name",sectionName );
-
-        Http.PostAPI(process.env.REACT_APP_ADDCATEGORYSECTION, formdata, null)
+      Http.PostAPI(process.env.REACT_APP_ADDCATEGORYSECTION, data)
         .then((res) => {
           if (res?.data?.status) {
             setCategory(res?.data?.data);
@@ -42,7 +93,14 @@ const Section = () => {
             ErrorNotify("Something went wrong")
           );
         });
-        setSectionName("");
+      setSectionName("");
+      setImageFile("");
+    } else {
+      setErrorMessage("Please select an image.");
+      setTimeout(() => {
+        setErrorMessage(false);
+      }, 2000);
+    }
   };
 
   return (
@@ -52,50 +110,92 @@ const Section = () => {
       </div>
       <div className="MainContainer">
         <div className="Container">
+          <Form.ControlLabel
+            style={{
+              color: "#808080",
+              fontSize: "0.9rem",
+              marginTop: "1em",
+              PaddingTop: "20px",
+            }}
+          >
+            Add Section Image
+          </Form.ControlLabel>
+          <Form.Group>
+            {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
+            {showNotification && (
+              <div style={{ color: "green" }}>{showNotification}</div>
+            )}
+            <div>
+              {imageFile ? (
+                <div>
+                  <img
+                    src={URL.createObjectURL(imageFile)}
+                    alt="Avatar"
+                    style={{
+                      width: "80px",
+                      height: "80px",
+                      borderRadius: "50%",
+                    }}
+                  />
+                  <div style={{ marginTop: "1em" }}>
+                    <button onClick={handleRemoveImage}>Remove Image</button>
+                  </div>
+                </div>
+              ) : (
+                <div style={{ overflow: "hidden" }}>
+                  <label htmlFor="avatar-upload">
+                    <img
+                      src="https://via.placeholder.com/150"
+                      alt="Avatar Placeholder"
+                      style={{ borderRadius: "50%", width: "70px" }}
+                    />
+                  </label>
+                  <input
+                    id="avatar-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    style={{ display: "none" }}
+                  />
+                </div>
+              )}
+            </div>
+          </Form.Group>
           <Form fluid onSubmit={handleSubmit}>
             <Form.Group controlId="name-1">
-            <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
+              <Form.ControlLabel
+                style={{
+                  color: "#808080",
+                  fontSize: "1rem",
+                  marginTop: "10px",
+                }}
+              >
                 Add Category Section
               </Form.ControlLabel>
-              <input type="text" placeholder="Enter Category Section" onChange={(e)=>{ setSectionName(e.target.value)}} style={{width:"100%",height:"30px",borderRadius:"5px",padding:"10px",marginTop:"20px"}}/>
-               {/* <select
-                name="selectSection"
-                value={selectSection}
-                onChange={(event) => setSelectSection(event.target.value)}
-              >
-                <option value="">Select</option>
-                {data.map((category) => (
-                  <option key={category.id} value={category.section_name}>
-                    {category.section_name}
-                  </option>
-                ))}
-              </select> */}
+              <input
+                type="text"
+                required
+                value={sectionName}
+                placeholder="Enter Category Section"
+                onChange={(e) => {
+                  setSectionName(e.target.value);
+                }}
+                style={{
+                  width: "100%",
+                  height: "30px",
+                  borderRadius: "5px",
+                  padding: "10px",
+                  marginTop: "20px",
+                }}
+              />
             </Form.Group>
-            {/* <Form.Group controlId="name-1"> */}
-            {/* <div className="InnnerContainerCategory">
-              <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
-                Category Section Name
-              </Form.ControlLabel>
-              <select
-                name="selectCategory"
-                value={selectCategory}
-                onChange={(event) => setSelectCategory(event.target.value)}
-              >
-                <option value="">Select</option>
-                {data.map((category) => (
-                  <option key={category.id} value={category.section_name}>
-                    {category.section_name}
-                  </option>
-                ))}
-              </select>
-            </div> */}
 
             <Form.Group>
               <ButtonToolbar>
                 <Button
                   appearance="primary"
                   type="submit"
-                  style={{ marginTop: "3rem", marginBottom: "0.5rem" }}
+                  style={{ marginTop: "1rem", marginBottom: "0.5rem" }}
                   block
                 >
                   Submit

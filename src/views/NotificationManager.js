@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import { Form, Button, ButtonToolbar, SelectPicker, Checkbox } from "rsuite";
 import ErrorMessage from "customComponents/ErrorMessage";
 import "../assets/css/admin.css";
 import NotificationAlert from "react-notification-alert";
 import { Http } from "config/Service";
 import ButtonComponent from "./ButtonComponent";
-import MultipleSelect from "components/multipleSelect";
+import MultipleSelect from "components/MultipleSelect";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 
@@ -16,12 +16,13 @@ const NotificationManager = () => {
   const [message, setMessage] = useState("");
   const [addNotification, setAddNotification] = useState([]);
   const [vendorData, setVendorData] = useState([]);
-
   const notificationAlertRef = React.useRef(null);
+  const fileInputRef = useRef(null);
 
   const getVendors = () => {
     Http.GetAPI(process.env.REACT_APP_GETVENDORSDATA + "?" + Math.random(), "")
       .then((res) => {
+       
         if (res?.data?.status) {
           setVendorData(res?.data?.data);
         }
@@ -41,8 +42,7 @@ const NotificationManager = () => {
     // e.preventDefault();
     let arr = [];
 
-    // const id = vendorid[0].id;
-
+   
     var data = new FormData();
     for (let i = 0; i < vendorData.length; i++) {
       for (let j = 0; j < selectedVendors.length; j++) {
@@ -58,8 +58,10 @@ const NotificationManager = () => {
 
     Http.PostAPI(process.env.REACT_APP_ADDNOTICATIONMANAGER, data)
       .then((res) => {
+        console.log("Notification",res)
         if (res?.data?.status) {
           setAddNotification(res?.data?.data);
+          getVendors();
           notificationAlertRef.current.notificationAlert(
             SuccessNotify(res?.data?.message)
           );
@@ -74,11 +76,11 @@ const NotificationManager = () => {
           ErrorNotify("Something went wrong")
         );
       });
-    setSelectedVendors("");
-    setImage("");
-    setTitle("");
-    setMessage("");
-    notify("tr");
+    // setSelectedVendors("");
+    // fileInputRef.current.value = "";
+    // setImage(null);
+    // setTitle("");
+    // setMessage("");
   };
 
   return (
@@ -115,10 +117,15 @@ const NotificationManager = () => {
             <Form.Group>
               <Form.ControlLabel>IMAGE</Form.ControlLabel>
               <input
-                name="image"
                 type="file"
-                accept="image/*"
                 onChange={(e) => setImage(e.target.files[0])}
+                name="image"
+                required
+                accept="image/jpeg, image/png, image/jpg"
+                // onChange={(e) => {
+                //   setImage(e.target.files[0]);
+                // }}
+                ref={fileInputRef}
               />
             </Form.Group>
             <Form.Group>
@@ -146,10 +153,7 @@ const NotificationManager = () => {
                 required
               />
             </Form.Group>
-            <ButtonComponent
-              block
-              buttontext="Submit"
-            />
+            <ButtonComponent block buttontext="Submit" />
           </Form>
         </div>
       </div>

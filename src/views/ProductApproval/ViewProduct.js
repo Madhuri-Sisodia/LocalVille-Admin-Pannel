@@ -32,8 +32,8 @@ const ViewProduct = ({ showProductDetail, setShowProductDetail, rowData }) => {
           <Table striped bordered className="table">
             <tbody>
               <tr>
-                <td className="bold-col">Uploader Vendor Id:</td>
-                <td>{rowData.uploader_vendor_id}</td>
+                <td className="bold-col">Store Id:</td>
+                <td>{rowData.store_id}</td>
               </tr>
               <tr>
                 <td className="bold-col">Product Id:</td>
@@ -127,6 +127,70 @@ const ViewProduct = ({ showProductDetail, setShowProductDetail, rowData }) => {
               </tr>
             </tbody>
           </Table>
+          <div
+            style={{
+              fontSize: "0.9rem",
+              fontWeight: "bold",
+              marginTop: "33px",
+            }}
+          >
+            Vendor Details
+          </div>
+          <Table striped bordered className="table">
+            <tbody>
+              <tr>
+                <td className="bold-col">Vendor Id:</td>
+                <td>{rowData.uploader_vendor_id}</td>
+              </tr>
+              <tr>
+                <td className="bold-col">Vendor Image:</td>
+                <td>
+                  <img
+                    src={rowData.vendor_image}
+                    alt="image"
+                    style={{
+                      width: "40px",
+                      height: "40px",
+                      borderRadius: "50%",
+                    }}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td className="bold-col">Vendor Name:</td>
+                <td>{rowData.vendor_name}</td>
+              </tr>
+              <tr>
+                <td className="bold-col">Vendor Email:</td>
+                <td>{rowData.vendor_email}</td>
+              </tr>
+              <tr>
+                <td className="bold-col">Vendor Phone:</td>
+                <td>{rowData.vendor_phone}</td>
+              </tr>
+
+              <tr>
+                <td className="bold-col"> Vendor Status:</td>
+
+                <td
+                  style={{
+                    backgroundColor:
+                      rowData.vendor_active == "1" ? "green" : "red",
+                    border: "none",
+                    fontSize: "0.75rem",
+                    color: "white",
+                    padding: "0px 7px",
+                    borderRadius: "17px",
+                    display: "inline-block",
+                  }}
+                >
+                  {rowData.vendor_active == "1" ? "active" : "block"}
+                </td>
+              </tr>
+            </tbody>
+          </Table>
+
+
           <div
             style={{
               fontSize: "0.9rem",

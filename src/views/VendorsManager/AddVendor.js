@@ -64,7 +64,6 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (validate()) {
-
       var data = new FormData();
       data.append("user_image", image);
       data.append("name", vendorData.vendorName);
@@ -73,6 +72,7 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
 
       Http.PostAPI(process.env.REACT_APP_ADDVENDORS, data)
         .then((res) => {
+          console.log("addd", res);
           if (res?.data?.status) {
             setVendors(res?.data?.data);
             getVendors();
@@ -103,7 +103,7 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
 
   return (
     <>
-    <div className="rna-container">
+      <div className="rna-container">
         <NotificationAlert ref={notificationAlertRef} />
       </div>
       <Modal show={showAddVendor} onHide={() => setShowAddVendor(false)}>
@@ -122,7 +122,7 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="vendorImage">
               <Form.Label className="add-label">Vendor Image</Form.Label>
-               <Form.Control
+              <Form.Control
                 name="image"
                 type="file"
                 accept="image/*"
@@ -181,9 +181,7 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
               )}
             </Form.Group>
 
-           <ButtonComponent
-           buttontext="Add"
-           />
+            <ButtonComponent buttontext="Add" />
           </Form>
         </Modal.Body>
       </Modal>

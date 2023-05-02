@@ -1,29 +1,31 @@
-import axios from "axios";//import { base_url, prod_url } from "./WebConstant";
+import axios from "axios"; //import { base_url, prod_url } from "./WebConstant";
 
-const base_url = process.env.REACT_APP_BASEURL
+const base_url = process.env.REACT_APP_BASEURL;
 // const prod_url = process.env.REACT_APP_PRODURL
 
 export var Http = {
-  GetAPI:async(url, data) => {
-    const UserToken = await JSON.parse(sessionStorage.getItem("loggedIn")) 
+  GetAPI: async (url, data) => {
+    const UserToken = await JSON.parse(sessionStorage.getItem("loggedIn"));
     let header = {
       "Content-Type": "multipart/form-data",
-      "Accept":'application/json',
-      "Authorization": UserToken
-  }
+      Accept: "application/json",
+      Authorization: UserToken,
+    };
 
- return axios({
-        method: 'GET',
-        url: base_url + url,
-        params: {data},
-        headers:header,
-    }).then((e) => {
-        return e;
-    }).catch((e) => {
-      console.log("error", e);
-        alert('Something went wrong!');
-        return e;
+    return axios({
+      method: "GET",
+      url: base_url + url,
+      params: { data },
+      headers: header,
     })
+      .then((e) => {
+        return e;
+      })
+      .catch((e) => {
+        console.log("error", e);
+        alert("Something went wrong!");
+        return e;
+      })
       .then((e) => {
         // console.log("getData", e);
         return e;
