@@ -394,19 +394,8 @@ const UpdateStore = ({
                       ? selectedDays.includes(index + 1)
                       : days.includes(index + 1);
                     return (
-                      <Form.Control
-                        type="hidden"
-                        name={`openingDays[${index}]`}
-                        value={isSelected ? index + 1 : ""}
-                      />
-                    );
-                  })}
-                  {daysOfWeek.map((day, index) => {
-                    const isSelected = selectedDays.includes(index + 1)
-                      ? selectedDays.includes(index + 1)
-                      : days.includes(index + 1);
-                    return (
                       <div
+                        key={index}
                         className={`week-days ${isSelected ? "selected" : ""}`}
                         name="selectedDays"
                         onClick={() => toggleDaySelection(index)}

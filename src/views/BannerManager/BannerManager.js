@@ -42,18 +42,8 @@ const BannerManager = () => {
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     setImageFile(file);
-    setIsImageValid(
-      file && file.type.startsWith("image/png", "image/jpg", "image/jpeg")
-    ); // Update image validity
-    if (isImageValid) {
-      // setErrorMessage("");
-      setTimeout(() => {}, 2000);
-    } else {
-      setShowNotification("Image Upload Successfull");
-      setTimeout(() => {
-        setShowNotification(false);
-      }, 2000);
-    }
+    // Update image validity
+   
   };
 
   const handleRemoveImage = () => {
@@ -101,8 +91,12 @@ const BannerManager = () => {
   };
 
   const handleSubmit = () => {
-    if (isImageValid) {
-    
+    if (!imageFile) {
+      setErrorMessage("Image is required");
+    } else {
+      setErrorMessage("");
+    }
+
       // e.preventDefault();
 
       let redirectImg;
@@ -138,10 +132,9 @@ const BannerManager = () => {
           );
         });
       resetForm();
-    } else {
-      setErrorMessage("Please select an image.");
-      
-    }
+
+      setErrorMessage("");
+    
   };
 
   const handleFieldChange = (value, name) => {
@@ -161,12 +154,6 @@ const BannerManager = () => {
             <Form.Group>
               <Form.ControlLabel htmlFor="file">IMAGE</Form.ControlLabel>
               <div>
-                {errorMessage && (
-                  <div style={{ color: "red" }}>{errorMessage}</div>
-                )}
-                {showNotification && (
-                  <div style={{ color: "green" }}>{showNotification}</div>
-                )}
                 {imageFile ? (
                   <div>
                     <img
@@ -178,9 +165,10 @@ const BannerManager = () => {
                         borderRadius: "11px",
                       }}
                     />
-                    <div style={{ marginTop: "1em" }}>
+                  
+                    {/* <div style={{ marginTop: "1em" }}>
                       <button onClick={handleRemoveImage}>Remove Image</button>
-                    </div>
+                    </div> */}
                   </div>
                 ) : (
                   <div style={{ overflow: "hidden" }}>
@@ -208,6 +196,9 @@ const BannerManager = () => {
                   </div>
                 )}
               </div>
+              {errorMessage && (
+                      <div style={{ color: "red" }}>{errorMessage}</div>
+                    )}
             </Form.Group>
 
             <Form.Group>

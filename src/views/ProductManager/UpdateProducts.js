@@ -31,30 +31,20 @@ const AddProduct = ({
   console.log(getProducts);
 
   const [product, setProduct] = useState([]);
+  const [tem, setTem] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [edit, setEdit] = useState(-1);
 
-  // const [image, setImage] = useState(null);
-  // const [vendortData, setVendorData] = useState([]);
-  // const [selectSection, setSelectSection] = useState("");
-  // const [getStoreData, setGetStoreData] = useState([]);
-  // const [getProcat, setGetProCat] = useState([]);
-  // const [getProSubcat, setGetProSubCat] = useState([]);
-  // const [selectProCat, setSelectProCat] = useState("");
-  // const [selectProSubCat, setSelectProSubCat] = useState("");
-  // const [getsize, setGetSize] = useState([]);
-  // const [color, setColor] = useState([]);
   const [productImage, setProductImage] = useState();
   const [baseImage, setBaseImage] = useState("");
   const [buy, setBuy] = useState("No");
   const [pickup, setPickup] = useState("No");
 
-  // const [productPrice, setProductPrice] = useState([]);
-  // const [productDiscountPrice, setProductDiscountPrice] = useState([]);
-  const [attributes, setAttributes] = useState([]);
-  const [isAddProdcut, setIsAddProduct] = useState(false);
-  const [showAddProduct, setShowAddProduct] = useState(false);
-  const [UpdateProduct, setUpdateProduct] = useState();
+  const formRef = React.useRef();
+  const isMounted = useRef(false);
+
+  const notificationAlertRef = React.useRef(null);
+
   const [formValue, setFormValue] = useState({
     productId: item?.id,
     productName: item?.product_name,
@@ -66,11 +56,6 @@ const AddProduct = ({
   });
 
   console.log(item?.id);
-
-  const formRef = React.useRef();
-  const isMounted = useRef(false);
-
-  const notificationAlertRef = React.useRef(null);
 
   const updateImage = () => {
     const data = new FormData();
@@ -107,6 +92,25 @@ const AddProduct = ({
         );
       });
   };
+  // const handleImageUpload = (event, index) => {
+  //   const file = event.target.files[0];
+  //   const reader = new FileReader();
+
+  //   reader.onloadend = () => {
+  //     const newImage = reader.result;
+
+  //     const updatedImages = [...item.images];
+
+  //      updatedImages[index] = { images: newImage };
+
+  //   setTem({ ...item, images: updatedImages });
+
+  //     setProductImage(file);
+  //     setBaseImage(newImage);
+  //   };
+
+  //   reader.readAsDataURL(file);
+  // };
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -117,6 +121,16 @@ const AddProduct = ({
     };
     reader.readAsDataURL(file);
   };
+  // const handleImageUpload = (e) => {
+  //   const file = e.target.files[0];
+  //   const reader = new FileReader();
+  //   reader.onloadend = () => {
+  //     const uploadedImages = [...productImage];
+  //     uploadedImages[0] = { images: reader.result }; 
+  //     setProductImage(uploadedImages); 
+  //   };
+  //   reader.readAsDataURL(file);
+  // };
 
   useEffect(() => {
     if (isMounted.current) {
@@ -187,7 +201,11 @@ const AddProduct = ({
         <NotificationAlert ref={notificationAlertRef} />
       </div>
       {item != null && (
-        <Modal show={showUpdateModal} onHide={() => setShowUpdateModal(false)}>
+        <Modal
+          show={showUpdateModal}
+          onHide={() => setShowUpdateModal(false)}
+          className="wide-modal"
+        >
           <Modal.Header>
             <Modal.Title className="titleUpdateProduct">
               Update Products
@@ -215,21 +233,6 @@ const AddProduct = ({
               onSubmit={handleSubmit}
               onChange={setFormValue}
             >
-              {/* <div>
-                  <img
-                    src={
-                      productData?.productImage
-                        ? productData?.productImage
-                        : item.theme_img
-                    }
-                    alt="image"
-                    style={{
-                      width: "80px",
-                      height: "100px",
-                      border: "",
-                    }}
-                  />
-                </div> */}
               <Form.Group className="UpdateProductForm">
                 <Form.ControlLabel className="add-label-UpdateProduct">
                   {" "}
@@ -237,56 +240,46 @@ const AddProduct = ({
                 </Form.ControlLabel>
 
                 <div className="uploadProductImage">
-                  <div style={{ display: "flex" }}>
+                  <div>
                     {item?.images?.map((image, index) => (
                       <div
                         key={index}
-                        style={{ display: "inline-block", marginRight: "5px" }}
+                        style={{ display: "inline-block", margin: "2px" }}
                       >
                         <img
-                          src={productImage ? baseImage : image}
-                          alt={`Image ${index}`}
+                          src={productImage ? baseImage : image.images}
+                          alt="Image"
                           style={{
                             width: "50px",
                             height: "60px",
                             borderRadius: "5px",
                           }}
+                       
                         />
+                        {/* <img
+                           src={productImage[index]?.images ? baseImage|| image.images}
+                          alt="Image"
+                          style={{
+                            width: "50px",
+                            height: "60px",
+                            borderRadius: "5px",
+                          }}
+                        /> */}
+
                         <sup
                           className="deleteButton"
-                          style={{ display: "inline-block", marginLeft: "5px" }}
+                          onClick={() => handleDeleteImage()}
                         >
                           <i className="fa fa-trash"></i>
                         </sup>
                       </div>
                     ))}
-                  </div>
-                </div>
-                {/* <div>
-                    <img
-                      src={productImage ? baseImage : item?.images?.[0]?.images}
-                      alt="Image"
-                      style={{
-                        width: "50px",
-                        height: "60px",
-                        borderRadius: "5px",
-                      }}
-                    />
-                    {console.log("aaaaaa",item?.images?.[0]?.images)}
-                    <sup className="deleteButton">
-                      <i className="fa fa-trash"></i>
-                    </sup>
-                  </div> */}
-                <div>
-                  <div
-                    className="uploadProductImage"
-                    style={{ display: "flex", alignItems: "left" }}
-                  >
+
                     <label htmlFor="productImage">
                       <div style={{ position: "relative" }}>
                         <FaCamera
                           style={{
-                            fontSize: "4rem",
+                            fontSize: "3rem",
                             cursor: "pointer",
                             color: "#8052D5",
                             padding: "0.7rem",
@@ -295,57 +288,21 @@ const AddProduct = ({
                           }}
                         />
                         <input
+                          // id={`productImage-${index}`}
                           id="productImage"
-                          multiple
                           type="file"
                           name="productImage"
                           accept="image/*"
                           style={{ display: "none" }}
+                          // onChange={(e) => handleImageUpload(e, index)}
                           onChange={handleImageUpload}
                         />
                       </div>
                     </label>
-                    {/* <span
-                    style={{
-                      margin: "4px",
-                      fontSize: "0.8rem",
-                    }}
-                  >
-                    Upload Image
-                  </span> */}
                   </div>
-                  {/* <div>
-                    <img src={Image} className="uploadImage" />
-                    <sup className="deleteButton"><i className="fa fa-trash"></i></sup>
-                  </div>
-                  <div>
-                    <img src={Image} className="uploadImage" />
-                    <sup className="deleteButton"><i className="fa fa-trash"></i></sup>
-                  </div>
-                  <div>
-                    <img src={Image} className="uploadImage" />
-                    <sup className="deleteButton"><i className="fa fa-trash"></i></sup> */}
-                  {/* </div> */}
-
-                  {/* <Uploader multiple listType="picture" maxButton={4}>
-                    <button>
-                      <i className="fa fa-camera"></i>
-                    </button>
-                  </Uploader> */}
                 </div>
-
                 <p className="maxLimit">You can upload maximum 4 images</p>
               </Form.Group>
-              {/* <Form.Control
-                  name="productImage"
-                  multiple
-                  onChange={(e) => {
-                    setProductData((previous) => {
-                      return { ...previous, productImage: e.target.files };
-                    });
-                  }}
-                  type="file"
-                ></Form.Control> */}
 
               <div className="UpdateProductForm">
                 <Form.ControlLabel className="add-label-UpdateProduct">
@@ -395,10 +352,6 @@ const AddProduct = ({
                           ? formValue.category
                           : item?.category_name
                       }
-                      // onChange={(e) => {
-                      //   handleInput(e);
-                      // }}
-                      // defaultValue={item?.category_name}
                       type="text"
                       disabled
                     />
@@ -410,9 +363,6 @@ const AddProduct = ({
                     </Form.ControlLabel>
                     <Form.Control
                       name="sub_category"
-                      // onChange={(e) => {
-                      //   handleInput(e);
-                      // }}
                       defaultValue={
                         formValue.sub_category
                           ? formValue.sub_category
@@ -516,10 +466,7 @@ const AddProduct = ({
                   </Form.Group>
                 </div>
                 <div className="updateModelButton">
-                  <ButtonComponent
-                    // onClick={handleSubmit}
-                    buttontext="UPDATE PRODUCT"
-                  />
+                  <ButtonComponent buttontext="UPDATE PRODUCT" />
                 </div>
               </div>
             </Form>
@@ -531,7 +478,6 @@ const AddProduct = ({
                 item={item}
               />
             </div>
-            {/* {item?.attributes?.length > 0 ? ( */}
 
             {item?.attributes?.map((attribute, index) => (
               <div>
@@ -592,7 +538,6 @@ const AddProduct = ({
               item={item}
               getProducts={getProducts}
             />
-            {/* </div>):("")} */}
           </Modal.Body>
         </Modal>
       )}
