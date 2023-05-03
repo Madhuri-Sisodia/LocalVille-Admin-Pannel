@@ -17,22 +17,34 @@ import ProductApproval from "views/ProductApproval/ProductApproval";
 import StoreApproval from "views/StoreApproval/StoreApproval";
 import NotificationManager from "views/NotificationManager";
 import EmailManager from "views/EmailManager/EmailManager";
-
 import BannerManager from "views/BannerManager/BannerManager";
 import InvoiceTable from "views/InvoiceManager/InvoiceTable";
+import dashboard from "./assets/img/dashboard.svg";
+import Admin from "./assets/img/user.svg"
+import Banner from "./assets/img/image.svg";
+import Categories from "./assets/img/Category.svg"
+import Vendor from "./assets/img/admin.svg"
+import store from "./assets/img/storemanager.svg";
+import Product from "./assets/img/products.svg"
+import productApproval from "./assets/img/store.svg";
+import storeApproval from "./assets/img/stores.svg";
+import notification from "./assets/img/notification.svg";
+import Email from "./assets/img/email.svg";
+import invoice from "./assets/img/invoice.svg";
+
 
 const dashboardRoutes = [
   {
     path: "/dashboard",
     name: "Dashboard",
-    icon: "nc-icon nc-chart-pie-35",
+    svgImg: dashboard,
     component: Dashboard,
     layout: "/admin",
   },
   {
     path: "/admin",
     name: "Admin Manager",
-    icon: "nc-icon nc-single-02",
+    svgImg: Admin,
     component: AdminManager,
     layout: "/admin",
   },
@@ -40,14 +52,14 @@ const dashboardRoutes = [
   {
     path: "/banner",
     name: "Banner Manager",
-    icon: "nc-icon nc-album-2",
+    svgImg:Banner,
     component: BannerManager,
     layout: "/admin",
   },
   {
     path: "/category",
     name: "Categories",
-    icon: "nc-icon nc-grid-45",
+    svgImg: Categories,
     component: Category,
     layout: "/admin",
   },
@@ -55,7 +67,7 @@ const dashboardRoutes = [
   {
     path: "/vendors",
     name: "Vendors Manager",
-    icon: "nc-icon nc-circle-09",
+    svgImg: Vendor,
     component: VendorsManager,
     layout: "/admin",
   },
@@ -63,14 +75,14 @@ const dashboardRoutes = [
   {
     path: "/store",
     name: "Store Manager",
-    icon: "fa-light fa-cart-plus",
+    svgImg: store,
     component: StoreManager,
     layout: "/admin",
   },
   {
     path: "/product",
     name: "Product Manager",
-    icon: "fas fa-box",
+    svgImg: Product,
     component: ProductManager,
     layout: "/admin",
   },
@@ -78,14 +90,14 @@ const dashboardRoutes = [
   {
     path: "/productapproval",
     name: "Product Approval",
-    icon: "fas fa-shopping-cart",
+    svgImg: productApproval,
     component: ProductApproval,
     layout: "/admin",
   },
   {
     path: "/storeApproval",
     name: "Store Approval",
-    icon: "fa fa-shopping-basket",
+    svgImg: storeApproval,
     component: StoreApproval,
     layout: "/admin",
   },
@@ -94,21 +106,21 @@ const dashboardRoutes = [
     name: "User Profile",
     path: "/notification",
     name: "Notification Manager",
-    icon: "nc-icon nc-notification-70",
+    svgImg: notification,
     component: NotificationManager,
     layout: "/admin",
   },
   {
     path: "/Emailer",
     name: "Email Manager",
-    icon: "far fa-envelope-open",
+    svgImg: Email,
     component: EmailManager,
     layout: "/admin",
   },
   {
     path: "/Invoice",
     name: "Invoice Manager",
-    icon: "fas fa-file-invoice",
+    svgImg: invoice,
     component: InvoiceTable,
     layout: "/admin",
   },

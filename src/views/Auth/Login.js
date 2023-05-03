@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import ErrorMessage from "customComponents/ErrorMessage";
 import { useHistory } from "react-router-dom";
-import { Form, Button, Panel } from "rsuite";
+import { Form, Button, Panel, Loader } from "rsuite";
 import "../../assets/css/login.css";
 import LoginNavbar from "components/Navbars/LoginNavbar";
 import { Http } from "../../config/Service";
@@ -15,6 +15,7 @@ const Login = () => {
   const history = useHistory();
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [btnLoading, setBtnloading] =useState (false);
   const [password, setPassword] = useState("");
   const [user, setUser] = useState([]);
   const [errors, setErrors] = useState({});
@@ -58,9 +59,12 @@ const Login = () => {
       var data = new FormData();
       data.append("email", email);
       data.append("password", password);
+      
+      setBtnloading(true); 
 
       Http.PostAPI(process.env.REACT_APP_LOGINADMINDATA, data, null)
         .then((res) => {
+          setBtnloading(false);
           if (res?.data?.status) {
             setUser(res?.data?.data);
             console.log(res?.data?.data);
@@ -81,6 +85,7 @@ const Login = () => {
           }
         })
         .catch((e) => {
+          setBtnloading(false)
           notificationAlertRef.current.notificationAlert(
             ErrorNotify("Something went wrong")
           );
@@ -150,13 +155,17 @@ const Login = () => {
 
                   <div align="center">
                     <Button
+                    disabled={btnLoading}
                       style={{ padding: "15px 180px" }}
                       appearance="primary"
                       type="submit"
                       className="loginButton"
                       onClick={handleSubmit}
                     >
-                      <b>LOGIN</b>
+                      {btnLoading?
+                        <Loader/>:<b>LOGIN</b> 
+                      }
+                      
                     </Button>
                   </div>
                 </Form>

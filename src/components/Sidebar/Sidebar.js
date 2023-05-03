@@ -54,6 +54,7 @@ function Sidebar({ color, image, routes }) {
                     
                   >
                     <i className={prop.icon} />
+                    <img src ={prop.svgImg} style={{marginRight:"12px"}}/>
                     <p style={{fontSize:"11px"}}>{prop.name}</p>
                   </NavLink>
                 </li>
