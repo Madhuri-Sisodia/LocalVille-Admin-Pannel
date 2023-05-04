@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { MdClose } from "react-icons/md";
-import { Modal, Form, Button } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
+import { Form } from "rsuite";
 import { Http } from "../../config/Service";
 import "../../assets/css/day.css";
 import { FaCamera } from "react-icons/fa";
@@ -10,6 +11,7 @@ import axios from "axios";
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
+import { validationUpdateStoreModel } from "components/Validation";
 
 import "../../assets/css/modal.css";
 import ButtonComponent from "views/ButtonComponent";
@@ -21,26 +23,28 @@ const UpdateStore = ({
   getStore,
 }) => {
   const [storeData, setStoreData] = useState({
-    storeId: "",
-    storeName: "",
-    storeDesc: "",
-    address: "",
-    latitude: "",
-    longitude: "",
-    pincode: "",
-    city: "",
-    state: "",
-    country: "",
-    openingDays: "",
-    openingTime: "",
-    closingTime: "",
+    storeId: item?.id,
+    storeName: item?.store_name,
+    storeDesc: item?.store_desc,
+    address: item?.store_address,
+    latitude: item?.latitude,
+    longitude: item?.longitude,
+    pincode: item?.pincode,
+    city: item?.city,
+    state: item?.state,
+    country: item?.country,
+    openingDays: item?.opening_days,
+    openingTime: item?.opening_time,
+    closingTime: item?.closing_time,
   });
   const [store, setStore] = useState([]);
   const [hideData, setHideData] = useState(true);
   const [UpdateStoreImage, SetUpdateStoreImage] = useState("");
   const [baseImage, setBaseImage] = useState("");
   const [selectedDays, setSelectedDays] = useState([]);
+  const [timeError, setTimeError] = useState("");
   const notificationAlertRef = React.useRef(null);
+  const formRef = React.useRef();
 
   const toggleDaySelection = (index) => {
     if (selectedDays.includes(index + 1)) {
@@ -63,7 +67,6 @@ const UpdateStore = ({
         try {
           parsedDays = item.opening_days.split(",");
         } catch (error) {
-          console.error("Error parsing JSON:", error);
           parsedDays = [];
         }
       }
@@ -71,11 +74,6 @@ const UpdateStore = ({
     }
   }, [item]);
 
-  const getInput = (e) => {
-    setStoreData((previous) => {
-      return { ...previous, [e.target.name]: e.target.value };
-    });
-  };
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     SetUpdateStoreImage(file);
@@ -85,74 +83,97 @@ const UpdateStore = ({
     };
     reader.readAsDataURL(file);
   };
+  const validateOpeningClosingTime = () => {
+    const openingTime = new Date(`2000-01-01T${storeData.openingTime}:00Z`);
+    const closingTime = new Date(`2000-01-01T${storeData.closingTime}:00Z`);
+    const timeDiffInMinutes = (closingTime - openingTime) / (1000 * 60);
+    if (timeDiffInMinutes <= 60 && timeDiffInMinutes >= 0) {
+      setTimeError(
+        "The difference between Opening Time and Closing Time should be at least 1 hour"
+      );
+    } else {
+      setTimeError("");
+    }
+  };
 
-  const handleUpdateStore = (e) => {
-    e.preventDefault();
-    var data = new FormData();
+  const handleUpdateStore = () => {
+    // e.preventDefault();
+    validateOpeningClosingTime();
 
-    data.append("store_image", UpdateStoreImage);
-    data.append("store_id", storeData.storeId ? storeData.storeId : item.id);
-    data.append(
-      "store_name",
-      storeData.storeName ? storeData.storeName : item.store_name
-    );
-    data.append(
-      "store_desc",
-      storeData.storeDesc ? storeData.storeDesc : item.store_desc
-    );
-    data.append("lat", storeData.latitude ? storeData.latitude : item.latitude);
-    data.append(
-      "long",
-      storeData.longitude ? storeData.longitude : item.longitude
-    );
-    data.append(
-      "address",
-      storeData.address ? storeData.address : item.store_address
-    );
-    data.append(
-      "pincode",
-      storeData.pincode ? storeData.pincode : item.pincode
-    );
-    data.append("city", storeData.city ? storeData.city : item.city);
-    data.append("state", storeData.state ? storeData.state : item.state);
-    data.append(
-      "country",
-      storeData.country ? storeData.country : item.country
-    );
-    data.append(
-      "opening_days",
-      selectedDays ? selectedDays : item.opening_days
-    );
-    data.append(
-      "opening_time",
-      storeData.openingTime ? storeData.openingTime : item.opening_time
-    );
-    data.append(
-      "closing_time",
-      storeData.closingTime ? storeData.closingTime : item.closing_time
-    );
+    if (!formRef.current.check()) {
+      console.log("Form Error!");
 
-    Http.PostAPI(process.env.REACT_APP_UPDATESTORE, data, null)
-      .then((res) => {
-        if (res?.data?.status) {
-          setStore(res?.data?.data);
-          setSelectedDays("");
-          getStore();
+      return;
+    } else {
+      var data = new FormData();
+
+      data.append("store_image", UpdateStoreImage);
+      data.append("store_id", storeData.storeId ? storeData.storeId : item?.id);
+      data.append(
+        "store_name",
+        storeData.storeName ? storeData.storeName : item?.store_name
+      );
+      data.append(
+        "store_desc",
+        storeData.storeDesc ? storeData.storeDesc : item?.store_desc
+      );
+      data.append(
+        "lat",
+        storeData.latitude ? storeData.latitude : item?.latitude
+      );
+      data.append(
+        "long",
+        storeData.longitude ? storeData.longitude : item?.longitude
+      );
+      data.append(
+        "address",
+        storeData.address ? storeData.address : item?.store_address
+      );
+      data.append(
+        "pincode",
+        storeData.pincode ? storeData.pincode : item?.pincode
+      );
+      data.append("city", storeData.city ? storeData.city : item?.city);
+      data.append("state", storeData.state ? storeData.state : item?.state);
+      data.append(
+        "country",
+        storeData.country ? storeData.country : item?.country
+      );
+      data.append(
+        "opening_days",
+        selectedDays ? selectedDays : item?.opening_days
+      );
+      data.append(
+        "opening_time",
+        storeData.openingTime ? storeData.openingTime : item?.opening_time
+      );
+      data.append(
+        "closing_time",
+        storeData.closingTime ? storeData.closingTime : item?.closing_time
+      );
+
+      Http.PostAPI(process.env.REACT_APP_UPDATESTORE, data, null)
+        .then((res) => {
+          if (res?.data?.status) {
+            setStore(res?.data?.data);
+            setSelectedDays("");
+            getStore();
+            notificationAlertRef.current.notificationAlert(
+              SuccessNotify(res?.data?.message)
+            );
+          } else {
+            notificationAlertRef.current.notificationAlert(
+              ErrorNotify(res?.data?.message)
+            );
+          }
+        })
+        .catch((e) => {
           notificationAlertRef.current.notificationAlert(
-            SuccessNotify(res?.data?.message)
+            ErrorNotify("Something went wrong")
           );
-        } else {
-          notificationAlertRef.current.notificationAlert(
-            ErrorNotify(res?.data?.message)
-          );
-        }
-      })
-      .catch((e) => {
-        notificationAlertRef.current.notificationAlert(
-          ErrorNotify("Something went wrong")
-        );
-      });
-    setShowUpdateStore(false);
+        });
+      setShowUpdateStore(false);
+    }
   };
 
   useEffect(() => {
@@ -202,17 +223,25 @@ const UpdateStore = ({
             />
           </Modal.Header>
           <Modal.Body className="update-body">
-            <Form onSubmit={handleUpdateStore}>
+            <Form
+              fluid
+              ref={formRef}
+              model={validationUpdateStoreModel}
+              formValue={storeData?.defaultValue}
+              onSubmit={handleUpdateStore}
+              onChange={setStoreData}
+            >
               {!hideData && (
                 <Form.Group style={{ marginTop: "0rem", marginBottom: "1rem" }}>
-                  <label className="update-label">Store ID</label>
+                  <Form.ControlLabel className="update-label">
+                    Store ID
+                  </Form.ControlLabel>
                   <Form.Control
                     className="update-form"
-                    defaultValue={item?.id}
+                    defaultValue={
+                      storeData.storeId ? storeData.storeId : item?.id
+                    }
                     name="storeId"
-                    onChange={(e) => {
-                      getInput(e);
-                    }}
                     type="id"
                   ></Form.Control>
                 </Form.Group>
@@ -220,14 +249,17 @@ const UpdateStore = ({
 
               {!hideData && (
                 <Form.Group style={{ marginTop: "0rem", marginBottom: "1rem" }}>
-                  <label className="update-label">Longitude</label>
+                  <Form.ControlLabel className="update-label">
+                    Longitude
+                  </Form.ControlLabel>
                   <Form.Control
                     className="update-form"
-                    defaultValue={item?.longitude}
-                    name="storeId"
-                    onChange={(e) => {
-                      getInput(e);
-                    }}
+                    defaultValue={
+                      storeData.longitude
+                        ? storeData.longitude
+                        : item?.longitude
+                    }
+                    name="longitude"
                     type="number"
                   ></Form.Control>
                 </Form.Group>
@@ -235,14 +267,15 @@ const UpdateStore = ({
 
               {!hideData && (
                 <Form.Group style={{ marginTop: "0rem", marginBottom: "1rem" }}>
-                  <label className="update-label">Latitude</label>
+                  <Form.ControlLabel className="update-label">
+                    Latitude
+                  </Form.ControlLabel>
                   <Form.Control
                     className="update-form"
-                    defaultValue={item?.latitude}
-                    name="storeId"
-                    onChange={(e) => {
-                      getInput(e);
-                    }}
+                    defaultValue={
+                      storeData.latitude ? storeData.latitude : item?.latitude
+                    }
+                    name="latitude"
                     type="number"
                   ></Form.Control>
                 </Form.Group>
@@ -291,7 +324,9 @@ const UpdateStore = ({
               </Form.Group>
 
               <Form.Group>
-                <Form.Label className="add-label">Store Address</Form.Label>
+                <Form.ControlLabel className="add-label">
+                  Store Address
+                </Form.ControlLabel>
                 <div style={{ marginBottom: "20px" }}>
                   <GoogleAutocomplete />
                 </div>
@@ -300,94 +335,104 @@ const UpdateStore = ({
                 </div>
               </Form.Group>
               <Form.Group style={{ marginBottom: "1rem" }}>
-                <label className="update-label">Store Name</label>
+                <Form.ControlLabel className="update-label">
+                  Store Name
+                </Form.ControlLabel>
                 <Form.Control
                   className="update-form"
-                  defaultValue={item?.store_name}
                   name="storeName"
-                  onChange={(e) => {
-                    getInput(e);
-                  }}
+                  defaultValue={
+                    storeData.storeName ? storeData.storeName : item?.store_name
+                  }
                   type="text"
                 ></Form.Control>
               </Form.Group>
 
               <Form.Group>
-                <label className="update-label">Store Description</label>
+                <Form.ControlLabel className="update-label">
+                  Store Description
+                </Form.ControlLabel>
                 <Form.Control
                   className="update-form"
-                  defaultValue={item?.store_desc}
                   type="text"
                   name="storeDesc"
-                  onChange={(e) => {
-                    getInput(e);
-                  }}
+                  defaultValue={
+                    storeData.storeDesc ? storeData.storeDesc : item?.store_desc
+                  }
                 ></Form.Control>
               </Form.Group>
-
               <Form.Group>
-                <label className="update-label">Address</label>
+                <Form.ControlLabel className="update-label">
+                  Address
+                </Form.ControlLabel>
                 <Form.Control
                   className="update-form"
-                  defaultValue={item?.store_address}
                   type="text"
                   name="address"
-                  onChange={(e) => {
-                    getInput(e);
-                  }}
+                  defaultValue={
+                    storeData.address ? storeData.address : item?.store_address
+                  }
                 ></Form.Control>
               </Form.Group>
 
               <Form.Group>
-                <label className="update-label">Pincode</label>
+                <Form.ControlLabel className="update-label">
+                  Pincode
+                </Form.ControlLabel>
                 <Form.Control
                   className="update-form"
-                  defaultValue={item?.pincode}
                   type="number"
                   name="pincode"
-                  onChange={(e) => {
-                    getInput(e);
-                  }}
+                  defaultValue={
+                    storeData.pincode ? storeData.pincode : item?.pincode
+                  }
                 ></Form.Control>
               </Form.Group>
 
               <Form.Group>
-                <label className="update-label">City</label>
+                <Form.ControlLabel className="update-label">
+                  City
+                </Form.ControlLabel>
                 <Form.Control
                   className="update-form"
-                  defaultValue={item?.city}
                   type="text"
                   name="city"
                   disabled
-                  value={storeData.city ? storeData.city : item.city}
+                  defaultValue={storeData.city ? storeData.city : item.city}
                 ></Form.Control>
               </Form.Group>
 
               <Form.Group>
-                <label className="update-label">State</label>
+                <Form.ControlLabel className="update-label">
+                  State
+                </Form.ControlLabel>
                 <Form.Control
                   className="update-form"
-                  defaultValue={item?.state}
                   type="text"
                   name="state"
                   disabled
-                  value={storeData.state ? storeData.state : item.state}
+                  defaultValue={storeData.state ? storeData.state : item.state}
                 ></Form.Control>
               </Form.Group>
 
               <Form.Group>
-                <label className="update-label">Country</label>
+                <Form.ControlLabel className="update-label">
+                  Country
+                </Form.ControlLabel>
                 <Form.Control
                   className="update-form"
-                  defaultValue={item?.country}
                   type="text"
                   name="country"
                   disabled
-                  value={storeData.country ? storeData.country : item.country}
+                  defaultValue={
+                    storeData.country ? storeData.country : item.country
+                  }
                 ></Form.Control>
               </Form.Group>
               <Form.Group>
-                <Form.Label className="update-label">Opening Days</Form.Label>
+                <Form.ControlLabel className="update-label">
+                  Opening Days
+                </Form.ControlLabel>
                 <div className="update-form">
                   {daysOfWeek.map((day, index) => {
                     const isSelected = selectedDays.includes(index + 1)
@@ -407,31 +452,46 @@ const UpdateStore = ({
                 </div>
               </Form.Group>
 
-              <Form.Group>
-                <label className="update-label">Opening Time</label>
-                <Form.Control
-                  className="update-form"
-                  defaultValue={item?.opening_time}
-                  type="time"
-                  name="openingTime"
-                  onChange={(e) => {
-                    getInput(e);
-                  }}
-                ></Form.Control>
-              </Form.Group>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <Form.Group>
+                  <Form.ControlLabel className="update-label">
+                    Opening Time
+                  </Form.ControlLabel>
+                  <Form.Control
+                    className="update-form"
+                    defaultValue={
+                      storeData.openingTime
+                        ? storeData.openingTime
+                        : item?.opening_time
+                    }
+                    type="time"
+                    name="openingTime"
+                    onChange={validateOpeningClosingTime}
+                  ></Form.Control>
+                </Form.Group>
 
-              <Form.Group>
-                <label className="update-label">Closing Time</label>
-                <Form.Control
-                  className="update-form"
-                  defaultValue={item?.closing_time}
-                  type="time"
-                  name="closingTime"
-                  onChange={(e) => {
-                    getInput(e);
-                  }}
-                ></Form.Control>
-              </Form.Group>
+                <Form.Group>
+                  <Form.ControlLabel className="update-label">
+                    Closing Time
+                  </Form.ControlLabel>
+                  <Form.Control
+                    className="update-form"
+                    defaultValue={
+                      storeData.closingTime
+                        ? storeData.closingTime
+                        : item?.closing_time
+                    }
+                    type="time"
+                    name="closingTime"
+                    onChange={validateOpeningClosingTime}
+                  ></Form.Control>
+                </Form.Group>
+              </div>
+              {timeError && (
+                <div style={{ color: "red", fontSize: "0.7rem" }}>
+                  {timeError}
+                </div>
+              )}
 
               <ButtonComponent buttontext="Update" block />
             </Form>

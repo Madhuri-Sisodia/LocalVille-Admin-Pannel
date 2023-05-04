@@ -10,7 +10,6 @@ import {
 } from "rsuite";
 
 const { StringType } = Schema.Types;
-
 const validationModel = Schema.Model({
   aName: StringType()
     .isRequired("Admin Name is required.")
@@ -25,8 +24,6 @@ const validationModel = Schema.Model({
   password: StringType().isRequired("Password is required."),
   rePassword: StringType()
     .addRule((value, data) => {
-      console.log(data);
-
       if (value !== data.password) {
         return false;
       }
@@ -66,6 +63,31 @@ const validationAddModel = Schema.Model({
   closingTime: StringType().isRequired("ClosingTime is required"),
 });
 
+const validationUpdateStoreModel = Schema.Model({
+  // storeName: StringType().addRule((value) => {
+  //   const regex = /^[a-zA-Z ]+$/;
+  //   return regex.test(value);
+  // }, "Please enter a valid name using only alphabets and space."),
+  storeName: StringType()
+    .addRule((value, data) => {
+      const regex = /^[a-zA-Z ]+$/;
+      if (data.storeData && data.storeData.storeName === value) {
+        return; 
+      }
+      if (!value) {
+        return "Store Name is required";
+      }
+      if (!regex.test(value)) {
+        return "Please enter a valid name using only alphabets and space.";
+      }
+    }),
+
+  pincode: StringType().addRule((value) => {
+    const regex = /^\d{6}$/;
+    return regex.test(value);
+  }, "Please enter a valid 6 digit pincode."),
+});
+
 const TextField = React.forwardRef((props, ref) => {
   const { name, label, accepter, ...rest } = props;
   return (
@@ -81,4 +103,5 @@ export {
   TextField,
   validationUpdateModel,
   validationAddModel,
+  validationUpdateStoreModel,
 };

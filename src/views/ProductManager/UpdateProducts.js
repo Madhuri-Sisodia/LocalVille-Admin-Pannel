@@ -21,7 +21,7 @@ import AddAttributes from "./AddAttributes";
 import UpdateAttribute from "./UpdateAttribute";
 import DeleteAttribute from "./DeleteAttribute";
 
-const AddProduct = ({
+const UpdateProducts = ({
   showUpdateModal,
   setShowUpdateModal,
   setSelectedProducts,
@@ -544,4 +544,4 @@ const AddProduct = ({
     </>
   );
 };
-export default AddProduct;
+export default UpdateProducts;

@@ -9,6 +9,7 @@ import AddProduct from "./AddProduct";
 import Pagenate from "../../components/Pagenate";
 import { Utils } from "CommonUtils/Utils";
 import "../../assets/css/admin.css";
+import ErrorMessage from "customComponents/ErrorMessage";
 import { AiOutlineExclamation } from "react-icons/ai";
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
@@ -40,6 +41,7 @@ const Products = () => {
   const [showActiveModal, setShowActiveModal] = useState(false);
   const [isPageViewSet, setIsPageViewSet] = useState(false);
   const [data, setData] = useState([]);
+  const [errorMassage, setErrorMassage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [showAddProduct, setShowAddProduct] = useState(false);
   const [showProductDetail, setShowProductDetail] = useState(false);
@@ -120,6 +122,9 @@ const Products = () => {
         if (res?.data?.status) {
           setBlockProducts(res?.data?.data);
           getProducts();
+          notificationAlertRef.current.notificationAlert(
+            SuccessNotify(res?.data?.message)
+          );
         } else {
           notificationAlertRef.current.notificationAlert(
             ErrorNotify(res?.data?.message)
@@ -443,14 +448,14 @@ const Products = () => {
           <Modal.Body className="text-center">
             <p>Are you sure you want to block this Product?</p>
             <Form.Control
-              as="textarea"
-              rows={3}
-              placeholder="Enter Reason Here"
-              maxLength={200}
-              value={blockReason}
-              onChange={(event) => setBlockReason(event.target.value)}
-              required
-            />
+            as="textarea"
+            rows={3}
+            placeholder="Enter Reason Here"
+            maxLength={200}
+            value={blockReason}
+            onChange={(event) => setBlockReason(event.target.value)}
+          />
+          {errorMassage && <ErrorMessage message={errorMassage} />}
           </Modal.Body>
           <div className="modal-footer">
             <Button
@@ -458,8 +463,14 @@ const Products = () => {
               className="btn-simple"
               variant="danger"
               onClick={() => {
-                handleBlockProducts(blockData);
-                setShowModal(false);
+                if (blockReason.trim().length === 0) {
+                  setErrorMassage("Reason is required.");
+                } else {
+                  handleBlockProducts(blockData);
+                  setShowModal(false);
+                  setErrorMassage("");
+                  setBlockReason("");
+                }
               }}
             >
               Block
@@ -468,7 +479,12 @@ const Products = () => {
               className="btn-simple"
               type="button"
               variant="secondary"
-              onClick={() => setShowModal(false)}
+              onClick={() => {
+                setShowModal(false);
+                setBlockReason("");
+                setErrorMassage("");
+                }
+              }
             >
               Close
             </Button>

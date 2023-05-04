@@ -41,7 +41,9 @@ const BlockStore = ({ showModal, setShowModal, blockData, getStore }) => {
             SuccessNotify(res?.data?.message)
           );
         } else {
-          setErrorMassage(res?.data?.message);
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {
@@ -95,6 +97,7 @@ const BlockStore = ({ showModal, setShowModal, blockData, getStore }) => {
                 handleBlockStore(blockData);
                 setShowModal(false);
                 setErrorMassage("");
+                setBlockReason("");
               }
             }}
           >

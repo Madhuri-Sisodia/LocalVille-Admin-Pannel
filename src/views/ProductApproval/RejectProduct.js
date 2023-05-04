@@ -44,10 +44,9 @@ const RejectProduct = ({
             SuccessNotify(res?.data?.message)
           );
         } else {
-           setErrorMassage(res?.data?.message);
-          // notificationAlertRef.current.notificationAlert(
-          //   ErrorNotify(res?.data?.message)
-          // );
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {
@@ -91,12 +90,13 @@ const RejectProduct = ({
             className="btn-simple"
             variant="danger"
             onClick={() => {
-              if (blockReason.trim().length === 0) {
+              if (rejectReason.trim().length === 0) {
                 setErrorMassage("Reason is required.");
               } else {
                 handleRejectProduct(product);
                 setShowRejectProduct(false);
                 setErrorMassage("");
+                setRejectReason("");
               }
             }}
           >

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Http } from "../../config/Service";
-import { FaCamera } from "react-icons/fa";
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
@@ -12,7 +11,6 @@ import "../../assets/css/admin.css";
 import BlockBanner from "./BlockBanner";
 import ButtonComponent from "views/ButtonComponent";
 import Loading from "customComponents/Loading";
-import ActiveBanner from "./ActiveBanner";
 import CameraRetroIcon from "@rsuite/icons/legacy/CameraRetro";
 
 const BannerManager = () => {
@@ -23,38 +21,33 @@ const BannerManager = () => {
   });
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [imageUrl, setImageUrl] = useState("");
-  const [image, setImage] = useState(null);
-  const [previewImage, setPreviewImage] = useState(null);
+
   const [showModal, setShowModal] = useState(false);
-  const [showActiveModal, setShowActiveModal] = useState(false);
+
   const [blockData, setBlockData] = useState([]);
   const [addBanner, setAddBanner] = useState([]);
   const notificationAlertRef = React.useRef(null);
-  const [selectedFile, setSelectedFile] = useState(null);
+
   const [imageFile, setImageFile] = useState(null);
-  const fileInputRef = useRef(null);
-  const [showNotification, setShowNotification] = useState("");
+
   const [errorMessage, setErrorMessage] = useState("");
-  const [isImageValid, setIsImageValid] = useState(false);
-  // const [isChecked, setIsChecked] = useState(true);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
+    console.log("hello", file);
     setImageFile(file);
-    // Update image validity
-   
+    setErrorMessage(null);
   };
 
-  const handleRemoveImage = () => {
-    setImageFile(null);
-    setErrorMessage("Image Removed");
-    setTimeout(() => {
-      setErrorMessage(false);
-      // setShowNotification(false);
-    }, 2000);
-    setIsImageValid(false); // Update image validity
-  };
+  // const handleRemoveImage = () => {
+  //   setImageFile(null);
+  //   setErrorMessage("Image Removed");
+  //   setTimeout(() => {
+  //     setErrorMessage(false);
+  //     // setShowNotification(false);
+  //   }, 2000);
+  //   setIsImageValid(false); // Update image validity
+  // };
 
   const getBanner = () => {
     Http.GetAPI(process.env.REACT_APP_GETBANNER + "?" + Math.random(), data)
@@ -87,54 +80,49 @@ const BannerManager = () => {
       url: "",
     });
     setImageFile("");
-    // setImageUrl("");
   };
 
   const handleSubmit = () => {
+    // e.preventDefault();
     if (!imageFile) {
       setErrorMessage("Image is required");
-    } else {
-      setErrorMessage("");
+      return;
     }
 
-      // e.preventDefault();
+    let redirectImg;
+    if (formData.redirect) {
+      redirectImg = "1";
+    } else {
+      redirectImg = "0";
+    }
 
-      let redirectImg;
-      if (formData.redirect) {
-        redirectImg = "1";
-      } else {
-        redirectImg = "0";
-      }
+    var data = new FormData();
+    data.append("banner_image", imageFile);
+    data.append("is_redirect", redirectImg);
+    data.append("url", formData.url);
+    data.append("active", 1);
 
-      var data = new FormData();
-      data.append("banner_image", imageFile);
-      data.append("is_redirect", redirectImg);
-      data.append("url", formData.url);
-      data.append("active", 1);
-
-      Http.PostAPI(process.env.REACT_APP_ADDBANNER, data)
-        .then((res) => {
-          if (res?.data?.status) {
-            setAddBanner(res?.data?.data);
-            getBanner();
-            notificationAlertRef.current.notificationAlert(
-              SuccessNotify(res?.data?.message)
-            );
-          } else {
-            notificationAlertRef.current.notificationAlert(
-              ErrorNotify(res?.data?.message)
-            );
-          }
-        })
-        .catch((e) => {
+    Http.PostAPI(process.env.REACT_APP_ADDBANNER, data)
+      .then((res) => {
+        if (res?.data?.status) {
+          setAddBanner(res?.data?.data);
+          getBanner();
           notificationAlertRef.current.notificationAlert(
-            ErrorNotify("Something went wrong")
+            SuccessNotify(res?.data?.message)
           );
-        });
-      resetForm();
-
-      setErrorMessage("");
-    
+        } else {
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
+        }
+      })
+      .catch((e) => {
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
+      });
+    resetForm();
+    setErrorMessage("");
   };
 
   const handleFieldChange = (value, name) => {
@@ -165,7 +153,7 @@ const BannerManager = () => {
                         borderRadius: "11px",
                       }}
                     />
-                  
+
                     {/* <div style={{ marginTop: "1em" }}>
                       <button onClick={handleRemoveImage}>Remove Image</button>
                     </div> */}
@@ -197,8 +185,8 @@ const BannerManager = () => {
                 )}
               </div>
               {errorMessage && (
-                      <div style={{ color: "red" }}>{errorMessage}</div>
-                    )}
+                <div style={{ color: "red" }}>{errorMessage}</div>
+              )}
             </Form.Group>
 
             <Form.Group>
@@ -209,7 +197,6 @@ const BannerManager = () => {
                 onChange={(value) => handleFieldChange(value, "redirect")}
                 value={formData.redirect}
                 defaultValue={false}
-                required
               >
                 <Radio value={true}>Yes</Radio>
                 <Radio checked value={false}>

@@ -44,7 +44,9 @@ const RejectStore = ({
             SuccessNotify(res?.data?.message)
           );
         } else {
-          setErrorMassage(res?.data?.message);
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
         }
       })
       .catch((e) => {
@@ -92,6 +94,7 @@ const RejectStore = ({
                 handleRejectStore(store);
                 setShowRejectStore(false);
                 setErrorMassage("");
+                setBlockReason("");
               }
             }}
           >

@@ -7,6 +7,7 @@ import GoogleAutocomplete from "components/googleAutoComplete";
 import GooglePlacesPicker from "components/googlePlacesPicker";
 import { Utils } from "CommonUtils/Utils";
 import { TextField, validationAddModel } from "components/Validation";
+import CameraRetroIcon from "@rsuite/icons/legacy/CameraRetro";
 
 import axios from "axios";
 import { Form } from "rsuite";
@@ -45,8 +46,17 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
   const notificationAlertRef = React.useRef(null);
   const formRef = React.useRef();
   const fileInputRef = React.useRef(null);
-
   const [selectedDays, setSelectedDays] = useState([]);
+  const [imageFile, setImageFile] = useState(null);
+
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    console.log("hello", file);
+    setImageFile(file);
+    setErrorMessage(null);
+  };
   const toggleDaySelection = (index) => {
     if (selectedDays.includes(index + 1)) {
       setSelectedDays(selectedDays.filter((d) => d !== index + 1));
@@ -126,10 +136,9 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
       setMessage("");
     }
 
-    if (!image) {
-      setError("Image is required");
-    } else {
-      setError("");
+    if (!imageFile) {
+      setErrorMessage("Image is required");
+      return;
     }
 
     if (!formRef.current.check()) {
@@ -140,7 +149,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
     
       var data = new FormData();
       data.append("vendor_id", id);
-      data.append("store_image", image);
+      data.append("store_image", imageFile);
       data.append("lat", location.lat);
       data.append("long", location.lng);
       data.append("store_name", storeData.storeName);
@@ -167,7 +176,9 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
             setShowAddStore(false);
             setSelectedDays("");
             setMessage("");
+            setImageFile("");
             setError("");
+            setErrorMessage("");
             setTimeError("");
             resetForm();
           } else {
@@ -236,6 +247,8 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
               setShowAddStore(false);
               setSelectedDays("");
               setMessage("");
+              setErrorMessage("");
+              setImageFile("");
               setError("");
               setTimeError("");
               resetForm();
@@ -274,8 +287,57 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
                 />
               </div>
             </Form.Group>
-
             <Form.Group>
+              <Form.ControlLabel htmlFor="file">Store Image</Form.ControlLabel>
+              <div>
+                {imageFile ? (
+                  <div>
+                    <img
+                      src={URL.createObjectURL(imageFile)}
+                      alt="Avatar"
+                      style={{
+                        width: "80px",
+                        height: "80px",
+                        borderRadius: "11px",
+                      }}
+                    />
+
+                    {/* <div style={{ marginTop: "1em" }}>
+                      <button onClick={handleRemoveImage}>Remove Image</button>
+                    </div> */}
+                  </div>
+                ) : (
+                  <div style={{ overflow: "hidden" }}>
+                    <label htmlFor="avatar-upload">
+                      <div
+                        style={{
+                          width: "90px",
+                          height: "90px",
+                          border: "1px dotted",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <CameraRetroIcon style={{ fontSize: "64px" }} />
+                      </div>
+                    </label>
+                    <input
+                      id="avatar-upload"
+                      type="file"
+                      accept="image/jpeg, image/png, image/jpg"
+                      onChange={handleImageChange}
+                      style={{ display: "none" }}
+                    />
+                  </div>
+                )}
+              </div>
+              {errorMessage && (
+                <div style={{ color: "red" }}>{errorMessage}</div>
+              )}
+            </Form.Group>
+
+            {/* <Form.Group>
               <Form.ControlLabel>Store Image</Form.ControlLabel>
 
               <input
@@ -290,7 +352,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
               {error && (
                 <div style={{ color: "red", fontSize: "0.7rem" }}>{error}</div>
               )}
-            </Form.Group>
+            </Form.Group> */}
 
             <TextField name="storeName" label="Store Name" type="text" />
 

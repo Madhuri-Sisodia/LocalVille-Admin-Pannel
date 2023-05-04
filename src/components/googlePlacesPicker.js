@@ -25,6 +25,7 @@ const GooglePlacesPicker = () => {
   }
 
   function handleResetLocation() {
+    // console.log("Hello....")
     setDefaultLocation({ ...DefaultLocation });
     setZoom(DefaultZoom);
   }
