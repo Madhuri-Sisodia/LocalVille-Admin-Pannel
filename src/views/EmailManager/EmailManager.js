@@ -31,7 +31,7 @@ const EmailManager = () => {
     )
       .then((res) => {
         if (res?.data?.status) {
-          setEmailData(res?.data?.data);
+          setEmailData(res?.data?.dropdown_data);
         } else {
           // alert("Fields not matched");
         }

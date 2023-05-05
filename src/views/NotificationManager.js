@@ -39,7 +39,7 @@ const NotificationManager = () => {
     Http.GetAPI(process.env.REACT_APP_GETVENDORSDATA + "?" + Math.random(), "")
       .then((res) => {
         if (res?.data?.status) {
-          setVendorData(res?.data?.data);
+          setVendorData(res?.data?.dropdown_data);
         }
       })
       .catch((e) => {
@@ -60,6 +60,7 @@ const NotificationManager = () => {
       return;
     }
     let arr = [];
+   
 
     var data = new FormData();
     for (let i = 0; i < vendorData.length; i++) {
@@ -69,6 +70,8 @@ const NotificationManager = () => {
         }
       }
     }
+   
+    console.log("selectedVendors", selectedVendors);
 
     data.append("img", imageFile);
     data.append("title", title);

@@ -121,9 +121,9 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const vendorid = getStoreData.filter((ele)=>{
-      return(ele.email==selectSection.value)
-          })
+    // const vendorid = getStoreData.filter((ele)=>{
+    //   return(ele.email==selectSection.value)
+    //       })
        
 
     const Catgoryid = getProcat.filter((ele)=>{
@@ -136,11 +136,11 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
                       })
 
 
-
+   const id = selectSection?.value;
     var data = new FormData();
 
-    data.append("vendor_id",vendorid[0]?.vendor_id)
-    data.append("store_id",vendorid[0]?.id)
+    data.append("vendor_id",id)
+    data.append("store_id",id)
     data.append("product_name", productData.productName);
     data.append("product_desc", productData.productDesc);
     data.append("category", Catgoryid[0].id);

@@ -26,14 +26,16 @@ const VerifyProduct = ({
 }) => {
   const [updateProduct, setUpdateProduct] = useState([]);
   const notificationAlertRef = React.useRef(null);
-
+// console.log("FEEEE",getUnverifiedProduct);
   const handleUpdateProduct = (product) => {
     var data = new FormData();
     data.append("product_id", product.id);
     data.append("verified_status", 1);
     Http.PostAPI(process.env.REACT_APP_UPDATEVERIFIEDPRODUCT, data, null)
       .then((res) => {
+        console.log("AAA",res)
         if (res?.data?.status) {
+
           setUpdateProduct(res?.data?.data);
           getUnverifiedProduct();
           notificationAlertRef.current.notificationAlert(

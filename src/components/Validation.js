@@ -44,6 +44,17 @@ const validationUpdateModel = Schema.Model({
   }, "Please enter a valid 10 digit phone number."),
 });
 
+const addAttributeValidationModel = Schema.Model({
+  price: StringType().addRule((value) => {
+    const regex = /^[0-9]+$/;
+    return regex.test(value);
+  }, "Please enter a valid price using only numbers."),
+  discountPrice: StringType().addRule((value) => {
+    const regex = /^[0-9]+$/;
+    return regex.test(value);
+  }, "Please enter a valid discount price using only numbers."),
+});
+
 const validationAddModel = Schema.Model({
   storeName: StringType()
     .isRequired("Store Name is required")
@@ -64,23 +75,10 @@ const validationAddModel = Schema.Model({
 });
 
 const validationUpdateStoreModel = Schema.Model({
-  // storeName: StringType().addRule((value) => {
-  //   const regex = /^[a-zA-Z ]+$/;
-  //   return regex.test(value);
-  // }, "Please enter a valid name using only alphabets and space."),
-  storeName: StringType()
-    .addRule((value, data) => {
-      const regex = /^[a-zA-Z ]+$/;
-      if (data.storeData && data.storeData.storeName === value) {
-        return; 
-      }
-      if (!value) {
-        return "Store Name is required";
-      }
-      if (!regex.test(value)) {
-        return "Please enter a valid name using only alphabets and space.";
-      }
-    }),
+  storeName: StringType().addRule((value) => {
+    const regex = /^[a-zA-Z ]+$/;
+    return regex.test(value);
+  }, "Please enter a valid name using only alphabets and space."),
 
   pincode: StringType().addRule((value) => {
     const regex = /^\d{6}$/;
@@ -104,4 +102,5 @@ export {
   validationUpdateModel,
   validationAddModel,
   validationUpdateStoreModel,
+  addAttributeValidationModel,
 };

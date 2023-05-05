@@ -83,8 +83,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
       closingTime: "",
       selectedDays: "",
     });
-    fileInputRef.current.value = "";
-    setImage(null);
+    
   };
 
   useEffect(() => {
@@ -106,9 +105,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
               return { ...previous, state: data[0]?.State };
             });
           }
-        } catch (error) {
-          
-        }
+        } catch (error) {}
       };
       getCity();
     }
@@ -142,11 +139,10 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
     }
 
     if (!formRef.current.check()) {
-     
       return;
     } else {
       const id = selectSection?.value;
-    
+
       var data = new FormData();
       data.append("vendor_id", id);
       data.append("store_image", imageFile);
@@ -203,12 +199,11 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
     const getVendorsData = () => {
       Http.GetAPI(
         process.env.REACT_APP_GETVENDORSDATA + "?" + Math.random(),
-        { page: 3 },
         null
       )
         .then((res) => {
           if (res?.data?.status) {
-            setVendorData(res.data.data);
+            setVendorData(res?.data?.dropdown_data);
           }
         })
         .catch((e) => {
