@@ -252,7 +252,7 @@ const UpdateVendor = ({
                   />
                 </Form.Group>
 
-                <ButtonComponent buttontext="Update Product" />
+                <ButtonComponent buttontext="Update Vendor" />
               </Form.Group>
             </Form>
           </Modal.Body>

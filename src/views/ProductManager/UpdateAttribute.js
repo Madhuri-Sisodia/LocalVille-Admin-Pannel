@@ -31,6 +31,8 @@ const UpdateAttribute = ({
     sku: "",
     inStock: "",
     productId: "",
+    gst:"",
+    qty:"",
   });
 
   const formRef = React.useRef();
@@ -114,6 +116,14 @@ const UpdateAttribute = ({
       "product_id",
       formValue.attributeId ? formValue.attributeId : item?.attributes?.[0]?.pid
     );
+    data.append(
+      "qty",
+      formValue.qty ? formValue.qty: item?.attributes?.[0]?.qty
+    );
+    data.append(
+      "gst",
+      formValue.gst ? formValue.gst : item?.attributes?.[0]?.gst
+    );
 
     Http.PostAPI(process.env.REACT_APP_UPDATEATTRIBUTE, data, null)
       .then((res) => {
@@ -149,6 +159,8 @@ const UpdateAttribute = ({
       sku: "",
       inStock: "",
       productId: "",
+      qty:"",
+      gst:"",
     });
     setColor("")
     setSize("");
@@ -286,43 +298,7 @@ const UpdateAttribute = ({
                 </div>
               </Form.Group>
             </div>
-            {/* <Form.Group>
-              <Form.ControlLabel className="formLabelText">
-                Size
-              </Form.ControlLabel>
-              <Form.Control
-                type="text"
-                name="size"
-                defaultValue={
-                  formValue.size
-                    ? formValue.size
-                    : item?.attributes?.[0]?.size?.[0]?.name
-                }
-                style={{
-                  width: "155px",
-                }}
-              ></Form.Control>
-            </Form.Group>
-
-            <Form.Group>
-              <Form.ControlLabel className="formLabelText">
-                Color
-              </Form.ControlLabel>
-              <Form.Control
-               
-                name="color"
-                defaultValue={
-                  formValue.color
-                    ? formValue.color
-                    : item?.attributes?.[0]?.color?.[0]?.name
-                }
-                type="text"
-                style={{
-                  width: "155px",
-                  marginBottom: "-10px",
-                }}
-              ></Form.Control>
-            </Form.Group> */}
+           
           </Form.Group>
           <Form.Group
             layout="inline"
@@ -334,7 +310,7 @@ const UpdateAttribute = ({
               </Form.ControlLabel>
               <Form.Control
                 style={{
-                  width: "156px",
+                  width: "177px",
                 }}
                 name="price"
                 type="text"
@@ -352,7 +328,7 @@ const UpdateAttribute = ({
               </Form.ControlLabel>
               <Form.Control
                 style={{
-                  width: "156px",
+                  width: "177px",
                 }}
                 defaultValue={
                   formValue.discountPrice
@@ -362,10 +338,10 @@ const UpdateAttribute = ({
                 name="discountPrice"
                 type="text"
               ></Form.Control>
-              {console.log("AAAAAA", item?.attributes?.[0]?.discount_price)}
+              
             </Form.Group>
           </Form.Group>
-          {/* <Form.Group
+          <Form.Group
             layout="inline"
             style={{ display: "flex", justifyContent: "space-between" }}
           >
@@ -376,7 +352,10 @@ const UpdateAttribute = ({
               </Form.ControlLabel>
               <Form.Control
                 type="text"
-                style={{ width: "155px", marginBottom: "-15px" }}
+                defaultValue={
+                  formValue.gst? formValue.gst : item?.attributes?.[0]?.gst
+                }
+                style={{ width: "177px", marginBottom: "-15px" }}
               ></Form.Control>
             </Form.Group>
             <Form.Group>
@@ -384,15 +363,15 @@ const UpdateAttribute = ({
                 QTY
               </Form.ControlLabel>
               <Form.Control
-                // onChange={(e) => {
-                //   handleInput(e);
-                // }}
+                 defaultValue={
+                  formValue.qty ? formValue.qty : item?.attributes?.[0]?.qty
+                }
 
                 type="text"
-                style={{ width: "155px", marginBottom: "-15px" }}
+                style={{ width: "177px", marginBottom: "-15px" }}
               ></Form.Control>
             </Form.Group>
-          </Form.Group> */}
+          </Form.Group>
           {/* </div> */}
           {/* </Form.Group> */}
 
@@ -403,9 +382,7 @@ const UpdateAttribute = ({
                 formValue.sku ? formValue.sku : item?.attributes?.[0]?.sku
               }
               name="sku"
-              // onChange={(e) => {
-              //   handleInput(e);
-              // }}
+             
 
               type="text"
             ></Form.Control>

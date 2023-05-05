@@ -1,5 +1,12 @@
-import React, { useState, useEffect,useRef } from "react";
-import { Form, Button, ButtonToolbar, SelectPicker, Checkbox } from "rsuite";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  Form,
+  Input,
+  Button,
+  ButtonToolbar,
+  SelectPicker,
+  Checkbox,
+} from "rsuite";
 import ErrorMessage from "customComponents/ErrorMessage";
 import "../assets/css/admin.css";
 import NotificationAlert from "react-notification-alert";
@@ -8,6 +15,7 @@ import ButtonComponent from "./ButtonComponent";
 import MultipleSelect from "components/MultipleSelect";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
+import CameraRetroIcon from "@rsuite/icons/legacy/CameraRetro";
 
 const NotificationManager = () => {
   const [selectedVendors, setSelectedVendors] = useState([]);
@@ -17,12 +25,19 @@ const NotificationManager = () => {
   const [addNotification, setAddNotification] = useState([]);
   const [vendorData, setVendorData] = useState([]);
   const notificationAlertRef = React.useRef(null);
+  const [imageFile, setImageFile] = useState(null);
   const fileInputRef = useRef(null);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    setImageFile(file);
+    setErrorMessage(null);
+  };
 
   const getVendors = () => {
     Http.GetAPI(process.env.REACT_APP_GETVENDORSDATA + "?" + Math.random(), "")
       .then((res) => {
-       
         if (res?.data?.status) {
           setVendorData(res?.data?.data);
         }
@@ -40,9 +55,12 @@ const NotificationManager = () => {
 
   const handleSubmit = (e) => {
     // e.preventDefault();
+    if (!imageFile) {
+      setErrorMessage("Image is required");
+      return;
+    }
     let arr = [];
 
-   
     var data = new FormData();
     for (let i = 0; i < vendorData.length; i++) {
       for (let j = 0; j < selectedVendors.length; j++) {
@@ -52,13 +70,13 @@ const NotificationManager = () => {
       }
     }
 
-    data.append("img", image);
+    data.append("img", imageFile);
     data.append("title", title);
     data.append("message", message);
 
     Http.PostAPI(process.env.REACT_APP_ADDNOTICATIONMANAGER, data)
       .then((res) => {
-        console.log("Notification",res)
+        console.log("Notification", res);
         if (res?.data?.status) {
           setAddNotification(res?.data?.data);
           getVendors();
@@ -76,11 +94,11 @@ const NotificationManager = () => {
           ErrorNotify("Something went wrong")
         );
       });
-    // setSelectedVendors("");
-    // fileInputRef.current.value = "";
-    // setImage(null);
-    // setTitle("");
-    // setMessage("");
+    setSelectedVendors("");
+    setImageFile("");
+    setTitle("");
+    setMessage("");
+    setErrorMessage("");
   };
 
   return (
@@ -115,18 +133,53 @@ const NotificationManager = () => {
               />
             </Form.Group>
             <Form.Group>
-              <Form.ControlLabel>IMAGE</Form.ControlLabel>
-              <input
-                type="file"
-                onChange={(e) => setImage(e.target.files[0])}
-                name="image"
-                required
-                accept="image/jpeg, image/png, image/jpg"
-                // onChange={(e) => {
-                //   setImage(e.target.files[0]);
-                // }}
-                ref={fileInputRef}
-              />
+              <Form.ControlLabel htmlFor="file">IMAGE</Form.ControlLabel>
+              <div>
+                {imageFile ? (
+                  <div>
+                    <img
+                      src={URL.createObjectURL(imageFile)}
+                      alt="Avatar"
+                      style={{
+                        width: "80px",
+                        height: "80px",
+                        borderRadius: "11px",
+                      }}
+                    />
+
+                    {/* <div style={{ marginTop: "1em" }}>
+                      <button onClick={handleRemoveImage}>Remove Image</button>
+                    </div> */}
+                  </div>
+                ) : (
+                  <div style={{ overflow: "hidden" }}>
+                    <label htmlFor="avatar-upload">
+                      <div
+                        style={{
+                          width: "90px",
+                          height: "90px",
+                          border: "1px dotted",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <CameraRetroIcon style={{ fontSize: "64px" }} />
+                      </div>
+                    </label>
+                    <input
+                      id="avatar-upload"
+                      type="file"
+                      accept="image/jpeg, image/png, image/jpg"
+                      onChange={handleImageChange}
+                      style={{ display: "none" }}
+                    />
+                  </div>
+                )}
+              </div>
+              {errorMessage && (
+                <div style={{ color: "red" }}>{errorMessage}</div>
+              )}
             </Form.Group>
             <Form.Group>
               <Form.ControlLabel>TITLE</Form.ControlLabel>
@@ -135,14 +188,13 @@ const NotificationManager = () => {
                 name="title"
                 value={title}
                 onChange={(value) => setTitle(value)}
-                required
               />
             </Form.Group>
             <Form.Group>
               <Form.ControlLabel>MESSAGE</Form.ControlLabel>
-              <Form.Control
+              <Input
                 style={{ height: "150px" }}
-                componentClass="textarea"
+                as="textarea"
                 rows={4}
                 maxLength={300}
                 placeholder=" Message"
@@ -150,9 +202,10 @@ const NotificationManager = () => {
                 type="textarea"
                 value={message}
                 onChange={(value) => setMessage(value)}
-                required
               />
+              {/* <Input as="textarea" rows={3} placeholder="Textarea" value={formValue.message} /> */}
             </Form.Group>
+
             <ButtonComponent block buttontext="Submit" />
           </Form>
         </div>
