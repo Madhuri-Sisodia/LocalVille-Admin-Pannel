@@ -22,7 +22,10 @@ const validationModel = Schema.Model({
   email: StringType()
     .isEmail("Please enter a valid email address.")
     .isRequired("Admin Email is required."),
-  password: StringType().isRequired("Password is required."),
+  password: StringType().isRequired("Password is required.").addRule((value, data)=>{
+    const regex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+      return regex.test(value);
+  },"password length should be 8 character and must contain 1 numeric, uppercase and symbol. "),
   rePassword: StringType()
     .addRule((value, data) => {
       console.log(data);
@@ -30,8 +33,9 @@ const validationModel = Schema.Model({
       if (value !== data.password) {
         return false;
       }
+      
 
-      return true;
+      // return true;
     }, "Password do not match")
     .isRequired("This field is required."),
 });

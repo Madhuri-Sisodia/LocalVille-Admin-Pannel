@@ -12,6 +12,7 @@ import image from "assets/img/pdf-icon.png";
 import ButtonComponent from "views/ButtonComponent";
 import Pagenate from "../../components/Pagenate";
 
+
 import {
   Card,
   Button,
@@ -28,9 +29,12 @@ import {
 } from "react-bootstrap";
 import { MdClose } from "react-icons/md";
 import { Link } from "react-router-dom";
+import BlockInvoice from "./BlockInvoice";
 
 const InvoiceTable = () => {
   const [data, setData] = useState([]);
+  const [blockData, setBlockData] = useState([]);
+  const [showModal, setShowModal] = useState(false);
   const { pageNo, setDisabledNext, pageView, setPageView } = useContext(Utils);
   const notificationAlertRef = React.useRef(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -38,7 +42,45 @@ const InvoiceTable = () => {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
 
-  const getInvioce = () => {
+
+  const Debounce = (fun) => {
+    let timer;
+    return (...arg) => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+      timer = setTimeout(() => {
+        fun.call(this, arg);
+      }, 500);
+    };
+  };
+
+  const filtervendor = (e) => {
+    Http.GetAPI(
+      process.env.REACT_APP_SEARCHINVOICE + "?" + `search=${e}`,
+      "",
+      null
+    )
+      .then((res) => {
+        if (res?.data?.status) {
+          setData(res?.data?.data);
+          getInvoice();
+        } else {
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
+        }
+      })
+      .catch((e) => {
+        setIsLoading(false);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
+      });
+  };
+
+
+  const getInvoice = () => {
     Http.GetAPI(
       process.env.REACT_APP_GETINVOICE + "?" + `page=${pageView}`,
       "",
@@ -46,8 +88,8 @@ const InvoiceTable = () => {
     )
       .then((res) => {
         setIsLoading(false);
-        console.log("all data", res?.data);
-        setIsLoading(false);
+        // console.log("all data", res?.data);
+        // setIsLoading(false);
 
         if (res?.data?.status) {
           setData(res?.data?.data?.invoices);
@@ -67,29 +109,38 @@ const InvoiceTable = () => {
   };
 
   useEffect(() => {
-    getInvioce();
+    getInvoice();
   }, [pageView]);
 
   const handlePageChange = (page) => {
     setPageView(page);
-    getInvioce();
+    getInvoice();
   };
+
+
+
+  const search = Debounce(filtervendor)
 
   return (
     <>
       <div className="rna-container">
         <NotificationAlert ref={notificationAlertRef} />
       </div>
-      <Container>
+      <Container fluid>
         <Row>
-          <Col md={"12"}>
+          <Col md="12">
             <Card className="strpied-tabled-with-hover">
               <Card.Header>
                 <Card.Title as="h4">Invoice Manager</Card.Title>
                 <p className="card-category">Invoice details and action</p>
                 <br></br>
                 <InputGroup style={{ width: "250px" }}>
-                  <Input placeholder="Search" />
+                  <Input placeholder="Search"
+                    onChange={(e) => {
+                      search(e);
+                    }}
+
+                  />
                   <InputGroup.Button>
                     <SearchIcon />
                   </InputGroup.Button>
@@ -106,7 +157,7 @@ const InvoiceTable = () => {
                       tableLayout: "fixed",
                       width: "100%",
                       overflowX: "scroll",
-                      display: "block",
+                      // display: "block",
                     }}
                     className="table-hover table-striped"
                   >
@@ -192,13 +243,27 @@ const InvoiceTable = () => {
                                 <i className="fa fa-eye"></i>
                               </Button>
 
-                              <Button
+                              {/* <Button
                                 className="btn-simple btn-link p-1"
                                 type="button"
                                 variant="danger"
                               >
                                 <i className="fas fa-times"></i>
-                              </Button>
+                              </Button> */}
+
+                              {item?.active == "1" && (
+                                <Button
+                                  className="btn-simple btn-link p-1"
+                                  type="button"
+                                  variant="danger"
+                                  onClick={() => {
+                                    setShowModal(true);
+                                    setBlockData(item.id);
+                                  }}
+                                >
+                                  <i className="fas fa-times"></i>
+                                </Button>
+                              )}
                             </div>
                           </td>
                         </tr>
@@ -208,13 +273,22 @@ const InvoiceTable = () => {
                 </Card.Body>
               )}
             </Card>
+            {/* </Col>
+        </Row> */}
+            {isLoading ? (
+              ""
+            ) : (
+              <Pagenate totalPages={totalPages} onChange={handlePageChange} />
+            )}
           </Col>
         </Row>
-        {isLoading ? (
-          ""
-        ) : (
-          <Pagenate totalPages={totalPages} onChange={handlePageChange} />
-        )}
+
+        <BlockInvoice
+          showModal={showModal}
+          setShowModal={setShowModal}
+          blockData={blockData}
+          getInvoice= {getInvoice}
+        />
         <Modal
           show={showDetailsModal}
           onHide={() => setShowDetailsModal(false)}
