@@ -94,7 +94,7 @@ const NotificationManager = () => {
           ErrorNotify("Something went wrong")
         );
       });
-    setSelectedVendors("");
+    setSelectedVendors([]);
     setImageFile("");
     setTitle("");
     setMessage("");

@@ -85,7 +85,7 @@ const EmailManager = () => {
           ErrorNotify("Something went wrong")
         );
       });
-    setSelectedVendors("");
+    setSelectedVendors([]);
     // setTitle("");
     setSubject("");
     setMessage("");
