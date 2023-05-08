@@ -26,9 +26,7 @@ const GooglePlacesPicker = () => {
 
   function handleResetLocation() {
     console.log("location", DefaultLocation);
-
     setDefaultLocation({ ...DefaultLocation });
-
     setZoom(DefaultZoom);
   }
 
@@ -43,7 +41,7 @@ const GooglePlacesPicker = () => {
         mapTypeId="roadmap"
         onChangeLocation={handleChangeLocation}
         onChangeZoom={handleChangeZoom}
-        apiKey="AIzaSyCcH9_FqvLsZcwuiVryLp0mfgVIl6jL_S0&"
+        apiKey="AIzaSyCcH9_FqvLsZcwuiVryLp0mfgVIl6jL_S0"
       />
     </>
   );

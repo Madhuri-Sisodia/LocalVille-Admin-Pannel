@@ -69,8 +69,7 @@ const StoreManager = () => {
 
   const getStore = () => {
     Http.GetAPI(
-      process.env.REACT_APP_GETSTOREDATA + "?" + `page=${pageView}`,
-      data
+      process.env.REACT_APP_GETSTOREDATA + "?" + `page=${pageView}`
     )
       .then((res) => {
         setIsLoading(false);

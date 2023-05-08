@@ -53,10 +53,9 @@ const ProductApproval = () => {
   };
 
   const getUnverifiedProduct = () => {
+    console.log("pageView", process.env.REACT_APP_GETUNVERIFIEDPRODUCTS + "?" + `page=${pageView}`)
     Http.GetAPI(
-      process.env.REACT_APP_GETUNVERIFIEDPRODUCTS + "?" + `page=${pageView}`,
-      data,
-      null
+      process.env.REACT_APP_GETUNVERIFIEDPRODUCTS + "?" + `page=${pageView}`
     )
       .then((res) => {
         console.log("resp",res)
@@ -80,34 +79,34 @@ const ProductApproval = () => {
       });
   };
 
-  // const filtervendor = (e) => {
-  //   Http.GetAPI(
-  //     process.env.REACT_APP_PRODUCTSAPPROVALSEARCH +
-  //       "?" +
-  //       `search=${e} & page=${pageView}`,
-  //     "",
-  //     null
-  //   )
-  //     .then((res) => {
-  //       setIsLoading(false);
-  //       if (res?.data?.status) {
-  //         setData(res?.data?.data);
-  //         setDisabledNext(true);
-  //       } else {
-  //         notificationAlertRef.current.notificationAlert(
-  //           ErrorNotify(res?.data?.message)
-  //         );
-  //       }
-  //     })
-  //     .catch((e) => {
-  //       setIsLoading(false);
-  //       notificationAlertRef.current.notificationAlert(
-  //         ErrorNotify("Something went wrong")
-  //       );
-  //     });
-  // };
+  const filtervendor = (e) => {
+    Http.GetAPI(
+      process.env.REACT_APP_PRODUCTSAPPROVALSEARCH +
+        "?" +
+        `search=${e} & page=${pageView}`,
+      "",
+      null
+    )
+      .then((res) => {
+        setIsLoading(false);
+        if (res?.data?.status) {
+          setData(res?.data?.data);
+          setDisabledNext(true);
+        } else {
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
+        }
+      })
+      .catch((e) => {
+        setIsLoading(false);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
+      });
+  };
 
-  // const search = Debounce(filtervendor);
+  const search = Debounce(filtervendor);
  
   useEffect(() => {
     if (!isPageViewSet) {

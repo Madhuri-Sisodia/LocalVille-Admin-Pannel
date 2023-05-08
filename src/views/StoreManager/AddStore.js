@@ -83,7 +83,6 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
       closingTime: "",
       selectedDays: "",
     });
-    
   };
 
   useEffect(() => {

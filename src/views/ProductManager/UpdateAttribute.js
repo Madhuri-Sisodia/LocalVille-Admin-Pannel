@@ -10,13 +10,8 @@ import { ErrorNotify } from "components/NotificationShowPopUp";
 import editButton from "../../assets/img/editButton.png";
 import { validationUpdateModel } from "components/Validation";
 
-const UpdateAttribute = ({
-  item,
-  getProducts,
-  setShowUpdateModal,
- 
-}) => {
-  console.log("itemmm", item?.attributes[0]);
+const UpdateAttribute = ({ item, getProducts, setShowUpdateModal, index }) => {
+  console.log("itemmm", item);
 
   const [updateProduct, setUpdateProduct] = useState([]);
   const [sizeData, setSizeData] = useState([]);
@@ -31,8 +26,8 @@ const UpdateAttribute = ({
     sku: "",
     inStock: "",
     productId: "",
-    gst:"",
-    qty:"",
+    gst: "",
+    qty: "",
   });
 
   const formRef = React.useRef();
@@ -83,46 +78,55 @@ const UpdateAttribute = ({
 
     var data = new FormData();
 
-    data.append("size", size ? size : item?.attributes?.[0]?.size?.[0]?.name);
+    data.append(
+      "size",
+      size ? size : item?.attributes?.[index]?.size?.[index]?.name
+    );
     console.log();
     data.append(
       "color",
-      color ? color : item?.attributes?.[0]?.color?.[0]?.name
+      color ? color : item?.attributes?.[index]?.color?.[index]?.name
     );
     data.append(
       "price",
-      formValue.price ? formValue.price : item?.attributes?.[0]?.price
+      formValue.price ? formValue.price : item?.attributes?.[index]?.price
     );
     data.append(
       "dis_price",
       formValue.discountPrice
         ? formValue.discountPrice
-        : item?.attributes?.[0]?.discount_price
+        : item?.attributes?.[index]?.discount_price
     );
 
     data.append(
       "attr_id",
-      formValue.attributeId ? formValue.attributeId : item?.attributes?.[0]?.id
+      formValue.attributeId
+        ? formValue.attributeId
+        : item?.attributes?.[index]?.id
     );
     data.append(
       "sku",
-      formValue.sku ? formValue.sku : item?.attributes?.[0]?.sku
+      formValue.sku ? formValue.sku : item?.attributes?.[index]?.sku
     );
     data.append(
       "instock",
-      formValue.inStock ? formValue.inStock : item?.attributes?.[0]?.in_stock
+      formValue.inStock
+        ? formValue.inStock
+        : item?.attributes?.[index]?.in_stock
     );
     data.append(
       "product_id",
-      formValue.attributeId ? formValue.attributeId : item?.attributes?.[0]?.pid
+      formValue.attributeId
+        ? formValue.attributeId
+        : item?.attributes?.[index]?.pid
     );
     data.append(
       "qty",
-      formValue.qty ? formValue.qty: item?.attributes?.[0]?.qty
+      formValue.qty ? formValue.qty : item?.attributes?.[index]?.qty
     );
     data.append(
       "gst",
-      formValue.gst ? formValue.gst : item?.attributes?.[0]?.gst
+      formValue.gst ? formValue.gst : item?.attributes?.[index]?.gst
     );
 
     Http.PostAPI(process.env.REACT_APP_UPDATEATTRIBUTE, data, null)
@@ -150,7 +154,6 @@ const UpdateAttribute = ({
     setShowUpdateModal(false);
   };
 
-
   const resetForm = () => {
     setFormValue({
       price: "",
@@ -159,10 +162,10 @@ const UpdateAttribute = ({
       sku: "",
       inStock: "",
       productId: "",
-      qty:"",
-      gst:"",
+      qty: "",
+      gst: "",
     });
-    setColor("")
+    setColor("");
     setSize("");
   };
 
@@ -298,7 +301,6 @@ const UpdateAttribute = ({
                 </div>
               </Form.Group>
             </div>
-           
           </Form.Group>
           <Form.Group
             layout="inline"
@@ -317,7 +319,7 @@ const UpdateAttribute = ({
                 defaultValue={
                   formValue.price
                     ? formValue.price
-                    : item?.attributes?.[0]?.price
+                    : item?.attributes?.[index]?.price
                 }
               ></Form.Control>
             </Form.Group>
@@ -333,12 +335,11 @@ const UpdateAttribute = ({
                 defaultValue={
                   formValue.discountPrice
                     ? formValue.discountPrice
-                    : item?.attributes?.[0]?.discount_price
+                    : item?.attributes?.[index]?.discount_price
                 }
                 name="discountPrice"
                 type="text"
               ></Form.Control>
-              
             </Form.Group>
           </Form.Group>
           <Form.Group
@@ -353,7 +354,7 @@ const UpdateAttribute = ({
               <Form.Control
                 type="text"
                 defaultValue={
-                  formValue.gst? formValue.gst : item?.attributes?.[0]?.gst
+                  formValue.gst ? formValue.gst : item?.attributes?.[index]?.gst
                 }
                 style={{ width: "177px", marginBottom: "-15px" }}
               ></Form.Control>
@@ -363,10 +364,9 @@ const UpdateAttribute = ({
                 QTY
               </Form.ControlLabel>
               <Form.Control
-                 defaultValue={
-                  formValue.qty ? formValue.qty : item?.attributes?.[0]?.qty
+                defaultValue={
+                  formValue.qty ? formValue.qty : item?.attributes?.[index]?.qty
                 }
-
                 type="text"
                 style={{ width: "177px", marginBottom: "-15px" }}
               ></Form.Control>
@@ -379,11 +379,9 @@ const UpdateAttribute = ({
             <Form.ControlLabel className="formLabelText">SKU</Form.ControlLabel>
             <Form.Control
               defaultValue={
-                formValue.sku ? formValue.sku : item?.attributes?.[0]?.sku
+                formValue.sku ? formValue.sku : item?.attributes?.[index]?.sku
               }
               name="sku"
-             
-
               type="text"
             ></Form.Control>
           </Form.Group>

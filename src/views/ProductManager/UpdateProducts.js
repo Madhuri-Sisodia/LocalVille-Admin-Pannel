@@ -94,9 +94,11 @@ const UpdateProducts = ({
       });
   };
   const handleImageUpload=(event, index)=> {
-    const newFile = event.target.files[0];
+     const newFile = event.target.files[0];
+     console.log("File",newFile)
     const newItemImages = [...item.images]; 
     newItemImages[index].images = URL.createObjectURL(newFile); 
+    console.log("NNNN", newItemImages[index].images); 
     setPImage((prevItem) => ({ ...prevItem, images: newItemImages }));
     updateImage();
   }
@@ -557,6 +559,7 @@ const UpdateProducts = ({
                   <div>
                     <UpdateAttribute
                       item={item}
+                      index={edit}
                       getProducts={getProducts}
                       showUpdateModal={showUpdateModal}
                       setShowUpdateModal={setShowUpdateModal}
