@@ -7,11 +7,9 @@ import ButtonComponent from "views/ButtonComponent";
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
-import editButton from "../../assets/img/editButton.png";
-import { validationUpdateModel } from "components/Validation";
 
 const UpdateAttribute = ({ item, getProducts, setShowUpdateModal, index }) => {
-  console.log("itemmm", item);
+
 
   const [updateProduct, setUpdateProduct] = useState([]);
   const [sizeData, setSizeData] = useState([]);
@@ -131,13 +129,12 @@ const UpdateAttribute = ({ item, getProducts, setShowUpdateModal, index }) => {
 
     Http.PostAPI(process.env.REACT_APP_UPDATEATTRIBUTE, data, null)
       .then((res) => {
-        console.log("response....", res);
+      
         if (res?.data?.status) {
           setUpdateProduct(res?.data?.data);
           getProducts();
           resetForm();
-
-          notificationAlertRef.current.notificationAlert(
+           notificationAlertRef.current.notificationAlert(
             SuccessNotify(res?.data?.message)
           );
         } else {

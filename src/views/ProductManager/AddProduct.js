@@ -1,27 +1,18 @@
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { MdClose } from "react-icons/md";
-import { Modal } from "react-bootstrap";
-import { Form } from "rsuite";
+import { Modal, Form } from "react-bootstrap";
 import { Http } from "../../config/Service";
-import { FaCamera } from "react-icons/fa";
+import "../../assets/css/modal.css";
 import Size from "components/size";
 import ButtonComponent from "views/ButtonComponent";
 import ReactSelect from "CommonUtils/React-Select";
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
-import AddProductAttributes from "./AddProductAttributes";
-import "../../assets/css/modal.css";
 import CameraRetroIcon from "@rsuite/icons/legacy/CameraRetro";
 
-const AddProduct = ({
-  showAddProduct,
-  setShowAddProduct,
-  getProducts,
-  item,
-}) => {
+const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
   const [product, setProduct] = useState([]);
-  const [productImage, setProductImage] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [errorImageMessage, setErrorImageMessage] = useState("");
   const [image, setImage] = useState(null);
@@ -39,10 +30,6 @@ const AddProduct = ({
   const [isAddProdcut, setIsAddProduct] = useState("true");
   const notificationAlertRef = React.useRef(null);
 
-  const formRef = React.useRef();
-  const isMounted = useRef(false);
-
-
   const [productData, setProductData] = useState({
     productName: "",
     productDesc: "",
@@ -56,27 +43,7 @@ const AddProduct = ({
     in_stock: "",
     productImage: "",
   });
-  console.log("ITEMMM", item);
 
-  // const handleImageChange = (event) => {
-  //   const file = event.target.files[0];
-  //   // console.log("hello", file);
-  //   setImageFile(file);
-     
-  // };
-  // useEffect(() => {
-  //   if (imageFile) {
-  //     addImage();
-  //   }
-  // }, [imageFile]);
-  useEffect(() => {
-    if (isMounted.current) {
-      addImage();
-    } else {
-      isMounted.current = true;
-    }
-  }, [imageFile]);
-  
   const handleImageChange = (event) => {
     const files = event.target.files;
     const updatedImageFiles = [...imageFile];
@@ -88,15 +55,13 @@ const AddProduct = ({
     }
 
     if (updatedImageFiles.length > 4) {
-      setErrorImageMessage("You can't upload more than 4 images.");
+      setErrorImageMessage("Cannot upload more than 4 images.");
       updatedImageFiles.length = 4;
     } else {
       setErrorImageMessage(null);
     }
     setErrorMessage(null);
     setImageFile(updatedImageFiles);
-    console.log("ImageFile",updatedImageFiles)
-     
   };
 
   const resetForm = () => {
@@ -181,45 +146,8 @@ const AddProduct = ({
     getStore();
   }, []);
 
-  const addImage = () => {
-    const data = new FormData();
-
-    data.append("product_id", item?.[0]?.id);
-
-    data.append("product_name", item?.[0]?.product_name);
-    // data.append("product_image", imageFile);
-
-    if (imageFile) {
-      for (let i = 0; i < 4; i++) {
-        data.append(`product_image[${i}]`, imageFile[i]);
-      }
-    }
-
-    Http.PostAPI(process.env.REACT_APP_ADDPRODUCTIMAGE, data, null)
-      .then((res) => {
-        console.log("Add Image", res);
-        if (res?.data?.status) {
-          setProductImage(res?.data?.data);
-          getProducts();
-          notificationAlertRef.current.notificationAlert(
-            SuccessNotify(res?.data?.message)
-          );
-        } else {
-          notificationAlertRef.current.notificationAlert(
-            ErrorNotify(res?.data?.message)
-          );
-        }
-      })
-      .catch((e) => {
-        notificationAlertRef.current.notificationAlert(
-          ErrorNotify("Something went wrong")
-        );
-      });
-  };
-
-  const handleSubmit = () => {
-    // event.preventDefault();
-    console.log("hello");
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
     // const vendorid = getStoreData.filter((ele)=>{
     //   return(ele.email==selectSection.value)
@@ -245,6 +173,12 @@ const AddProduct = ({
     data.append("is_buy", bay == "Yes" ? 1 : 0);
     data.append("is_pickup", Pickup == "Yes" ? 1 : 0);
     data.append("in_stock", productData.in_stock);
+
+    if (imageFile) {
+      for (let i = 0; i < 4; i++) {
+        data.append(`product_images[${i}]`, imageFile[i]);
+      }
+    }
 
     // for(let i=0;i<attributes.length;i++){
     //   data.append(`color[${i}]`,attributes[i].Color.id)
@@ -294,11 +228,11 @@ const AddProduct = ({
     setSelectProCat("");
   };
 
-  // const handleInput = (e) => {
-  //   setProductData((previous) => {
-  //     return { ...previous, [e.target.name]: e.target.value };
-  //   });
-  // };
+  const handleInput = (e) => {
+    setProductData((previous) => {
+      return { ...previous, [e.target.name]: e.target.value };
+    });
+  };
 
   return (
     <>
@@ -319,38 +253,29 @@ const AddProduct = ({
           />
         </Modal.Header>
         <Modal.Body className="add-body">
-          <Form
-            fluid
-            ref={formRef}
-            // model={validationUpdateStoreModel}
-            formValue={productData}
-            onSubmit={handleSubmit}
-            onChange={setProductData}
-          >
-            <Form.Group className="UpdateProductForm">
-              <Form.ControlLabel className="add-label-UpdateProduct">
-                {" "}
-                Add Product Image
-              </Form.ControlLabel>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group>
+              <Form.Label htmlFor="file" className="add-label">
+                Product Image
+              </Form.Label>
               <div
                 style={{
+                  overflow: "hidden",
                   display: "flex",
-                  margin: "5px",
+                  flexWrap: "nowrap",
                 }}
               >
                 {Array.isArray(imageFile) &&
                   imageFile.map((imageFile, index) => (
-                    <div
-                      key={index}
-                      style={{ display: "inline-block", margin: "2px" }}
-                    >
+                    <div key={index}>
                       <img
                         src={URL.createObjectURL(imageFile)}
                         alt="Avatar"
                         style={{
                           width: "50px",
                           height: "60px",
-                          borderRadius: "5px",
+                          borderRadius: "11px",
+                          marginRight: "10px",
                         }}
                       />
                     </div>
@@ -359,17 +284,18 @@ const AddProduct = ({
                 {!errorImageMessage && (
                   <div style={{ overflow: "hidden" }}>
                     <label htmlFor={`avatar-upload-${imageFile.length}`}>
-                      <div>
-                        <FaCamera
-                          style={{
-                            fontSize: "3rem",
-                            cursor: "pointer",
-                            color: "#8052D5",
-                            padding: "0.7rem",
-                            border: "1px solid blueviolet",
-                            borderRadius: "10px",
-                          }}
-                        />
+                      <div
+                        style={{
+                          color: "blueviolet",
+                          width: "55px",
+                          height: "55px",
+                          border: "1px dotted",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <CameraRetroIcon style={{ fontSize: "35px" }} />
                       </div>
                     </label>
                     <input
@@ -383,350 +309,208 @@ const AddProduct = ({
                   </div>
                 )}
               </div>
+
+              {errorImageMessage && (
+                <div style={{ color: "red" }}>{errorImageMessage}</div>
+              )}
+
+
+              <Form.Label className="add-label">Select Vendor</Form.Label>
+              <div style={{ width: "100%", marginTop: "5px" }}>
+                <ReactSelect
+                  data={getStoreData}
+                  setSelectSection={setSelectSection}
+                />
+              </div>
+
+              <Form.Label className="add-label">Product Name</Form.Label>
+              <Form.Control
+                name="productName"
+                onChange={(e) => {
+                  handleInput(e);
+                }}
+                type="text"
+                required
+              ></Form.Control>
             </Form.Group>
 
-            {errorImageMessage && (
-              <div style={{ color: "red" }}>{errorImageMessage}</div>
-            )}
-              {/* <div>
-                {imageFile ? (
-                  <div>
-                    <img
-                      src={URL.createObjectURL(imageFile)}
-                      alt="Avatar"
-                      style={{
-                        width: "80px",
-                        height: "80px",
-                        borderRadius: "11px",
-                      }}
-                    />
-
-                    {/* <div style={{ marginTop: "1em" }}>
-                      <button onClick={handleRemoveImage}>Remove Image</button>
-                    </div> */}
-                  {/* </div>
-                ) : (
-                  <div style={{ overflow: "hidden" }}>
-                    <label htmlFor="avatar-upload">
-                      <div
-                        style={{
-                          width: "90px",
-                          height: "90px",
-                          border: "1px dotted",
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        <CameraRetroIcon style={{ fontSize: "64px" }} />
-                      </div>
-                    </label>
-                    <input
-                      id="avatar-upload"
-                      type="file"
-                      accept="image/jpeg, image/png, image/jpg"
-                      onChange={handleImageChange}
-                      style={{ display: "none" }}
-                    />
-                  </div>
-                )}
-              </div>
-            </Form.Group>  */}
-            {/* {errorMessage && (
-                <div style={{ color: "red" }}>{errorMessage}</div>
-              )} */}
-
-            {/* <Form.Label className="add-label">Product Image</Form.Label>
+            <Form.Group>
+              <Form.Label className="add-label">Product Description</Form.Label>
               <Form.Control
-                name="productImage"
-                multiple
-                onChange={(e) => {
-                   setProductData((previous)=>{
-                          return {...previous,productImage:e.target.files}
-                   })  
-                  }}
-                type="file"
+                type="text"
+                name="productDesc"
                 required
-              ></Form.Control> */}
-            <div className="UpdateProductForm">
-              <Form.ControlLabel className="add-label-UpdateProduct">
-                {" "}
-                Add Product
-              </Form.ControlLabel>
+                onChange={(e) => {
+                  handleInput(e);
+                }}
+              ></Form.Control>
+            </Form.Group>
 
-              <div className="UpadateProductFormInner">
-                <Form.Group>
-                  <Form.ControlLabel className="formLabelText">
-                    Select Vendor
-                  </Form.ControlLabel>
-                  <div style={{ width: "100%", marginTop: "5px" }}>
-                    <ReactSelect
-                      data={getStoreData}
-                      setSelectSection={setSelectSection}
-                    />
-                  </div>
-                </Form.Group>
+            {/* <Form.Group>
+              <Form.Label className="add-label">Add Attributes</Form.Label>
+               <Size 
+               setAttributes={setAttributes}
+               isAddProduct = {[]}
+               attributes={attributes}
+               />
+            </Form.Group> */}
 
-                <Form.Group>
-                  <Form.ControlLabel className="formLabelText">
-                    Product Name
-                  </Form.ControlLabel>
-                  <Form.Control
-                    name="productName"
-                    value={productData.productName}
-                    type="text"
-                    required
-                  ></Form.Control>
-                </Form.Group>
-
-                <Form.Group>
-                  <Form.ControlLabel className="formLabelText">
-                    Product Description
-                  </Form.ControlLabel>
-                  <Form.Control
-                    name="productDesc"
-                    value={productData.productDesc}
-                    type="text"
-                    required
-                  ></Form.Control>
-                </Form.Group>
-
-                <div style={{ display: "flex" }}>
-                  <Form.Group style={{ width: "100%" }}>
-                    <Form.ControlLabel
-                      className="formLabelText"
+            <Form.Group>
+              <Form.Label className="add-label">Category</Form.Label>
+              <div
+                style={{ width: "50%", marginTop: "5px", marginBottom: "15px" }}
+              >
+                <select
+                  name="selectSection"
+                  value={selectProCat}
+                  onChange={(event) => setSelectProCat(event.target.value)}
+                  style={{
+                    height: "35px",
+                    borderRadius: "5px",
+                    paddingLeft: "5px",
+                    paddingRight: "5px",
+                    borderColor: "#808020",
+                    width: "80%",
+                  }}
+                >
+                  <option value="">Select</option>
+                  {getProcat.map((category, index) => (
+                    <option
+                      key={category.id}
+                      value={category.email}
                       style={{
-                        width: "100%",
-                        marginTop: "5px",
-                        marginBottom: "5px",
+                        fontSize: "14px",
+                        paddingBottom: "10px",
+                        paddintTop: "10px",
                       }}
                     >
-                      Category
-                    </Form.ControlLabel>
-                    <div
-                      style={{
-                        width: "100%",
-                        margin: "auto",
-                        marginTop: "5px",
-                        marginBottom: "5px",
-                        paddingRight: "10px",
-                      }}
-                    >
-                      <select
-                        name="selectSection"
-                        value={selectProCat}
-                        onChange={(event) =>
-                          setSelectProCat(event.target.value)
-                        }
-                        style={{
-                          height: "35px",
-                          borderRadius: "5px",
-                          paddingLeft: "5px",
-                          paddingRight: "5px",
-                          borderColor: "#808020",
-                          width: "100%",
-                        }}
-                      >
-                        <option value="">Select</option>
-                        {getProcat.map((category, index) => (
-                          <option
-                            key={category.id}
-                            value={category.email}
-                            style={{
-                              fontSize: "14px",
-                              paddingBottom: "10px",
-                              paddintTop: "10px",
-                            }}
-                          >
-                            <li>{`${category.name}`}</li>
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </Form.Group>
-
-                  <Form.Group style={{ width: "100%" }}>
-                    <Form.ControlLabel
-                      className="formLabelText"
-                      style={{
-                        width: "100%",
-                        marginTop: "5px",
-                        marginBottom: "5px",
-                        paddingLeft: "10px",
-                      }}
-                    >
-                      SubCategory
-                    </Form.ControlLabel>
-                    <div
-                      style={{
-                        width: "100%",
-                        margin: "auto",
-                        marginTop: "5px",
-                        marginBottom: "5px",
-                        paddingLeft: "10px",
-                      }}
-                    >
-                      <select
-                        name="selectSection"
-                        value={selectProSubCat}
-                        onChange={(event) =>
-                          setSelectProSubCat(event.target.value)
-                        }
-                        style={{
-                          height: "35px",
-                          borderRadius: "5px",
-                          paddingLeft: "5px",
-                          paddingRight: "5px",
-                          borderColor: "#808020",
-                          width: "100%",
-                        }}
-                      >
-                        <option value="">Select</option>
-                        {getProSubcat.map((category, index) => (
-                          <option
-                            key={category.id}
-                            value={category.email}
-                            style={{
-                              fontSize: "14px",
-                              paddingBottom: "10px",
-                              paddintTop: "10px",
-                            }}
-                          >
-                            <li>{`${category.name}`}</li>
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </Form.Group>
-                </div>
-
-                <div style={{ display: "flex" }}>
-                  <Form.Group style={{ width: "100%" }}>
-                    <Form.ControlLabel
-                      className="formLabelText"
-                      style={{
-                        width: "100%",
-                        marginTop: "5px",
-                        marginBottom: "5px",
-                      }}
-                    >
-                      Buy
-                    </Form.ControlLabel>
-                    <div
-                      style={{
-                        width: "100%",
-                        margin: "auto",
-                        marginTop: "5px",
-                        marginBottom: "5px",
-                        paddingLeft: "10px",
-                      }}
-                    >
-                      <select
-                        name="selectSection"
-                        value={bay}
-                        onChange={(event) => setBay(event.target.value)}
-                        style={{
-                          height: "35px",
-                          borderRadius: "5px",
-                          paddingLeft: "5px",
-                          paddingRight: "5px",
-                          borderColor: "#808020",
-                          width: "10rem",
-                        }}
-                      >
-                        <option value="">Select</option>
-                        <option
-                          style={{
-                            fontSize: "14px",
-                            paddingBottom: "10px",
-                            paddintTop: "10px",
-                          }}
-                        >
-                          <li>Yes</li>
-                        </option>
-                        <option
-                          style={{
-                            fontSize: "14px",
-                            paddingBottom: "10px",
-                            paddintTop: "10px",
-                          }}
-                        >
-                          <li>No</li>
-                        </option>
-                      </select>
-                    </div>
-                  </Form.Group>
-
-                  <Form.Group style={{ width: "100%" }}>
-                    <Form.ControlLabel
-                      className="formLabelText"
-                      style={{
-                        width: "100%",
-                        marginTop: "5px",
-                        marginBottom: "5px",
-                      }}
-                    >
-                      Pickup
-                    </Form.ControlLabel>
-                    <div
-                      style={{
-                        width: "100%",
-                        margin: "auto",
-                        marginTop: "5px",
-                        marginBottom: "5px",
-                        paddingLeft: "10px",
-                      }}
-                    >
-                      <select
-                        name="selectSection"
-                        value={Pickup}
-                        onChange={(event) => setPickup(event.target.value)}
-                        style={{
-                          height: "35px",
-                          borderRadius: "5px",
-                          paddingLeft: "5px",
-                          paddingRight: "5px",
-                          borderColor: "#808020",
-                          width: "10rem",
-                        }}
-                      >
-                        <option value="">Select</option>
-                        <option
-                          style={{
-                            fontSize: "14px",
-                            paddingBottom: "10px",
-                            paddintTop: "10px",
-                          }}
-                        >
-                          <li>Yes</li>
-                        </option>
-                        <option
-                          style={{
-                            fontSize: "14px",
-                            paddingBottom: "10px",
-                            paddintTop: "10px",
-                          }}
-                        >
-                          <li>No</li>
-                        </option>
-                      </select>
-                    </div>
-                  </Form.Group>
-                </div>
-                <div className="updateModelButton">
-                  <ButtonComponent buttontext="ADD PRODUCT" />
-                </div>
+                      <li>{`${category.name}`}</li>
+                    </option>
+                  ))}
+                </select>
               </div>
-            </div>
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label className="add-label">SubCategory</Form.Label>
+              <div
+                style={{ width: "50%", marginTop: "5px", marginBottom: "15px" }}
+              >
+                <select
+                  name="selectSection"
+                  value={selectProSubCat}
+                  onChange={(event) => setSelectProSubCat(event.target.value)}
+                  style={{
+                    height: "35px",
+                    borderRadius: "5px",
+                    paddingLeft: "5px",
+                    paddingRight: "5px",
+                    borderColor: "#808020",
+                    width: "80%",
+                  }}
+                >
+                  <option value="">Select</option>
+                  {getProSubcat.map((category, index) => (
+                    <option
+                      key={category.id}
+                      value={category.email}
+                      style={{
+                        fontSize: "14px",
+                        paddingBottom: "10px",
+                        paddintTop: "10px",
+                      }}
+                    >
+                      <li>{`${category.name}`}</li>
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label className="add-label">Buy</Form.Label>
+              <div
+                style={{ width: "50%", marginTop: "5px", marginBottom: "15px" }}
+              >
+                <select
+                  name="selectSection"
+                  value={bay}
+                  onChange={(event) => setBay(event.target.value)}
+                  style={{
+                    height: "35px",
+                    borderRadius: "5px",
+                    paddingLeft: "5px",
+                    paddingRight: "5px",
+                    borderColor: "#808020",
+                    width: "80%",
+                  }}
+                >
+                  <option value="">Select</option>
+                  <option
+                    style={{
+                      fontSize: "14px",
+                      paddingBottom: "10px",
+                      paddintTop: "10px",
+                    }}
+                  >
+                    <li>Yes</li>
+                  </option>
+                  <option
+                    style={{
+                      fontSize: "14px",
+                      paddingBottom: "10px",
+                      paddintTop: "10px",
+                    }}
+                  >
+                    <li>No</li>
+                  </option>
+                </select>
+              </div>
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label className="add-label">Pickup</Form.Label>
+              <div
+                style={{ width: "50%", marginTop: "5px", marginBottom: "15px" }}
+              >
+                <select
+                  name="selectSection"
+                  value={Pickup}
+                  onChange={(event) => setPickup(event.target.value)}
+                  style={{
+                    height: "35px",
+                    borderRadius: "5px",
+                    paddingLeft: "5px",
+                    paddingRight: "5px",
+                    borderColor: "#808020",
+                    width: "80%",
+                  }}
+                >
+                  <option value="">Select</option>
+                  <option
+                    style={{
+                      fontSize: "14px",
+                      paddingBottom: "10px",
+                      paddintTop: "10px",
+                    }}
+                  >
+                    <li>Yes</li>
+                  </option>
+                  <option
+                    style={{
+                      fontSize: "14px",
+                      paddingBottom: "10px",
+                      paddintTop: "10px",
+                    }}
+                  >
+                    <li>No</li>
+                  </option>
+                </select>
+              </div>
+            </Form.Group>
+
+            <ButtonComponent buttontext="Add" />
           </Form>
-          <div>
-            <AddProductAttributes
-              showAddProduct={showAddProduct}
-              setShowAddProduct={setShowAddProduct}
-              getProducts={getProducts}
-              item={item}
-            />
-          </div>
         </Modal.Body>
       </Modal>
     </>

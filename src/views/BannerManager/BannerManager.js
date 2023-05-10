@@ -3,6 +3,7 @@ import { Http } from "../../config/Service";
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
+import { validationBannerManager } from "components/Validation";
 
 import { Form, Radio, RadioGroup, Button } from "rsuite";
 import { Table, Card, Col } from "react-bootstrap";
@@ -29,11 +30,8 @@ const BannerManager = () => {
   const notificationAlertRef = React.useRef(null);
 
   const [imageFile, setImageFile] = useState(null);
-  
+
   const [errorMessage, setErrorMessage] = useState("");
-
-
-  const [urlError, setUrlError] = useState("");
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -98,12 +96,6 @@ const BannerManager = () => {
     } else {
       redirectImg = "0";
     }
-    const validUrlRegex =
-    /^((http(s?)?):\/\/)?([wW]{3}\.)?[a-zA-Z0-9\-.]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?$/
-    if (formData.url && !validUrlRegex.test(formData.url)) {
-      setUrlError("Invalid URL");
-      return;
-    }
 
     var data = new FormData();
     data.append("banner_image", imageFile);
@@ -147,7 +139,12 @@ const BannerManager = () => {
       </div>
       <div className="MainContainer">
         <div className="Container">
-          <Form fluid onSubmit={handleSubmit}>
+          <Form
+            fluid
+            onSubmit={handleSubmit}
+            model={validationBannerManager}
+            noValidate
+          >
             <Form.Group>
               <Form.ControlLabel htmlFor="file">IMAGE</Form.ControlLabel>
               <div>
@@ -157,8 +154,8 @@ const BannerManager = () => {
                       src={URL.createObjectURL(imageFile)}
                       alt="Avatar"
                       style={{
-                        width: "80px",
-                        height: "80px",
+                        width: "50px",
+                        height: "60px",
                         borderRadius: "11px",
                       }}
                     />
@@ -172,15 +169,16 @@ const BannerManager = () => {
                     <label htmlFor="avatar-upload">
                       <div
                         style={{
-                          width: "90px",
-                          height: "90px",
+                          color: "blueviolet",
+                          width: "55px",
+                          height: "55px",
                           border: "1px dotted",
                           display: "flex",
                           justifyContent: "center",
                           alignItems: "center",
                         }}
                       >
-                        <CameraRetroIcon style={{ fontSize: "64px" }} />
+                        <CameraRetroIcon style={{ fontSize: "35px" }} />
                       </div>
                     </label>
                     <input
@@ -225,9 +223,6 @@ const BannerManager = () => {
                 />
               </Form.Group>
             )}
-             {urlError && (
-                <div style={{ color: "red" }}>{urlError}</div>
-              )}
 
             <ButtonComponent block buttontext="Submit" />
 

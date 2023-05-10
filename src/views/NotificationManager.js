@@ -144,8 +144,8 @@ const NotificationManager = () => {
                       src={URL.createObjectURL(imageFile)}
                       alt="Avatar"
                       style={{
-                        width: "80px",
-                        height: "80px",
+                        width: "50px",
+                        height: "60px",
                         borderRadius: "11px",
                       }}
                     />
@@ -159,15 +159,16 @@ const NotificationManager = () => {
                     <label htmlFor="avatar-upload">
                       <div
                         style={{
-                          width: "90px",
-                          height: "90px",
+                          color:"blueviolet",
+                          width: "55px",
+                          height: "55px",
                           border: "1px dotted",
                           display: "flex",
                           justifyContent: "center",
                           alignItems: "center",
                         }}
                       >
-                        <CameraRetroIcon style={{ fontSize: "64px" }} />
+                        <CameraRetroIcon style={{ fontSize: "35px" }} />
                       </div>
                     </label>
                     <input

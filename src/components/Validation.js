@@ -86,6 +86,15 @@ const validationUpdateStoreModel = Schema.Model({
   }, "Please enter a valid 6 digit pincode."),
 });
 
+const validUrlRegex = /^((http(s?)?):\/\/)?([wW]{3}\.)?[a-zA-Z0-9\-.]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?$/;
+const validationBannerManager = Schema.Model({
+  url: StringType()
+    .isRequired('Url is required')
+    .addRule((value) => {
+      return validUrlRegex.test(value);
+    }, 'Please enter a valid URL'),
+});
+
 const TextField = React.forwardRef((props, ref) => {
   const { name, label, accepter, ...rest } = props;
   return (
@@ -103,4 +112,5 @@ export {
   validationAddModel,
   validationUpdateStoreModel,
   addAttributeValidationModel,
+   validationBannerManager,
 };

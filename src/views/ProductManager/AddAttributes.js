@@ -13,18 +13,22 @@ const AddAttributes = ({
   showUpdateModal,
   getProducts,
   item,
+
 }) => {
   const [AddAttribute, setAddAttribute] = useState([]);
   const [sizeData, setSizeData] = useState([]);
   const [colorData, setColorData] = useState([]);
   const [size, setSize] = useState("");
   const [color, setColor] = useState("");
+  const [inStock, setInStock] = useState("No");
 
   const [formValue, setFormValue] = useState({
     price: "",
     discountPrice: "",
     sku: "",
+    inStock:"",
   });
+  console.log("AAAAAttinstock",  item?.id)
 
   const formRef = React.useRef();
 
@@ -87,8 +91,8 @@ const AddAttributes = ({
       data.append("price", formValue.price);
       data.append("dis_price", formValue.discountPrice);
       data.append("sku", formValue.sku);
-      data.append("instock", item?.attributes?.[0]?.in_stock);
-      data.append("product_id", item?.attributes?.[0]?.pid);
+      data.append("instock", inStock);
+      data.append("product_id", item?.id);
 
       Http.PostAPI(process.env.REACT_APP_ADDATRIBUTE, data, null)
         .then((res) => {
@@ -303,6 +307,46 @@ const AddAttributes = ({
           </Form.Group> */}
         {/* </div> */}
         {/* </Form.Group> */}
+        <Form.Group>
+              <Form.ControlLabel className="formLabelText">Stock</Form.ControlLabel>
+              <div
+                style={{ width: "50%", marginTop: "5px", marginBottom: "15px" }}
+              >
+                <select
+                  name="selectSection"
+                  value={inStock}
+                  onChange={(event) => setInStock(event.target.value)}
+                  style={{
+                    height: "35px",
+                    borderRadius: "5px",
+                    paddingLeft: "5px",
+                    paddingRight: "5px",
+                    borderColor: "#808020",
+                    width: "23rem",
+                  }}
+                >
+                  <option value="">Select</option>
+                  <option
+                    style={{
+                      fontSize: "14px",
+                      paddingBottom: "10px",
+                      paddintTop: "10px",
+                    }}
+                  >
+                    <li>Yes</li>
+                  </option>
+                  <option
+                    style={{
+                      fontSize: "14px",
+                      paddingBottom: "10px",
+                      paddintTop: "10px",
+                    }}
+                  >
+                    <li>No</li>
+                  </option>
+                </select>
+              </div>
+            </Form.Group>
 
         <Form.Group fluid>
           <Form.ControlLabel className="formLabelText">SKU</Form.ControlLabel>

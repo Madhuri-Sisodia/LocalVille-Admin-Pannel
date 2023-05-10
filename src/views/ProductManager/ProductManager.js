@@ -16,7 +16,7 @@ import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 import Loading from "customComponents/Loading";
 import image from "assets/img/noProduct.png";
-import ButtonComponent from "views/ButtonComponent";
+
 import ActiveProduct from "./ActiveProduct";
 
 import {
@@ -33,7 +33,7 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-import index from "views/categorySection";
+
 import ViewProductModal from "./ViewProductModal";
 
 const Products = () => {
@@ -84,8 +84,9 @@ const Products = () => {
       null
     )
       .then((res) => {
+        
         setIsLoading(false);
-        console.log("getProducts", res);
+       
 
         if (res?.data?.status) {
           setTotalPages(res.data.total_pages);
@@ -147,7 +148,7 @@ const Products = () => {
       .then((res) => {
         if (res?.data?.status) {
           setData(res?.data?.data);
-          console.log("users", res.data.data);
+         
         } else {
           notificationAlertRef.current.notificationAlert(
             ErrorNotify(res?.data?.message)
@@ -460,7 +461,7 @@ const Products = () => {
           </Modal.Body>
           <div className="modal-footer">
             <Button
-              //  id= {item.id}
+           
               className="btn-simple"
               variant="danger"
               onClick={() => {
