@@ -29,8 +29,11 @@ const BannerManager = () => {
   const notificationAlertRef = React.useRef(null);
 
   const [imageFile, setImageFile] = useState(null);
-
+  
   const [errorMessage, setErrorMessage] = useState("");
+
+
+  const [urlError, setUrlError] = useState("");
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -94,6 +97,12 @@ const BannerManager = () => {
       redirectImg = "1";
     } else {
       redirectImg = "0";
+    }
+    const validUrlRegex =
+    /^((http(s?)?):\/\/)?([wW]{3}\.)?[a-zA-Z0-9\-.]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?$/
+    if (formData.url && !validUrlRegex.test(formData.url)) {
+      setUrlError("Invalid URL");
+      return;
     }
 
     var data = new FormData();
@@ -216,6 +225,9 @@ const BannerManager = () => {
                 />
               </Form.Group>
             )}
+             {urlError && (
+                <div style={{ color: "red" }}>{urlError}</div>
+              )}
 
             <ButtonComponent block buttontext="Submit" />
 

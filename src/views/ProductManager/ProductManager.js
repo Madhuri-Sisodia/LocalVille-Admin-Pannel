@@ -416,6 +416,7 @@ const Products = () => {
           showAddProduct={showAddProduct}
           setShowAddProduct={setShowAddProduct}
           getProducts={getProducts}
+          item={data}
         />
         <ViewProductModal
           showProductDetail={showProductDetail}

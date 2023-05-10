@@ -3,7 +3,10 @@ import { Utils } from "CommonUtils/Utils";
 import MapPicker from "react-google-map-picker";
 
 const GooglePlacesPicker = () => {
-  const DefaultLocation = { lat: 10, lng: 106 };
+  const DefaultLocation = {
+    lat: 12.9716,
+    lng: 77.5946,
+  };
   const DefaultZoom = 15;
   const { Selectedcoordinates, setLocation, location } = useContext(Utils);
   const [defaultLocation, setDefaultLocation] = useState(DefaultLocation);
@@ -25,7 +28,6 @@ const GooglePlacesPicker = () => {
   }
 
   function handleResetLocation() {
-    console.log("location", DefaultLocation);
     setDefaultLocation({ ...DefaultLocation });
     setZoom(DefaultZoom);
   }
