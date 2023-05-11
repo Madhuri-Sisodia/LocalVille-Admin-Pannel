@@ -19,6 +19,7 @@ const AddProductAttributes = ({
   const [colorData, setColorData] = useState([]);
   const [size, setSize] = useState("");
   const [color, setColor] = useState("");
+  const [btnLoading, setBtnloading] =useState (false);
   console.log("III",item?.[0]?.attributes?.[0]?.in_stock);
 
   const [formValue, setFormValue] = useState({
@@ -94,9 +95,11 @@ const AddProductAttributes = ({
       data.append("gst", formValue.gst);
       data.append("instock", item?.[0]?.attributes?.[0]?.in_stock);
       data.append("product_id", item?.[0]?.attributes?.[0]?.pid);
+      setBtnloading(true);
 
       Http.PostAPI(process.env.REACT_APP_ADDATRIBUTE, data, null)
         .then((res) => {
+          setBtnloading(false);
           console.log("response....", res);
           if (res?.data?.status) {
             setAddAttribute(res?.data?.data);
@@ -111,6 +114,7 @@ const AddProductAttributes = ({
           }
         })
         .catch((e) => {
+          setBtnloading(false);
           notificationAlertRef.current.notificationAlert(
             ErrorNotify("Something went wrong")
           );
@@ -313,7 +317,10 @@ const AddProductAttributes = ({
           ></Form.Control>
         </Form.Group>
 
-          <ButtonComponent buttontext="ADD ATTRIBUTE" />
+          <ButtonComponent 
+          buttontext="ADD ATTRIBUTE"
+          btnLoading={btnLoading}
+           />
       </Form>
     </>
   );

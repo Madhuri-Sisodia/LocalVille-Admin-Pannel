@@ -33,7 +33,7 @@ const UpdateProducts = ({
   const [tem, setTem] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [edit, setEdit] = useState(-1);
-
+  const [btnLoading, setBtnloading] =useState (false);
   const [productImage, setProductImage] = useState();
  
   const [buy, setBuy] = useState("No");
@@ -72,9 +72,10 @@ const UpdateProducts = ({
     );
 
     data.append("product_image", newFile);
-
+    setBtnloading(true);
     Http.PostAPI(process.env.REACT_APP_UPDATEPRODUCTIMAGE, data, null)
       .then((res) => {
+        setBtnloading(false);
         if (res?.data?.status) {
           setProduct(res?.data?.data);
           getProducts();
@@ -88,6 +89,7 @@ const UpdateProducts = ({
         }
       })
       .catch((e) => {
+        setBtnloading(false);
         notificationAlertRef.current.notificationAlert(
           ErrorNotify("Something went wrong")
         );
@@ -433,7 +435,10 @@ const UpdateProducts = ({
                   </Form.Group>
                 </div>
               
-                  <ButtonComponent buttontext="UPDATE PRODUCT" />
+                  <ButtonComponent
+                   buttontext="UPDATE PRODUCT" 
+                   btnLoading={btnLoading}
+                   />
                
               </div>
             </Form>

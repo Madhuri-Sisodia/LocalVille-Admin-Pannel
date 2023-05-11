@@ -12,7 +12,7 @@ const SizeAttribute = () => {
   const [sizeAttributeName, setSizeAttributeName] = useState("");
   const [selectSizeAttribute, setSizeAttribute] = useState("");
   const { setCategoriesId } = useContext(Utils);
-
+  const [btnLoading, setBtnloading] =useState (false);
   const [data, setData] = useState([]);
 
   const notificationAlertRef = React.useRef(null);
@@ -40,6 +40,7 @@ const SizeAttribute = () => {
         }
       })
       .catch((e) => {
+
         notificationAlertRef.current.notificationAlert(
           ErrorNotify("Something went wrong")
         );
@@ -73,37 +74,9 @@ const SizeAttribute = () => {
                   marginTop: "20px",
                 }}
               />
-              {/* <select
-                name="selectSection"
-                value={selectSection}
-                onChange={(event) => setSelectSection(event.target.value)}
-              >
-                <option value="">Select</option>
-                {data.map((category) => (
-                  <option key={category.id} value={category.section_name}>
-                    {category.section_name}
-                  </option>
-                ))}
-              </select> */}
+
             </Form.Group>
-            {/* <Form.Group controlId="name-1"> */}
-            {/* <div className="InnnerContainerCategory">
-              <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
-                Category Section Name
-              </Form.ControlLabel>
-              <select
-                name="selectCategory"
-                value={selectCategory}
-                onChange={(event) => setSelectCategory(event.target.value)}
-              >
-                <option value="">Select</option>
-                {data.map((category) => (
-                  <option key={category.id} value={category.section_name}>
-                    {category.section_name}
-                  </option>
-                ))}
-              </select>
-            </div> */}
+    
 
             <Form.Group>
               <ButtonToolbar>

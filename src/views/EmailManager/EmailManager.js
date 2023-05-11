@@ -21,7 +21,7 @@ const EmailManager = () => {
   const [addemail, setAddemail] = useState([]);
   const [emailData, setEmailData] = useState([]);
   const notificationAlertRef = React.useRef(null);
-
+  const [btnLoading, setBtnloading] =useState (false);
   const getVendors = () => {
     Http.GetAPI(
       process.env.REACT_APP_GETVENDORSDATA + "?" + Math.random(),
@@ -64,9 +64,11 @@ const EmailManager = () => {
     // data.append("title", title);
     data.append("subject", subject);
     data.append("message", message);
+    setBtnloading(true);
 
     Http.PostAPI(process.env.REACT_APP_POSTEMAIL, data)
       .then((res) => {
+        setBtnloading(false);
         console.log(res?.data);
         if (res?.data?.status) {
           setAddemail(res?.data?.data);
@@ -75,12 +77,14 @@ const EmailManager = () => {
             SuccessNotify(res?.data?.message)
           );
         } else {
+          
           notificationAlertRef.current.notificationAlert(
             ErrorNotify(res?.data?.message)
           );
         }
       })
       .catch((e) => {
+        setBtnloading(false);
         notificationAlertRef.current.notificationAlert(
           ErrorNotify("Something went wrong")
         );
@@ -136,7 +140,9 @@ const EmailManager = () => {
               <Form.ControlLabel>MESSAGE</Form.ControlLabel>
               <MyComponent setMessage={setMessage} message={message} />
             </Form.Group>
-            <ButtonComponent buttontext="Submit" />
+            <ButtonComponent buttontext="Submit"
+            btnLoading={btnLoading}
+            />
           </Form>
         </div>
       </div>
