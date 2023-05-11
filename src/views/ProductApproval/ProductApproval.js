@@ -79,10 +79,9 @@ const ProductApproval = () => {
   };
 
   const getUnverifiedProduct = () => {
+    console.log("pageView", process.env.REACT_APP_GETUNVERIFIEDPRODUCTS + "?" + `page=${pageView}`)
     Http.GetAPI(
-      process.env.REACT_APP_GETUNVERIFIEDPRODUCTS + "?" + `page=${pageView}`,
-      "",
-      null
+      process.env.REACT_APP_GETUNVERIFIEDPRODUCTS + "?" + `page=${pageView}`
     )
       .then((res) => {
         // console.log("resp",res)

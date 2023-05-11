@@ -39,7 +39,7 @@ const RejectProduct = ({
       .then((res) => {
         if (res?.data?.status) {
           setUpdateProduct(res?.data?.data);
-          getUnverifiedProduct();
+           getUnverifiedProduct();
           notificationAlertRef.current.notificationAlert(
             SuccessNotify(res?.data?.message)
           );

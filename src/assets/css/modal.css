@@ -199,7 +199,8 @@ justify-content: space-around;
   padding: initial ;
   border: none;
  }
-.updateModelButton{
+ 
+/* .updateModelButton{
   width: 80% !important;
   color: #ac74e1 !important;
   text-align: center !important;
@@ -207,7 +208,7 @@ justify-content: space-around;
   margin-left: 3rem;
   
 
-}
+} */
 
 .collapseAttribute {
   border-radius: 5px;

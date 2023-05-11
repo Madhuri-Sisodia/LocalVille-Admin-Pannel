@@ -5,18 +5,15 @@ import { Form, Row, Col } from "rsuite";
 import { Http } from "../../config/Service";
 import { FaCamera } from "react-icons/fa";
 import "../../assets/css/modal.css";
-import Size from "components/size";
-import { get } from "jquery";
+
 import ButtonComponent from "views/ButtonComponent";
 
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
-import Image from "../../assets/img/dummyproduct.jpeg";
-import CameraRetroIcon from "@rsuite/icons/legacy/CameraRetro";
-import ViewProductModal from "./ViewProductModal";
+
 import editButton from "../../assets/img/editButton.png";
-import { validationUpdateModel } from "components/Validation";
+
 import AddAttributes from "./AddAttributes";
 import UpdateAttribute from "./UpdateAttribute";
 import DeleteAttribute from "./DeleteAttribute";
@@ -28,21 +25,22 @@ const UpdateProducts = ({
   getProducts,
   item,
 }) => {
-  console.log(getProducts);
+ 
 
   const [product, setProduct] = useState([]);
-  const[pImage,setPImage]=useState(item);
+
+  const [pImage, setPImage] = useState(item);
   const [tem, setTem] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [edit, setEdit] = useState(-1);
 
   const [productImage, setProductImage] = useState();
-  const [baseImage, setBaseImage] = useState("");
+ 
   const [buy, setBuy] = useState("No");
   const [pickup, setPickup] = useState("No");
 
   const formRef = React.useRef();
-  const isMounted = useRef(false);
+ 
 
   const notificationAlertRef = React.useRef(null);
 
@@ -58,7 +56,9 @@ const UpdateProducts = ({
 
   console.log(item?.id);
 
-  const updateImage = () => {
+
+
+  const updateImage = (newFile) => {
     const data = new FormData();
 
     data.append(
@@ -71,7 +71,7 @@ const UpdateProducts = ({
       formValue.productName ? formValue.productName : item?.product_name
     );
 
-    data.append("product_image",pImage);
+    data.append("product_image", newFile);
 
     Http.PostAPI(process.env.REACT_APP_UPDATEPRODUCTIMAGE, data, null)
       .then((res) => {
@@ -93,76 +93,17 @@ const UpdateProducts = ({
         );
       });
   };
-  const handleImageUpload=(event, index)=> {
+  const handleImageUpload = (event, index) => {
     const newFile = event.target.files[0];
-    const newItemImages = [...item.images]; 
-    newItemImages[index].images = URL.createObjectURL(newFile); 
+    console.log("File", newFile);
+    const newItemImages = [...item.images];
+
+    newItemImages[index].images = URL.createObjectURL(newFile);
+
+    console.log("NNNN", newItemImages[index].images);
     setPImage((prevItem) => ({ ...prevItem, images: newItemImages }));
-    updateImage();
-  }
-   // const handleImageUpload = (event, index) => {
-  //   const file = event.target.files[0];
-  //   const reader = new FileReader();
-  //    reader.onloadend = () => {
-  //     const newImage = reader.result;
-  //     const updatedImages = [...item.images];
-  //     updatedImages[index] = { images: newImage };
-  //      setPImage({ ...item, images: updatedImages });
-  //      updateImage();
-  //     console.log(newImage);
-  //   };
-  
-  //   reader.readAsBinaryString(file);
-  // };
-
-  
-  // const handleImageUpload = (event, index) => {
-  //   const file = event.target.files[0];
-  //   const reader = new FileReader();
-
-  //   reader.onloadend = () => {
-  //     const newImage = reader.result;
-
-  //     const updatedImages = [...item.images];
-
-  //      updatedImages[index] = { images: newImage };
-
-  //   setTem({ ...item, images: updatedImages });
-
-  //     setProductImage(file);
-  //     setBaseImage(newImage);
-  //   };
-
-  //   reader.readAsDataURL(file);
-  // };
-
-  // const handleImageUpload = (event) => {
-  //   const file = event.target.files[0];
-  //   setProductImage(file);
-  //   const reader = new FileReader();
-  //   reader.onloadend = () => {
-  //     setBaseImage(reader.result);
-  //   };
-  //   reader.readAsDataURL(file);
-  // };
-  // const handleImageUpload = (e) => {
-  //   const file = e.target.files[0];
-  //   const reader = new FileReader();
-  //   reader.onloadend = () => {
-  //     const uploadedImages = [...productImage];
-  //     uploadedImages[0] = { images: reader.result }; 
-  //     setProductImage(uploadedImages); 
-  //   };
-  //   reader.readAsDataURL(file);
-  // };
-
-  // useEffect(() => {
-  //   if (isMounted.current) {
-  //     updateImage();
-  //   } else {
-  //     isMounted.current = true;
-  //   }
-  // }, [baseImage]);
+    updateImage(newFile);
+  };
 
   const handleSubmit = (event) => {
     // event.preventDefault();
@@ -193,11 +134,11 @@ const UpdateProducts = ({
       pickup ? (pickup == "Yes" ? 1 : 0) : item?.is_pickup
     );
 
-    // console.log("response....",handleSubmit);
+   
 
     Http.PostAPI(process.env.REACT_APP_UPDATEPRODUCTS, data, null)
       .then((res) => {
-        console.log("response....", res);
+        
         if (res?.data?.status) {
           setProduct(res?.data?.data);
           getProducts();
@@ -265,40 +206,32 @@ const UpdateProducts = ({
 
                 <div className="uploadProductImage">
                   <div>
-                    {item?.images?.map((image, index) => (
+                    {item?.images.map((image, index) => (
                       <div
                         key={index}
                         style={{ display: "inline-block", margin: "2px" }}
                       >
-                      <label htmlFor={`avatar-upload-${index}`}>
-                        <img
-                          src={image.images}
-                          alt="Image"
-                          style={{
-                            width: "50px",
-                            height: "60px",
-                            borderRadius: "5px",
-                          }}
-                         
-                       
-                        />
-                         <input
-                          id={`avatar-upload-${index}`}
-                          type="file"
-                          accept="image/jpeg, image/png, image/jpg"
-                          onChange={(event) =>handleImageUpload(event, index)}
-                          style={{ display: "none" }}
-                        />
+                        <label htmlFor={`avatar-upload-${index}`}>
+                          <img
+                            src={image.images}
+                            alt="Image"
+                            style={{
+                              width: "50px",
+                              height: "60px",
+                              borderRadius: "5px",
+                            }}
+                          />
+                          <input
+                            id={`avatar-upload-${index}`}
+                            type="file"
+                            accept="image/jpeg, image/png, image/jpg"
+                            onChange={(event) =>
+                              handleImageUpload(event, index)
+                            }
+                            style={{ display: "none" }}
+                          />
                         </label>
-                        {/* <img
-                           src={productImage[index]?.images ? baseImage|| image.images}
-                          alt="Image"
-                          style={{
-                            width: "50px",
-                            height: "60px",
-                            borderRadius: "5px",
-                          }}
-                        /> */}
+                       
 
                         <sup
                           className="deleteButton"
@@ -309,7 +242,7 @@ const UpdateProducts = ({
                       </div>
                     ))}
 
-                    <label htmlFor="productImage">
+                    {/* <label htmlFor="productImage">
                       <div style={{ position: "relative" }}>
                         <FaCamera
                           style={{
@@ -332,10 +265,10 @@ const UpdateProducts = ({
                           onChange={handleImageUpload}
                         />
                       </div>
-                    </label>
+                    </label> */}
                   </div>
                 </div>
-                <p className="maxLimit">You can upload maximum 4 images</p>
+                {/* <p className="maxLimit">You can upload maximum 4 images</p> */}
               </Form.Group>
 
               <div className="UpdateProductForm">
@@ -499,19 +432,11 @@ const UpdateProducts = ({
                     </div>
                   </Form.Group>
                 </div>
-                <div className="updateModelButton">
+                {/* <div className="updateModelButton"> */}
                   <ButtonComponent buttontext="UPDATE PRODUCT" />
-                </div>
+                {/* </div> */}
               </div>
             </Form>
-            <div>
-              <AddAttributes
-                showUpdateModal={showUpdateModal}
-                setShowUpdateModal={setShowUpdateModal}
-                getProducts={getProducts}
-                item={item}
-              />
-            </div>
 
             {item?.attributes?.map((attribute, index) => (
               <div>
@@ -557,6 +482,7 @@ const UpdateProducts = ({
                   <div>
                     <UpdateAttribute
                       item={item}
+                      index={edit}
                       getProducts={getProducts}
                       showUpdateModal={showUpdateModal}
                       setShowUpdateModal={setShowUpdateModal}
@@ -565,7 +491,14 @@ const UpdateProducts = ({
                 )}
               </div>
             ))}
-
+            <div>
+              <AddAttributes
+                showUpdateModal={showUpdateModal}
+                setShowUpdateModal={setShowUpdateModal}
+                getProducts={getProducts}
+                item={item}
+              />
+            </div>
             <DeleteAttribute
               showModal={showModal}
               setShowModal={setShowModal}

@@ -2,33 +2,32 @@ import React, { useState, useEffect, useRef } from "react";
 import { Form, Row, Col } from "rsuite";
 import { Http } from "../../config/Service";
 import "../../assets/css/modal.css";
-import ButtonComponent from "views/ButtonComponent"
+import ButtonComponent from "views/ButtonComponent";
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
-import { ErrorNotify } from "components/NotificationShowPopUp"
+import { ErrorNotify } from "components/NotificationShowPopUp";
 import { addAttributeValidationModel } from "components/Validation";
 
-const AddAttributes = ({
-  setShowUpdateModal,
-  showUpdateModal,
+const AddProductAttributes = ({
+  setShowAddProduct,
+  showAddProduct,
   getProducts,
   item,
-
 }) => {
   const [AddAttribute, setAddAttribute] = useState([]);
   const [sizeData, setSizeData] = useState([]);
   const [colorData, setColorData] = useState([]);
   const [size, setSize] = useState("");
   const [color, setColor] = useState("");
-  const [inStock, setInStock] = useState("No");
+  console.log("III",item?.[0]?.attributes?.[0]?.in_stock);
 
   const [formValue, setFormValue] = useState({
     price: "",
     discountPrice: "",
     sku: "",
-    inStock:"",
+    qty: "",
+    gst: "",
   });
-  console.log("AAAAAttinstock",  item?.id)
 
   const formRef = React.useRef();
 
@@ -60,7 +59,7 @@ const AddAttributes = ({
         .then((res) => {
           if (res?.data?.status) {
             setColorData(res?.data?.data);
-            console.log("ccc",res.data.data);
+            console.log("ccc", res.data.data);
           } else {
             alert("Fields not matched");
           }
@@ -91,16 +90,18 @@ const AddAttributes = ({
       data.append("price", formValue.price);
       data.append("dis_price", formValue.discountPrice);
       data.append("sku", formValue.sku);
-      data.append("instock", inStock);
-      data.append("product_id", item?.id);
+      data.append("qty", formValue.qty);
+      data.append("gst", formValue.gst);
+      data.append("instock", item?.[0]?.attributes?.[0]?.in_stock);
+      data.append("product_id", item?.[0]?.attributes?.[0]?.pid);
 
       Http.PostAPI(process.env.REACT_APP_ADDATRIBUTE, data, null)
         .then((res) => {
           console.log("response....", res);
           if (res?.data?.status) {
             setAddAttribute(res?.data?.data);
-             getProducts();
-           notificationAlertRef.current.notificationAlert(
+            getProducts();
+            notificationAlertRef.current.notificationAlert(
               SuccessNotify(res?.data?.message)
             );
           } else {
@@ -115,7 +116,7 @@ const AddAttributes = ({
           );
         });
     }
-    setShowUpdateModal(false);
+    setShowAddProduct(false);
   };
 
   //   const handleReset = () => {
@@ -134,7 +135,6 @@ const AddAttributes = ({
         formValue={formValue}
         onSubmit={handleSubmit}
         model={addAttributeValidationModel}
-        // onReset={handleReset}
         onChange={setFormValue}
         className="UpdateProductForm"
       >
@@ -187,7 +187,7 @@ const AddAttributes = ({
                       paddingBottom: "10px",
                       paddintTop: "10px",
                     }}
-                    value={ele.id} 
+                    value={ele.id}
                   >
                     {ele.name}
                   </option>
@@ -239,7 +239,7 @@ const AddAttributes = ({
                       paddingBottom: "10px",
                       paddintTop: "10px",
                     }}
-                    value={ele.id} 
+                    value={ele.id}
                   >
                     {ele.name}
                   </option>
@@ -277,78 +277,34 @@ const AddAttributes = ({
             ></Form.Control>
           </Form.Group>
         </Form.Group>
-        {/* <Form.Group
-            layout="inline"
-            style={{ display: "flex", justifyContent: "space-between" }}
-          >
-            <Form.Group>
-              <Form.ControlLabel className="formLabelText">
-                {" "}
-                GST
-              </Form.ControlLabel>
-              <Form.Control
-                type="text"
-                style={{ width: "155px", marginBottom: "-15px" }}
-              ></Form.Control>
-            </Form.Group>
-            <Form.Group>
-              <Form.ControlLabel className="formLabelText">
-                QTY
-              </Form.ControlLabel>
-              <Form.Control
-                // onChange={(e) => {
-                //   handleInput(e);
-                // }}
+        <Form.Group
+          layout="inline"
+          style={{ display: "flex", justifyContent: "space-between" }}
+        >
+          <Form.Group>
+            <Form.ControlLabel className="formLabelText">
+              {" "}
+              GST
+            </Form.ControlLabel>
+            <Form.Control
+              type="text"
+              name="gst"
+              value={formValue.gst}
+              style={{ width: "155px", marginBottom: "-15px" }}
+            ></Form.Control>
+          </Form.Group>
+          <Form.Group>
+            <Form.ControlLabel className="formLabelText">QTY</Form.ControlLabel>
+            <Form.Control
+              value={formValue.qty}
+              type="text"
+              name="qty"
+              style={{ width: "155px", marginBottom: "-15px" }}
+            ></Form.Control>
+          </Form.Group>
+        </Form.Group>
 
-                type="text"
-                style={{ width: "155px", marginBottom: "-15px" }}
-              ></Form.Control>
-            </Form.Group>
-          </Form.Group> */}
-        {/* </div> */}
-        {/* </Form.Group> */}
         <Form.Group>
-              <Form.ControlLabel className="formLabelText">Stock</Form.ControlLabel>
-              <div
-                style={{ width: "50%", marginTop: "5px", marginBottom: "15px" }}
-              >
-                <select
-                  name="selectSection"
-                  value={inStock}
-                  onChange={(event) => setInStock(event.target.value)}
-                  style={{
-                    height: "35px",
-                    borderRadius: "5px",
-                    paddingLeft: "5px",
-                    paddingRight: "5px",
-                    borderColor: "#808020",
-                    width: "23rem",
-                  }}
-                >
-                  <option value="">Select</option>
-                  <option
-                    style={{
-                      fontSize: "14px",
-                      paddingBottom: "10px",
-                      paddintTop: "10px",
-                    }}
-                  >
-                    <li>Yes</li>
-                  </option>
-                  <option
-                    style={{
-                      fontSize: "14px",
-                      paddingBottom: "10px",
-                      paddintTop: "10px",
-                    }}
-                  >
-                    <li>No</li>
-                  </option>
-                </select>
-              </div>
-            </Form.Group>
-
-        <Form.Group fluid>
           <Form.ControlLabel className="formLabelText">SKU</Form.ControlLabel>
           <Form.Control
             value={formValue.sku}
@@ -359,30 +315,8 @@ const AddAttributes = ({
         <div className="updateModelButton">
           <ButtonComponent buttontext="ADD ATTRIBUTE" />
         </div>
-
-        {/* <Form.Group>
-                <Form.ControlLabel className="add-label">Update Attributes</Form.ControlLabel>
-                {item?.attributes?.map((ele, index) => (
-                  <UpdateAttributes
-                    ele={ele}
-                    index={index}
-                    getProducts={getProducts}
-                  />
-                ))}
-              </Form.Group>
-
-               <div>
-                <Size
-                  setAttributes={setAttributes}
-                  attributes={attributes}
-                  isAddProdcut={false}
-                  len={item.attributes.length}
-                  id={item.id}
-                />
-              </div>  
-              </div   */}
       </Form>
     </>
   );
 };
-export default AddAttributes;
+export default AddProductAttributes;

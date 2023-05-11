@@ -3,6 +3,7 @@ import { Http } from "../../config/Service";
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
+import { validationBannerManager } from "components/Validation";
 
 import { Form, Radio, RadioGroup, Button } from "rsuite";
 import { Table, Card, Col } from "react-bootstrap";
@@ -142,7 +143,12 @@ const BannerManager = () => {
       </div>
       <div className="MainContainer">
         <div className="Container">
-          <Form fluid onSubmit={handleSubmit}>
+          <Form
+            fluid
+            onSubmit={handleSubmit}
+            model={validationBannerManager}
+            noValidate
+          >
             <Form.Group>
               <Form.ControlLabel htmlFor="file">IMAGE</Form.ControlLabel>
               <div>
@@ -152,8 +158,8 @@ const BannerManager = () => {
                       src={URL.createObjectURL(imageFile)}
                       alt="Avatar"
                       style={{
-                        width: "80px",
-                        height: "80px",
+                        width: "50px",
+                        height: "60px",
                         borderRadius: "11px",
                       }}
                     />
@@ -167,15 +173,16 @@ const BannerManager = () => {
                     <label htmlFor="avatar-upload">
                       <div
                         style={{
-                          width: "90px",
-                          height: "90px",
+                          color: "blueviolet",
+                          width: "55px",
+                          height: "55px",
                           border: "1px dotted",
                           display: "flex",
                           justifyContent: "center",
                           alignItems: "center",
                         }}
                       >
-                        <CameraRetroIcon style={{ fontSize: "64px" }} />
+                        <CameraRetroIcon style={{ fontSize: "35px" }} />
                       </div>
                     </label>
                     <input

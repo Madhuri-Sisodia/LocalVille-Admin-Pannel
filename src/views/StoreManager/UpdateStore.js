@@ -41,6 +41,8 @@ const UpdateStore = ({
   const [hideData, setHideData] = useState(true);
   const [UpdateStoreImage, SetUpdateStoreImage] = useState("");
   const [baseImage, setBaseImage] = useState("");
+  const [time, setTime] = useState("");
+  const [message, setMessage] = useState("");
   const [selectedDays, setSelectedDays] = useState([]);
   const [timeError, setTimeError] = useState("");
   const notificationAlertRef = React.useRef(null);
@@ -73,6 +75,25 @@ const UpdateStore = ({
       setDays(parsedDays);
     }
   }, [item]);
+  const resetForm = () => {
+    setStoreData({
+      storeImage: "",
+      storeName: "",
+      storeDesc: "",
+      address: "",
+      latitude: "",
+      longitude: "",
+      pincode: "",
+      city: "",
+      state: "",
+      country: "",
+      openingDays: "",
+      openingTime: "",
+      closingTime: "",
+      selectedDays: "",
+    });
+    
+  };
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -88,9 +109,11 @@ const UpdateStore = ({
     const closingTime = new Date(`2000-01-01T${storeData.closingTime}:00Z`);
     const timeDiffInMinutes = (closingTime - openingTime) / (1000 * 60);
     if (timeDiffInMinutes <= 60 && timeDiffInMinutes >= 0) {
+      console.log("heloooo")
       setTimeError(
         "The difference between Opening Time and Closing Time should be at least 1 hour"
       );
+      return;
     } else {
       setTimeError("");
     }
@@ -99,6 +122,14 @@ const UpdateStore = ({
   const handleUpdateStore = () => {
     // e.preventDefault();
     validateOpeningClosingTime();
+   
+    if (selectedDays.length === 0) {
+      setMessage("Opening Day is required");
+      return;
+    } else {
+      setMessage("");
+    }
+  
 
     if (!formRef.current.check()) {
       console.log("Form Error!");
@@ -172,7 +203,9 @@ const UpdateStore = ({
             ErrorNotify("Something went wrong")
           );
         });
+        resetForm();
       setShowUpdateStore(false);
+     
     }
   };
 
@@ -219,6 +252,9 @@ const UpdateStore = ({
               onClick={() => {
                 setShowUpdateStore(false);
                 setSelectedDays("");
+                setTimeError("");
+                setMessage("");
+                resetForm();
               }}
             />
           </Modal.Header>
@@ -451,6 +487,10 @@ const UpdateStore = ({
                   })}
                 </div>
               </Form.Group>
+              {message && (
+              <div style={{ color: "red", fontSize: "0.7rem" }}>{message}</div>
+            )}
+
 
               <div style={{ display: "flex", flexDirection: "row" }}>
                 <Form.Group>
@@ -488,9 +528,7 @@ const UpdateStore = ({
                 </Form.Group>
               </div>
               {timeError && (
-                <div style={{ color: "red", fontSize: "0.7rem" }}>
-                  {timeError}
-                </div>
+                <div style={{ color: "red", fontSize: "0.7rem" }}>{timeError}</div>
               )}
 
               <ButtonComponent buttontext="Update" block />

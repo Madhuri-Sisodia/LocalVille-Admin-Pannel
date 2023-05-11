@@ -16,6 +16,7 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
   const [imageFile, setImageFile] = useState(null);
   // const [errorMessage, setErrorMessage] = useState("");
   const [btnLoading, setBtnloading] =useState (false);
+   const [errorMessage, setErrorMessage] = useState("");
   const [vendorData, setVendorData] = useState({
     vendorImage: null,
     vendorName: "",
@@ -25,9 +26,10 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
   const notificationAlertRef = React.useRef(null);
 
   const handleImageChange = (event) => {
-    const files = event.target.files;
-    const fileArray = Array.from(files);
-    setImageFile(fileArray);
+    const file = event.target.files[0];
+    console.log("hello", file);
+    setImageFile(file);
+    setErrorMessage(null);
   };
   
 
@@ -153,22 +155,20 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
               <Form.Label htmlFor="file" className="add-label">
                 VendorImage
               </Form.Label>
+            
+               
               <div>
                 {imageFile ? (
-                 <div>
-                 {imageFile && imageFile.map((file) => (
-                   <div key={file.name}>
-                     <img
-                       src={URL.createObjectURL(file)}
-                       alt={file.name}
-                       style={{
-                         width: "80px",
-                         height: "80px",
-                         borderRadius: "11px",
-                       }}
-                     />
-                   </div>
-                 ))}
+                  <div>
+                    <img
+                      src={URL.createObjectURL(imageFile)}
+                      alt="Avatar"
+                      style={{
+                        width: "80px",
+                        height: "80px",
+                        borderRadius: "11px",
+                      }}
+                    />
 
                     {/* <div style={{ marginTop: "1em" }}>
                       <button onClick={handleRemoveImage}>Remove Image</button>
@@ -195,17 +195,14 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
                       type="file"
                       accept="image/jpeg, image/png, image/jpg"
                       onChange={handleImageChange}
-                      multiple
                       style={{ display: "none" }}
                     />
                   </div>
                 )}
               </div>
-              {/* {errors.imageFile && (
-                <Form.Text className="text-danger">
-                  {errors.imageFile}
-                </Form.Text>
-              )} */}
+              {errorMessage && (
+                <div style={{ color: "red" }}>{errorMessage}</div>
+              )}
             </Form.Group>
 
             <Form.Group controlId="vendorName">
