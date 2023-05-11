@@ -5,6 +5,7 @@ import { Form, Row, Col } from "rsuite";
 import { Http } from "../../config/Service";
 import { FaCamera } from "react-icons/fa";
 import "../../assets/css/modal.css";
+import CameraRetroIcon from "@rsuite/icons/legacy/CameraRetro";
 
 import ButtonComponent from "views/ButtonComponent";
 
@@ -17,6 +18,7 @@ import editButton from "../../assets/img/editButton.png";
 import AddAttributes from "./AddAttributes";
 import UpdateAttribute from "./UpdateAttribute";
 import DeleteAttribute from "./DeleteAttribute";
+import DeleteImage from "./DeleteImage";
 
 const UpdateProducts = ({
   showUpdateModal,
@@ -25,22 +27,23 @@ const UpdateProducts = ({
   getProducts,
   item,
 }) => {
- 
-
   const [product, setProduct] = useState([]);
 
   const [pImage, setPImage] = useState(item);
-  const [tem, setTem] = useState([]);
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [imageFile, setImageFile] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [edit, setEdit] = useState(-1);
+  const [deleteAttribute, setDeleteAttribute] = useState();
+  const [imageIndex, setImageIndex] = useState();
 
   const [productImage, setProductImage] = useState();
- 
+  const [errorImageMessage, setErrorImageMessage] = useState("");
+
   const [buy, setBuy] = useState("No");
   const [pickup, setPickup] = useState("No");
 
   const formRef = React.useRef();
- 
 
   const notificationAlertRef = React.useRef(null);
 
@@ -56,9 +59,7 @@ const UpdateProducts = ({
 
   console.log(item?.id);
 
-
-
-  const updateImage = (newFile) => {
+  const updateImage = () => {
     const data = new FormData();
 
     data.append(
@@ -71,7 +72,11 @@ const UpdateProducts = ({
       formValue.productName ? formValue.productName : item?.product_name
     );
 
-    data.append("product_image", newFile);
+    if (imageFile) {
+      for (let i = 0; i < 4; i++) {
+        data.append(`product_image[${i}]`, imageFile[i]);
+      }
+    }
 
     Http.PostAPI(process.env.REACT_APP_UPDATEPRODUCTIMAGE, data, null)
       .then((res) => {
@@ -93,16 +98,55 @@ const UpdateProducts = ({
         );
       });
   };
-  const handleImageUpload = (event, index) => {
-    const newFile = event.target.files[0];
-    console.log("File", newFile);
-    const newItemImages = [...item.images];
+  // const handleImageUpload = (event) => {
+  //   const newFile = event.target.files;
+  //   const updatedImageFiles = [...item.image];
 
-    newItemImages[index].images = URL.createObjectURL(newFile);
+  //   for (let i = 0; i < newFile.length; i++) {
+  //     const newFile = files[i];
+  //     console.log("File", newFile);
+  //     updatedImageFiles.push(newFile);
+  //   }
 
-    console.log("NNNN", newItemImages[index].images);
-    setPImage((prevItem) => ({ ...prevItem, images: newItemImages }));
-    updateImage(newFile);
+  //   // if (updatedImageFiles.length > 4) {
+  //   //   setErrorImageMessage("Cannot upload more than 4 images.");
+  //   //   updatedImageFiles.length = 4;
+  //   // } else {
+  //   //   setErrorImageMessage(null);
+  //   // }
+  //   // setErrorMessage(null);
+  //   setPImage(updatedImageFiles);
+  //   updateImage(newFile);
+
+  //   // const newFile = event.target.files[0];
+  //   // console.log("File", newFile);
+  //   // const newItemImages = [...item.images];
+
+  //   // newItemImages[index].images = URL.createObjectURL(newFile);
+
+  //   // console.log("NNNN", newItemImages[index].images);
+  //   // setPImage((prevItem) => ({ ...prevItem, images: newItemImages }));
+
+  // };
+  const handleImageUpload = (event) => {
+    const files = event.target.files;
+    const updatedImageFiles = [...imageFile];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      console.log("File", file);
+      updatedImageFiles.push(file);
+    }
+
+    if (updatedImageFiles.length > 4) {
+      setErrorImageMessage("Cannot upload more than 4 images.");
+      updatedImageFiles.length = 4;
+    } else {
+      setErrorImageMessage(null);
+    }
+
+    setImageFile(updatedImageFiles);
+    updateImage();
   };
 
   const handleSubmit = (event) => {
@@ -134,11 +178,8 @@ const UpdateProducts = ({
       pickup ? (pickup == "Yes" ? 1 : 0) : item?.is_pickup
     );
 
-   
-
     Http.PostAPI(process.env.REACT_APP_UPDATEPRODUCTS, data, null)
       .then((res) => {
-        
         if (res?.data?.status) {
           setProduct(res?.data?.data);
           getProducts();
@@ -205,44 +246,132 @@ const UpdateProducts = ({
                 </Form.ControlLabel>
 
                 <div className="uploadProductImage">
-                  <div>
+                  <div
+                    style={{
+                      display: "flex",
+                    }}
+                  >
                     {item?.images.map((image, index) => (
                       <div
                         key={index}
                         style={{ display: "inline-block", margin: "2px" }}
                       >
-                        <label htmlFor={`avatar-upload-${index}`}>
-                          <img
-                            src={image.images}
-                            alt="Image"
-                            style={{
-                              width: "50px",
-                              height: "60px",
-                              borderRadius: "5px",
-                            }}
-                          />
-                          <input
-                            id={`avatar-upload-${index}`}
-                            type="file"
-                            accept="image/jpeg, image/png, image/jpg"
-                            onChange={(event) =>
-                              handleImageUpload(event, index)
-                            }
-                            style={{ display: "none" }}
-                          />
-                        </label>
-                       
+                        <img
+                          src={image.images}
+                          alt="Image"
+                          style={{
+                            width: "50px",
+                            height: "60px",
+                            borderRadius: "5px",
+                          }}
+                        />
 
                         <sup
                           className="deleteButton"
-                          onClick={() => handleDeleteImage()}
+                          onClick={() => {
+                            setShowImageModal(true);
+                            setImageIndex(index);
+                          }}
                         >
                           <i className="fa fa-trash"></i>
                         </sup>
                       </div>
                     ))}
 
-                    {/* <label htmlFor="productImage">
+                    {Array.isArray(imageFile) &&
+                      imageFile.map((imageFile, index) => (
+                        <div key={index}>
+                          <img
+                            src={URL.createObjectURL(imageFile)}
+                            alt="Avatar"
+                            style={{
+                              width: "50px",
+                              height: "60px",
+                              borderRadius: "11px",
+                              marginRight: "10px",
+                            }}
+                          />
+                          <sup
+                            className="deleteButton"
+                            onClick={() => setShowImageModal(true)}
+                          >
+                            <i className="fa fa-trash"></i>
+                          </sup>
+                        </div>
+                      ))}
+
+                    {!errorImageMessage && (
+                      <div style={{ overflow: "hidden" }}>
+                        {item?.images.length < 4 && (
+                          <label htmlFor={`avatar-upload-${imageFile.length}`}>
+                            <FaCamera
+                              style={{
+                                fontSize: "3rem",
+                                cursor: "pointer",
+                                color: "#8052D5",
+                                padding: "0.7rem",
+                                border: "1px solid blueviolet",
+                                borderRadius: "10px",
+                              }}
+                            />
+                          </label>
+                        )}
+
+                        {(item?.images.length === 2 ||
+                          item?.images.length === 3) && (
+                          <input
+                            id={`avatar-upload-${imageFile.length}`}
+                            type="file"
+                            accept="image/jpeg, image/png, image/jpg"
+                            onChange={handleImageUpload}
+                            style={{ display: "none" }}
+                            multiple
+                          />
+                        )}
+
+                        {item?.images.length === 1 && (
+                          <input
+                            id={`avatar-upload-${imageFile.length}`}
+                            type="file"
+                            accept="image/jpeg, image/png, image/jpg"
+                            onChange={handleImageUpload}
+                            style={{ display: "none" }}
+                            multiple
+                            max="3"
+                          />
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {item?.images.length >= 4 && (
+                    <div style={{ color: "red" }}>
+                      You cannot upload more than 4 images
+                    </div>
+                  )}
+
+                  {(item?.images.length === 2 || item?.images.length === 3) &&
+                    Array.isArray(imageFile) &&
+                    imageFile.length > 2 - item.images.length && (
+                      <div style={{ color: "red" }}>
+                        You can only upload {4 - item.images.length} more images
+                      </div>
+                    )}
+
+                  {item?.images.length === 1 &&
+                    Array.isArray(imageFile) &&
+                    imageFile.length > 3 && (
+                      <div style={{ color: "red" }}>
+                        You can only upload 3 more images
+                      </div>
+                    )}
+
+                  {errorImageMessage && (
+                    <div style={{ color: "red" }}>{errorImageMessage}</div>
+                  )}
+                </div>
+
+                {/* <label htmlFor="productImage">
                       <div style={{ position: "relative" }}>
                         <FaCamera
                           style={{
@@ -263,11 +392,10 @@ const UpdateProducts = ({
                           style={{ display: "none" }}
                           // onChange={(e) => handleImageUpload(e, index)}
                           onChange={handleImageUpload}
-                        />
-                      </div>
+                        /> */}
+                {/* </div>
                     </label> */}
-                  </div>
-                </div>
+
                 {/* <p className="maxLimit">You can upload maximum 4 images</p> */}
               </Form.Group>
 
@@ -473,6 +601,7 @@ const UpdateProducts = ({
                         className="fa fa-trash"
                         onClick={() => {
                           setShowModal(true);
+                          setDeleteAttribute(index);
                         }}
                       ></i>
                     </div>
@@ -503,6 +632,14 @@ const UpdateProducts = ({
               showModal={showModal}
               setShowModal={setShowModal}
               item={item}
+              index={deleteAttribute}
+              getProducts={getProducts}
+            />
+            <DeleteImage
+              showImageModal={showImageModal}
+              setShowImageModal={setShowImageModal}
+              item={item}
+              index={imageIndex}
               getProducts={getProducts}
             />
           </Modal.Body>

@@ -105,10 +105,30 @@ const UpdateStore = ({
     reader.readAsDataURL(file);
   };
   const validateOpeningClosingTime = () => {
-    const openingTime = new Date(`2000-01-01T${storeData.openingTime}:00Z`);
-    const closingTime = new Date(`2000-01-01T${storeData.closingTime}:00Z`);
+    if (!item?.opening_time || !item?.closing_time ) {
+      setTimeError("Opening and Closing Time is required");
+      return;
+    }
+    if (!storeData.openingTime || !storeData.closingTime) {
+      setTimeError("Opening and Closing Time is required");
+      return;
+    }
+    const openingTime = new Date(`2000-01-01T${ item?.opening_time }:00Z`);
+    const storeOpeningTime = new Date(`2000-01-01T${storeData.openingTime}:00Z`);
+    const storeClosingTime = new Date(`2000-01-01T${storeData.closingTime}:00Z`);
+    const closingTime = new Date(`2000-01-01T${ item?.closing_time}:00Z`);
     const timeDiffInMinutes = (closingTime - openingTime) / (1000 * 60);
     if (timeDiffInMinutes <= 60 && timeDiffInMinutes >= 0) {
+      console.log("heloooo")
+      setTimeError(
+        "The difference between Opening Time and Closing Time should be at least 1 hour"
+      );
+      return;
+    } else {
+      setTimeError("");
+    }
+    const storetimeDiffInMinutes = (storeOpeningTime - storeClosingTime) / (1000 * 60);
+    if (storetimeDiffInMinutes <= 60 && storetimeDiffInMinutes >= 0) {
       console.log("heloooo")
       setTimeError(
         "The difference between Opening Time and Closing Time should be at least 1 hour"
@@ -121,15 +141,15 @@ const UpdateStore = ({
 
   const handleUpdateStore = () => {
     // e.preventDefault();
+    
     validateOpeningClosingTime();
-   
     if (selectedDays.length === 0) {
       setMessage("Opening Day is required");
       return;
     } else {
       setMessage("");
     }
-  
+   
 
     if (!formRef.current.check()) {
       console.log("Form Error!");

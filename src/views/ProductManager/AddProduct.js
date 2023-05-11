@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { MdClose } from "react-icons/md";
-import { Modal, Form } from "react-bootstrap";
+import { Modal, Form, Button } from "react-bootstrap";
 import { Http } from "../../config/Service";
 import "../../assets/css/modal.css";
 import Size from "components/size";
@@ -10,9 +10,11 @@ import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 import CameraRetroIcon from "@rsuite/icons/legacy/CameraRetro";
+import AddProductAttributes from "./AddProductAttributes";
 
 const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
   const [product, setProduct] = useState([]);
+  const[showAddAttribute,setShowAddAttribute]=useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [errorImageMessage, setErrorImageMessage] = useState("");
   const [image, setImage] = useState(null);
@@ -180,13 +182,13 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
       }
     }
 
-    // for(let i=0;i<attributes.length;i++){
-    //   data.append(`color[${i}]`,attributes[i].Color.id)
-    //   data.append(`size[${i}]`,attributes[i].Size.id)
-    //   data.append(`price[${i}]`,attributes[i].Price)
-    //   data.append(`dis_price[${i}]`,attributes[i].dis_Price)
-    //   data.append(`sku[${i}]`,attributes[i].sku)
-    // }
+    for (let i = 0; i < attributes.length; i++) {
+      data.append(`color[${i}]`, attributes[i].Color.id);
+      data.append(`size[${i}]`, attributes[i].Size.id);
+      data.append(`price[${i}]`, attributes[i].Price);
+      data.append(`dis_price[${i}]`, attributes[i].dis_Price);
+      data.append(`sku[${i}]`, attributes[i].sku);
+    }
 
     Http.PostAPI(process.env.REACT_APP_ADDPRODUCTS, data, null)
       .then((res) => {
@@ -314,7 +316,6 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
                 <div style={{ color: "red" }}>{errorImageMessage}</div>
               )}
 
-
               <Form.Label className="add-label">Select Vendor</Form.Label>
               <div style={{ width: "100%", marginTop: "5px" }}>
                 <ReactSelect
@@ -345,7 +346,34 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
                 }}
               ></Form.Control>
             </Form.Group>
+            <br></br>
 
+            <button
+             data-bs-toggle="collapse"
+             data-bs-target="#collapseExample"
+             aria-expanded="false"
+             aria-controls="collapseExample"
+              style={{
+                color: "blueviolet",
+                width: "100%",
+                border: "2px dotted",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                padding: "5px",
+              }}
+              onClick={() => {
+                setShowAddAttribute(true);
+              }}
+            >
+              Add Attributes
+            </button>
+            <div>
+                    <AddProductAttributes
+                      showAddAttribute={showAddAttribute}
+                      setShowAddAttribute={setShowAddAttribute}
+                    />
+                  </div>
             {/* <Form.Group>
               <Form.Label className="add-label">Add Attributes</Form.Label>
                <Size 

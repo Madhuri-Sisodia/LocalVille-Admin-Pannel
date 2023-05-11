@@ -6,16 +6,21 @@ import NotificationAlert from "react-notification-alert";
 import ErrorMessage from "customComponents/ErrorMessage";
 import { Modal, Form, Badge, Button } from "react-bootstrap";
 
-const DeleteAttribute = ({ showModal, setShowModal, item, getProducts }) => {
+const DeleteAttribute = ({
+  showModal,
+  setShowModal,
+  item,
+  getProducts,
+  index,
+}) => {
   const [deleteData, setDeleteData] = useState([]);
   const notificationAlertRef = useRef(null);
 
   const deleteAttribute = () => {
-  
     var data = new FormData();
 
-    data.append(`product_id`, item?.attributes?.[0]?.pid);
-    data.append(`attr_id`, item?.attributes?.[0]?.id);
+    data.append(`product_id`, item?.id);
+    data.append(`attr_id`, item?.attributes?.[index]?.id);
 
     Http.PostAPI(process.env.REACT_APP_DELETEATTRIBUTE, data, null)
       .then((res) => {
@@ -36,7 +41,6 @@ const DeleteAttribute = ({ showModal, setShowModal, item, getProducts }) => {
           ErrorNotify("Something Went Wrong")
         );
       });
-    
   };
 
   return (
@@ -50,7 +54,7 @@ const DeleteAttribute = ({ showModal, setShowModal, item, getProducts }) => {
         onHide={() => setShowModal(false)}
       >
         <Modal.Header className="justify-content-center">
-        <div className="modal-profile">
+          <div className="modal-profile">
             <i className="nc-icon nc-simple-remove"></i>
           </div>
         </Modal.Header>
@@ -74,7 +78,6 @@ const DeleteAttribute = ({ showModal, setShowModal, item, getProducts }) => {
             variant="secondary"
             onClick={() => {
               setShowModal(false);
-            
             }}
           >
             Close

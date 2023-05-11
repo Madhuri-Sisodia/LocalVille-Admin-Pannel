@@ -9,8 +9,8 @@ import { ErrorNotify } from "components/NotificationShowPopUp";
 import { addAttributeValidationModel } from "components/Validation";
 
 const AddProductAttributes = ({
-  setShowAddProduct,
-  showAddProduct,
+  setShowAddAttribute,
+  showAddAttribute,
   getProducts,
   item,
 }) => {
@@ -19,7 +19,7 @@ const AddProductAttributes = ({
   const [colorData, setColorData] = useState([]);
   const [size, setSize] = useState("");
   const [color, setColor] = useState("");
-  console.log("III",item?.[0]?.attributes?.[0]?.in_stock);
+ 
 
   const [formValue, setFormValue] = useState({
     price: "",
@@ -92,7 +92,7 @@ const AddProductAttributes = ({
       data.append("sku", formValue.sku);
       data.append("qty", formValue.qty);
       data.append("gst", formValue.gst);
-      data.append("instock", item?.[0]?.attributes?.[0]?.in_stock);
+      data.append("instock", );
       data.append("product_id", item?.[0]?.attributes?.[0]?.pid);
 
       Http.PostAPI(process.env.REACT_APP_ADDATRIBUTE, data, null)
