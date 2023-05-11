@@ -18,6 +18,7 @@ const AdminManager = () => {
   });
 
   const [user, setUser] = useState([]);
+  const [btnLoading, setBtnloading] =useState (false);
   const notificationAlertRef = React.useRef(null);
   const formRef = React.useRef();
 
@@ -33,9 +34,13 @@ const AdminManager = () => {
       data.append("email", formValue.email);
       data.append("password", formValue.password);
 
+      setBtnloading(true);
+
       Http.PostAPI(process.env.REACT_APP_ADDADMINDATA, data, null)
         .then((res) => {
+          setBtnloading(false);
           if (res?.data?.status) {
+
             setUser(res?.data?.data);
             notificationAlertRef.current.notificationAlert(
               SuccessNotify(res?.data?.message)
@@ -47,6 +52,7 @@ const AdminManager = () => {
           }
         })
         .catch((e) => {
+          setBtnloading(false);
           notificationAlertRef.current.notificationAlert(
             SuccessNotify(res?.data?.message)
           );
@@ -119,7 +125,11 @@ const AdminManager = () => {
                 />
               </Form.Group>
             </div>
-            <ButtonComponent block buttontext="Submit" />
+            <ButtonComponent 
+            block 
+            buttontext="Submit" 
+            btnLoading={btnLoading}
+            />
           </Form>
         </div>
       </div>

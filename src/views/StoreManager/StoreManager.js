@@ -108,9 +108,9 @@ const StoreManager = () => {
     getStore();
   };
 
-  const filtervendor = (e) => {
+  const filterSearch = (e) => {
     Http.GetAPI(
-      process.env.REACT_APP_SEARCHSTORE + "?" + `search=${e} & page=${pageNo}`,
+      process.env.REACT_APP_SEARCHSTORE + "?" + `search=${e}`, "",
       // data,
       null
     )
@@ -136,7 +136,7 @@ const StoreManager = () => {
       });
   };
 
-  const search = Debounce(filtervendor);
+  const search = Debounce(filterSearch);
 
   return (
     <>

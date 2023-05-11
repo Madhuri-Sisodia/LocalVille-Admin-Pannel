@@ -6,7 +6,7 @@ import ButtonComponent from "views/ButtonComponent"
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp"
-import { validationUpdateModel } from "components/Validation";
+import { addAttributeValidationModel } from "components/Validation";
 
 const AddAttributes = ({
   setShowUpdateModal,
@@ -129,6 +129,7 @@ const AddAttributes = ({
         ref={formRef}
         formValue={formValue}
         onSubmit={handleSubmit}
+        model={addAttributeValidationModel}
         // onReset={handleReset}
         onChange={setFormValue}
         className="UpdateProductForm"

@@ -8,11 +8,14 @@ import ReactSelect from "CommonUtils/React-Select";
 import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
+import CameraRetroIcon from "@rsuite/icons/legacy/CameraRetro";
 
 const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
   const [vendors, setVendors] = useState([]);
   const [errors, setErrors] = useState({});
-  const [image, setImage] = useState("");
+  const [imageFile, setImageFile] = useState(null);
+  // const [errorMessage, setErrorMessage] = useState("");
+  const [btnLoading, setBtnloading] =useState (false);
   const [vendorData, setVendorData] = useState({
     vendorImage: null,
     vendorName: "",
@@ -21,6 +24,13 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
   });
   const notificationAlertRef = React.useRef(null);
 
+  const handleImageChange = (event) => {
+    const files = event.target.files;
+    const fileArray = Array.from(files);
+    setImageFile(fileArray);
+  };
+  
+
   const resetForm = () => {
     setVendorData({
       vendorImage: null,
@@ -28,7 +38,7 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
       email: "",
       phone: "",
     });
-    setImage("");
+    setImageFile("");
   };
 
   const validate = () => {
@@ -36,20 +46,23 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
 
     if (!vendorData.vendorName) {
       tempErrors.vendorName = "Name is required";
+    } else if (!/^[a-zA-Z ]+$/.test(vendorData.vendorName)) {
+      tempErrors.vendorName = "Name should contain only alphabets";
     }
     if (!vendorData.email) {
       tempErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(vendorData.email)) {
       tempErrors.email = "Email is invalid";
     }
-    if (!image) {
-      tempErrors.image = "Image is required";
+    if (!imageFile) {
+      tempErrors.imageFile = "Image is required";
     } else if (
-      image.type !== "image/png" &&
-      image.type !== "image/jpg" &&
-      image.type !== "image/jpeg"
+      imageFile.type !== "image/png" &&
+      imageFile.type !== "image/jpg" &&
+      imageFile.type !== "image/jpeg"
     ) {
-      tempErrors.image = "Please select a valid image file (png, jpg, jpeg)";
+      tempErrors.imageFile =
+        "Please select a valid image file (png, jpg, jpeg)";
     }
     if (!vendorData.phone) {
       tempErrors.phone = "Phone is required";
@@ -65,13 +78,15 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
     event.preventDefault();
     if (validate()) {
       var data = new FormData();
-      data.append("user_image", image);
+      data.append("user_image", imageFile);
       data.append("name", vendorData.vendorName);
       data.append("email", vendorData.email);
       data.append("phonenumber", vendorData.phone);
+      setBtnloading(true);
 
       Http.PostAPI(process.env.REACT_APP_ADDVENDORS, data)
         .then((res) => {
+          setBtnloading(false);
           console.log("addd", res);
           if (res?.data?.status) {
             setVendors(res?.data?.data);
@@ -86,6 +101,7 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
           }
         })
         .catch((e) => {
+          setBtnloading(false);
           notificationAlertRef.current.notificationAlert(
             ErrorNotify("Something went wrong")
           );
@@ -120,7 +136,7 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
         </Modal.Header>
         <Modal.Body className="add-body">
           <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="vendorImage">
+            {/* <Form.Group controlId="vendorImage">
               <Form.Label className="add-label">Vendor Image</Form.Label>
               <Form.Control
                 name="image"
@@ -132,6 +148,64 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
               {errors.image && (
                 <Form.Text className="text-danger">{errors.image}</Form.Text>
               )}
+            </Form.Group> */}
+            <Form.Group>
+              <Form.Label htmlFor="file" className="add-label">
+                VendorImage
+              </Form.Label>
+              <div>
+                {imageFile ? (
+                 <div>
+                 {imageFile && imageFile.map((file) => (
+                   <div key={file.name}>
+                     <img
+                       src={URL.createObjectURL(file)}
+                       alt={file.name}
+                       style={{
+                         width: "80px",
+                         height: "80px",
+                         borderRadius: "11px",
+                       }}
+                     />
+                   </div>
+                 ))}
+
+                    {/* <div style={{ marginTop: "1em" }}>
+                      <button onClick={handleRemoveImage}>Remove Image</button>
+                    </div> */}
+                  </div>
+                ) : (
+                  <div style={{ overflow: "hidden" }}>
+                    <label htmlFor="avatar-upload">
+                      <div
+                        style={{
+                          width: "90px",
+                          height: "90px",
+                          border: "1px dotted",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <CameraRetroIcon style={{ fontSize: "64px" }} />
+                      </div>
+                    </label>
+                    <input
+                      id="avatar-upload"
+                      type="file"
+                      accept="image/jpeg, image/png, image/jpg"
+                      onChange={handleImageChange}
+                      multiple
+                      style={{ display: "none" }}
+                    />
+                  </div>
+                )}
+              </div>
+              {/* {errors.imageFile && (
+                <Form.Text className="text-danger">
+                  {errors.imageFile}
+                </Form.Text>
+              )} */}
             </Form.Group>
 
             <Form.Group controlId="vendorName">
@@ -181,7 +255,9 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
               )}
             </Form.Group>
 
-            <ButtonComponent buttontext="Add" />
+            <ButtonComponent buttontext="Add" 
+            btnLoading={btnLoading}
+            />
           </Form>
         </Modal.Body>
       </Modal>

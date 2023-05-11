@@ -99,12 +99,12 @@ const StoreApproval = () => {
   }, [pageView, isPageViewSet]);
  
 
-  const filtervendor = (e) => {
+  const filterStoreApproval = (e) => {
     Http.GetAPI(
       process.env.REACT_APP_STOREAPPROVALSEARCH +
         "?" +
-        `search=${e} & page=${pageNo}`,
-      data,
+        `search=${e}`,"",
+      // data,
       null
     )
       .then((res) => {
@@ -123,7 +123,7 @@ const StoreApproval = () => {
         );
       });
   };
-  const search = Debounce(filtervendor);
+  const search = Debounce(filterStoreApproval);
   return (
     <>
       <div className="rna-container">

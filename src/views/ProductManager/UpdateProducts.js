@@ -31,6 +31,7 @@ const UpdateProducts = ({
   console.log(getProducts);
 
   const [product, setProduct] = useState([]);
+  const[pImage,setPImage]=useState(item);
   const [tem, setTem] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [edit, setEdit] = useState(-1);
@@ -70,7 +71,7 @@ const UpdateProducts = ({
       formValue.productName ? formValue.productName : item?.product_name
     );
 
-    data.append("product_image", productImage);
+    data.append("product_image",pImage);
 
     Http.PostAPI(process.env.REACT_APP_UPDATEPRODUCTIMAGE, data, null)
       .then((res) => {
@@ -92,6 +93,29 @@ const UpdateProducts = ({
         );
       });
   };
+  const handleImageUpload=(event, index)=> {
+    const newFile = event.target.files[0];
+    const newItemImages = [...item.images]; 
+    newItemImages[index].images = URL.createObjectURL(newFile); 
+    setPImage((prevItem) => ({ ...prevItem, images: newItemImages }));
+    updateImage();
+  }
+   // const handleImageUpload = (event, index) => {
+  //   const file = event.target.files[0];
+  //   const reader = new FileReader();
+  //    reader.onloadend = () => {
+  //     const newImage = reader.result;
+  //     const updatedImages = [...item.images];
+  //     updatedImages[index] = { images: newImage };
+  //      setPImage({ ...item, images: updatedImages });
+  //      updateImage();
+  //     console.log(newImage);
+  //   };
+  
+  //   reader.readAsBinaryString(file);
+  // };
+
+  
   // const handleImageUpload = (event, index) => {
   //   const file = event.target.files[0];
   //   const reader = new FileReader();
@@ -112,15 +136,15 @@ const UpdateProducts = ({
   //   reader.readAsDataURL(file);
   // };
 
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    setProductImage(file);
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setBaseImage(reader.result);
-    };
-    reader.readAsDataURL(file);
-  };
+  // const handleImageUpload = (event) => {
+  //   const file = event.target.files[0];
+  //   setProductImage(file);
+  //   const reader = new FileReader();
+  //   reader.onloadend = () => {
+  //     setBaseImage(reader.result);
+  //   };
+  //   reader.readAsDataURL(file);
+  // };
   // const handleImageUpload = (e) => {
   //   const file = e.target.files[0];
   //   const reader = new FileReader();
@@ -132,13 +156,13 @@ const UpdateProducts = ({
   //   reader.readAsDataURL(file);
   // };
 
-  useEffect(() => {
-    if (isMounted.current) {
-      updateImage();
-    } else {
-      isMounted.current = true;
-    }
-  }, [baseImage]);
+  // useEffect(() => {
+  //   if (isMounted.current) {
+  //     updateImage();
+  //   } else {
+  //     isMounted.current = true;
+  //   }
+  // }, [baseImage]);
 
   const handleSubmit = (event) => {
     // event.preventDefault();
@@ -246,16 +270,26 @@ const UpdateProducts = ({
                         key={index}
                         style={{ display: "inline-block", margin: "2px" }}
                       >
+                      <label htmlFor={`avatar-upload-${index}`}>
                         <img
-                          src={productImage ? baseImage : image.images}
+                          src={image.images}
                           alt="Image"
                           style={{
                             width: "50px",
                             height: "60px",
                             borderRadius: "5px",
                           }}
+                         
                        
                         />
+                         <input
+                          id={`avatar-upload-${index}`}
+                          type="file"
+                          accept="image/jpeg, image/png, image/jpg"
+                          onChange={(event) =>handleImageUpload(event, index)}
+                          style={{ display: "none" }}
+                        />
+                        </label>
                         {/* <img
                            src={productImage[index]?.images ? baseImage|| image.images}
                           alt="Image"

@@ -55,7 +55,7 @@ const InvoiceTable = () => {
     };
   };
 
-  const filtervendor = (e) => {
+  const filterInvoice = (e) => {
     Http.GetAPI(
       process.env.REACT_APP_SEARCHINVOICE + "?" + `search=${e}`,
       "",
@@ -64,7 +64,6 @@ const InvoiceTable = () => {
       .then((res) => {
         if (res?.data?.status) {
           setData(res?.data?.data);
-          getInvoice();
         } else {
           notificationAlertRef.current.notificationAlert(
             ErrorNotify(res?.data?.message)
@@ -119,7 +118,7 @@ const InvoiceTable = () => {
 
 
 
-  const search = Debounce(filtervendor)
+  const search = Debounce(filterInvoice)
 
   return (
     <>

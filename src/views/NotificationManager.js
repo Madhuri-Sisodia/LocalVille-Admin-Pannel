@@ -28,6 +28,7 @@ const NotificationManager = () => {
   const [imageFile, setImageFile] = useState(null);
   const fileInputRef = useRef(null);
   const [errorMessage, setErrorMessage] = useState("");
+  const [btnLoading, setBtnloading] =useState (false);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -39,7 +40,7 @@ const NotificationManager = () => {
     Http.GetAPI(process.env.REACT_APP_GETVENDORSDATA + "?" + Math.random(), "")
       .then((res) => {
         if (res?.data?.status) {
-          setVendorData(res?.data?.data);
+          setVendorData(res?.data?.dropdown_data);
         }
       })
       .catch((e) => {
@@ -60,6 +61,7 @@ const NotificationManager = () => {
       return;
     }
     let arr = [];
+   
 
     var data = new FormData();
     for (let i = 0; i < vendorData.length; i++) {
@@ -69,13 +71,17 @@ const NotificationManager = () => {
         }
       }
     }
+   
+    console.log("selectedVendors", selectedVendors);
 
     data.append("img", imageFile);
     data.append("title", title);
     data.append("message", message);
+    setBtnloading(true);
 
     Http.PostAPI(process.env.REACT_APP_ADDNOTICATIONMANAGER, data)
       .then((res) => {
+        setBtnloading(false);
         console.log("Notification", res);
         if (res?.data?.status) {
           setAddNotification(res?.data?.data);
@@ -90,6 +96,7 @@ const NotificationManager = () => {
         }
       })
       .catch((e) => {
+        setBtnloading(false);
         notificationAlertRef.current.notificationAlert(
           ErrorNotify("Something went wrong")
         );
@@ -206,7 +213,8 @@ const NotificationManager = () => {
               {/* <Input as="textarea" rows={3} placeholder="Textarea" value={formValue.message} /> */}
             </Form.Group>
 
-            <ButtonComponent block buttontext="Submit" />
+            <ButtonComponent block buttontext="Submit"
+            btnLoading={btnLoading} />
           </Form>
         </div>
       </div>
