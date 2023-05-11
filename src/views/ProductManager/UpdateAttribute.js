@@ -382,9 +382,7 @@ const UpdateAttribute = ({ item, getProducts, setShowUpdateModal, index }) => {
               type="text"
             ></Form.Control>
           </Form.Group>
-          <div className="updateModelButton">
             <ButtonComponent buttontext="UPDATE ATTRIBUTE" />
-          </div>
         </div>
       </Form>
     </>

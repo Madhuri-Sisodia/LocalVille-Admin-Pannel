@@ -432,9 +432,9 @@ const UpdateProducts = ({
                     </div>
                   </Form.Group>
                 </div>
-                {/* <div className="updateModelButton"> */}
+              
                   <ButtonComponent buttontext="UPDATE PRODUCT" />
-                {/* </div> */}
+               
               </div>
             </Form>
 

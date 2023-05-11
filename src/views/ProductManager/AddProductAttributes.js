@@ -312,9 +312,8 @@ const AddProductAttributes = ({
             type="text"
           ></Form.Control>
         </Form.Group>
-        <div className="updateModelButton">
+
           <ButtonComponent buttontext="ADD ATTRIBUTE" />
-        </div>
       </Form>
     </>
   );
