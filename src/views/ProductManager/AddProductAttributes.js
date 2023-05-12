@@ -19,11 +19,8 @@ const AddProductAttributes = ({
   const [colorData, setColorData] = useState([]);
   const [size, setSize] = useState("");
   const [color, setColor] = useState("");
-<<<<<<< HEAD
-=======
   const [btnLoading, setBtnloading] =useState (false);
-  console.log("III",item?.[0]?.attributes?.[0]?.in_stock);
->>>>>>> admin_panel_sneha
+  
 
   const [formValue, setFormValue] = useState({
     price: "",
@@ -78,57 +75,8 @@ const AddProductAttributes = ({
   }, []);
 
   const handleSubmit = (event) => {
-<<<<<<< HEAD
     event.preventDefault();
     console.log("form....", formValue);
-=======
-    // event.preventDefault();
-    // console.log("sss");
-    if (!formRef.current.check()) {
-      console.log("FORM ERROR!");
-
-      return;
-    } else {
-      console.log("form....", formValue);
-
-      var data = new FormData();
-
-      data.append("size", size);
-      data.append("color", color);
-      data.append("price", formValue.price);
-      data.append("dis_price", formValue.discountPrice);
-      data.append("sku", formValue.sku);
-      data.append("qty", formValue.qty);
-      data.append("gst", formValue.gst);
-      data.append("instock", item?.[0]?.attributes?.[0]?.in_stock);
-      data.append("product_id", item?.[0]?.attributes?.[0]?.pid);
-      setBtnloading(true);
-
-      Http.PostAPI(process.env.REACT_APP_ADDATRIBUTE, data, null)
-        .then((res) => {
-          setBtnloading(false);
-          console.log("response....", res);
-          if (res?.data?.status) {
-            setAddAttribute(res?.data?.data);
-            getProducts();
-            notificationAlertRef.current.notificationAlert(
-              SuccessNotify(res?.data?.message)
-            );
-          } else {
-            notificationAlertRef.current.notificationAlert(
-              ErrorNotify(res?.data?.message)
-            );
-          }
-        })
-        .catch((e) => {
-          setBtnloading(false);
-          notificationAlertRef.current.notificationAlert(
-            ErrorNotify("Something went wrong")
-          );
-        });
-    }
-    setShowAddProduct(false);
->>>>>>> admin_panel_sneha
   };
 
   // const handleChange = (value) => {

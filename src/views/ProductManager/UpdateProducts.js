@@ -34,13 +34,10 @@ const UpdateProducts = ({
   const [imageFile, setImageFile] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [edit, setEdit] = useState(-1);
-<<<<<<< HEAD
   const [deleteAttribute, setDeleteAttribute] = useState();
   const [imageIndex, setImageIndex] = useState();
 
-=======
   const [btnLoading, setBtnloading] =useState (false);
->>>>>>> admin_panel_sneha
   const [productImage, setProductImage] = useState();
   const [errorImageMessage, setErrorImageMessage] = useState("");
 
@@ -61,7 +58,7 @@ const UpdateProducts = ({
     sub_category: item?.subcategory_name,
   });
 
-  console.log(item?.id);
+  
 
   const updateImage = () => {
     const data = new FormData();
@@ -70,23 +67,20 @@ const UpdateProducts = ({
       "product_id",
       formValue.productId ? formValue.productId : item?.id
     );
-    console.log("userrrrr", item?.id);
+ 
     data.append(
       "product_name",
       formValue.productName ? formValue.productName : item?.product_name
     );
 
-<<<<<<< HEAD
     if (imageFile) {
       for (let i = 0; i < 4; i++) {
         data.append(`product_image[${i}]`, imageFile[i]);
       }
     }
 
-=======
-    data.append("product_image", newFile);
+
     setBtnloading(true);
->>>>>>> admin_panel_sneha
     Http.PostAPI(process.env.REACT_APP_UPDATEPRODUCTIMAGE, data, null)
       .then((res) => {
         setBtnloading(false);
