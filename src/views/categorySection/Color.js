@@ -11,7 +11,7 @@ const Color = () => {
   const [colorCode, setColorCode] = useState("");
   const [selectColor, setColor] = useState("");
   const [selectColorCode, setSelectColorCode] = useState("");
-
+  const [btnLoading, setBtnloading] =useState (false);
   const [data, setData] = useState([]);
 
   const notificationAlertRef = React.useRef(null);
@@ -27,6 +27,7 @@ const Color = () => {
 
     Http.PostAPI(process.env.REACT_APP_ADDCOLOR, formdata, null)
       .then((res) => {
+      
         if (res?.data?.status) {
           setColor(res?.data?.data);
           notificationAlertRef.current.notificationAlert(
@@ -96,37 +97,9 @@ const Color = () => {
                   marginTop: "20px",
                 }}
               />
-              {/* <select
-                name="selectSection"
-                value={selectSection}
-                onChange={(event) => setSelectSection(event.target.value)}
-              >
-                <option value="">Select</option>
-                {data.map((category) => (
-                  <option key={category.id} value={category.section_name}>
-                    {category.section_name}
-                  </option>
-                ))}
-              </select> */}
+              
             </Form.Group>
-            {/* <Form.Group controlId="name-1"> */}
-            {/* <div className="InnnerContainerCategory">
-              <Form.ControlLabel style={{ color: "#808080", fontSize: "1rem" }}>
-                Category Section Name
-              </Form.ControlLabel>
-              <select
-                name="selectCategory"
-                value={selectCategory}
-                onChange={(event) => setSelectCategory(event.target.value)}
-              >
-                <option value="">Select</option>
-                {data.map((category) => (
-                  <option key={category.id} value={category.section_name}>
-                    {category.section_name}
-                  </option>
-                ))}
-              </select>
-            </div> */}
+
 
             <Form.Group>
               <ButtonToolbar>

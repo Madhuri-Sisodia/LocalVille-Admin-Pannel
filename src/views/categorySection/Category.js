@@ -9,7 +9,6 @@ import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 import { Uploader } from "rsuite";
 import CameraRetroIcon from "@rsuite/icons/legacy/CameraRetro";
-// import img from "./car.jpg";
 const Category = () => {
   const [categoryName, setCategoryName] = useState("");
   const [selectSection, setSelectSection] = useState("");

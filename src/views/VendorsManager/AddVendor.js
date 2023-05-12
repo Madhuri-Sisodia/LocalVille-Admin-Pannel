@@ -14,6 +14,8 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
   const [vendors, setVendors] = useState([]);
   const [errors, setErrors] = useState({});
   const [imageFile, setImageFile] = useState(null);
+  // const [errorMessage, setErrorMessage] = useState("");
+  const [btnLoading, setBtnloading] =useState (false);
    const [errorMessage, setErrorMessage] = useState("");
   const [vendorData, setVendorData] = useState({
     vendorImage: null,
@@ -46,7 +48,7 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
 
     if (!vendorData.vendorName) {
       tempErrors.vendorName = "Name is required";
-    } else if (!/^[a-zA-Z]+$/.test(vendorData.vendorName)) {
+    } else if (!/^[a-zA-Z ]+$/.test(vendorData.vendorName)) {
       tempErrors.vendorName = "Name should contain only alphabets";
     }
     if (!vendorData.email) {
@@ -82,9 +84,11 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
       data.append("name", vendorData.vendorName);
       data.append("email", vendorData.email);
       data.append("phonenumber", vendorData.phone);
+      setBtnloading(true);
 
       Http.PostAPI(process.env.REACT_APP_ADDVENDORS, data)
         .then((res) => {
+          setBtnloading(false);
           console.log("addd", res);
           if (res?.data?.status) {
             setVendors(res?.data?.data);
@@ -99,6 +103,7 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
           }
         })
         .catch((e) => {
+          setBtnloading(false);
           notificationAlertRef.current.notificationAlert(
             ErrorNotify("Something went wrong")
           );
@@ -247,7 +252,9 @@ const AddVendor = ({ showAddVendor, setShowAddVendor, getVendors }) => {
               )}
             </Form.Group>
 
-            <ButtonComponent buttontext="Add" />
+            <ButtonComponent buttontext="Add" 
+            btnLoading={btnLoading}
+            />
           </Form>
         </Modal.Body>
       </Modal>

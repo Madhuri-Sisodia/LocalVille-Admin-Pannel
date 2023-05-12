@@ -32,6 +32,7 @@ const BannerManager = () => {
   const [imageFile, setImageFile] = useState(null);
 
   const [errorMessage, setErrorMessage] = useState("");
+  const [btnLoading, setBtnloading] =useState (false);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -102,9 +103,11 @@ const BannerManager = () => {
     data.append("is_redirect", redirectImg);
     data.append("url", formData.url);
     data.append("active", 1);
+    setBtnloading(true);
 
     Http.PostAPI(process.env.REACT_APP_ADDBANNER, data)
       .then((res) => {
+        setBtnloading(false);
         if (res?.data?.status) {
           setAddBanner(res?.data?.data);
           getBanner();
@@ -118,6 +121,7 @@ const BannerManager = () => {
         }
       })
       .catch((e) => {
+        setBtnloading(false);
         notificationAlertRef.current.notificationAlert(
           ErrorNotify("Something went wrong")
         );
@@ -224,7 +228,7 @@ const BannerManager = () => {
               </Form.Group>
             )}
 
-            <ButtonComponent block buttontext="Submit" />
+            <ButtonComponent block buttontext="Submit" btnLoading={btnLoading} />
 
             <div style={{ marginTop: "80px" }}>
               <Card

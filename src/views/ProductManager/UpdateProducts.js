@@ -34,9 +34,13 @@ const UpdateProducts = ({
   const [imageFile, setImageFile] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [edit, setEdit] = useState(-1);
+<<<<<<< HEAD
   const [deleteAttribute, setDeleteAttribute] = useState();
   const [imageIndex, setImageIndex] = useState();
 
+=======
+  const [btnLoading, setBtnloading] =useState (false);
+>>>>>>> admin_panel_sneha
   const [productImage, setProductImage] = useState();
   const [errorImageMessage, setErrorImageMessage] = useState("");
 
@@ -72,14 +76,20 @@ const UpdateProducts = ({
       formValue.productName ? formValue.productName : item?.product_name
     );
 
+<<<<<<< HEAD
     if (imageFile) {
       for (let i = 0; i < 4; i++) {
         data.append(`product_image[${i}]`, imageFile[i]);
       }
     }
 
+=======
+    data.append("product_image", newFile);
+    setBtnloading(true);
+>>>>>>> admin_panel_sneha
     Http.PostAPI(process.env.REACT_APP_UPDATEPRODUCTIMAGE, data, null)
       .then((res) => {
+        setBtnloading(false);
         if (res?.data?.status) {
           setProduct(res?.data?.data);
           getProducts();
@@ -93,6 +103,7 @@ const UpdateProducts = ({
         }
       })
       .catch((e) => {
+        setBtnloading(false);
         notificationAlertRef.current.notificationAlert(
           ErrorNotify("Something went wrong")
         );
@@ -561,9 +572,12 @@ const UpdateProducts = ({
                     </div>
                   </Form.Group>
                 </div>
-                <div className="updateModelButton">
-                  <ButtonComponent buttontext="UPDATE PRODUCT" />
-                </div>
+              
+                  <ButtonComponent
+                   buttontext="UPDATE PRODUCT" 
+                   btnLoading={btnLoading}
+                   />
+               
               </div>
             </Form>
 

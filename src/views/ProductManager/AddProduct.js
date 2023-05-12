@@ -31,6 +31,7 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
   const [attributes, setAttributes] = useState([]);
   const [isAddProdcut, setIsAddProduct] = useState("true");
   const notificationAlertRef = React.useRef(null);
+  const [btnLoading, setBtnloading] =useState (false);
 
   const [productData, setProductData] = useState({
     productName: "",
@@ -175,7 +176,7 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
     data.append("is_buy", bay == "Yes" ? 1 : 0);
     data.append("is_pickup", Pickup == "Yes" ? 1 : 0);
     data.append("in_stock", productData.in_stock);
-
+    setBtnloading(true);
     if (imageFile) {
       for (let i = 0; i < 4; i++) {
         data.append(`product_images[${i}]`, imageFile[i]);
@@ -192,6 +193,7 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
 
     Http.PostAPI(process.env.REACT_APP_ADDPRODUCTS, data, null)
       .then((res) => {
+        setBtnloading(false);
         if (res?.data?.status) {
           setProduct(res?.data?.data);
           getProducts();
@@ -205,6 +207,7 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
         }
       })
       .catch((e) => {
+        setBtnloading(false);
         notificationAlertRef.current.notificationAlert(
           ErrorNotify("Something went wrong")
         );
@@ -537,7 +540,10 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
               </div>
             </Form.Group>
 
-            <ButtonComponent buttontext="Add" />
+            <ButtonComponent 
+            buttontext="Add"
+            btnLoading={btnLoading}
+            />
           </Form>
         </Modal.Body>
       </Modal>

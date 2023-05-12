@@ -15,6 +15,7 @@ const Size = () => {
   const [sizeAttribute, setSizeAttribute] = useState([]);
   const { setCategoriesId } = useContext(Utils);
   const [size, setSize] = useState("");
+  
   const notificationAlertRef = React.useRef(null);
 
   const handleSubmit = () => {
@@ -31,13 +32,16 @@ const Size = () => {
 
     Http.PostAPI(process.env.REACT_APP_ADDSIZE, formdata, null)
       .then((res) => {
-        if (res?.data?.success) {
+        if (res?.data?.status) {
+          // console.log("testt", res)
           setSize(res?.data?.data);
           notificationAlertRef.current.notificationAlert(
             SuccessNotify(res?.data?.message)
-          );
-        } else {
-          notificationAlertRef.current.notificationAlert(
+            
+            );
+            // console.log("testt", res?.data?.message)
+          } else {
+            notificationAlertRef.current.notificationAlert(
             ErrorNotify(res?.data?.message)
           );
         }

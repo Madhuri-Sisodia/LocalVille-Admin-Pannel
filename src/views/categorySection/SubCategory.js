@@ -64,27 +64,9 @@ const SubCategory = () => {
     setIsImageValid(false); // Update image validity
   };
 
-  // const handleImageChange = (event) => {
-  //   const file = event.target.files[0];
-  //   // setImageFile(file);
-  //   if (file && file.type.startsWith("image/")) {
-  //     setImageFile(file);
-  //     setErrorMessage("image upload success");
-  //     setShowNotification(true);
-  //     setTimeout(() => {
-  //       setShowNotification(false);
-  //     }, 2000); // set timer for 2 seconds
-  //   } else {
-  //     setImageFile(null);
-  //     setErrorMessage("Please select a valid image file.");
-  //   }
-  // };
 
-  // const handleRemoveImage = () => {
-  //   setImageFile(null);
-  //   setErrorMessage("");
-  // };
-
+ 
+ 
   useEffect(() => {
     Http.GetAPI(
       process.env.REACT_APP_GETSIZEATTRIBUTES + "?" + Math.random(),
@@ -172,12 +154,7 @@ const SubCategory = () => {
           setData(res?.data?.data);
         }
       })
-      // .catch((e) => {
-      //   notifySecond("tr");
-      //   // alert("Something went wrong.");
-      //   console.log("Error:", e);
-      //   }
-      // })
+
       .catch((e) => {
         notificationAlertRef.current.notificationAlert(
           ErrorNotify("Something went wrong")

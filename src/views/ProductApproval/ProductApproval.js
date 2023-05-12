@@ -51,6 +51,32 @@ const ProductApproval = () => {
       }, 500);
     };
   };
+  const filterProduct = (e) => {
+    Http.GetAPI(
+      process.env.REACT_APP_PRODUCTSAPPROVALSEARCH +
+        "?" +
+        `search=${e}`,
+      "",
+      null
+    )
+      .then((res) => {
+        // setIsLoading(false);
+        if (res?.data?.status) {
+          setData(res?.data?.data);
+          // setDisabledNext(true);
+        } else {
+          notificationAlertRef.current.notificationAlert(
+            ErrorNotify(res?.data?.message)
+          );
+        }
+      })
+      .catch((e) => {
+        setIsLoading(false);
+        notificationAlertRef.current.notificationAlert(
+          ErrorNotify("Something went wrong")
+        );
+      });
+  };
 
   const getUnverifiedProduct = () => {
     console.log("pageView", process.env.REACT_APP_GETUNVERIFIEDPRODUCTS + "?" + `page=${pageView}`)
@@ -58,7 +84,7 @@ const ProductApproval = () => {
       process.env.REACT_APP_GETUNVERIFIEDPRODUCTS + "?" + `page=${pageView}`
     )
       .then((res) => {
-        console.log("resp",res)
+        // console.log("resp",res)
         setIsLoading(false);
         if (res?.data?.status) {
           if (res.data.data.length > 0) {
@@ -79,34 +105,9 @@ const ProductApproval = () => {
       });
   };
 
-  const filtervendor = (e) => {
-    Http.GetAPI(
-      process.env.REACT_APP_PRODUCTSAPPROVALSEARCH +
-        "?" +
-        `search=${e} & page=${pageView}`,
-      "",
-      null
-    )
-      .then((res) => {
-        setIsLoading(false);
-        if (res?.data?.status) {
-          setData(res?.data?.data);
-          setDisabledNext(true);
-        } else {
-          notificationAlertRef.current.notificationAlert(
-            ErrorNotify(res?.data?.message)
-          );
-        }
-      })
-      .catch((e) => {
-        setIsLoading(false);
-        notificationAlertRef.current.notificationAlert(
-          ErrorNotify("Something went wrong")
-        );
-      });
-  };
+  
 
-  const search = Debounce(filtervendor);
+ 
  
   useEffect(() => {
     if (!isPageViewSet) {
@@ -120,6 +121,8 @@ const ProductApproval = () => {
     setPageView(page);
     getUnverifiedProduct();
   };
+
+  const search = Debounce(filterProduct);
 
   return (
     <>

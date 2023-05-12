@@ -21,6 +21,7 @@ const AddAttributes = ({
   const [size, setSize] = useState("");
   const [color, setColor] = useState("");
   const [inStock, setInStock] = useState("No");
+  const [btnLoading, setBtnloading] =useState (false);
 
   const [formValue, setFormValue] = useState({
     price: "",
@@ -93,9 +94,11 @@ const AddAttributes = ({
       data.append("sku", formValue.sku);
       data.append("instock", inStock);
       data.append("product_id", item?.id);
+      setBtnloading(true);
 
       Http.PostAPI(process.env.REACT_APP_ADDATRIBUTE, data, null)
         .then((res) => {
+          setBtnloading(false);
           console.log("response....", res);
           if (res?.data?.status) {
             setAddAttribute(res?.data?.data);
@@ -110,6 +113,7 @@ const AddAttributes = ({
           }
         })
         .catch((e) => {
+          setBtnloading(false);
           notificationAlertRef.current.notificationAlert(
             ErrorNotify("Something went wrong")
           );
@@ -356,9 +360,12 @@ const AddAttributes = ({
             type="text"
           ></Form.Control>
         </Form.Group>
-        <div className="updateModelButton">
-          <ButtonComponent buttontext="ADD ATTRIBUTE" />
-        </div>
+
+          <ButtonComponent 
+          buttontext="ADD ATTRIBUTE"
+          btnLoading={btnLoading}
+          />
+
 
         {/* <Form.Group>
                 <Form.ControlLabel className="add-label">Update Attributes</Form.ControlLabel>

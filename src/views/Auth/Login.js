@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import ErrorMessage from "customComponents/ErrorMessage";
 import { useHistory } from "react-router-dom";
-import { Form, Button, Panel } from "rsuite";
+import { Form, Button, Panel, Loader, InputGroup, Input } from "rsuite";
 import "../../assets/css/login.css";
 import LoginNavbar from "components/Navbars/LoginNavbar";
 import { Http } from "../../config/Service";
@@ -10,15 +10,24 @@ import NotificationAlert from "react-notification-alert";
 import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 import Loading from "customComponents/Loading";
+import EyeIcon from '@rsuite/icons/legacy/Eye';
+import EyeSlashIcon from '@rsuite/icons/legacy/EyeSlash';
 
 const Login = () => {
   const history = useHistory();
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [btnLoading, setBtnloading] = useState(false);
   const [password, setPassword] = useState("");
   const [user, setUser] = useState([]);
   const [errors, setErrors] = useState({});
   const notificationAlertRef = React.useRef(null);
+
+  const [visible, setVisible] = React.useState(false);
+
+  const handleChange = () => {
+    setVisible(!visible);
+  };
 
   useEffect(() => {
     if (sessionStorage.getItem("loggedIn")) {
@@ -59,8 +68,11 @@ const Login = () => {
       data.append("email", email);
       data.append("password", password);
 
+      setBtnloading(true);
+
       Http.PostAPI(process.env.REACT_APP_LOGINADMINDATA, data, null)
         .then((res) => {
+          setBtnloading(false);
           if (res?.data?.status) {
             setUser(res?.data?.data);
             console.log(res?.data?.data);
@@ -81,6 +93,7 @@ const Login = () => {
           }
         })
         .catch((e) => {
+          setBtnloading(false)
           notificationAlertRef.current.notificationAlert(
             ErrorNotify("Something went wrong")
           );
@@ -133,16 +146,23 @@ const Login = () => {
                     <Form.ControlLabel style={{ color: "white" }}>
                       PASSWORD
                     </Form.ControlLabel>
-                    <Form.Control
-                      name="password"
-                      type="password"
-                      placeholder="Password"
-                      autoComplete="off"
-                      style={{ width: 400, height: 50 }}
-                      value={password}
-                      required="password"
-                      onChange={(value) => setPassword(value)}
-                    />
+                    <InputGroup inside style={{width: "auto"}} >
+                      <Form.Control
+                        name="password"
+                        // type="password"
+                        type={visible ? 'text' : 'password'}
+                        placeholder="Password"
+                        autoComplete="off"
+                        style={{ width: 400 , height: 50 }}
+                        value={password}
+                        required="password"
+                        onChange={(value) => setPassword(value)}
+              
+                      />
+                      <InputGroup.Button onClick={handleChange} style={{fontSize:"18px", marginTop:"8px"}}>
+                        {visible ? <EyeIcon /> : <EyeSlashIcon />}
+                      </InputGroup.Button>
+                    </InputGroup>
                     {errors.password && (
                       <ErrorMessage message={errors.password} />
                     )}
@@ -150,13 +170,17 @@ const Login = () => {
 
                   <div align="center">
                     <Button
+                      disabled={btnLoading}
                       style={{ padding: "15px 180px" }}
                       appearance="primary"
                       type="submit"
                       className="loginButton"
                       onClick={handleSubmit}
                     >
-                      <b>LOGIN</b>
+                      {btnLoading ?
+                        <Loader /> : <b>LOGIN</b>
+                      }
+
                     </Button>
                   </div>
                 </Form>

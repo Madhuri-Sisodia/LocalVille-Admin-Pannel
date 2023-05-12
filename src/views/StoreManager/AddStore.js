@@ -26,7 +26,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
   const [timeError, setTimeError] = useState("");
   const [selectSection, setSelectSection] = useState("");
   const [vendortData, setVendorData] = useState([]);
-
+  const [btnLoading, setBtnloading] =useState (false);
   const { location } = useContext(Utils);
   const [Data, setData] = useState([]);
   const [storeData, setStoreData] = useState({
@@ -158,9 +158,11 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
       data.append("opening_days", selectedDays);
       data.append("opening_time", storeData.openingTime);
       data.append("closing_time", storeData.closingTime);
+      setBtnloading(true);
 
       Http.PostAPI(process.env.REACT_APP_ADDSTORE, data, null)
         .then((res) => {
+          setBtnloading(false);
           if (res?.data?.status) {
             setStore(res?.data?.data);
             getStore();
@@ -182,6 +184,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
           }
         })
         .catch((e) => {
+          setBtnloading(false);
           notificationAlertRef.current.notificationAlert(
             ErrorNotify("Something went wrong")
           );
@@ -404,7 +407,10 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
               </div>
             )}
 
-            <ButtonComponent buttontext="Add" />
+            <ButtonComponent
+             buttontext="Add" 
+             btnLoading={btnLoading}
+             />
           </Form>
         </Modal.Body>
       </Modal>

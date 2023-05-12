@@ -16,6 +16,7 @@ const UpdateAttribute = ({ item, getProducts, setShowUpdateModal, index }) => {
   const [colorData, setColorData] = useState([]);
   const [size, setSize] = useState("");
   const [color, setColor] = useState("");
+  const [btnLoading, setBtnloading] =useState (false);
 
   const [formValue, setFormValue] = useState({
     price: "",
@@ -126,10 +127,11 @@ const UpdateAttribute = ({ item, getProducts, setShowUpdateModal, index }) => {
       "gst",
       formValue.gst ? formValue.gst : item?.attributes?.[index]?.gst
     );
+    setBtnloading(true);
 
     Http.PostAPI(process.env.REACT_APP_UPDATEATTRIBUTE, data, null)
       .then((res) => {
-      
+        setBtnloading(false);
         if (res?.data?.status) {
           setUpdateProduct(res?.data?.data);
           getProducts();
@@ -144,6 +146,7 @@ const UpdateAttribute = ({ item, getProducts, setShowUpdateModal, index }) => {
         }
       })
       .catch((e) => {
+        setBtnloading(false);
         notificationAlertRef.current.notificationAlert(
           ErrorNotify("Something went wrong")
         );
@@ -382,9 +385,10 @@ const UpdateAttribute = ({ item, getProducts, setShowUpdateModal, index }) => {
               type="text"
             ></Form.Control>
           </Form.Group>
-          <div className="updateModelButton">
-            <ButtonComponent buttontext="UPDATE ATTRIBUTE" />
-          </div>
+            <ButtonComponent 
+            buttontext="UPDATE ATTRIBUTE"
+            btnLoading={btnLoading} 
+            />
         </div>
       </Form>
     </>
