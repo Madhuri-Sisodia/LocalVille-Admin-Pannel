@@ -139,7 +139,7 @@ const UpdateProducts = ({
     }
 
     if (updatedImageFiles.length > 4) {
-      setErrorImageMessage("Cannot upload more than 4 images.");
+      setErrorImageMessage("You can upload up to 4 images.");
       updatedImageFiles.length = 4;
     } else {
       setErrorImageMessage(null);
@@ -302,7 +302,7 @@ const UpdateProducts = ({
 
                     {!errorImageMessage && (
                       <div style={{ overflow: "hidden" }}>
-                        {item?.images.length < 4 && (
+                        {/* {item?.images.length < 4 && ( */}
                           <label htmlFor={`avatar-upload-${imageFile.length}`}>
                             <FaCamera
                               style={{
@@ -315,10 +315,10 @@ const UpdateProducts = ({
                               }}
                             />
                           </label>
-                        )}
+                        {/* )} */}
 
-                        {(item?.images.length === 2 ||
-                          item?.images.length === 3) && (
+                        {/* {(item?.images.length === 2 ||
+                          item?.images.length === 3) && ( */}
                           <input
                             id={`avatar-upload-${imageFile.length}`}
                             type="file"
@@ -327,9 +327,9 @@ const UpdateProducts = ({
                             style={{ display: "none" }}
                             multiple
                           />
-                        )}
+                        {/* )} */}
 
-                        {item?.images.length === 1 && (
+                        {/* {item?.images.length === 1 && ( */}
                           <input
                             id={`avatar-upload-${imageFile.length}`}
                             type="file"
@@ -339,37 +339,38 @@ const UpdateProducts = ({
                             multiple
                             max="3"
                           />
-                        )}
+                        {/* )} */}
                       </div>
                     )}
                   </div>
 
-                  {item?.images.length >= 4 && (
+                  {/* {item?.images.length >= 4 && (
                     <div style={{ color: "red" }}>
                       You cannot upload more than 4 images
                     </div>
-                  )}
+                  )} */}
 
-                  {(item?.images.length === 2 || item?.images.length === 3) &&
+                  {/* {(item?.images.length === 2 || item?.images.length === 3) &&
                     Array.isArray(imageFile) &&
                     imageFile.length > 2 - item.images.length && (
                       <div style={{ color: "red" }}>
                         You can only upload {4 - item.images.length} more images
                       </div>
-                    )}
-
+                    )} */}
+{/* 
                   {item?.images.length === 1 &&
                     Array.isArray(imageFile) &&
                     imageFile.length > 3 && (
                       <div style={{ color: "red" }}>
                         You can only upload 3 more images
                       </div>
-                    )}
+                    )} */}
 
-                  {errorImageMessage && (
+             
+                </div>
+                {errorImageMessage && (
                     <div style={{ color: "red" }}>{errorImageMessage}</div>
                   )}
-                </div>
 
                 {/* <label htmlFor="productImage">
                       <div style={{ position: "relative" }}>

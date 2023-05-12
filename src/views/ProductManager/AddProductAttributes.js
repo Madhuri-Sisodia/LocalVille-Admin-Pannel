@@ -19,7 +19,6 @@ const AddProductAttributes = ({
   const [colorData, setColorData] = useState([]);
   const [size, setSize] = useState("");
   const [color, setColor] = useState("");
- 
 
   const [formValue, setFormValue] = useState({
     price: "",
@@ -39,7 +38,7 @@ const AddProductAttributes = ({
         .then((res) => {
           if (res?.data?.status) {
             setSizeData(res?.data?.data);
-            console.log(res.data.data);
+           
           } else {
             alert("Fields not matched");
           }
@@ -59,7 +58,7 @@ const AddProductAttributes = ({
         .then((res) => {
           if (res?.data?.status) {
             setColorData(res?.data?.data);
-            console.log("ccc", res.data.data);
+           
           } else {
             alert("Fields not matched");
           }
@@ -74,54 +73,13 @@ const AddProductAttributes = ({
   }, []);
 
   const handleSubmit = (event) => {
-    // event.preventDefault();
-    // console.log("sss");
-    if (!formRef.current.check()) {
-      console.log("FORM ERROR!");
-
-      return;
-    } else {
-      console.log("form....", formValue);
-
-      var data = new FormData();
-
-      data.append("size", size);
-      data.append("color", color);
-      data.append("price", formValue.price);
-      data.append("dis_price", formValue.discountPrice);
-      data.append("sku", formValue.sku);
-      data.append("qty", formValue.qty);
-      data.append("gst", formValue.gst);
-      data.append("instock", );
-      data.append("product_id", item?.[0]?.attributes?.[0]?.pid);
-
-      Http.PostAPI(process.env.REACT_APP_ADDATRIBUTE, data, null)
-        .then((res) => {
-          console.log("response....", res);
-          if (res?.data?.status) {
-            setAddAttribute(res?.data?.data);
-            getProducts();
-            notificationAlertRef.current.notificationAlert(
-              SuccessNotify(res?.data?.message)
-            );
-          } else {
-            notificationAlertRef.current.notificationAlert(
-              ErrorNotify(res?.data?.message)
-            );
-          }
-        })
-        .catch((e) => {
-          notificationAlertRef.current.notificationAlert(
-            ErrorNotify("Something went wrong")
-          );
-        });
-    }
-    setShowAddProduct(false);
+    event.preventDefault();
+    console.log("form....", formValue);
   };
 
-  //   const handleReset = () => {
-  //     formRef.current.reset();
-  //   };
+  // const handleChange = (value) => {
+  //   setFormValue(value);
+  // };
 
   return (
     <>
@@ -261,7 +219,6 @@ const AddProductAttributes = ({
               style={{ width: "177px" }}
               name="price"
               type="text"
-              value={formValue.price}
             ></Form.Control>
           </Form.Group>
 
@@ -271,7 +228,6 @@ const AddProductAttributes = ({
             </Form.ControlLabel>
             <Form.Control
               style={{ width: "177px" }}
-              value={formValue.discountPrice}
               name="discountPrice"
               type="text"
             ></Form.Control>
@@ -289,14 +245,12 @@ const AddProductAttributes = ({
             <Form.Control
               type="text"
               name="gst"
-              value={formValue.gst}
               style={{ width: "155px", marginBottom: "-15px" }}
             ></Form.Control>
           </Form.Group>
           <Form.Group>
             <Form.ControlLabel className="formLabelText">QTY</Form.ControlLabel>
             <Form.Control
-              value={formValue.qty}
               type="text"
               name="qty"
               style={{ width: "155px", marginBottom: "-15px" }}
@@ -306,11 +260,7 @@ const AddProductAttributes = ({
 
         <Form.Group>
           <Form.ControlLabel className="formLabelText">SKU</Form.ControlLabel>
-          <Form.Control
-            value={formValue.sku}
-            name="sku"
-            type="text"
-          ></Form.Control>
+          <Form.Control name="sku" type="text"></Form.Control>
         </Form.Group>
         <div className="updateModelButton">
           <ButtonComponent buttontext="ADD ATTRIBUTE" />

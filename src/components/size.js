@@ -164,9 +164,9 @@ const Size = ({ setAttributes, attributes, isAddProduct, len, id }) => {
 
         Http.PostAPI(process.env.REACT_APP_ADDATRIBUTE, data, null)
           .then((res) => {
-            console.log("hello2")
+           
             if (res?.data?.status) {
-              console.log("status")
+              
               setAttributes((previous) => {
                 return [...previous, getAttributes];
               })

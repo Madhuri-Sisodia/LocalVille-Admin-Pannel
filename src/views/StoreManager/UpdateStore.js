@@ -109,10 +109,10 @@ const UpdateStore = ({
       setTimeError("Opening and Closing Time is required");
       return;
     }
-    if (!storeData.openingTime || !storeData.closingTime) {
-      setTimeError("Opening and Closing Time is required");
-      return;
-    }
+    // if (!storeData.openingTime || !storeData.closingTime) {
+    //   setTimeError("Opening and Closing Time is required");
+    //   return;
+    // }
     const openingTime = new Date(`2000-01-01T${ item?.opening_time }:00Z`);
     const storeOpeningTime = new Date(`2000-01-01T${storeData.openingTime}:00Z`);
     const storeClosingTime = new Date(`2000-01-01T${storeData.closingTime}:00Z`);
