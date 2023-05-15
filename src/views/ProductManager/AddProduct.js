@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { MdClose } from "react-icons/md";
-import { Modal, Form, Button } from "react-bootstrap";
+import { Modal, Form, Button,Row,Col } from "react-bootstrap";
 import { Http } from "../../config/Service";
 import "../../assets/css/modal.css";
 import Size from "components/size";
@@ -14,6 +14,10 @@ import AddProductAttributes from "./AddProductAttributes";
 
 const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
   const [product, setProduct] = useState([]);
+  const[attribute,setAttribute]=useState();
+  const[getColor,setGetColor]=useState();
+  const[getSize,setGetSize]=useState();
+  const[inStocks,setInStocks]=useState();
   const[showAddAttribute,setShowAddAttribute]=useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [errorImageMessage, setErrorImageMessage] = useState("");
@@ -32,6 +36,7 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
   const [isAddProdcut, setIsAddProduct] = useState("true");
   const notificationAlertRef = React.useRef(null);
   const [btnLoading, setBtnloading] =useState (false);
+  const [formValue, setFormValue] = useState(null);
 
   const [productData, setProductData] = useState({
     productName: "",
@@ -65,8 +70,11 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
     }
     setErrorMessage(null);
     setImageFile(updatedImageFiles);
+    console.log("ImageFile",imageFile)
   };
-
+  useEffect(() => {
+    console.log("ImageFile", imageFile);
+  }, [imageFile]);
   const resetForm = () => {
     setProductData({
       // productImage: "",
@@ -148,7 +156,9 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
   useEffect(() => {
     getStore();
   }, []);
+  
 
+  
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -175,21 +185,47 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
     data.append("sub_category", subCateoryid[0].id);
     data.append("is_buy", bay == "Yes" ? 1 : 0);
     data.append("is_pickup", Pickup == "Yes" ? 1 : 0);
-    data.append("in_stock", productData.in_stock);
-    setBtnloading(true);
+   
     if (imageFile) {
       for (let i = 0; i < 4; i++) {
-        data.append(`product_images[${i}]`, imageFile[i]);
+        if (imageFile[i]) {
+          data.append(`product_images[${i}]`, imageFile[i]);
+        }
       }
     }
 
-    for (let i = 0; i < attributes.length; i++) {
-      data.append(`color[${i}]`, attributes[i].Color.id);
-      data.append(`size[${i}]`, attributes[i].Size.id);
-      data.append(`price[${i}]`, attributes[i].Price);
-      data.append(`dis_price[${i}]`, attributes[i].dis_Price);
-      data.append(`sku[${i}]`, attributes[i].sku);
-    }
+     data.append("sku", attribute.sku);
+    data.append("price", attribute.price);
+    data.append("dis_price", attribute.discountPrice);
+    data.append("in_stock",inStocks);
+    data.append("gst",attribute.gst);
+    data.append("qty",attribute.qty);
+    data.append("color",getColor);
+    data.append("size",getSize);
+     setBtnloading(true);
+  
+    // for (let i = 0; i < attribute.length; i++) {
+    
+    //   data.append("qty[]", attribute.qty[i]);
+    //   data.append("sku[]", attribute.sku[i]);
+    //   data.append("gst[]", attribute.gst[i]);
+    //   data.append("color[]", getColor[i]);
+    //   data.append("size[]", getSize[i]);
+    //   data.append("price[]", attribute.price[i]);
+    //   data.append("dis_price[]", attribute.discountPrice[i]);
+    //   data.append("in_stock[]", inStocks[i]);
+    // }
+
+    // for (let i = 0; i < attribute.length; i++) {
+    //   data.append(`price[${i}]`, attribute[i].price);
+    //   data.append(`dis_price[${i}]`, attribute[i].discountPrice);
+    //   data.append(`sku[${i}]`, attribute[i].sku);
+    // }
+   
+   
+
+
+  
 
     Http.PostAPI(process.env.REACT_APP_ADDPRODUCTS, data, null)
       .then((res) => {
@@ -349,34 +385,9 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
                 }}
               ></Form.Control>
             </Form.Group>
-            <br></br>
+           
 
-            <button
-             data-bs-toggle="collapse"
-             data-bs-target="#collapseExample"
-             aria-expanded="false"
-             aria-controls="collapseExample"
-              style={{
-                color: "blueviolet",
-                width: "100%",
-                border: "2px dotted",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                padding: "5px",
-              }}
-              onClick={() => {
-                setShowAddAttribute(true);
-              }}
-            >
-              Add Attributes
-            </button>
-            <div>
-                    <AddProductAttributes
-                      showAddAttribute={showAddAttribute}
-                      setShowAddAttribute={setShowAddAttribute}
-                    />
-                  </div>
+           
             {/* <Form.Group>
               <Form.Label className="add-label">Add Attributes</Form.Label>
                <Size 
@@ -539,12 +550,93 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
                 </select>
               </div>
             </Form.Group>
+            <br></br>
+          <button
+             data-bs-toggle="collapse"
+             data-bs-target="#collapseExample"
+             aria-expanded="false"
+             aria-controls="collapseExample"
+              style={{
+                color: "blueviolet",
+                width: "100%",
+                border: "2px dotted",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                padding: "5px",
+              }}
+              onClick={() => {
+                setShowAddAttribute(true);
+              }}
+            >
+              Add Attributes
+            </button>
 
+          
             <ButtonComponent 
             buttontext="Add"
             btnLoading={btnLoading}
             />
           </Form>
+          {/* {item?.attributes?.map((attribute, index) => (
+              <div>
+                <Row>
+                  <Col className="cardModel" md={6} sm={12} key={index}>
+                    <div className="leftSectionCard">
+                      <h6>{attribute?.sku}</h6>
+                      <h5>
+                        {attribute?.size?.[0]?.name},{" "}
+                        {attribute?.color?.[0]?.name}
+                      </h5>
+                      <div className="CardPriceArea">
+                        <p className="priceBefore"> ₹ {attribute?.price}</p>{" "}
+                        <b></b>
+                        <h6 className="priceAfter">
+                          {" "}
+                          ₹ {attribute?.discount_price}
+                        </h6>{" "}
+                      </div>
+                    </div>
+                    <div className="RightSectionCard">
+                      <button
+                        className="btn btn-primary editButton"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseExample"
+                        aria-expanded="false"
+                        aria-controls="collapseExample"
+                        onClick={() => setEdit(index)}
+                      >
+                        <img src={editButton} className="editbutton" />
+                      </button>
+                      <i
+                        className="fa fa-trash"
+                        onClick={() => {
+                          setShowModal(true);
+                          setDeleteAttribute(index);
+                        }}
+                      ></i>
+                    </div>
+                  </Col>
+                </Row> */}
+
+          
+            <div>
+                    <AddProductAttributes
+                    attribute={attribute}
+                    setAttribute={setAttribute}
+                    getSize={getSize}
+                    setGetSize={setGetSize}
+                    getColor={getColor}
+                    setGetColor={setGetColor}
+                    inStocks={inStocks}
+                    setInStocks={setInStocks}
+                    />{console.log("attribute",attribute)}
+                    {console.log("size",getSize)}
+                    {console.log("inStock",inStocks)}
+                  </div>
+                  
+
         </Modal.Body>
       </Modal>
     </>

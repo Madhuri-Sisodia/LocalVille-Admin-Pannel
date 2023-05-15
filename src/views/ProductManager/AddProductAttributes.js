@@ -9,18 +9,21 @@ import { ErrorNotify } from "components/NotificationShowPopUp";
 import { addAttributeValidationModel } from "components/Validation";
 
 const AddProductAttributes = ({
-  setShowAddAttribute,
-  showAddAttribute,
-  getProducts,
-  item,
+  attribute,
+  setAttribute,
+  getColor,
+  setGetColor,
+  getSize,
+  setGetSize,
+  inStocks,
+  setInStocks,
 }) => {
   const [AddAttribute, setAddAttribute] = useState([]);
   const [sizeData, setSizeData] = useState([]);
   const [colorData, setColorData] = useState([]);
   const [size, setSize] = useState("");
   const [color, setColor] = useState("");
-  const [btnLoading, setBtnloading] =useState (false);
-  
+  const [inStock, setInStock] = useState("");
 
   const [formValue, setFormValue] = useState({
     price: "",
@@ -40,7 +43,6 @@ const AddProductAttributes = ({
         .then((res) => {
           if (res?.data?.status) {
             setSizeData(res?.data?.data);
-           
           } else {
             alert("Fields not matched");
           }
@@ -60,7 +62,6 @@ const AddProductAttributes = ({
         .then((res) => {
           if (res?.data?.status) {
             setColorData(res?.data?.data);
-           
           } else {
             alert("Fields not matched");
           }
@@ -74,9 +75,13 @@ const AddProductAttributes = ({
     getColor();
   }, []);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmitForm = () => {
     console.log("form....", formValue);
+    setAttribute(formValue);
+    setGetColor(color);
+    setGetSize(size);
+    setInStocks(inStock);
+    console.log("Attribute", attribute);
   };
 
   // const handleChange = (value) => {
@@ -93,7 +98,7 @@ const AddProductAttributes = ({
         fluid
         ref={formRef}
         formValue={formValue}
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmitForm}
         model={addAttributeValidationModel}
         onChange={setFormValue}
         className="UpdateProductForm"
@@ -264,11 +269,47 @@ const AddProductAttributes = ({
           <Form.ControlLabel className="formLabelText">SKU</Form.ControlLabel>
           <Form.Control name="sku" type="text"></Form.Control>
         </Form.Group>
-
-          <ButtonComponent 
-          buttontext="ADD ATTRIBUTE"
-          btnLoading={btnLoading}
-           />
+        <Form.Group>
+          <Form.ControlLabel className="formLabelText">Stock</Form.ControlLabel>
+          <div style={{ width: "50%", marginTop: "5px", marginBottom: "15px" }}>
+            <select
+              name="selectSection"
+              value={inStock}
+              onChange={(event) => setInStock(event.target.value)}
+              style={{
+                height: "35px",
+                borderRadius: "5px",
+                paddingLeft: "5px",
+                paddingRight: "5px",
+                borderColor: "#808020",
+                width: "23rem",
+              }}
+            >
+              <option value="">Select</option>
+              <option
+                style={{
+                  fontSize: "14px",
+                  paddingBottom: "10px",
+                  paddintTop: "10px",
+                }}
+              >
+                <li>Yes</li>
+              </option>
+              <option
+                style={{
+                  fontSize: "14px",
+                  paddingBottom: "10px",
+                  paddintTop: "10px",
+                }}
+              >
+                <li>No</li>
+              </option>
+            </select>
+          </div>
+        </Form.Group>
+        <div className="updateModelButton">
+          <ButtonComponent buttontext="ADD ATTRIBUTE" />
+        </div>
       </Form>
     </>
   );

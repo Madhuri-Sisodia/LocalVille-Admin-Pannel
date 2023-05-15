@@ -35,6 +35,7 @@ const InvoiceTable = () => {
   const [data, setData] = useState([]);
   const [blockData, setBlockData] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [isPageViewSet, setIsPageViewSet] = useState(false);
   const { pageNo, setDisabledNext, pageView, setPageView } = useContext(Utils);
   const notificationAlertRef = React.useRef(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -107,9 +108,14 @@ const InvoiceTable = () => {
       });
   };
 
+ 
   useEffect(() => {
+    if (!isPageViewSet) {
+      setPageView(1);
+      setIsPageViewSet(true);
+    }
     getInvoice();
-  }, [pageView]);
+  }, [pageView, isPageViewSet]);
 
   const handlePageChange = (page) => {
     setPageView(page);
