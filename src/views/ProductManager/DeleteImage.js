@@ -12,6 +12,7 @@ const DeleteImage = ({
   item,
   getProducts,
   index,
+  setShowUpdateModal,
 }) => {
   const [deleteData, setDeleteData] = useState([]);
   const notificationAlertRef = useRef(null);
@@ -28,9 +29,10 @@ const DeleteImage = ({
         if (res?.data?.status) {
           setDeleteData(res?.data?.data);
           getProducts();
-          notificationAlertRef.current.notificationAlert(
+           notificationAlertRef.current.notificationAlert(
             SuccessNotify(res?.data?.message)
           );
+          setShowUpdateModal(false)
         } else {
           notificationAlertRef.current.notificationAlert(
             ErrorNotify(res?.data?.message)

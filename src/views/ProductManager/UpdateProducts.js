@@ -80,6 +80,8 @@ const UpdateProducts = ({
         if (res?.data?.status) {
           setProduct(res?.data?.data);
           getProducts();
+          setShowUpdateModal(false);
+         
           notificationAlertRef.current.notificationAlert(
             SuccessNotify(res?.data?.message)
           );
@@ -94,6 +96,8 @@ const UpdateProducts = ({
           ErrorNotify("Something went wrong")
         );
       });
+     
+         
   };
   const handleImageUpload = (event) => {
     const newFile = event.target.files[0];
@@ -150,6 +154,7 @@ const UpdateProducts = ({
           setProduct(res?.data?.data);
           getProducts();
           setShowUpdateModal(false);
+          setNewImageArray("");
           notificationAlertRef.current.notificationAlert(
             SuccessNotify(res?.data?.message)
           );
@@ -186,6 +191,7 @@ const UpdateProducts = ({
               onClick={() => {
                 setShowUpdateModal(false);
                 setProductImage(null),
+                setNewImageArray(""),
                   setFormValue({
                     productName: "",
                     productDesc: "",
@@ -512,6 +518,7 @@ const UpdateProducts = ({
               item={item}
               index={deleteAttribute}
               getProducts={getProducts}
+             
             />
             <DeleteImage
               showImageModal={showImageModal}
@@ -519,6 +526,7 @@ const UpdateProducts = ({
               item={item}
               index={imageIndex}
               getProducts={getProducts}
+              setShowUpdateModal={setShowUpdateModal}
             />
           </Modal.Body>
         </Modal>

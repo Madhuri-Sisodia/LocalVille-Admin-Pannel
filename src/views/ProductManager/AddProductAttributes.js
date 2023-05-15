@@ -26,11 +26,11 @@ const AddProductAttributes = ({
   const [inStock, setInStock] = useState("");
 
   const [formValue, setFormValue] = useState({
-    price: "",
-    discountPrice: "",
-    sku: "",
-    qty: "",
-    gst: "",
+    price: [],
+    discountPrice: [],
+    sku: [],
+    qty: [],
+    gst: [],
   });
 
   const formRef = React.useRef();
@@ -74,6 +74,7 @@ const AddProductAttributes = ({
 
     getColor();
   }, []);
+ 
 
   const handleSubmitForm = () => {
     console.log("form....", formValue);
@@ -308,7 +309,7 @@ const AddProductAttributes = ({
           </div>
         </Form.Group>
         <div className="updateModelButton">
-          <ButtonComponent buttontext="ADD ATTRIBUTE" />
+          <ButtonComponent  buttontext="ADD ATTRIBUTE" />
         </div>
       </Form>
     </>
