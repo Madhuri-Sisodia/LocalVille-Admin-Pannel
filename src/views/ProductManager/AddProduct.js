@@ -18,7 +18,6 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
   const [product, setProduct] = useState([]);
   const [showForm, setShowForm] = useState(false);
 
-
   const [attribute, setAttribute] = useState();
   const [getColor, setGetColor] = useState();
   const [getSize, setGetSize] = useState();
@@ -56,7 +55,7 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
     // in_stock: "",
     productImage: "",
   });
-
+  
   const handleImageChange = (event) => {
     const files = event.target.files;
     const updatedImageFiles = [...imageFile];
@@ -197,15 +196,15 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
       }
     }
 
-    data.append("sku", attribute.sku);
-    data.append("price", attribute.price);
-    data.append("dis_price", attribute.discountPrice);
-    data.append("in_stock", inStocks);
-    data.append("gst", attribute.gst);
-    data.append("qty", attribute.qty);
-    data.append("color", getColor);
-    data.append("size", getSize);
-    setBtnloading(true);
+    // data.append("sku", attribute.sku);
+    // data.append("price", attribute.price);
+    // data.append("dis_price", attribute.discountPrice);
+    // data.append("in_stock", inStocks);
+    // data.append("gst", attribute.gst);
+    // data.append("qty", attribute.qty);
+    // data.append("color", getColor);
+    // data.append("size", getSize);
+    // setBtnloading(true);
 
     // for (let i = 0; i < attribute.length; i++) {
 
@@ -218,12 +217,15 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
     //   data.append("dis_price[]", attribute.discountPrice[i]);
     //   data.append("in_stock[]", inStocks[i]);
     // }
+    console.log("ATTTRLen",attribute.length)
+    for (let i = 0; i < attribute.length; i++) {
+      data.append(`price[${i}]`, attribute[i].price);
+      data.append(`dis_price[${i}]`, attribute[i].discountPrice);
+      data.append(`sku[${i}]`, attribute[i].sku);
+      data.append(`gst[${i}]`, attribute[i].gst);
+      data.append(`qty[${i}]`, attribute[i].qty);
+    }
 
-    // for (let i = 0; i < attribute.length; i++) {
-    //   data.append(`price[${i}]`, attribute[i].price);
-    //   data.append(`dis_price[${i}]`, attribute[i].discountPrice);
-    //   data.append(`sku[${i}]`, attribute[i].sku);
-    // }
 
     Http.PostAPI(process.env.REACT_APP_ADDPRODUCTS, data, null)
       .then((res) => {
@@ -561,86 +563,41 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
             >
               Add Attributes
             </button>
-            {/* <button
-             data-bs-toggle="collapse"
-             data-bs-target="#collapseExample"
-             aria-expanded="false"
-             aria-controls="collapseExample"
-              style={{
-                color: "blueviolet",
-                width: "100%",
-                border: "2px dotted",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                padding: "5px",
-              }}
-              onClick={() => {
-                setShowAddAttribute(true);
-              }}
-            >
-              Add Attributes
-            </button> */}
-           
+            {/* <br></br>
+            {attribute.map((attributes, index) => (
+            <div style={{border:"1px solid gray",borderRadius: "8px", padding: "10px"}}>
+              <div className="leftSectionCard" key={index}>
+                <h6>{attributes.sku}</h6>
+                {/* <h5>
+                  {getSize}, {getColor}
+                </h5> */}
+                {/* <div className="CardPriceArea">
+                  <p className="priceBefore">₹ {attributes.price}</p> <b></b>
+                  <h6 className="priceAfter">
+                    ₹ {attributes.discountPrice}
+                  </h6>{" "}
+                </div>
+              </div>
+            </div>))} */} 
 
             <ButtonComponent buttontext="Add" btnLoading={btnLoading} />
           </Form>
-          {/* {item?.attributes?.map((attribute, index) => (
-              <div>
-                <Row>
-                  <Col className="cardModel" md={6} sm={12} key={index}>
-                    <div className="leftSectionCard">
-                      <h6>{attribute?.sku}</h6>
-                      <h5>
-                        {attribute?.size?.[0]?.name},{" "}
-                        {attribute?.color?.[0]?.name}
-                      </h5>
-                      <div className="CardPriceArea">
-                        <p className="priceBefore"> ₹ {attribute?.price}</p>{" "}
-                        <b></b>
-                        <h6 className="priceAfter">
-                          {" "}
-                          ₹ {attribute?.discount_price}
-                        </h6>{" "}
-                      </div>
-                    </div>
-                    <div className="RightSectionCard">
-                      <button
-                        className="btn btn-primary editButton"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapseExample"
-                        aria-expanded="false"
-                        aria-controls="collapseExample"
-                        onClick={() => setEdit(index)}
-                      >
-                        <img src={editButton} className="editbutton" />
-                      </button>
-                      <i
-                        className="fa fa-trash"
-                        onClick={() => {
-                          setShowModal(true);
-                          setDeleteAttribute(index);
-                        }}
-                      ></i>
-                    </div>
-                  </Col>
-                </Row> */}
-                 {showForm && (
-  <div>
-    <AddProductAttributes
-      attribute={attribute}
-      setAttribute={setAttribute}
-      getSize={getSize}
-      setGetSize={setGetSize}
-      getColor={getColor}
-      setGetColor={setGetColor}
-      inStocks={inStocks}
-      setInStocks={setInStocks}
-    />
-  </div>
-)}
 
+          {showForm && (
+            <div>
+              <AddProductAttributes
+                attribute={attribute}
+                setAttribute={setAttribute}
+                getSize={getSize}
+                setGetSize={setGetSize}
+                getColor={getColor}
+                setGetColor={setGetColor}
+                inStocks={inStocks}
+                setInStocks={setInStocks}
+                
+              />
+            </div>
+          )}
         </Modal.Body>
       </Modal>
     </>

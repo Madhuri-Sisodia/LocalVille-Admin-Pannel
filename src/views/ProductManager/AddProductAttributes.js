@@ -19,23 +19,48 @@ const AddProductAttributes = ({
   setInStocks,
 }) => {
   const [AddAttribute, setAddAttribute] = useState([]);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [sizeData, setSizeData] = useState([]);
   const [colorData, setColorData] = useState([]);
   const [size, setSize] = useState("");
   const [color, setColor] = useState("");
   const [inStock, setInStock] = useState("");
 
-  const [formValue, setFormValue] = useState({
-    price: [],
-    discountPrice: [],
-    sku: [],
-    qty: [],
-    gst: [],
-  });
+  const [formValue, setFormValue] = useState([
+    {
+      price: "",
+      discountPrice: "",
+      sku: "",
+      qty: "",
+      gst: "",
+    },
+  ]);
 
   const formRef = React.useRef();
 
   const notificationAlertRef = React.useRef(null);
+
+  const handleAttributeChange = (index, name, value) => {
+    const updatedAttributes = [...formValue];
+    updatedAttributes[index] = { ...updatedAttributes[index], [name]: value };
+    setFormValue(updatedAttributes);
+  };
+  const addAttributeField = () => {
+    setFormValue((prevFormValue) => [
+      ...prevFormValue,
+      {
+        qty: "",
+        gst: "",
+        color: "",
+        size: "",
+        price: "",
+        discountPrice: "",
+        in_stock: "",
+        sku: "",
+      },
+    ]);
+  };
+  
 
   useEffect(() => {
     function getSize() {
@@ -74,15 +99,26 @@ const AddProductAttributes = ({
 
     getColor();
   }, []);
- 
 
   const handleSubmitForm = () => {
     console.log("form....", formValue);
+
     setAttribute(formValue);
     setGetColor(color);
     setGetSize(size);
     setInStocks(inStock);
     console.log("Attribute", attribute);
+    setIsFormSubmitted(true);
+    setFormValue({
+      price: "",
+      discountPrice: "",
+      sku: "",
+      qty: "",
+      gst: "",
+    });
+    setColor("");
+    setSize("");
+    setInStock("");
   };
 
   // const handleChange = (value) => {
@@ -98,16 +134,19 @@ const AddProductAttributes = ({
       <Form
         fluid
         ref={formRef}
-        formValue={formValue}
+        // formValue={formValue}
         onSubmit={handleSubmitForm}
         model={addAttributeValidationModel}
-        onChange={setFormValue}
+        // onChange={handleAttributeChange}
         className="UpdateProductForm"
       >
+        {formValue.map((formValues, index) => (
+        <div key={index}>
         <Form.ControlLabel className="add-label-UpdateProduct">
           {" "}
           Add Attribute
         </Form.ControlLabel>
+
 
         <div style={{ display: "flex" }}>
           <Form.Group style={{ width: "100%" }}>
@@ -227,8 +266,12 @@ const AddProductAttributes = ({
               style={{ width: "177px" }}
               name="price"
               type="text"
+              value={formValues.price}
+             onChange={(value) => handleAttributeChange(index,value, "price")}
+            
             ></Form.Control>
           </Form.Group>
+          {console.log("price",formValues.price)}
 
           <Form.Group>
             <Form.ControlLabel className="formLabelText">
@@ -238,6 +281,7 @@ const AddProductAttributes = ({
               style={{ width: "177px" }}
               name="discountPrice"
               type="text"
+              value={formValue.discountPrice}
             ></Form.Control>
           </Form.Group>
         </Form.Group>
@@ -253,6 +297,7 @@ const AddProductAttributes = ({
             <Form.Control
               type="text"
               name="gst"
+              value={formValue.gst}
               style={{ width: "155px", marginBottom: "-15px" }}
             ></Form.Control>
           </Form.Group>
@@ -261,6 +306,7 @@ const AddProductAttributes = ({
             <Form.Control
               type="text"
               name="qty"
+              value={formValue.qty}
               style={{ width: "155px", marginBottom: "-15px" }}
             ></Form.Control>
           </Form.Group>
@@ -268,7 +314,7 @@ const AddProductAttributes = ({
 
         <Form.Group>
           <Form.ControlLabel className="formLabelText">SKU</Form.ControlLabel>
-          <Form.Control name="sku" type="text"></Form.Control>
+          <Form.Control name="sku" type="text" value={formValues.sku}></Form.Control>
         </Form.Group>
         <Form.Group>
           <Form.ControlLabel className="formLabelText">Stock</Form.ControlLabel>
@@ -308,8 +354,14 @@ const AddProductAttributes = ({
             </select>
           </div>
         </Form.Group>
+       
+        </div>
+         ))}
         <div className="updateModelButton">
-          <ButtonComponent  buttontext="ADD ATTRIBUTE" />
+          <ButtonComponent
+            onClick={addAttributeField}
+            buttontext="ADD ATTRIBUTE"
+          />
         </div>
       </Form>
     </>

@@ -28,13 +28,14 @@ const UpdateProducts = ({
   item,
 }) => {
   const [product, setProduct] = useState([]);
+  
 
   const [pImage, setPImage] = useState([]);
   const [newImageArray, setNewImageArray] = useState([]);
   const [showImageModal, setShowImageModal] = useState(false);
   const [imageFile, setImageFile] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [edit, setEdit] = useState(-1);
+  const [edit, setEdit] = useState(null);
   const [deleteAttribute, setDeleteAttribute] = useState();
   const [imageIndex, setImageIndex] = useState();
 
@@ -477,7 +478,7 @@ const UpdateProducts = ({
                         data-bs-target="#collapseExample"
                         aria-expanded="false"
                         aria-controls="collapseExample"
-                        onClick={() => setEdit(index)}
+                        onClick={() => setEdit(edit === index ? null : index)}
                       >
                         <img src={editButton} className="editbutton" />
                       </button>
