@@ -8,59 +8,32 @@ import { SuccessNotify } from "components/NotificationShowPopUp";
 import { ErrorNotify } from "components/NotificationShowPopUp";
 import { addAttributeValidationModel } from "components/Validation";
 
-const AddProductAttributes = ({
-  attribute,
-  setAttribute,
-  getColor,
-  setGetColor,
-  getSize,
-  setGetSize,
-  inStocks,
-  setInStocks,
-}) => {
-  const [AddAttribute, setAddAttribute] = useState([]);
+const AddProductAttributes = ({ attribute, setAttribute }) => {
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [sizeData, setSizeData] = useState([]);
   const [colorData, setColorData] = useState([]);
-  const [size, setSize] = useState("");
-  const [color, setColor] = useState("");
-  const [inStock, setInStock] = useState("");
 
-  const [formValue, setFormValue] = useState([
-    {
-      price: "",
-      discountPrice: "",
-      sku: "",
-      qty: "",
-      gst: "",
-    },
-  ]);
+  const [formValue, setFormValue] = useState({
+    price: "",
+    discountPrice: "",
+    sku: "",
+    qty: "",
+    gst: "",
+    color: "",
+    size: "",
+    inStock: "",
+  });
 
   const formRef = React.useRef();
 
   const notificationAlertRef = React.useRef(null);
 
-  const handleAttributeChange = (index, name, value) => {
-    const updatedAttributes = [...formValue];
-    updatedAttributes[index] = { ...updatedAttributes[index], [name]: value };
-    setFormValue(updatedAttributes);
-  };
-  const addAttributeField = () => {
-    setFormValue((prevFormValue) => [
+  const handleAttributeChange = (name, value) => {
+    setFormValue((prevFormValue) => ({
       ...prevFormValue,
-      {
-        qty: "",
-        gst: "",
-        color: "",
-        size: "",
-        price: "",
-        discountPrice: "",
-        in_stock: "",
-        sku: "",
-      },
-    ]);
+      [name]: value,
+    }));
   };
-  
 
   useEffect(() => {
     function getSize() {
@@ -103,10 +76,18 @@ const AddProductAttributes = ({
   const handleSubmitForm = () => {
     console.log("form....", formValue);
 
-    setAttribute(formValue);
-    setGetColor(color);
-    setGetSize(size);
-    setInStocks(inStock);
+    const newAttribute = {
+      price: formValue.price,
+      discountPrice: formValue.discountPrice,
+      sku: formValue.sku,
+      qty: formValue.qty,
+      gst: formValue.gst,
+      color: formValue.color,
+      size: formValue.size,
+      inStock: formValue.inStock,
+    };
+
+    setAttribute((prevAttributes) => [...prevAttributes, newAttribute]);
     console.log("Attribute", attribute);
     setIsFormSubmitted(true);
     setFormValue({
@@ -115,38 +96,29 @@ const AddProductAttributes = ({
       sku: "",
       qty: "",
       gst: "",
+      color: "",
+      size: "",
+      inStock: "",
     });
-    setColor("");
-    setSize("");
-    setInStock("");
   };
-
-  // const handleChange = (value) => {
-  //   setFormValue(value);
-  // };
 
   return (
     <>
       <div className="rna-container">
         <NotificationAlert ref={notificationAlertRef} />
       </div>
-
+<div>
       <Form
         fluid
         ref={formRef}
-        // formValue={formValue}
         onSubmit={handleSubmitForm}
         model={addAttributeValidationModel}
-        // onChange={handleAttributeChange}
         className="UpdateProductForm"
       >
-        {formValue.map((formValues, index) => (
-        <div key={index}>
         <Form.ControlLabel className="add-label-UpdateProduct">
           {" "}
           Add Attribute
         </Form.ControlLabel>
-
 
         <div style={{ display: "flex" }}>
           <Form.Group style={{ width: "100%" }}>
@@ -172,9 +144,8 @@ const AddProductAttributes = ({
               <select
                 required
                 name="color"
-                onChange={(e) => {
-                  setColor(e.target.value);
-                }}
+                value={formValue.color}
+                onChange={(e) => handleAttributeChange("color", e.target.value)}
                 style={{
                   height: "35px",
                   borderRadius: "5px",
@@ -224,9 +195,8 @@ const AddProductAttributes = ({
               <select
                 required
                 name="size"
-                onChange={(e) => {
-                  setSize(e.target.value);
-                }}
+                value={formValue.size}
+                onChange={(e) => handleAttributeChange("size", e.target.value)}
                 style={{
                   height: "35px",
                   borderRadius: "5px",
@@ -236,6 +206,8 @@ const AddProductAttributes = ({
                   width: "100%",
                 }}
               >
+                {" "}
+                {console.log("Sizes", formValue.size)}
                 <option value="">Select</option>
                 {sizeData?.map((ele) => (
                   <option
@@ -266,12 +238,11 @@ const AddProductAttributes = ({
               style={{ width: "177px" }}
               name="price"
               type="text"
-              value={formValues.price}
-             onChange={(value) => handleAttributeChange(index,value, "price")}
-            
+              value={formValue.price}
+              onChange={(value) => handleAttributeChange("price", value)}
             ></Form.Control>
           </Form.Group>
-          {console.log("price",formValues.price)}
+          {console.log("price", formValue.price)}
 
           <Form.Group>
             <Form.ControlLabel className="formLabelText">
@@ -282,6 +253,9 @@ const AddProductAttributes = ({
               name="discountPrice"
               type="text"
               value={formValue.discountPrice}
+              onChange={(value) =>
+                handleAttributeChange("discountPrice", value)
+              }
             ></Form.Control>
           </Form.Group>
         </Form.Group>
@@ -298,7 +272,8 @@ const AddProductAttributes = ({
               type="text"
               name="gst"
               value={formValue.gst}
-              style={{ width: "155px", marginBottom: "-15px" }}
+              onChange={(value) => handleAttributeChange("gst", value)}
+              style={{ width: "177px" }}
             ></Form.Control>
           </Form.Group>
           <Form.Group>
@@ -307,22 +282,34 @@ const AddProductAttributes = ({
               type="text"
               name="qty"
               value={formValue.qty}
-              style={{ width: "155px", marginBottom: "-15px" }}
+              onChange={(value) => handleAttributeChange("qty", value)}
+              style={{ width: "177px"  }}
             ></Form.Control>
           </Form.Group>
         </Form.Group>
 
         <Form.Group>
           <Form.ControlLabel className="formLabelText">SKU</Form.ControlLabel>
-          <Form.Control name="sku" type="text" value={formValues.sku}></Form.Control>
+          <Form.Control
+            name="sku"
+            type="text"
+            value={formValue.sku}
+            onChange={(value) => handleAttributeChange("sku", value)}
+          ></Form.Control>
         </Form.Group>
         <Form.Group>
           <Form.ControlLabel className="formLabelText">Stock</Form.ControlLabel>
-          <div style={{ width: "50%", marginTop: "5px", marginBottom: "15px" }}>
+          <div
+            style={{
+              width: "50%",
+              marginTop: "5px",
+              marginBottom: "15px",
+            }}
+          >
             <select
               name="selectSection"
-              value={inStock}
-              onChange={(event) => setInStock(event.target.value)}
+              value={formValue.inStock}
+              onChange={(e) => handleAttributeChange("inStock", e.target.value)}
               style={{
                 height: "35px",
                 borderRadius: "5px",
@@ -354,16 +341,12 @@ const AddProductAttributes = ({
             </select>
           </div>
         </Form.Group>
-       
-        </div>
-         ))}
+
         <div className="updateModelButton">
-          <ButtonComponent
-            onClick={addAttributeField}
-            buttontext="ADD ATTRIBUTE"
-          />
+          <ButtonComponent buttontext="ADD ATTRIBUTE" />
         </div>
       </Form>
+      </div>
     </>
   );
 };

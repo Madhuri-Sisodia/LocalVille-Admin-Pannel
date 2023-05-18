@@ -18,16 +18,13 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
   const [product, setProduct] = useState([]);
   const [showForm, setShowForm] = useState(false);
 
-  const [attribute, setAttribute] = useState();
-  const [getColor, setGetColor] = useState();
-  const [getSize, setGetSize] = useState();
-  const [inStocks, setInStocks] = useState();
-  const [showAddAttribute, setShowAddAttribute] = useState(false);
+  const [attribute, setAttribute] = useState([]);
+
   const [errorMessage, setErrorMessage] = useState("");
   const [errorImageMessage, setErrorImageMessage] = useState("");
   const [image, setImage] = useState(null);
   const [imageFile, setImageFile] = useState([]);
-  const [vendortData, setVendorData] = useState([]);
+
   const [selectSection, setSelectSection] = useState("");
   const [getStoreData, setGetStoreData] = useState([]);
   const [getProcat, setGetProCat] = useState([]);
@@ -37,10 +34,9 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
   const [bay, setBay] = useState("No");
   const [Pickup, setPickup] = useState("No");
   const [attributes, setAttributes] = useState([]);
-  const [isAddProdcut, setIsAddProduct] = useState("true");
+
   const notificationAlertRef = React.useRef(null);
   const [btnLoading, setBtnloading] = useState(false);
-  const [formValue, setFormValue] = useState(null);
 
   const [productData, setProductData] = useState({
     productName: "",
@@ -49,13 +45,15 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
     sub_category: "",
     is_buy: "",
     is_pickup: "",
-    // Attributes: "",
-    // price: "",
-    // dis_price: "",
-    // in_stock: "",
     productImage: "",
   });
-  
+
+  const handleDelete = (index) => {
+    const newAttributes = [...attribute];
+    newAttributes.splice(index, 1);
+    setAttribute(newAttributes);
+  };
+
   const handleImageChange = (event) => {
     const files = event.target.files;
     const updatedImageFiles = [...imageFile];
@@ -81,14 +79,12 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
   }, [imageFile]);
   const resetForm = () => {
     setProductData({
-      // productImage: "",
       productName: "",
       productDesc: "",
       category: "",
       sub_category: "",
       is_buy: "",
       is_pickup: "",
-      in_stock: 1,
     });
     setImage(null);
   };
@@ -195,37 +191,17 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
         }
       }
     }
-
-    // data.append("sku", attribute.sku);
-    // data.append("price", attribute.price);
-    // data.append("dis_price", attribute.discountPrice);
-    // data.append("in_stock", inStocks);
-    // data.append("gst", attribute.gst);
-    // data.append("qty", attribute.qty);
-    // data.append("color", getColor);
-    // data.append("size", getSize);
-    // setBtnloading(true);
-
-    // for (let i = 0; i < attribute.length; i++) {
-
-    //   data.append("qty[]", attribute.qty[i]);
-    //   data.append("sku[]", attribute.sku[i]);
-    //   data.append("gst[]", attribute.gst[i]);
-    //   data.append("color[]", getColor[i]);
-    //   data.append("size[]", getSize[i]);
-    //   data.append("price[]", attribute.price[i]);
-    //   data.append("dis_price[]", attribute.discountPrice[i]);
-    //   data.append("in_stock[]", inStocks[i]);
-    // }
-    console.log("ATTTRLen",attribute.length)
+    console.log("ATTTRLen", attribute.length);
     for (let i = 0; i < attribute.length; i++) {
       data.append(`price[${i}]`, attribute[i].price);
       data.append(`dis_price[${i}]`, attribute[i].discountPrice);
       data.append(`sku[${i}]`, attribute[i].sku);
       data.append(`gst[${i}]`, attribute[i].gst);
       data.append(`qty[${i}]`, attribute[i].qty);
+      data.append(`color[${i}]`, attribute[i].color);
+      data.append(`size[${i}]`, attribute[i].size);
+      data.append(`in_stock[${i}]`, attribute[i].inStock);
     }
-
 
     Http.PostAPI(process.env.REACT_APP_ADDPRODUCTS, data, null)
       .then((res) => {
@@ -267,6 +243,7 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
     });
     setSelectProSubCat("");
     setSelectProCat("");
+    setAttribute([]);
   };
 
   const handleInput = (e) => {
@@ -290,6 +267,7 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
               setImageFile("");
               setErrorImageMessage("");
               resetForm();
+              setAttribute([]);
             }}
           />
         </Modal.Header>
@@ -563,22 +541,45 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
             >
               Add Attributes
             </button>
-            {/* <br></br>
-            {attribute.map((attributes, index) => (
-            <div style={{border:"1px solid gray",borderRadius: "8px", padding: "10px"}}>
-              <div className="leftSectionCard" key={index}>
-                <h6>{attributes.sku}</h6>
-                {/* <h5>
-                  {getSize}, {getColor}
-                </h5> */}
-                {/* <div className="CardPriceArea">
-                  <p className="priceBefore">₹ {attributes.price}</p> <b></b>
-                  <h6 className="priceAfter">
-                    ₹ {attributes.discountPrice}
-                  </h6>{" "}
-                </div>
-              </div>
-            </div>))} */} 
+            <br></br>
+            {attribute.length > 0 &&
+              attribute.map((attributes, index) => (
+                <>
+                  <div
+                    style={{
+                      border: "1px solid gray",
+                      borderRadius: "8px",
+                      padding: "10px",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div className="leftSectionCard" key={index}>
+                      <h6>{attributes.sku}</h6>
+                      <h5>
+                        {attributes.color}, {attributes.size}
+                      </h5>
+                      <div className="CardPriceArea">
+                        <p className="priceBefore">₹ {attributes.price}</p>{" "}
+                        <b></b>
+                        <h6 className="priceAfter">
+                          ₹ {attributes.discountPrice}
+                        </h6>{" "}
+                      </div>
+                    </div>
+                    <div className="RightSectionCard">
+                      <i
+                        className="fa fa-trash"
+                        style={{cursor:"pointer"}}
+                        onClick={() => handleDelete(index)}
+                      ></i>
+                    </div>
+                  </div>
+
+                  <br></br>
+                </>
+              ))}
 
             <ButtonComponent buttontext="Add" btnLoading={btnLoading} />
           </Form>
@@ -588,13 +589,6 @@ const AddProduct = ({ showAddProduct, setShowAddProduct, getProducts }) => {
               <AddProductAttributes
                 attribute={attribute}
                 setAttribute={setAttribute}
-                getSize={getSize}
-                setGetSize={setGetSize}
-                getColor={getColor}
-                setGetColor={setGetColor}
-                inStocks={inStocks}
-                setInStocks={setInStocks}
-                
               />
             </div>
           )}
