@@ -26,7 +26,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
   const [timeError, setTimeError] = useState("");
   const [selectSection, setSelectSection] = useState("");
   const [vendortData, setVendorData] = useState([]);
-  const [btnLoading, setBtnloading] =useState (false);
+  const [btnLoading, setBtnloading] = useState(false);
   const { location } = useContext(Utils);
   const [Data, setData] = useState([]);
   const [storeData, setStoreData] = useState({
@@ -57,13 +57,17 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
     setErrorMessage(null);
   };
   const toggleDaySelection = (index) => {
-    if (selectedDays.includes(index + 1)) {
-      setSelectedDays(selectedDays.filter((d) => d !== index + 1));
+    const selectedDay = index + 1;
+    if (selectedDays.includes(selectedDay)) {
+      setSelectedDays(selectedDays.filter((d) => d !== selectedDay));
     } else {
-      setSelectedDays([...selectedDays, index + 1]);
+      setSelectedDays([...selectedDays, selectedDay]);
     }
     setMessage("");
   };
+  const selectedDaysFormatted = JSON.stringify(selectedDays);
+
+
 
   const resetForm = () => {
     setStoreData({
@@ -155,7 +159,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
       data.append("city", storeData.city);
       data.append("state", storeData.state);
       data.append("country", storeData.country);
-      data.append("opening_days", selectedDays);
+      data.append("opening_days", selectedDaysFormatted);
       data.append("opening_time", storeData.openingTime);
       data.append("closing_time", storeData.closingTime);
       setBtnloading(true);
@@ -307,7 +311,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
                     <label htmlFor="avatar-upload">
                       <div
                         style={{
-                          color:"blueviolet",
+                          color: "blueviolet",
                           width: "55px",
                           height: "55px",
                           border: "1px dotted",
@@ -407,10 +411,7 @@ const AddStore = ({ showAddStore, setShowAddStore, getStore, addStore }) => {
               </div>
             )}
 
-            <ButtonComponent
-             buttontext="Add" 
-             btnLoading={btnLoading}
-             />
+            <ButtonComponent buttontext="Add" btnLoading={btnLoading} />
           </Form>
         </Modal.Body>
       </Modal>

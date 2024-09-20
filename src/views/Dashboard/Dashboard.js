@@ -38,7 +38,7 @@ const Dashboard = () => {
     const CallApi = () => {
       Http.GetAPI(process.env.REACT_APP_GETDASHBOARD + "?" + Math.random(), data)
         .then((res) => {
-          console.log(res?.data?.details?.dashboard_graph);
+       
   
           if (res?.data?.status) {
 

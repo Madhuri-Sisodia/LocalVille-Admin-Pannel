@@ -28,7 +28,6 @@ const UpdateProducts = ({
   item,
 }) => {
   const [product, setProduct] = useState([]);
-  
 
   const [pImage, setPImage] = useState([]);
   const [newImageArray, setNewImageArray] = useState([]);
@@ -82,7 +81,7 @@ const UpdateProducts = ({
           setProduct(res?.data?.data);
           getProducts();
           setShowUpdateModal(false);
-         
+
           notificationAlertRef.current.notificationAlert(
             SuccessNotify(res?.data?.message)
           );
@@ -97,8 +96,6 @@ const UpdateProducts = ({
           ErrorNotify("Something went wrong")
         );
       });
-     
-         
   };
   const handleImageUpload = (event) => {
     const newFile = event.target.files[0];
@@ -192,7 +189,7 @@ const UpdateProducts = ({
               onClick={() => {
                 setShowUpdateModal(false);
                 setProductImage(null),
-                setNewImageArray(""),
+                  setNewImageArray(""),
                   setFormValue({
                     productName: "",
                     productDesc: "",
@@ -519,7 +516,6 @@ const UpdateProducts = ({
               item={item}
               index={deleteAttribute}
               getProducts={getProducts}
-             
             />
             <DeleteImage
               showImageModal={showImageModal}
